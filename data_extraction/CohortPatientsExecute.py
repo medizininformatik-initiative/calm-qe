@@ -19,9 +19,6 @@ def main():
     #Get the patients with "ANY TYPE OF DIAGNOSED" Asthma or COPD.
     patients_with_asthma_copd(smart)
 
-    #Filter the patients for only "MAIN DIAGNOSED" Asthma or COPD.
-    filter_main_diagnosis(smart)
-
 if __name__ == "__main__":
     main()
 

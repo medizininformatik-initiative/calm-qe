@@ -25,7 +25,7 @@ i.e., counting them. It also fetches the resources and save them in output files
 def main():
     logging.info("Start...")
     #Input is the patient list in a text file from Cohort Data Extraction part
-    with open("patients_main_diagnosed_asthma_copd.json", "r") as file:
+    with open("patients_diagnosed_asthma_copd.json", "r") as file:
         input_file = json.load(file)
         patients = [patient for patient in input_file.keys()]
 
