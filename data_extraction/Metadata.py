@@ -16,6 +16,7 @@ def gather_metadata(source, count):
             "execution_time": datetime.now().strftime("%H:%M:%S"),
             "asthma_and_copd_patient_count": 0,
             "asthma_and_copd_patients_with_chief_complaint": 0,
+            "asthma_and_copd_patients_without_chief_complaint": 0,
             "patient_count_with_secondary_conditions": 0,
             "patient_count_with_observations": 0,
             "patient_count_with_medicationRequests": 0,
@@ -24,6 +25,8 @@ def gather_metadata(source, count):
             "main_diagnosis_count": 0, # Not same as asthma_and_copd_patients_with_chief_complaint. (might higher)
             #When same patient main diagnosed at different times at different encounter (even for different code) etc.
             "main_diagnosis_counts": defaultdict(int),
+            'main_diagnosis_count_without_chief_complain': 0,
+            'main_diagnosis_counts_without_chief_complaint': defaultdict(int),
             "secondary_conditions_counts": defaultdict(int),
             "observations_counts": defaultdict(int),
             "medicationAdministrations_counts": defaultdict(int),
