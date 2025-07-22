@@ -2,7 +2,7 @@ import logging
 
 from Constants import USER_NAME, USER_PASSWORD
 from FhirHelpersUtils import connect_to_server
-from FhirHelpersCohortExtraction import patients_with_asthma_copd, filter_main_diagnosis
+from FhirHelpersCohortExtraction import patients_with_asthma_copd, filter_main_diagnosis, filter_type_of_admission
 
 logging.basicConfig(level=logging.INFO, format='%(levelname)s - %(message)s')
 
@@ -16,11 +16,14 @@ Results are saved in "patient_results.txt"
 def main():
     smart = connect_to_server(user=USER_NAME, pw=USER_PASSWORD)
 
-    #Get the patients with "ANY TYPE OF DIAGNOSED" Asthma or COPD.
+    # Get the patients with "ANY TYPE OF DIAGNOSED" Asthma or COPD.
     patients_with_asthma_copd(smart)
 
-    #Filter the patients for only "MAIN DIAGNOSED" Asthma or COPD.
+    # Filter the patients for only "MAIN DIAGNOSED" Asthma or COPD.
     filter_main_diagnosis(smart)
+
+    # Filter patients per type of admission (Intensive-Care-Unit)
+    filter_type_of_admission(smart)
 
 if __name__ == "__main__":
     main()

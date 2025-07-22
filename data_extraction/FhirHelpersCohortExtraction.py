@@ -1,3 +1,4 @@
+import os
 from collections import defaultdict
 import json
 import time
@@ -92,3 +93,42 @@ def filter_main_diagnosis(smart):
         json.dump(patients_with_chief_complaint, out, indent=4)
 
 
+def filter_type_of_admission(smart):
+    """
+        From the HauptDiagnosis (Main), filter type of admission, specially ICU patients.
+    """
+    main_patients_diagnosed = "patients_main_diagnosed_asthma_copd.json"
+    icu_patients = defaultdict(int)
+
+    if os.path.exists(main_patients_diagnosed):
+        with open(main_patients_diagnosed, "r") as file:
+            main_patients_conditions = json.load(file)
+            for patient_id, condition_id in main_patients_conditions.items():
+                bundle = None
+                try:
+                    bundle = Encounter.where({'subject': f'{patient_id}', '_count': '10'}).perform(smart.server)
+                except Exception as e:
+                    print(f" Generated an exception for {patient_id}: {e}, but continue trying...")
+                    smart = connect_to_server(user=USER_NAME, pw=USER_PASSWORD)
+                    time.sleep(3)
+
+                if bundle:
+                    encounters = fetch_bundle_for_code(smart, bundle)
+
+                    # TODO: Verify functionality when encounters.
+                    if encounters:
+                        for encounter in encounters:
+                            if not encounter.type:
+                                print("Continue...")
+                                continue
+                            for type_entry in encounter.type:
+                                for coding in type_entry.coding:
+                                    if coding.code == "intensivstationaer":
+                                        print("Patient found!")
+                                        icu_patients[patient_id] = condition_id
+                                        break
+                else:
+                    print("Skipping patient, no bundle found")
+
+    with open("icu_patients_main_diagnosed_asthma_copd.json", "w") as out:
+        json.dump(icu_patients, out, indent=4)

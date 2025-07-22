@@ -1,5 +1,7 @@
 import os
+from dotenv import load_dotenv
 
+load_dotenv()
 USER_NAME = os.getenv("USER_NAME")
 USER_PASSWORD = os.getenv("USER_PASSWORD")
 SERVER_NAME = os.getenv("SERVER_NAME")
