@@ -93,10 +93,11 @@ def filter_main_diagnosis(smart):
         json.dump(patients_with_chief_complaint, out, indent=4)
 
 
-def filter_type_of_admission(smart):
+def filter_icu_patients_admission(smart):
     """
         From the HauptDiagnosis (Main), filter type of admission, specially ICU patients.
     """
+    print("\nFiltering ICU patients...")
     main_patients_diagnosed = "patients_main_diagnosed_asthma_copd.json"
     icu_patients = defaultdict(int)
 
@@ -114,19 +115,17 @@ def filter_type_of_admission(smart):
 
                 if bundle:
                     encounters = fetch_bundle_for_code(smart, bundle)
-
-                    # TODO: Verify functionality when encounters.
-                    if encounters:
-                        for encounter in encounters:
-                            if not encounter.type:
-                                print("Continue...")
-                                continue
-                            for type_entry in encounter.type:
-                                for coding in type_entry.coding:
-                                    if coding.code == "intensivstationaer":
-                                        print("Patient found!")
-                                        icu_patients[patient_id] = condition_id
-                                        break
+                    for encounter in encounters:
+                        if "resource" in encounter:
+                            if "type" in encounter['resource']:
+                                for type_entry in encounter["resource"]["type"]:
+                                    if "coding" not in type_entry:
+                                        continue
+                                    for coding in type_entry["coding"]:
+                                        if "code" in coding and coding["code"].lower() == "intensivstationaer":
+                                            print(f"ICU encounter found for patient {patient_id}")
+                                            icu_patients[patient_id] = condition_id
+                                            break
                 else:
                     print("Skipping patient, no bundle found")
 

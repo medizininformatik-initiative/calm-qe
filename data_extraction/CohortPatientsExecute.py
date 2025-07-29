@@ -2,7 +2,8 @@ import logging
 
 from Constants import USER_NAME, USER_PASSWORD
 from FhirHelpersUtils import connect_to_server
-from FhirHelpersCohortExtraction import patients_with_asthma_copd, filter_main_diagnosis, filter_type_of_admission
+from FhirHelpersCohortExtraction import patients_with_asthma_copd, filter_main_diagnosis, filter_icu_patients_admission
+
 
 logging.basicConfig(level=logging.INFO, format='%(levelname)s - %(message)s')
 
@@ -23,7 +24,7 @@ def main():
     filter_main_diagnosis(smart)
 
     # Filter patients per type of admission (Intensive-Care-Unit)
-    filter_type_of_admission(smart)
+    filter_icu_patients_admission(smart)
 
 if __name__ == "__main__":
     main()
