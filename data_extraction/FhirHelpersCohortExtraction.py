@@ -2,12 +2,11 @@ import os
 from collections import defaultdict
 import json
 import time
-
 from fhirclient.models.condition import Condition
 from fhirclient.models.encounter import Encounter
-
 from Constants import USER_NAME, USER_PASSWORD, ICD_SYSTEM_NAME, ASTHMA_COPD_CODES_FILE
 from FhirHelpersUtils import fetch_bundle_for_code, connect_to_server
+from FhirHelpersUtils import parse_fhir_datetime, compute_los
 from Metadata import gather_metadata
 
 
@@ -93,10 +92,47 @@ def filter_main_diagnosis(smart):
         json.dump(patients_with_chief_complaint, out, indent=4)
 
 
+def process_inpatient_encounter(resource):
+    inpatient_types = ["stationaer", "normalstationaer", "intensivstationaer"]
+
+    is_inpatient = False
+    for type_entry in resource.get("type", []):
+        for coding in type_entry.get("coding", []):
+            code_val = coding.get("code", "").lower()
+            if code_val.lower() in [inpatient.lower() for inpatient in inpatient_types] or code_val.upper() == "IMP":
+                is_inpatient = True
+                break
+        if is_inpatient:
+            break
+    if not is_inpatient and "hospitalization" in resource:
+        is_inpatient = True
+
+    if not is_inpatient:
+        return None
+
+    # Extract period
+    period = resource.get("period", {})
+    start = parse_fhir_datetime(period.get("start"))
+    end = parse_fhir_datetime(period.get("end"))
+
+    # Process LOS
+    los_days = compute_los(start, end)
+
+    return {
+        "encounter_id": resource.get("id"),
+        "start": start.isoformat() if start else None,
+        "end": end.isoformat() if end else None,
+        "los_days": round(los_days, 2) if los_days else None
+    }
+
+
 def filter_icu_patients_admission(smart):
     """
         From the HauptDiagnosis (Main), filter type of admission, specially ICU patients.
+        Reference: https://simplifier.net/guide/mii-ig-modul-fall-2025/
+        MIIIGModulFall/TechnischeImplementierung/FHIRProfile/EncounterKontaktGesundheitseinrichtung.page.md?version=current
     """
+
     print("\nFiltering ICU patients...")
     main_patients_diagnosed = "patients_main_diagnosed_asthma_copd.json"
     icu_patients = defaultdict(int)
@@ -133,3 +169,44 @@ def filter_icu_patients_admission(smart):
         json.dump(icu_patients, out, indent=4)
 
     gather_metadata("intensive_care_unit_patient_count", len(icu_patients))
+
+
+def calculate_los_inpatients(smart):
+    """
+    Reference: https://simplifier.net/guide/mii-ig-modul-fall-2025/
+    MIIIGModulFall/TechnischeImplementierung/FHIRProfile/EncounterKontaktGesundheitseinrichtung.page.md?version=current
+    """
+
+    print("\nGathering inpatients...")
+    main_patients_diagnosed = "patients_main_diagnosed_asthma_copd.json"
+    inpatients = defaultdict()
+
+    if os.path.exists(main_patients_diagnosed):
+        with open(main_patients_diagnosed, "r") as file:
+            main_patients_conditions = json.load(file)
+            for patient_id, condition_id in main_patients_conditions.items():
+                bundle = None
+                try:
+                    bundle = Encounter.where({'subject': f'{patient_id}', '_count': '10'}).perform(smart.server)
+                except Exception as e:
+                    print(f" Generated an exception for {patient_id}: {e}, but continue trying...")
+                    smart = connect_to_server(user=USER_NAME, pw=USER_PASSWORD)
+                    time.sleep(3)
+
+                if bundle:
+                    encounters = fetch_bundle_for_code(smart, bundle)
+                    for encounter in encounters:
+                        if "resource" in encounter:
+                            if "type" in encounter['resource']:
+                                stay_entry = process_inpatient_encounter(encounter['resource'])
+                                if stay_entry:
+                                    if patient_id not in inpatients:
+                                        inpatients[patient_id] = []
+                                    inpatients[patient_id].append(stay_entry)
+                else:
+                    print("Skipping patient, no bundle found")
+
+    with open("inpatient_LOS_main_diagnosed_asthma_copd.json", "w", encoding="utf-8") as file:
+        json.dump(inpatients, file, indent=4, ensure_ascii=False)
+
+    print(f"File successfully generated with {len(inpatients)} inpatients")

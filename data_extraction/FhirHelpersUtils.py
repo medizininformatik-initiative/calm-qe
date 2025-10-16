@@ -1,6 +1,14 @@
 import time
+import pytz
 from fhirclient import client
 from Constants import USER_NAME, USER_PASSWORD, SERVER_NAME
+from datetime import datetime, timezone
+
+try:
+    from zoneinfo import ZoneInfo
+except ImportError:
+    ZoneInfo = None
+
 
 def connect_to_server(user, pw):
     """
@@ -56,3 +64,25 @@ def fetch_bundle_for_code(smart, bundle):
 
     print(f"Current query return {len(result_bundle)} result!\n")
     return result_bundle
+
+
+def parse_fhir_datetime(timestamp):
+    if not timestamp:
+        return None
+    if timestamp.endswith('Z'):
+        timestamp = timestamp[:-1] + '+00:00'
+    dt = datetime.fromisoformat(timestamp)
+    if dt.tzinfo is None:
+        dt = dt.replace(tzinfo=timezone.utc)
+    return dt.astimezone(timezone.utc)
+
+
+def compute_los(start, end):
+    if not start:
+        return None
+    if not end:
+        tz = pytz.timezone("Europe/Berlin")
+        now_local = datetime.now(tz)
+        end = now_local.astimezone(pytz.UTC)
+    delta = end - start
+    return delta.total_seconds() / 86400
