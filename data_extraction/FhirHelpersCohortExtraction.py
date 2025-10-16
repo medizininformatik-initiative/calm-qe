@@ -44,7 +44,7 @@ def patients_with_asthma_copd(smart):
 
     print(len(patients_conditions_map))
     gather_metadata("asthma_and_copd_patient_count", len(patients_conditions_map))
-    with open('patients_diagnosed_asthma_copd.json', 'w') as file: #Intermediate results, can be deleted later.
+    with open('patients_diagnosed_asthma_copd.json', 'w') as file:  # Intermediate results, can be deleted later.
         json.dump(patients_conditions_map, file, indent=4)
 
 
@@ -63,9 +63,9 @@ def filter_main_diagnosis(smart):
             print(f"Processing patient with ID: {patient[8:]}...")
             conditions_ids = patients[patient]
             for condition in conditions_ids:
-                while True: #Connection might get lost sometime, try reconnect...
+                while True:  # Connection might get lost sometime, trying to reconnect...
                     try:
-                        #Check the patient with the spesific condition ID has Encounter reference.
+                        #Check the patient with the specific condition ID has Encounter reference.
                         bundle = Encounter.where(struct={'_count': b'10', 'subject': patient, 'diagnosis': 'Condition/' + condition['id']}).perform(smart.server)
                         break
                     except Exception as exc:
@@ -131,3 +131,5 @@ def filter_icu_patients_admission(smart):
 
     with open("icu_patients_main_diagnosed_asthma_copd.json", "w") as out:
         json.dump(icu_patients, out, indent=4)
+
+    gather_metadata("intensive_care_unit_patient_count", len(icu_patients))
