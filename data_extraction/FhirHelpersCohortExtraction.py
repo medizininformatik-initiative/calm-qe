@@ -238,7 +238,7 @@ def extract_last_three_encounter(smart):
                 while True:  # Connection might get lost sometime, trying to reconnect...
                     try:
                         # Check the patient with the specific condition ID has Encounter reference.
-                        bundle = Encounter.where(struct={'_count': b'10', 'subject': patient, 'diagnosis': 'Condition/' + condition}).perform(smart.server)
+                        bundle = Encounter.where(struct={'_count': b'10', 'subject': patient, 'diagnosis': 'Condition/' + condition['id']}).perform(smart.server)
                         break
                     except Exception as exc:
                         print(f"Generated an exception: {exc} but continue to trying. \n")
