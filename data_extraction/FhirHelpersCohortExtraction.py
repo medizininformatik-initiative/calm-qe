@@ -2,6 +2,8 @@ import os
 from collections import defaultdict
 import json
 import time
+from datetime import datetime, timezone
+
 from fhirclient.models.condition import Condition
 from fhirclient.models.encounter import Encounter
 from Constants import USER_NAME, USER_PASSWORD, ICD_SYSTEM_NAME, ASTHMA_COPD_CODES_FILE
@@ -54,6 +56,7 @@ def filter_main_diagnosis(smart):
     :param smart: Fhir Server Connector
     """
     count_main_diagnose_type = defaultdict(int)
+    admission_dates = defaultdict(list)
 
     patients_with_chief_complaint = defaultdict(list)
     with open("patients_diagnosed_asthma_copd.json", "r") as file:
@@ -84,12 +87,19 @@ def filter_main_diagnosis(smart):
                                             patients_with_chief_complaint[patient].append(condition)
                                             count_main_diagnose_type[condition['code']['coding'][0]['code']] += 1
 
+                                            # Extract period
+                                            period = enc['resource'].get("period", {})
+                                            start = parse_fhir_datetime(period.get("start")) #admission date
+                                            admission_dates[patient].append([condition,start])
+
     gather_metadata("asthma_and_copd_patients_with_chief_complaint", len(patients_with_chief_complaint))
     gather_metadata("main_diagnosis_counts", count_main_diagnose_type)
     gather_metadata("main_diagnosis_count", sum(count_main_diagnose_type.values()))
 
     with open("patients_main_diagnosed_asthma_copd.json", "w") as out:
         json.dump(patients_with_chief_complaint, out, indent=4)
+    with open("patients_main_diagnosed_asthma_copd_admission_dates.json", "w") as out:
+        json.dump(admission_dates, out, indent=4)
 
 
 def process_inpatient_encounter(resource):
@@ -210,3 +220,60 @@ def calculate_los_inpatients(smart):
         json.dump(inpatients, file, indent=4, ensure_ascii=False)
 
     print(f"File successfully generated with {len(inpatients)} inpatients")
+
+
+def extract_last_three_encounter(smart):
+    """
+    Extract last three encounter IDs per patient.
+    """
+    patients_last_3_encounters = defaultdict(list)
+
+    with open("patients_main_diagnosed_asthma_copd.json", "r") as file:
+        patients = json.load(file)
+        for patient in patients.keys():
+            print(f"Processing patient with ID: {patient[8:]}...")
+            all_encounters_per_patient = []
+            conditions_ids = patients[patient]
+            for condition in conditions_ids:
+                while True:  # Connection might get lost sometime, trying to reconnect...
+                    try:
+                        # Check the patient with the specific condition ID has Encounter reference.
+                        bundle = Encounter.where(struct={'_count': b'10', 'subject': patient, 'diagnosis': 'Condition/' + condition}).perform(smart.server)
+                        break
+                    except Exception as exc:
+                        print(f"Generated an exception: {exc} but continue to trying. \n")
+                        smart = connect_to_server(user=USER_NAME, pw=USER_PASSWORD)
+                        time.sleep(3)
+
+                encounters = fetch_bundle_for_code(smart, bundle)
+
+                if encounters:
+                    for encounter in encounters:  #Only one encounter should be returned actually since we query by condition ID. #redundant
+                        resource = encounter.get("resource", {})
+                        period = resource.get("period", {})
+                        start = parse_fhir_datetime(period.get("start"))
+                        end = parse_fhir_datetime(period.get("end"))
+
+                        if not start and not end:
+                            continue
+                        all_encounters_per_patient.append({
+                            "encounter_id": resource.get("id"),
+                            "start": start.isoformat() if start else None,
+                            "end": end.isoformat() if end else None,
+                        })
+
+            valid_encounters = [e for e in all_encounters_per_patient if e.get("start") or e.get("end")] #Skip if there is no end/start time
+
+            sorted_encounters = sorted(
+                valid_encounters,
+                key=lambda e: e["end"] or e["start"],
+                reverse=True
+            )
+
+            # Keep last 3 encounters
+            patients_last_3_encounters[patient] = sorted_encounters[:3]
+
+    with open("last_3_encounters_for_patients_main_diagnosed_asthma_copd.json", "w", encoding="utf-8") as file:
+        json.dump(patients_last_3_encounters, file, indent=4, ensure_ascii=False)
+
+    print(f"File successfully generated for extracting last three encounter for {len(patients_last_3_encounters)} main diagnosed patients")

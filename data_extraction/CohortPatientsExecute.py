@@ -3,8 +3,8 @@ import logging
 
 from Constants import USER_NAME, USER_PASSWORD
 from FhirHelpersUtils import connect_to_server
-from FhirHelpersCohortExtraction import patients_with_asthma_copd, filter_main_diagnosis, filter_icu_patients_admission, calculate_los_inpatients
-from data_extraction.Metadata import gather_metadata
+from FhirHelpersCohortExtraction import patients_with_asthma_copd, filter_main_diagnosis, filter_icu_patients_admission, \
+    calculate_los_inpatients, extract_last_three_encounter
 
 logging.basicConfig(level=logging.INFO, format='%(levelname)s - %(message)s')
 
@@ -29,6 +29,9 @@ def main():
 
     # Calculate length-of-stay ('los' or 'Aufenthaltsdauer') for inpatients.
     calculate_los_inpatients(smart)
+
+    # Extract last 3 encounter for each patient
+    extract_last_three_encounter(smart)
 
 if __name__ == "__main__":
     main()
