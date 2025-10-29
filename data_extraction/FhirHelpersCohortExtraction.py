@@ -227,6 +227,7 @@ def extract_last_three_encounter(smart):
     Extract last three encounter IDs per patient.
     """
     patients_last_3_encounters = defaultdict(list)
+    patients_admission_encounter = defaultdict(list)
 
     with open("patients_main_diagnosed_asthma_copd.json", "r") as file:
         patients = json.load(file)
@@ -272,8 +273,11 @@ def extract_last_three_encounter(smart):
 
             # Keep last 3 encounters
             patients_last_3_encounters[patient] = sorted_encounters[:3]
+            patients_admission_encounter[patient] = sorted_encounters[0]
 
     with open("last_3_encounters_for_patients_main_diagnosed_asthma_copd.json", "w", encoding="utf-8") as file:
         json.dump(patients_last_3_encounters, file, indent=4, ensure_ascii=False)
+    with open("encounters_admission_date_for_patients_main_diagnosed_asthma_copd.json", "w", encoding="utf-8") as file:
+        json.dump(patients_last_3_encounters, file, indent=4, ensure_ascii=False)
 
-    print(f"File successfully generated for extracting last three encounter for {len(patients_last_3_encounters)} main diagnosed patients")
+    print(f"File successfully generated for extracting last three encounters and admission dates for {len(patients_last_3_encounters)} main diagnosed patients")
