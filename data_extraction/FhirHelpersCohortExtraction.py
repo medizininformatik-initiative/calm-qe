@@ -12,7 +12,6 @@ from FhirHelpersUtils import parse_fhir_datetime, compute_los
 from Metadata import gather_metadata
 
 
-
 def patients_with_asthma_copd(smart):
     """
     It reads the ASTHMA or COPD diseases related codes from "ASTHMA_COPD_CODES_FILE" and
@@ -150,39 +149,46 @@ def filter_icu_patients_admission(smart):
     if os.path.exists(main_patients_diagnosed):
         with open(main_patients_diagnosed, "r") as file:
             main_patients_conditions = json.load(file)
-            for patient_id, condition_id in main_patients_conditions.items():
-                bundle = None
-                try:
-                    bundle = Encounter.where({'subject': f'{patient_id}', '_count': '10'}).perform(smart.server)
-                except Exception as e:
-                    print(f" Generated an exception for {patient_id}: {e}, but continue trying...")
-                    smart = connect_to_server(user=USER_NAME, pw=USER_PASSWORD)
-                    time.sleep(3)
+            for patient_id, condition_ids in main_patients_conditions.items():
+                for condition_id in condition_ids:
+                    bundle = None
+                    try:
+                        bundle = Encounter.where({
+                            'subject': f'{patient_id}',
+                            'diagnosis.condition': f'Condition/{condition_id}',
+                            '_count': '50'
+                        }).perform(smart.server)
+                    except Exception as e:
+                        print(
+                            f" Generated an exception for {patient_id} with condition/{condition_ids}: {e}, but continue trying...")
+                        smart = connect_to_server(user=USER_NAME, pw=USER_PASSWORD)
+                        time.sleep(3)
 
                 if bundle:
                     encounters = fetch_bundle_for_code(smart, bundle)
                     for encounter in encounters:
-                        if "resource" in encounter:
-                            if "type" in encounter['resource']:
-                                for type_entry in encounter["resource"]["type"]:
-                                    if "coding" not in type_entry:
-                                        continue
-                                    for coding in type_entry["coding"]:
-                                        if "code" in coding and coding["code"].lower() == "intensivstationaer":
-                                            print(f"ICU encounter found for patient {patient_id}")
-                                            icu_patients[patient_id] = condition_id
-                                            break
+                        if "resource" in encounter and "type" in encounter['resource']:
+                            for type_entry in encounter["resource"]["type"]:
+                                if "coding" not in type_entry:
+                                    continue
+                                for coding in type_entry["coding"]:
+                                    if "code" in coding and coding["code"].lower() == "intensivstationaer":
+                                        print(f"ICU encounter found for patient {patient_id}")
+                                        icu_patients.setdefault(patient_id, set()).add(condition_id)
+                                        break
                 else:
                     print("Skipping patient, no bundle found")
 
+    icu_patients_json = {pid: list(cond_ids) for pid, cond_ids in icu_patients.items()}
     with open("icu_patients_main_diagnosed_asthma_copd.json", "w") as out:
-        json.dump(icu_patients, out, indent=4)
+        json.dump(icu_patients_json, out, indent=4)
 
     gather_metadata("intensive_care_unit_patient_count", len(icu_patients))
 
 
 def calculate_los_inpatients(smart):
     """
+    Aufenthaltsdauer: calculate "Length of Staying", (LOS) from inpatients.
     Reference: https://simplifier.net/guide/mii-ig-modul-fall-2025/
     MIIIGModulFall/TechnischeImplementierung/FHIRProfile/EncounterKontaktGesundheitseinrichtung.page.md?version=current
     """
@@ -194,27 +200,32 @@ def calculate_los_inpatients(smart):
     if os.path.exists(main_patients_diagnosed):
         with open(main_patients_diagnosed, "r") as file:
             main_patients_conditions = json.load(file)
-            for patient_id, condition_id in main_patients_conditions.items():
-                bundle = None
-                try:
-                    bundle = Encounter.where({'subject': f'{patient_id}', '_count': '10'}).perform(smart.server)
-                except Exception as e:
-                    print(f" Generated an exception for {patient_id}: {e}, but continue trying...")
-                    smart = connect_to_server(user=USER_NAME, pw=USER_PASSWORD)
-                    time.sleep(3)
+            for patient_id, condition_ids in main_patients_conditions.items():
+                for condition_id in condition_ids:
+                    bundle = None
+                    try:
+                        bundle = Encounter.where({
+                            'subject': f'{patient_id}',
+                            'diagnosis.condition': f'Condition/{condition_id}',
+                            '_count': '50'
+                        }).perform(smart.server)
+                    except Exception as e:
+                        print(f" Generated an exception for {patient_id} with condition/{condition_id}: {e}, but continue trying...")
+                        smart = connect_to_server(user=USER_NAME, pw=USER_PASSWORD)
+                        time.sleep(3)
 
-                if bundle:
-                    encounters = fetch_bundle_for_code(smart, bundle)
-                    for encounter in encounters:
-                        if "resource" in encounter:
-                            if "type" in encounter['resource']:
-                                stay_entry = process_inpatient_encounter(encounter['resource'])
-                                if stay_entry:
-                                    if patient_id not in inpatients:
-                                        inpatients[patient_id] = []
-                                    inpatients[patient_id].append(stay_entry)
-                else:
-                    print("Skipping patient, no bundle found")
+                    if bundle:
+                        encounters = fetch_bundle_for_code(smart, bundle)
+                        for encounter in encounters:
+                            if "resource" in encounter:
+                                if "type" in encounter['resource']:
+                                    stay_entry = process_inpatient_encounter(encounter['resource'])
+                                    if stay_entry:
+                                        if patient_id not in inpatients:
+                                            inpatients[patient_id] = []
+                                        inpatients[patient_id].append(stay_entry)
+                    else:
+                        print("Skipping patient, no bundle found")
 
     with open("inpatient_LOS_main_diagnosed_asthma_copd.json", "w", encoding="utf-8") as file:
         json.dump(inpatients, file, indent=4, ensure_ascii=False)
