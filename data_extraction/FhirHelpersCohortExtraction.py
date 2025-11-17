@@ -145,25 +145,11 @@ def filter_icu_patients_admission(smart):
     print("\nFiltering ICU patients...")
     main_patients_diagnosed = "patients_main_diagnosed_asthma_copd.json"
     icu_patients = defaultdict(int)
-
     if os.path.exists(main_patients_diagnosed):
         with open(main_patients_diagnosed, "r") as file:
             main_patients_conditions = json.load(file)
-            for patient_id, condition_entries in main_patients_conditions.items():
-                for entry in condition_entries:
-                    if isinstance(entry, str):  # Case 1: entry with a single string.
-                        condition_id = entry
-                    elif isinstance(entry, dict):  # Case 2: entry is a dict.
-                        if "id" in entry:
-                            condition_id = entry["id"]
-                        elif isinstance(entry.get("conditions"), list):
-                            for cond in entry["conditions"]:
-                                if isinstance(cond, dict) and "id" in cond:
-                                    condition_id = cond["id"]
-                            continue
-                    else:
-                        print(f"Unexpected type for {patient_id}: {type(entry)}")
-                        continue
+            for patient_id, condition_ids in main_patients_conditions.items():
+                for condition_id in condition_ids:
                     try:
                         bundle = Encounter.where({
                             'subject': f'{patient_id}',
