@@ -149,9 +149,21 @@ def filter_icu_patients_admission(smart):
     if os.path.exists(main_patients_diagnosed):
         with open(main_patients_diagnosed, "r") as file:
             main_patients_conditions = json.load(file)
-            for patient_id, condition_ids in main_patients_conditions.items():
-                for condition_id in condition_ids:
-                    bundle = None
+            for patient_id, condition_entries in main_patients_conditions.items():
+                for entry in condition_entries:
+                    if isinstance(entry, str):  # Case 1: entry with a single string.
+                        condition_id = entry
+                    elif isinstance(entry, dict):  # Case 2: entry is a dict.
+                        if "id" in entry:
+                            condition_id = entry["id"]
+                        elif isinstance(entry.get("conditions"), list):
+                            for cond in entry["conditions"]:
+                                if isinstance(cond, dict) and "id" in cond:
+                                    condition_id = cond["id"]
+                            continue
+                    else:
+                        print(f"Unexpected type for {patient_id}: {type(entry)}")
+                        continue
                     try:
                         bundle = Encounter.where({
                             'subject': f'{patient_id}',
@@ -159,8 +171,7 @@ def filter_icu_patients_admission(smart):
                             '_count': '50'
                         }).perform(smart.server)
                     except Exception as e:
-                        print(
-                            f" Generated an exception for {patient_id} with condition/{condition_ids}: {e}, but continue trying...")
+                        print(f"Generated an exception for {patient_id} with condition/{condition_id}: {e}, but continue trying...")
                         smart = connect_to_server(user=USER_NAME, pw=USER_PASSWORD)
                         time.sleep(3)
 
@@ -174,8 +185,8 @@ def filter_icu_patients_admission(smart):
                                 for coding in type_entry["coding"]:
                                     if "code" in coding and coding["code"].lower() == "intensivstationaer":
                                         print(f"ICU encounter found for patient {patient_id}")
-                                        icu_patients.setdefault(patient_id, set()).add(condition_id)
-                                        break
+                                        cond_id = condition_id["id"] if isinstance(condition_id, dict) else condition_id
+                                        icu_patients.setdefault(patient_id, set()).add(cond_id)
                 else:
                     print("Skipping patient, no bundle found")
 
