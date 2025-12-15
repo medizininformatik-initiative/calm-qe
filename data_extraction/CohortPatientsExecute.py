@@ -4,7 +4,7 @@ import logging
 from Constants import USER_NAME, USER_PASSWORD
 from FhirHelpersUtils import connect_to_server
 from FhirHelpersCohortExtraction import patients_with_asthma_copd, filter_main_diagnosis, filter_icu_patients_admission, \
-    calculate_los_inpatients, extract_last_three_encounter
+    calculate_los_inpatients, extract_last_three_encounter, get_demographics_patients
 
 logging.basicConfig(level=logging.INFO, format='%(levelname)s - %(message)s')
 
@@ -33,9 +33,9 @@ def main():
     # Extract last 3 encounter for each patient
     extract_last_three_encounter(smart)
 
+    # Extracts demographics from patients
+    get_demographics_patients(smart)
+
+
 if __name__ == "__main__":
     main()
-
-
-
-

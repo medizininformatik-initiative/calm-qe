@@ -2,14 +2,17 @@ import os
 from collections import defaultdict
 import json
 import time
-from datetime import datetime, timezone
+import pandas as pd
 
 from fhirclient.models.condition import Condition
 from fhirclient.models.encounter import Encounter
+from fhirclient.models.patient import Patient
+
 from Constants import USER_NAME, USER_PASSWORD, ICD_SYSTEM_NAME, ASTHMA_COPD_CODES_FILE
 from FhirHelpersUtils import fetch_bundle_for_code, connect_to_server
 from FhirHelpersUtils import parse_fhir_datetime, compute_los
 from Metadata import gather_metadata
+
 
 
 def patients_with_asthma_copd(smart):
@@ -289,3 +292,41 @@ def extract_last_three_encounter(smart):
         json.dump(patients_last_3_encounters, file, indent=4, ensure_ascii=False)
 
     print(f"File successfully generated for extracting last three encounters and admission dates for {len(patients_last_3_encounters)} main diagnosed patients")
+
+
+def get_demographics_patients(smart):
+    '''
+    Obtains demographics from patients from selected patient IDs and export results in tabular form.
+    Reference: https://www.medizininformatik-initiative.de/Kerndatensatz/
+    KDS_Person_V2025/MIIIGModulPerson-TechnischeImplementierung-FHIR-Profile-PatientInPatient.html
+    '''
+    BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+    subdirectory = os.path.join(BASE_DIR, "..", "data_extraction", "csv_results")
+    os.makedirs(subdirectory, exist_ok=True)
+
+    patient_identifiers, patients_demographics = [], []
+
+    with open("patients_main_diagnosed_asthma_copd.json", "r") as file:
+        patients = json.load(file)
+        for patient in patients.keys():
+            print(f"Processing patient with ID: {patient[8:]}...")
+            patient_identifiers.append(patient[8:])
+
+    for patient_id in patient_identifiers:
+        while True:
+            try:
+                patient = Patient.read(patient_id, smart.server)
+                patients_demographics.append({
+                    "patient_identifier": patient_id,
+                    "gender": patient.gender,
+                    "birth_date": patient.birthDate.isostring,
+                })
+                break
+            except Exception as exc:
+                print(f"Generated an exception: {exc} but continue to trying. \n")
+                smart = connect_to_server(user=USER_NAME, pw=USER_PASSWORD)
+                time.sleep(3)
+
+    patients_demographics_df = pd.DataFrame(patients_demographics)
+    patients_demographics_df.to_csv(os.path.join(subdirectory, "demographics.xlsx"), index=False, sep=";")
+    print(f"Saving extracted demographics as .xlsx file in {subdirectory}")
