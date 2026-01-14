@@ -2,10 +2,12 @@ import os
 from collections import defaultdict
 import json
 import time
-from datetime import datetime, timezone
+import pandas as pd
 
 from fhirclient.models.condition import Condition
 from fhirclient.models.encounter import Encounter
+from fhirclient.models.patient import Patient
+
 from Constants import USER_NAME, USER_PASSWORD, ICD_SYSTEM_NAME, ASTHMA_COPD_CODES_FILE
 from FhirHelpersUtils import fetch_bundle_for_code, connect_to_server
 from FhirHelpersUtils import parse_fhir_datetime, compute_los
@@ -146,43 +148,47 @@ def filter_icu_patients_admission(smart):
     print("\nFiltering ICU patients...")
     main_patients_diagnosed = "patients_main_diagnosed_asthma_copd.json"
     icu_patients = defaultdict(int)
-
     if os.path.exists(main_patients_diagnosed):
         with open(main_patients_diagnosed, "r") as file:
             main_patients_conditions = json.load(file)
-            for patient_id, condition_id in main_patients_conditions.items():
-                bundle = None
-                try:
-                    bundle = Encounter.where({'subject': f'{patient_id}', '_count': '10'}).perform(smart.server)
-                except Exception as e:
-                    print(f" Generated an exception for {patient_id}: {e}, but continue trying...")
-                    smart = connect_to_server(user=USER_NAME, pw=USER_PASSWORD)
-                    time.sleep(3)
+            for patient_id, condition_ids in main_patients_conditions.items():
+                for condition_id in condition_ids:
+                    try:
+                        bundle = Encounter.where({
+                            'subject': f'{patient_id}',
+                            'diagnosis.condition': f'Condition/{condition_id}',
+                            '_count': '50'
+                        }).perform(smart.server)
+                    except Exception as e:
+                        print(f"Generated an exception for {patient_id} with condition/{condition_id}: {e}, but continue trying...")
+                        smart = connect_to_server(user=USER_NAME, pw=USER_PASSWORD)
+                        time.sleep(3)
 
                 if bundle:
                     encounters = fetch_bundle_for_code(smart, bundle)
                     for encounter in encounters:
-                        if "resource" in encounter:
-                            if "type" in encounter['resource']:
-                                for type_entry in encounter["resource"]["type"]:
-                                    if "coding" not in type_entry:
-                                        continue
-                                    for coding in type_entry["coding"]:
-                                        if "code" in coding and coding["code"].lower() == "intensivstationaer":
-                                            print(f"ICU encounter found for patient {patient_id}")
-                                            icu_patients[patient_id] = condition_id
-                                            break
+                        if "resource" in encounter and "type" in encounter['resource']:
+                            for type_entry in encounter["resource"]["type"]:
+                                if "coding" not in type_entry:
+                                    continue
+                                for coding in type_entry["coding"]:
+                                    if "code" in coding and coding["code"].lower() == "intensivstationaer":
+                                        print(f"ICU encounter found for patient {patient_id}")
+                                        cond_id = condition_id["id"] if isinstance(condition_id, dict) else condition_id
+                                        icu_patients.setdefault(patient_id, set()).add(cond_id)
                 else:
                     print("Skipping patient, no bundle found")
 
+    icu_patients_json = {pid: list(cond_ids) for pid, cond_ids in icu_patients.items()}
     with open("icu_patients_main_diagnosed_asthma_copd.json", "w") as out:
-        json.dump(icu_patients, out, indent=4)
+        json.dump(icu_patients_json, out, indent=4)
 
     gather_metadata("intensive_care_unit_patient_count", len(icu_patients))
 
 
 def calculate_los_inpatients(smart):
     """
+    Aufenthaltsdauer: calculate "Length of Staying", (LOS) from inpatients.
     Reference: https://simplifier.net/guide/mii-ig-modul-fall-2025/
     MIIIGModulFall/TechnischeImplementierung/FHIRProfile/EncounterKontaktGesundheitseinrichtung.page.md?version=current
     """
@@ -194,27 +200,32 @@ def calculate_los_inpatients(smart):
     if os.path.exists(main_patients_diagnosed):
         with open(main_patients_diagnosed, "r") as file:
             main_patients_conditions = json.load(file)
-            for patient_id, condition_id in main_patients_conditions.items():
-                bundle = None
-                try:
-                    bundle = Encounter.where({'subject': f'{patient_id}', '_count': '10'}).perform(smart.server)
-                except Exception as e:
-                    print(f" Generated an exception for {patient_id}: {e}, but continue trying...")
-                    smart = connect_to_server(user=USER_NAME, pw=USER_PASSWORD)
-                    time.sleep(3)
+            for patient_id, condition_ids in main_patients_conditions.items():
+                for condition_id in condition_ids:
+                    bundle = None
+                    try:
+                        bundle = Encounter.where({
+                            'subject': f'{patient_id}',
+                            'diagnosis.condition': f'Condition/{condition_id}',
+                            '_count': '50'
+                        }).perform(smart.server)
+                    except Exception as e:
+                        print(f" Generated an exception for {patient_id} with condition/{condition_id}: {e}, but continue trying...")
+                        smart = connect_to_server(user=USER_NAME, pw=USER_PASSWORD)
+                        time.sleep(3)
 
-                if bundle:
-                    encounters = fetch_bundle_for_code(smart, bundle)
-                    for encounter in encounters:
-                        if "resource" in encounter:
-                            if "type" in encounter['resource']:
-                                stay_entry = process_inpatient_encounter(encounter['resource'])
-                                if stay_entry:
-                                    if patient_id not in inpatients:
-                                        inpatients[patient_id] = []
-                                    inpatients[patient_id].append(stay_entry)
-                else:
-                    print("Skipping patient, no bundle found")
+                    if bundle:
+                        encounters = fetch_bundle_for_code(smart, bundle)
+                        for encounter in encounters:
+                            if "resource" in encounter:
+                                if "type" in encounter['resource']:
+                                    stay_entry = process_inpatient_encounter(encounter['resource'])
+                                    if stay_entry:
+                                        if patient_id not in inpatients:
+                                            inpatients[patient_id] = []
+                                        inpatients[patient_id].append(stay_entry)
+                    else:
+                        print("Skipping patient, no bundle found")
 
     with open("inpatient_LOS_main_diagnosed_asthma_copd.json", "w", encoding="utf-8") as file:
         json.dump(inpatients, file, indent=4, ensure_ascii=False)
@@ -281,3 +292,41 @@ def extract_last_three_encounter(smart):
         json.dump(patients_last_3_encounters, file, indent=4, ensure_ascii=False)
 
     print(f"File successfully generated for extracting last three encounters and admission dates for {len(patients_last_3_encounters)} main diagnosed patients")
+
+
+def get_demographics_patients(smart):
+    '''
+    Obtains demographics from patients from selected patient IDs and export results in tabular form.
+    Reference: https://www.medizininformatik-initiative.de/Kerndatensatz/
+    KDS_Person_V2025/MIIIGModulPerson-TechnischeImplementierung-FHIR-Profile-PatientInPatient.html
+    '''
+    BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+    subdirectory = os.path.join(BASE_DIR, "..", "data_extraction", "csv_results")
+    os.makedirs(subdirectory, exist_ok=True)
+
+    patient_identifiers, patients_demographics = [], []
+
+    with open("patients_main_diagnosed_asthma_copd.json", "r") as file:
+        patients = json.load(file)
+        for patient in patients.keys():
+            print(f"Processing patient with ID: {patient[8:]}...")
+            patient_identifiers.append(patient[8:])
+
+    for patient_id in patient_identifiers:
+        while True:
+            try:
+                patient = Patient.read(patient_id, smart.server)
+                patients_demographics.append({
+                    "patient_identifier": patient_id,
+                    "gender": patient.gender,
+                    "birth_date": patient.birthDate.isostring,
+                })
+                break
+            except Exception as exc:
+                print(f"Generated an exception: {exc} but continue to trying. \n")
+                smart = connect_to_server(user=USER_NAME, pw=USER_PASSWORD)
+                time.sleep(3)
+
+    patients_demographics_df = pd.DataFrame(patients_demographics)
+    patients_demographics_df.to_csv(os.path.join(subdirectory, "demographics.xlsx"), index=False, sep=";")
+    print(f"Saving extracted demographics as .xlsx file in {subdirectory}")
