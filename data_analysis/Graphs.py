@@ -53,10 +53,11 @@ observations_counts = meta_data['observations_counts']
 
 #Only creating medication administration graph, you can add other type of medication as well!
 medications_exist = False
-if meta_data.get('medication_counts', {}).get('MedicationAdministration', {}).get('counting', {}).get('details_count', []):
+if meta_data.get('medicationAdministrations_counts', {}).get('MedicationAdministration', {}).get('counting', {}).get('details_count', []):
     medications_exist = True
-    medications_counts = {list(item.keys())[0]: list(item.values())[0] for item in meta_data['medication_counts']['MedicationAdministration']['counting']['details_count']}
+    medications_counts = {list(item.keys())[0]: list(item.values())[0] for item in meta_data['medicationAdministrations_counts']['MedicationAdministration']['counting']['details_count']}
 
+print(medications_counts)
 group_observation = {"Allergiediagnostik":[
     "23800-6",
     "15234-8",
