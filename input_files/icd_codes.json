@@ -1433,10 +1433,24 @@
 				"J30.0",
 				"J30.1",
 				"J30.2",
-				"J30.3",
-				"L27.2",
-				"L50.0",
-				"K52.2",
+				"J30.3"
+			],
+			"description": "Vasomotorische und allergische Rhinopathie"
+		},
+		{
+			"code": "L27.2",
+			"description": "Dermatitis durch aufgenommene Nahrungsmittel"
+		},
+		{
+			"code": "L50.0",
+			"description": "Allergische Urtikaria"
+		},
+		{
+			"code": "K52.2",
+			"description": "Allergische und alimentäre Gastroenteritis und Kolitis"
+		},
+		{
+			"code": [
 				"T78",
 				"T78.0",
 				"T78.1",
@@ -1444,13 +1458,24 @@
 				"T78.3",
 				"T78.4",
 				"T78.6",
-				"T78.7",
-				"T88.6",
-				"T88.7",
-				"Z88",
-				"Z91.0"
+				"T78.7"
 			],
-			"description": "allegies_Hannover"
+			"description": "Unerwünschte Nebenwirkungen, anderenorts nicht klassifiziert"
+		},
+		{
+			"code": [
+				"T88.6",
+				"T88.7"
+				],
+			"description": "Sonstige Komplikationen bei chirurgischen Eingriffen und medizinischer Behandlung, anderenorts nicht klassifiziert"
+		},
+		{
+			"code": "Z88",
+			"description": "Allergie gegenüber Arzneimitteln, Drogen oder biologisch aktiven Substanzen in der Eigenanamnese"
+		},
+		{
+			"code": "Z91.0",
+			"description": "Allergie, ausgenommen Allergie gegenüber Arzneimitteln, Drogen oder biologisch aktiven Substanzen, in der Eigenanamnese"
 		}
 	]
 }
