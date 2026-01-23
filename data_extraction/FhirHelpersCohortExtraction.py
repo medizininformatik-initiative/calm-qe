@@ -14,8 +14,7 @@ from FhirHelpersUtils import parse_fhir_datetime, compute_los
 from Metadata import gather_metadata
 
 
-
-def patients_with_asthma_copd(smart):
+def patients_with_asthma_copd(smart, input_path):
     """
     It reads the ASTHMA or COPD diseases related codes from "ASTHMA_COPD_CODES_FILE" and
     find the patients that have such diagnoses.
@@ -46,22 +45,29 @@ def patients_with_asthma_copd(smart):
                     patients_conditions_map[patient_reference].append({"id": condition['id'], "code": condition['code']})
 
     print(len(patients_conditions_map))
-    gather_metadata("asthma_and_copd_patient_count", len(patients_conditions_map))
-    with open('patients_diagnosed_asthma_copd.json', 'w') as file:  # Intermediate results, can be deleted later.
+    gather_metadata("all_asthma_and_copd_patient_count", len(patients_conditions_map))
+
+    output_filepath = input_path / "all_asthma_and_copd_patient_count.json"
+    with open(output_filepath, 'w') as file:  # Intermediate results.
         json.dump(patients_conditions_map, file, indent=4)
 
+    return output_filepath
 
-def filter_main_diagnosis(smart):
+
+def filter_main_diagnosis(smart, input_filepath, enabled=True):
     """
     From the patients diagnosed ASTHMA or COPD, it filters only for HauptDiagnosis(Main) from their Encounter references.
     Put the results into JSON file format.
     :param smart: Fhir Server Connector
     """
+    if not enabled:
+        return input_filepath
+
     count_main_diagnose_type = defaultdict(int)
     admission_dates = defaultdict(list)
 
     patients_with_chief_complaint = defaultdict(list)
-    with open("patients_diagnosed_asthma_copd.json", "r") as file:
+    with open(input_filepath, "r") as file:
         patients = json.load(file)
         for patient in patients.keys():
             print(f"Processing patient with ID: {patient[8:]}...")
@@ -98,10 +104,15 @@ def filter_main_diagnosis(smart):
     gather_metadata("main_diagnosis_counts", count_main_diagnose_type)
     gather_metadata("main_diagnosis_count", sum(count_main_diagnose_type.values()))
 
-    with open("patients_main_diagnosed_asthma_copd.json", "w") as out:
-        json.dump(patients_with_chief_complaint, out, indent=4)
-    with open("patients_main_diagnosed_asthma_copd_admission_dates.json", "w") as out:
+    output_filepath = input_filepath.with_name("patients_main_diagnosed_asthma_copd_admission_dates.json")
+    with open(output_filepath, "w") as out:
         json.dump(admission_dates, out, indent=4)
+
+    output_filepath = input_filepath.with_name("patients_main_diagnosed_asthma_copd.json")
+    with open(output_filepath,  "w") as out:
+        json.dump(patients_with_chief_complaint, out, indent=4)
+
+    return output_filepath
 
 
 def process_inpatient_encounter(resource):
@@ -138,15 +149,17 @@ def process_inpatient_encounter(resource):
     }
 
 
-def filter_icu_patients_admission(smart):
+def filter_icu_patients_admission(smart, input_filepath, enabled=True):
     """
         From the HauptDiagnosis (Main), filter type of admission, specially ICU patients.
         Reference: https://simplifier.net/guide/mii-ig-modul-fall-2025/
         MIIIGModulFall/TechnischeImplementierung/FHIRProfile/EncounterKontaktGesundheitseinrichtung.page.md?version=current
     """
+    if not enabled:
+        return None
 
     print("\nFiltering ICU patients...")
-    main_patients_diagnosed = "patients_main_diagnosed_asthma_copd.json"
+    main_patients_diagnosed = input_filepath
     icu_patients = defaultdict(int)
     if os.path.exists(main_patients_diagnosed):
         with open(main_patients_diagnosed, "r") as file:
@@ -180,21 +193,25 @@ def filter_icu_patients_admission(smart):
                     print("Skipping patient, no bundle found")
 
     icu_patients_json = {pid: list(cond_ids) for pid, cond_ids in icu_patients.items()}
-    with open("icu_patients_main_diagnosed_asthma_copd.json", "w") as out:
+
+    output_filepath = input_filepath.with_name("patients_main_diagnosed_asthma_copd_ICU.json")
+    with open(output_filepath, "w") as out:
         json.dump(icu_patients_json, out, indent=4)
 
     gather_metadata("intensive_care_unit_patient_count", len(icu_patients))
 
 
-def calculate_los_inpatients(smart):
+def calculate_los_inpatients(smart, input_filepath, enabled=True):
     """
     Aufenthaltsdauer: calculate "Length of Staying", (LOS) from inpatients.
     Reference: https://simplifier.net/guide/mii-ig-modul-fall-2025/
     MIIIGModulFall/TechnischeImplementierung/FHIRProfile/EncounterKontaktGesundheitseinrichtung.page.md?version=current
     """
+    if not enabled:
+        return None
 
     print("\nGathering inpatients...")
-    main_patients_diagnosed = "patients_main_diagnosed_asthma_copd.json"
+    main_patients_diagnosed = input_filepath
     inpatients = defaultdict()
 
     if os.path.exists(main_patients_diagnosed):
@@ -226,21 +243,24 @@ def calculate_los_inpatients(smart):
                                         inpatients[patient_id].append(stay_entry)
                     else:
                         print("Skipping patient, no bundle found")
-
-    with open("inpatient_LOS_main_diagnosed_asthma_copd.json", "w", encoding="utf-8") as file:
+    output_filepath = input_filepath.with_name("patients_main_diagnosed_asthma_copd_LOS.json")
+    with open(output_filepath, "w", encoding="utf-8") as file:
         json.dump(inpatients, file, indent=4, ensure_ascii=False)
 
     print(f"File successfully generated with {len(inpatients)} inpatients")
 
 
-def extract_last_three_encounter(smart):
+def extract_last_three_encounter(smart, input_filepath, enabled=True):
     """
     Extract last three encounter IDs per patient.
     """
+    if not enabled:
+        return input_filepath
+
     patients_last_3_encounters = defaultdict(list)
     patients_admission_encounter = defaultdict(list)
 
-    with open("patients_main_diagnosed_asthma_copd.json", "r") as file:
+    with open(input_filepath, "r") as file:
         patients = json.load(file)
         for patient in patients.keys():
             print(f"Processing patient with ID: {patient[8:]}...")
@@ -286,20 +306,28 @@ def extract_last_three_encounter(smart):
             patients_last_3_encounters[patient] = sorted_encounters[:3]
             patients_admission_encounter[patient] = sorted_encounters[0]
 
-    with open("last_3_encounters_for_patients_main_diagnosed_asthma_copd.json", "w", encoding="utf-8") as file:
+    output_filepath = input_filepath.with_name("patients_main_diagnosed_asthma_copd_last_3_encounters.json")
+    with open(output_filepath, "w", encoding="utf-8") as file:
         json.dump(patients_last_3_encounters, file, indent=4, ensure_ascii=False)
-    with open("encounters_admission_date_for_patients_main_diagnosed_asthma_copd.json", "w", encoding="utf-8") as file:
+
+    output_filepath = input_filepath.with_name("patients_main_diagnosed_asthma_copd_encounters_admission_dates.json")
+    with open(output_filepath, "w", encoding="utf-8") as file:
         json.dump(patients_last_3_encounters, file, indent=4, ensure_ascii=False)
 
     print(f"File successfully generated for extracting last three encounters and admission dates for {len(patients_last_3_encounters)} main diagnosed patients")
 
 
-def get_demographics_patients(smart):
+def get_demographics_patients(smart, input_filepath, enabled=True):
     '''
     Obtains demographics from patients from selected patient IDs and export results in tabular form.
     Reference: https://www.medizininformatik-initiative.de/Kerndatensatz/
     KDS_Person_V2025/MIIIGModulPerson-TechnischeImplementierung-FHIR-Profile-PatientInPatient.html
     '''
+    if not enabled:
+        return None
+
+    # TODO: Change os.path
+
     BASE_DIR = os.path.dirname(os.path.abspath(__file__))
     subdirectory = os.path.join(BASE_DIR, "..", "data_extraction", "csv_results")
     os.makedirs(subdirectory, exist_ok=True)
