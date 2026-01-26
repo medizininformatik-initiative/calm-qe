@@ -14,6 +14,14 @@ from FhirHelpersUtils import parse_fhir_datetime, compute_los
 from Metadata import gather_metadata
 
 
+def generate_output_filename(prefix_filename, directory):
+    target_file = directory.stem
+    if "primary_diagnosed_patients_with_asthma_or_copd" in target_file:
+        return f"primary_diagnosed_patients_asthma_copd-{prefix_filename}.json"
+    else:
+        return f"total_diagnoses_patients_asthma_copd-{prefix_filename}.json"
+
+
 def patients_with_asthma_copd(smart, input_path):
     """
     It reads the ASTHMA or COPD diseases related codes from "ASTHMA_COPD_CODES_FILE" and
@@ -45,9 +53,8 @@ def patients_with_asthma_copd(smart, input_path):
                     patients_conditions_map[patient_reference].append({"id": condition['id'], "code": condition['code']})
 
     print(len(patients_conditions_map))
-    gather_metadata("all_asthma_and_copd_patient_count", len(patients_conditions_map))
-
-    output_filepath = input_path / "all_asthma_and_copd_patient_count.json"
+    gather_metadata("total_diagnosed_patients_with_asthma_or_copd_count", len(patients_conditions_map))
+    output_filepath = input_path / "total_diagnosed_patients_with_asthma_or_copd.json"
     with open(output_filepath, 'w') as file:  # Intermediate results.
         json.dump(patients_conditions_map, file, indent=4)
 
@@ -97,19 +104,19 @@ def filter_main_diagnosis(smart, input_filepath, enabled=True):
 
                                             # Extract period
                                             period = enc['resource'].get("period", {})
-                                            start = parse_fhir_datetime(period.get("start")) #admission date
-                                            admission_dates[patient].append([condition,start])
+                                            start = parse_fhir_datetime(period.get("start"))  # admission date
+                                            admission_dates[patient].append([condition, start])
 
-    gather_metadata("asthma_and_copd_patients_with_chief_complaint", len(patients_with_chief_complaint))
-    gather_metadata("main_diagnosis_counts", count_main_diagnose_type)
-    gather_metadata("main_diagnosis_count", sum(count_main_diagnose_type.values()))
+    gather_metadata("primary_diagnosed_patients_with_asthma_or_copd", len(patients_with_chief_complaint))
+    gather_metadata("primary_diagnosis_counts", count_main_diagnose_type)
+    gather_metadata("primary_diagnosis_count", sum(count_main_diagnose_type.values()))
 
-    output_filepath = input_filepath.with_name("patients_main_diagnosed_asthma_copd_admission_dates.json")
+    output_filepath = input_filepath.with_name("primary_diagnosed_patients_with_asthma_or_copd-admission_dates.json")
     with open(output_filepath, "w") as out:
         json.dump(admission_dates, out, indent=4)
 
-    output_filepath = input_filepath.with_name("patients_main_diagnosed_asthma_copd.json")
-    with open(output_filepath,  "w") as out:
+    output_filepath = input_filepath.with_name("primary_diagnosed_patients_with_asthma_or_copd.json")
+    with open(output_filepath, "w") as out:
         json.dump(patients_with_chief_complaint, out, indent=4)
 
     return output_filepath
@@ -194,7 +201,8 @@ def filter_icu_patients_admission(smart, input_filepath, enabled=True):
 
     icu_patients_json = {pid: list(cond_ids) for pid, cond_ids in icu_patients.items()}
 
-    output_filepath = input_filepath.with_name("patients_main_diagnosed_asthma_copd_ICU.json")
+    new_filename = generate_output_filename("icu_admission", input_filepath)
+    output_filepath = input_filepath.with_name(new_filename)
     with open(output_filepath, "w") as out:
         json.dump(icu_patients_json, out, indent=4)
 
@@ -243,7 +251,8 @@ def calculate_los_inpatients(smart, input_filepath, enabled=True):
                                         inpatients[patient_id].append(stay_entry)
                     else:
                         print("Skipping patient, no bundle found")
-    output_filepath = input_filepath.with_name("patients_main_diagnosed_asthma_copd_LOS.json")
+    new_filename = generate_output_filename("length_of_stay",  input_filepath)
+    output_filepath = input_filepath.with_name(new_filename)
     with open(output_filepath, "w", encoding="utf-8") as file:
         json.dump(inpatients, file, indent=4, ensure_ascii=False)
 
@@ -306,11 +315,13 @@ def extract_last_three_encounter(smart, input_filepath, enabled=True):
             patients_last_3_encounters[patient] = sorted_encounters[:3]
             patients_admission_encounter[patient] = sorted_encounters[0]
 
-    output_filepath = input_filepath.with_name("patients_main_diagnosed_asthma_copd_last_3_encounters.json")
+    new_filename = generate_output_filename("last_3_encounters", input_filepath)
+    output_filepath = input_filepath.with_name(new_filename)
     with open(output_filepath, "w", encoding="utf-8") as file:
         json.dump(patients_last_3_encounters, file, indent=4, ensure_ascii=False)
 
-    output_filepath = input_filepath.with_name("patients_main_diagnosed_asthma_copd_encounters_admission_dates.json")
+    new_filename = generate_output_filename("recent_encounter_admission_dates", input_filepath)
+    output_filepath = input_filepath.with_name(new_filename)
     with open(output_filepath, "w", encoding="utf-8") as file:
         json.dump(patients_last_3_encounters, file, indent=4, ensure_ascii=False)
 
@@ -326,15 +337,12 @@ def get_demographics_patients(smart, input_filepath, enabled=True):
     if not enabled:
         return None
 
-    # TODO: Change os.path
-
-    BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-    subdirectory = os.path.join(BASE_DIR, "..", "data_extraction", "csv_results")
-    os.makedirs(subdirectory, exist_ok=True)
+    subdirectory = input_filepath.parent/'csv'
+    subdirectory.mkdir(parents=True, exist_ok=True)
 
     patient_identifiers, patients_demographics = [], []
 
-    with open("patients_main_diagnosed_asthma_copd.json", "r") as file:
+    with open(input_filepath, "r") as file:
         patients = json.load(file)
         for patient in patients.keys():
             print(f"Processing patient with ID: {patient[8:]}...")

@@ -16,7 +16,7 @@ HauptDiagnoses are flagged as "CC" (Chief Complaints") in Encounter.Diagnosis.
 Results are saved in "patient_results.txt"
 """
 
-DIR_RESULTS = Path('fhir_results')
+DIR_RESULTS = Path('results')
 DIR_RESULTS.mkdir(exist_ok=True)
 
 
@@ -26,27 +26,21 @@ def main():
 
     # Get the patients with "ANY TYPE OF DIAGNOSED" Asthma or COPD.
     diagnoses_filepath = patients_with_asthma_copd(smart, DIR_RESULTS)
-    print("All diagnoses", diagnoses_filepath)
 
     # Filter the patients for only "MAIN DIAGNOSED" Asthma or COPD.
-    diagnoses_filepath = filter_main_diagnosis(smart, diagnoses_filepath, enabled=True)
-    print("Filtered diagnoses", diagnoses_filepath)
+    diagnoses_filepath = filter_main_diagnosis(smart, diagnoses_filepath, enabled=False)
 
     # Filter patients per type of admission (Intensive-Care-Unit)
     filter_icu_patients_admission(smart, diagnoses_filepath, enabled=True)
-    print("Filtered for icu", diagnoses_filepath)
 
-    # Calculate length-of-stay ('los' or 'Aufenthaltsdauer') for inpatients.
+    # Calculate length-of-stay ('LOS' or 'Aufenthaltsdauer') for inpatients.
     calculate_los_inpatients(smart, diagnoses_filepath, enabled=True)
-    print("LOS", diagnoses_filepath)
 
-    # # Extract last 3 encounter for each patient
+    # Extract last 3 encounter for each patient
     extract_last_three_encounter(smart, diagnoses_filepath, enabled=True)
-    print("3 last encounters", diagnoses_filepath)
 
     # Extracts demographics from patients
     get_demographics_patients(smart, diagnoses_filepath, enabled=True)
-    print("Demographics", diagnoses_filepath)
 
 
 if __name__ == "__main__":

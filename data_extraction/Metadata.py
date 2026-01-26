@@ -3,7 +3,6 @@ import os
 from collections import defaultdict
 from datetime import datetime
 
-os.makedirs('fhir_results', exist_ok=True)
 
 def gather_metadata(source, count):
 
@@ -14,8 +13,8 @@ def gather_metadata(source, count):
         metadata = {
             "execution_date": datetime.now().strftime("%Y-%m-%d"),
             "execution_time": datetime.now().strftime("%H:%M:%S"),
-            "asthma_and_copd_patient_count": 0,
-            "asthma_and_copd_patients_with_chief_complaint": 0,
+            "total_diagnosed_patients_with_asthma_or_copd_count": 0,
+            "primary_diagnosed_patients_with_asthma_or_copd": 0,
             "intensive_care_unit_patient_count": 0,
             "patient_count_with_secondary_conditions": 0,
             "patient_count_with_observations": 0,
