@@ -5,7 +5,7 @@ from pathlib import Path
 from Constants import USER_NAME, USER_PASSWORD
 from FhirHelpersUtils import connect_to_server
 from FhirHelpersCohortExtraction import patients_with_asthma_copd, filter_main_diagnosis, filter_icu_patients_admission, \
-    calculate_los_inpatients, extract_last_three_encounter, get_demographics_patients
+    calculate_los_inpatients, extract_last_three_encounter, get_demographics_patients, filter_patients_by_age_interval
 
 logging.basicConfig(level=logging.INFO, format='%(levelname)s - %(message)s')
 
@@ -28,7 +28,10 @@ def main():
     diagnoses_filepath = patients_with_asthma_copd(smart, DIR_RESULTS)
 
     # Filter the patients for only "MAIN DIAGNOSED" Asthma or COPD.
-    diagnoses_filepath = filter_main_diagnosis(smart, diagnoses_filepath, enabled=False)
+    diagnoses_filepath = filter_main_diagnosis(smart, diagnoses_filepath, enabled=True)
+
+    # Filter patients' age  min_age: int minimal age in years, max_age: integer maximal age in years Example: [2-6]
+    filter_patients_by_age_interval(smart, diagnoses_filepath, min_age=0, max_age=6, enabled=True)
 
     # Filter patients per type of admission (Intensive-Care-Unit)
     filter_icu_patients_admission(smart, diagnoses_filepath, enabled=True)

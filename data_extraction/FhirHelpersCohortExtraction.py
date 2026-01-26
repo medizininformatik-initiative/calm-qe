@@ -34,26 +34,26 @@ def patients_with_asthma_copd(smart, input_path):
     print(main_diagnoses_codes)
 
     patients_conditions_map = defaultdict(list)
-    for code in main_diagnoses_codes:
-        while True:
-            try:
-                bundle = Condition.where(struct={'_count': b'1000', 'code': ICD_SYSTEM_NAME + '|' + code}).perform(smart.server)
-                break
-            except Exception as exc:
-                print(f"Generated an exception: {exc} but continue to trying.\n")
-                smart = connect_to_server(user=USER_NAME, pw=USER_PASSWORD)
-                time.sleep(3)
-
-        conditions = fetch_bundle_for_code(smart, bundle)
-        if conditions:
-            for entry in conditions:
-                condition = entry['resource']
-                if condition['subject']['reference']:
-                    patient_reference = condition['subject']['reference']
-                    patients_conditions_map[patient_reference].append({"id": condition['id'], "code": condition['code']})
-
-    print(len(patients_conditions_map))
-    gather_metadata("total_diagnosed_patients_with_asthma_or_copd_count", len(patients_conditions_map))
+    # for code in main_diagnoses_codes:
+    #     while True:
+    #         try:
+    #             bundle = Condition.where(struct={'_count': b'1000', 'code': ICD_SYSTEM_NAME + '|' + code}).perform(smart.server)
+    #             break
+    #         except Exception as exc:
+    #             print(f"Generated an exception: {exc} but continue to trying.\n")
+    #             smart = connect_to_server(user=USER_NAME, pw=USER_PASSWORD)
+    #             time.sleep(3)
+    #
+    #     conditions = fetch_bundle_for_code(smart, bundle)
+    #     if conditions:
+    #         for entry in conditions:
+    #             condition = entry['resource']
+    #             if condition['subject']['reference']:
+    #                 patient_reference = condition['subject']['reference']
+    #                 patients_conditions_map[patient_reference].append({"id": condition['id'], "code": condition['code']})
+    #
+    # print(len(patients_conditions_map))
+    # gather_metadata("total_diagnosed_patients_with_asthma_or_copd_count", len(patients_conditions_map))
     output_filepath = input_path / "total_diagnosed_patients_with_asthma_or_copd.json"
     with open(output_filepath, 'w') as file:  # Intermediate results.
         json.dump(patients_conditions_map, file, indent=4)
@@ -154,6 +154,92 @@ def process_inpatient_encounter(resource):
         "end": end.isoformat() if end else None,
         "los_days": round(los_days, 2) if los_days else None
     }
+
+
+def filter_patients_by_age_interval(smart, input_filepath, min_age, max_age, enabled=True):
+
+    if not enabled:
+        return None
+
+    if not isinstance(min_age, int) or not isinstance(max_age, int):
+        raise ValueError("'min_age' and 'max_age' must be integers")
+    if min_age > max_age:
+        raise ValueError("min_age must be <= max_age")
+
+    print(f"\nFiltering patients with age in interval [{min_age}, {max_age}] years...")
+
+    matched_patients = defaultdict(list)
+    pid_not_birthdate = []
+    total_processed = 0
+
+    # Search for existing admission_dates.json
+    prefix = input_filepath.stem
+    admission_match = list(input_filepath.parent.glob(f"{prefix}*admission_dates.json"))
+
+    if not admission_match:
+        pass  # TODO: define 'xxx_admission_dates.json' for total_patients
+
+    new_input_filepath = admission_match[0]
+    print(f"Processing {new_input_filepath}...")
+
+    with open(new_input_filepath, "r", encoding="utf-8") as f:
+        admission_data = json.load(f)
+
+    for patient_ref, admissions in admission_data.items():
+        total_processed += 1
+        patient_id = patient_ref.split("/")[-1]
+
+        birth_date = None
+        while True:
+            try:
+                patient = Patient.read(patient_id, smart.server)
+                birth_iso = patient.birthDate.isostring
+                birth_date = parse_fhir_datetime(birth_iso)
+                break
+            except Exception as exc:
+                print(f"Error fetching patient {patient_id}: {exc}, but continue to trying...")
+                smart = connect_to_server(user=USER_NAME, pw=USER_PASSWORD)
+                time.sleep(1)
+
+        if not birth_date:
+            pid_not_birthdate.append(patient_ref)
+            print(f"Skipping patient {patient_ref} - no birth date available.")
+            continue
+
+        for admission in admissions:
+            # admission entries expected to be [condition_obj, admission_iso]
+            if not isinstance(admission, (list, tuple)) or len(admission) < 2:
+                continue
+            condition_obj, admission_val = admission[0], admission[1]
+            admission_date = parse_fhir_datetime(admission_val)
+            if not admission_date:
+                continue
+
+            try:
+                days = (admission_date.date() - birth_date.date()).days
+                if days < 0:
+                    continue
+                age_years = int(days / 365)
+            except Exception:
+                continue
+
+            if min_age <= age_years <= max_age:
+                matched_patients[patient_ref].append({
+                    "condition": condition_obj,
+                    "admission": admission_date.isoformat() if hasattr(admission_date, "isoformat") else str(admission_date),
+                    "age": age_years
+                })
+
+    # gather metadata/counts
+    label = f"{min_age}-{max_age}"
+    interval_count = len(matched_patients)
+    gather_metadata("patient_counts_with_age_interval", {label: interval_count})
+    print(f"Found {interval_count} patients in interval [{min_age}, {max_age}] out of {total_processed} processed.")
+
+    new_filename = generate_output_filename(f"age_{min_age}_{max_age}", input_filepath)
+    output_filepath = input_filepath.with_name(new_filename)
+    with open(output_filepath, "w", encoding="utf-8") as out:
+        json.dump({pid: entries for pid, entries in matched_patients.items()}, out, indent=4, ensure_ascii=False)
 
 
 def filter_icu_patients_admission(smart, input_filepath, enabled=True):
