@@ -1,6 +1,11 @@
 import time
+from urllib.parse import quote
+
+import urllib3
 from fhirclient import client
 from Constants import USER_NAME, USER_PASSWORD, SERVER_NAME
+
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 def connect_to_server(user, pw):
     """
@@ -8,11 +13,15 @@ def connect_to_server(user, pw):
     :param user: Username for connection to server
     :param pw: Password for connection to server
     """
+    user = quote(user, safe="")
+    pw = quote(pw, safe="")
+
     settings = {
         "app_id": "some_app_id",
         "api_base": f"https://{user}:{pw}@{SERVER_NAME}"}
 
     smart = client.FHIRClient(settings=settings)
+    smart.server.session.verify = False
     return smart
 
 
@@ -28,7 +37,13 @@ def fetch_bundle_for_code(smart, bundle):
     print(f"Start processing new query...\n")
     result_bundle = []
 
-    url = f"https://{USER_NAME}:{USER_PASSWORD}@" + bundle.link[0].url[8:]
+
+    #to handle special character
+    user = quote(USER_NAME, safe="")
+    password = quote(USER_PASSWORD, safe="")
+
+    url = f"https://{user}:{password}@" + bundle.link[0].url.split("://", 1)[1]
+
     while True:
         try:
             bundle = smart.server.request_json(url)
@@ -41,14 +56,14 @@ def fetch_bundle_for_code(smart, bundle):
         result_bundle.extend(bundle['entry'])
 
     while page := [page for page in bundle["link"] if "next" in page["relation"]]:
-        url = f"https://{USER_NAME}:{USER_PASSWORD}@" + page[0]["url"][8:]
+        url = f"https://{user}:{password}@" + page[0]["url"].split("://", 1)[1]
         while True:
             try:
                 page = smart.server.request_json(url)
                 break
             except Exception as exc:
                 print(f"Generated an exception: {exc} but continue to trying.\n")
-                smart = connect_to_server(user=USER_NAME, pw=USER_PASSWORD)
+                smart = connect_to_server(user=user, pw=password)
                 time.sleep(3)
 
         bundle = page

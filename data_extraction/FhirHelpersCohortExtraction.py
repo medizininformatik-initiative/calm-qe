@@ -2,14 +2,12 @@ from collections import defaultdict
 import json
 import time
 
+from fhirclient.models.bundle import Bundle
 from fhirclient.models.condition import Condition
-from fhirclient.models.encounter import Encounter
 
 from Constants import USER_NAME, USER_PASSWORD, ICD_SYSTEM_NAME, ASTHMA_COPD_CODES_FILE
 from FhirHelpersUtils import fetch_bundle_for_code, connect_to_server
 from Metadata import gather_metadata
-
-
 
 def patients_with_asthma_copd(smart):
     """
@@ -26,7 +24,10 @@ def patients_with_asthma_copd(smart):
     for code in main_diagnoses_codes:
         while True:
             try:
-                bundle = Condition.where(struct={'_count': b'1000', 'code': ICD_SYSTEM_NAME + '|' + code}).perform(smart.server)
+                search = Condition.where(struct={'_count': "1000", 'code': ICD_SYSTEM_NAME + '|' + code})
+                path = search.construct()
+                res = smart.server.request_json(path)
+                bundle = Bundle(res, strict=False)
                 break
             except Exception as exc:
                 print(f"Generated an exception: {exc} but continue to trying.\n")

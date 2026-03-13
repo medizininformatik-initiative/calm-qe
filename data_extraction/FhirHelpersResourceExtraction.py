@@ -3,6 +3,7 @@ from collections import defaultdict
 import json
 import time
 
+from fhirclient.models.bundle import Bundle
 from fhirclient.models.medication import Medication
 from fhirclient.models.medicationadministration import MedicationAdministration
 from fhirclient.models.medicationrequest import MedicationRequest
@@ -71,7 +72,7 @@ def observations(patient, code_file, source, smart):
     print(f"Creating queries for patient {patient} for observation resources...\n")
     while True:
         try:
-            bundle = source.where(struct={'_count': b'1000', 'subject': patient}).perform(smart.server)
+            bundle = Bundle(smart.server.request_json(source.where(struct={'_count': '1000', 'subject': patient}).construct()),strict=False)
             break
         except Exception as exc:
             print(f"Generated an exception: {exc} but continue to trying... \n")
@@ -98,7 +99,7 @@ def conditions(patient, code_file, source, smart,):
         sub_code_list_str = ','.join([system + '|' + code for code in sub_code_list])
         while True:
             try:
-                bundle = source.where(struct={'_count': b'1000', 'subject': patient, 'code': sub_code_list_str}).perform(smart.server)
+                bundle = Bundle(smart.server.request_json(source.where(struct={'_count': '1000', 'subject': patient, 'code': sub_code_list_str}).construct()), strict=False)
                 break
             except Exception as exc:
                 print(f"Generated an exception: {exc} but continue to trying... \n")
@@ -120,12 +121,9 @@ def medications(patient, code_file, source, smart):
     while True:
         try:
             if source == Medication:
-                bundle = (source.where(struct={'_count': b'1000', 'subject': patient, 'code': code_list_str})
-                          .perform(smart.server))
+                bundle = Bundle(smart.server.request_json(source.where(struct={'_count': '1000', 'subject': patient, 'code': code_list_str}).construct()),strict=False)
             else:
-                bundle = source.where(
-                    struct={'_count': b'1000', 'patient': patient, 'medication.code': code_list_str}).perform(
-                    smart.server)
+                bundle = Bundle(smart.server.request_json(source.where(struct={'_count': '1000', 'patient': patient, 'medication.code': code_list_str}).construct()),strict=False)
             break
         except Exception as exc:
             print(f"Generated an exception: {exc} but continue to trying... \n")
@@ -244,7 +242,7 @@ def fetch_atc_codes(resource_ref, system, code_list):
 
 
 def medication_frequencies(code_file):
-    folder_paths =  ["fhir_results/ATC/Administrations", "fhir_results/ATC/Requests", "fhir_results/ATC/Statements"]
+    folder_paths = ["fhir_results/ATC/Administrations", "fhir_results/ATC/Requests", "fhir_results/ATC/Statements"]
     code_list, system = read_input_code_file(code_file)
 
     for folder_path in folder_paths:
