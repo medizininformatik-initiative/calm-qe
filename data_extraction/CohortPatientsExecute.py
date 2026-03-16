@@ -24,13 +24,13 @@ def main():
     # Connect to FHIR Server
     smart = connect_to_server(user=USER_NAME, pw=USER_PASSWORD)
 
-    # Get the patients with "ANY TYPE OF DIAGNOSED" Asthma or COPD.
+    # Get the patients with ANY TYPE OF DIAGNOSES related with Asthma or COPD.
     diagnoses_filepath = patients_with_asthma_copd(smart, DIR_RESULTS)
 
-    # Filter the patients for only "MAIN DIAGNOSED" Asthma or COPD.
+    # Filter patients whose MAIN DIAGNOSES are Asthma or COPD.
     diagnoses_filepath = filter_main_diagnosis(smart, diagnoses_filepath, enabled=True)
 
-    # Filter patients' age  min_age: int minimal age in years, max_age: integer maximal age in years Example: [2-6]
+    # Filter by patients' age  min_age: int minimal age in years, max_age: integer maximal age in years Example: [2-6]
     filter_patients_by_age_interval(smart, diagnoses_filepath, min_age=0, max_age=6, enabled=True)
 
     # Filter patients per type of admission (Intensive-Care-Unit)
@@ -42,7 +42,7 @@ def main():
     # Extract last 3 encounter for each patient
     extract_last_three_encounter(smart, diagnoses_filepath, enabled=True)
 
-    # Extracts demographics from patients
+    # Export patient's demographics
     get_demographics_patients(smart, diagnoses_filepath, enabled=True)
 
 
