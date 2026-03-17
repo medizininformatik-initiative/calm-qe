@@ -16,15 +16,16 @@ from Metadata import gather_metadata
 
 def generate_output_filename(prefix_filename, directory):
     target_file = directory.stem
-    if "primary_diagnosed_patients_with_asthma_or_copd" in target_file:
-        return f"primary_diagnosed_patients_asthma_copd-{prefix_filename}.json"
+
+    if "main_diagnosis_asthma_or_copd_filter" in target_file:
+        return f"main_diagnosis_{prefix_filename}.json"
     else:
-        return f"total_diagnoses_patients_asthma_copd-{prefix_filename}.json"
+        return f"total_diagnosis_{prefix_filename}.json"
 
 
 def patients_with_asthma_copd(smart, input_path):
     """
-    It reads the ASTHMA or COPD diseases related codes from "ASTHMA_COPD_CODES_FILE" and
+    It reads ASTHMA or COPD diseases related codes from "ASTHMA_COPD_CODES_FILE" and
     find the patients that have such diagnoses.
     :param smart: Fhir Server Connector
     """
@@ -34,27 +35,27 @@ def patients_with_asthma_copd(smart, input_path):
     print(main_diagnoses_codes)
 
     patients_conditions_map = defaultdict(list)
-    # for code in main_diagnoses_codes:
-    #     while True:
-    #         try:
-    #             bundle = Condition.where(struct={'_count': b'1000', 'code': ICD_SYSTEM_NAME + '|' + code}).perform(smart.server)
-    #             break
-    #         except Exception as exc:
-    #             print(f"Generated an exception: {exc} but continue to trying.\n")
-    #             smart = connect_to_server(user=USER_NAME, pw=USER_PASSWORD)
-    #             time.sleep(3)
-    #
-    #     conditions = fetch_bundle_for_code(smart, bundle)
-    #     if conditions:
-    #         for entry in conditions:
-    #             condition = entry['resource']
-    #             if condition['subject']['reference']:
-    #                 patient_reference = condition['subject']['reference']
-    #                 patients_conditions_map[patient_reference].append({"id": condition['id'], "code": condition['code']})
-    #
-    # print(len(patients_conditions_map))
-    # gather_metadata("total_diagnosed_patients_with_asthma_or_copd_count", len(patients_conditions_map))
-    output_filepath = input_path / "total_diagnosed_patients_with_asthma_or_copd.json"
+    for code in main_diagnoses_codes:
+        while True:
+            try:
+                bundle = Condition.where(struct={'_count': b'1000', 'code': ICD_SYSTEM_NAME + '|' + code}).perform(smart.server)
+                break
+            except Exception as exc:
+                print(f"Generated an exception: {exc} but continue to trying.\n")
+                smart = connect_to_server(user=USER_NAME, pw=USER_PASSWORD)
+                time.sleep(3)
+
+        conditions = fetch_bundle_for_code(smart, bundle)
+        if conditions:
+            for entry in conditions:
+                condition = entry['resource']
+                if condition['subject']['reference']:
+                    patient_reference = condition['subject']['reference']
+                    patients_conditions_map[patient_reference].append({"id": condition['id'], "code": condition['code']})
+
+    print(len(patients_conditions_map))
+    gather_metadata("total_asthma_or_copd_diagnosed_patients", len(patients_conditions_map))
+    output_filepath = input_path / "total_asthma_or_copd_diagnosed_patients.json"
     with open(output_filepath, 'w') as file:  # Intermediate results.
         json.dump(patients_conditions_map, file, indent=4)
 
@@ -82,7 +83,7 @@ def filter_main_diagnosis(smart, input_filepath, enabled=True):
             for condition in conditions_ids:
                 while True:  # Connection might get lost sometime, trying to reconnect...
                     try:
-                        #Check the patient with the specific condition ID has Encounter reference.
+                        # Check the patient with the specific condition ID has Encounter reference.
                         bundle = Encounter.where(struct={'_count': b'10', 'subject': patient, 'diagnosis': 'Condition/' + condition['id']}).perform(smart.server)
                         break
                     except Exception as exc:
@@ -91,7 +92,7 @@ def filter_main_diagnosis(smart, input_filepath, enabled=True):
                         time.sleep(3)
 
                 encounter = fetch_bundle_for_code(smart, bundle)
-                #If the encounter exist, check the diagnosis from this encounter is "MainDiagnose" or not. If so, put it into result.
+                # If the encounter exist, check the diagnosis from this encounter is "MainDiagnose" or not. If so, put it into result.
                 if encounter:
                     for enc in encounter:
                         if 'diagnosis' in enc['resource']:
@@ -107,15 +108,15 @@ def filter_main_diagnosis(smart, input_filepath, enabled=True):
                                             start = parse_fhir_datetime(period.get("start"))  # admission date
                                             admission_dates[patient].append([condition, start])
 
-    gather_metadata("primary_diagnosed_patients_with_asthma_or_copd", len(patients_with_chief_complaint))
-    gather_metadata("primary_diagnosis_counts", count_main_diagnose_type)
-    gather_metadata("primary_diagnosis_count", sum(count_main_diagnose_type.values()))
+    gather_metadata("main_diagnosis_asthma_or_copd_filter", len(patients_with_chief_complaint))
+    gather_metadata("main_diagnosis_counts", count_main_diagnose_type)
+    gather_metadata("main_diagnosis_encounter_count", sum(count_main_diagnose_type.values()))
 
-    output_filepath = input_filepath.with_name("primary_diagnosed_patients_with_asthma_or_copd-admission_dates.json")
+    output_filepath = input_filepath.with_name("main_diagnosis_filter_with_asthma_or_copd-admission_dates.json")
     with open(output_filepath, "w") as out:
         json.dump(admission_dates, out, indent=4)
 
-    output_filepath = input_filepath.with_name("primary_diagnosed_patients_with_asthma_or_copd.json")
+    output_filepath = input_filepath.with_name("main_diagnosis_filter_with_asthma_or_copd.json")
     with open(output_filepath, "w") as out:
         json.dump(patients_with_chief_complaint, out, indent=4)
 
@@ -233,7 +234,7 @@ def filter_patients_by_age_interval(smart, input_filepath, min_age, max_age, ena
     # gather metadata/counts
     label = f"{min_age}-{max_age}"
     interval_count = len(matched_patients)
-    gather_metadata("patient_counts_with_age_interval", {label: interval_count})
+    gather_metadata("patient_count_by_age_interval", {label: interval_count})
     print(f"Found {interval_count} patients in interval [{min_age}, {max_age}] out of {total_processed} processed.")
 
     new_filename = generate_output_filename(f"age_{min_age}_{max_age}", input_filepath)
