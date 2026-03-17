@@ -1,6 +1,5 @@
 import time
 import pytz
-import requests
 from fhirclient import client
 from Constants import USER_NAME, USER_PASSWORD, SERVER_NAME
 from datetime import datetime, timezone
@@ -19,12 +18,9 @@ def connect_to_server(user, pw):
     """
     settings = {
         "app_id": "some_app_id",
-        "api_base": f"https://{user}:{pw}@{SERVER_NAME}",
-    }
-    # settings['session'].verify = 'data_extraction/certificates/traefik-config/myserver.crt'
+        "api_base": f"https://{user}:{pw}@{SERVER_NAME}"}
 
     smart = client.FHIRClient(settings=settings)
-    smart.server.session.verify = False
     return smart
 
 
