@@ -2,7 +2,11 @@ import os
 from collections import defaultdict
 import json
 import time
+from datetime import datetime
+
+import numpy as np
 import pandas as pd
+from fhirclient.models import encounter
 
 from fhirclient.models.condition import Condition
 from fhirclient.models.encounter import Encounter
@@ -32,9 +36,11 @@ def patients_with_asthma_copd(smart, input_path):
     with open(ASTHMA_COPD_CODES_FILE, 'r') as file:
         main_diagnoses_file = json.load(file)
         main_diagnoses_codes = [item['code'] for item in main_diagnoses_file['codes']]
-    print(main_diagnoses_codes)
+    print('codes main diagnoses:', main_diagnoses_codes)
 
+    basis_filename = "total_asthma_or_copd_diagnosed_patients"
     patients_conditions_map = defaultdict(list)
+
     for code in main_diagnoses_codes:
         while True:
             try:
@@ -51,11 +57,16 @@ def patients_with_asthma_copd(smart, input_path):
                 condition = entry['resource']
                 if condition['subject']['reference']:
                     patient_reference = condition['subject']['reference']
-                    patients_conditions_map[patient_reference].append({"id": condition['id'], "code": condition['code']})
+                    attributes_condition = {'id': condition['id'], 'code': condition['code']}
+                    if condition['encounter']['reference']:  # New: Include encounter reference
+                        attributes_condition["encounter"] = condition['encounter']['reference']
+                    if condition['onsetDateTime']:  # New: Include onsetDateTime from conditions
+                        attributes_condition["onsetDateTime"] = condition['onsetDateTime']
+                    patients_conditions_map[patient_reference].append(attributes_condition)
 
-    print(len(patients_conditions_map))
-    gather_metadata("total_asthma_or_copd_diagnosed_patients", len(patients_conditions_map))
-    output_filepath = input_path / "total_asthma_or_copd_diagnosed_patients.json"
+    gather_metadata(basis_filename, len(patients_conditions_map))
+
+    output_filepath = input_path / f"{basis_filename}.json"
     with open(output_filepath, 'w') as file:  # Intermediate results.
         json.dump(patients_conditions_map, file, indent=4)
 
@@ -453,3 +464,6 @@ def get_demographics_patients(smart, input_filepath, enabled=True):
     patients_demographics_df = pd.DataFrame(patients_demographics)
     patients_demographics_df.to_csv(os.path.join(subdirectory, "demographics.xlsx"), index=False, sep=";")
     print(f"Saving extracted demographics as .xlsx file in {subdirectory}")
+
+def get_dates_from_diagnoses():
+    return None
