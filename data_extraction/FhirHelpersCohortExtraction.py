@@ -1,6 +1,7 @@
 from collections import defaultdict
 import json
 import time
+from idlelib import search
 
 from fhirclient.models.condition import Condition
 from fhirclient.models.encounter import Encounter
@@ -9,6 +10,8 @@ from Constants import USER_NAME, USER_PASSWORD, ICD_SYSTEM_NAME, ASTHMA_COPD_COD
 from FhirHelpersUtils import fetch_bundle_for_code, connect_to_server
 from Metadata import gather_metadata
 
+from fhir_pyrate import Ahoy, Pirate
+from fhir_pyrate.util import FHIRObj
 
 
 def patients_with_asthma_copd(smart):
@@ -47,25 +50,22 @@ def patients_with_asthma_copd(smart):
         json.dump(patients_conditions_map, file, indent=4)
 
 
-def filter_main_diagnosis(smart):
-    """
-    From the patients diagnosed ASTHMA or COPD, it filters only for HauptDiagnosis(Main) from their Encounter references.
-    Put the results into JSON file format.
-    :param smart: Fhir Server Connector
-    """
-    count_main_diagnose_type = defaultdict(int)
+def extract_additional_attributes_from_encounters(smart):
 
-    patients_with_chief_complaint = defaultdict(list)
+    patients_encounters_map = defaultdict(list)
+
     with open("patients_diagnosed_asthma_copd.json", "r") as file:
         patients = json.load(file)
         for patient in patients.keys():
-            print(f"Processing patient with ID: {patient[8:]}...")
             conditions_ids = patients[patient]
             for condition in conditions_ids:
-                while True: #Connection might get lost sometime, try reconnect...
+                while True:
                     try:
-                        #Check the patient with the spesific condition ID has Encounter reference.
-                        bundle = Encounter.where(struct={'_count': b'10', 'subject': patient, 'diagnosis': 'Condition/' + condition['id']}).perform(smart.server)
+                        bundle = Encounter.where(struct={
+                            '_count': b'100',
+                            'subject': patient,
+                            'diagnosis': 'Condition/' + condition['id']
+                        }).perform(smart.server)
                         break
                     except Exception as exc:
                         print(f"Generated an exception: {exc} but continue to trying. \n")
@@ -73,22 +73,21 @@ def filter_main_diagnosis(smart):
                         time.sleep(3)
 
                 encounter = fetch_bundle_for_code(smart, bundle)
-                #If the encounter exist, check the diagnosis from this encounter is "MainDiagnose" or not. If so, put it into result.
+
                 if encounter:
                     for enc in encounter:
                         if 'diagnosis' in enc['resource']:
                             for c in enc['resource']['diagnosis']:
                                 if c['use']['coding']:
-                                    for code in c['use']['coding']:
-                                        if code['code'] == "CC" and ('Condition/' + condition['id'] == c['condition']['reference']):  # chief complaint
-                                            patients_with_chief_complaint[patient].append(condition)
-                                            count_main_diagnose_type[condition['code']['coding'][0]['code']] += 1
+                                    attributes_encounter = {
+                                        "condition": condition,
+                                        "use": c['use']['coding'],
+                                        "period": enc['resource'].get("period", {}),
+                                        "fallArt": enc['resource'].get("class", {}).get("code"),
+                                        "codeServiceType": enc['resource'].get("serviceType", {}).get("coding", [{}])[0].get("code")
+                                    }
 
-    gather_metadata("asthma_and_copd_patients_with_chief_complaint", len(patients_with_chief_complaint))
-    gather_metadata("main_diagnosis_counts", count_main_diagnose_type)
-    gather_metadata("main_diagnosis_count", sum(count_main_diagnose_type.values()))
+                                patients_encounters_map[patient].append(attributes_encounter)
 
-    with open("patients_main_diagnosed_asthma_copd.json", "w") as out:
-        json.dump(patients_with_chief_complaint, out, indent=4)
-
-
+    with open("encounters.json", "w") as out:
+        json.dump(patients_encounters_map, out, indent=4)
