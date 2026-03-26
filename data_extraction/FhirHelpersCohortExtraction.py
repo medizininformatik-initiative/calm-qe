@@ -3,6 +3,7 @@ from collections import defaultdict
 import json
 import time
 from datetime import datetime
+from pathlib import Path
 
 import numpy as np
 import pandas as pd
@@ -84,6 +85,7 @@ def filter_main_diagnosis(smart, input_filepath, enabled=True):
 
     count_main_diagnose_type = defaultdict(int)
     admission_dates = defaultdict(list)
+    base_filename = "main_diagnosis_asthma_or_copd_filter"
 
     patients_with_chief_complaint = defaultdict(list)
     with open(input_filepath, "r") as file:
@@ -114,20 +116,27 @@ def filter_main_diagnosis(smart, input_filepath, enabled=True):
                                             patients_with_chief_complaint[patient].append(condition)
                                             count_main_diagnose_type[condition['code']['coding'][0]['code']] += 1
 
-                                            # Extract period
-                                            period = enc['resource'].get("period", {})
-                                            start = parse_fhir_datetime(period.get("start"))  # admission date
-                                            admission_dates[patient].append([condition, start])
+                                            period_start = enc['resource'].get("period", {}).get("start")
+                                            period_end = enc['resource'].get("period", {}).get("end")
 
-    gather_metadata("main_diagnosis_asthma_or_copd_filter", len(patients_with_chief_complaint))
+                                            attributes_encounters = {
+                                                "period_start": period_start,
+                                                "period_end": period_end,
+                                            }
+
+                                            admission_dates[patient].append([condition, attributes_encounters])
+
+    gather_metadata(base_filename, len(patients_with_chief_complaint))
     gather_metadata("main_diagnosis_counts", count_main_diagnose_type)
     gather_metadata("main_diagnosis_encounter_count", sum(count_main_diagnose_type.values()))
 
-    output_filepath = input_filepath.with_name("main_diagnosis_filter_with_asthma_or_copd-admission_dates.json")
+    base_path = Path(input_filepath)
+
+    output_filepath = base_path.with_name(f"{base_filename}-admission_dates.json")
     with open(output_filepath, "w") as out:
         json.dump(admission_dates, out, indent=4)
 
-    output_filepath = input_filepath.with_name("main_diagnosis_filter_with_asthma_or_copd.json")
+    output_filepath = base_path.with_name(f"{base_filename}.json")
     with open(output_filepath, "w") as out:
         json.dump(patients_with_chief_complaint, out, indent=4)
 
