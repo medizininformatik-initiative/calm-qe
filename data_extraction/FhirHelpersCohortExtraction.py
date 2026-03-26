@@ -10,9 +10,6 @@ from Constants import USER_NAME, USER_PASSWORD, ICD_SYSTEM_NAME, ASTHMA_COPD_COD
 from FhirHelpersUtils import fetch_bundle_for_code, connect_to_server
 from Metadata import gather_metadata
 
-from fhir_pyrate import Ahoy, Pirate
-from fhir_pyrate.util import FHIRObj
-
 
 def patients_with_asthma_copd(smart):
     """
@@ -50,16 +47,19 @@ def patients_with_asthma_copd(smart):
         json.dump(patients_conditions_map, file, indent=4)
 
 
-def extract_additional_attributes_from_encounters(smart):
+def extract_additional_attributes_from_encounters(smart, input_filepath):
 
-    patients_encounters_map = defaultdict(list)
+    # Extract interested attributes from encounters (period, fallart, service_department_code)
 
-    with open("patients_diagnosed_asthma_copd.json", "r") as file:
+    print("Starting encounters extraction...")
+    encounter_results = defaultdict(list)
+
+    with open(input_filepath, "r") as file:
         patients = json.load(file)
         for patient in patients.keys():
             conditions_ids = patients[patient]
             for condition in conditions_ids:
-                while True:
+                while True:  # Connection might get lost sometime, trying to reconnect...
                     try:
                         bundle = Encounter.where(struct={
                             '_count': b'100',
@@ -75,19 +75,29 @@ def extract_additional_attributes_from_encounters(smart):
                 encounter = fetch_bundle_for_code(smart, bundle)
 
                 if encounter:
-                    for enc in encounter:
-                        if 'diagnosis' in enc['resource']:
-                            for c in enc['resource']['diagnosis']:
-                                if c['use']['coding']:
-                                    attributes_encounter = {
-                                        "condition": condition,
-                                        "use": c['use']['coding'],
-                                        "period": enc['resource'].get("period", {}),
-                                        "fallArt": enc['resource'].get("class", {}).get("code"),
-                                        "codeServiceType": enc['resource'].get("serviceType", {}).get("coding", [{}])[0].get("code")
-                                    }
+                    for i, enc in enumerate(encounter, start=1):
+                        if i == 5:  # temporal test breaker, remove after testing phase
+                            break
 
-                                patients_encounters_map[patient].append(attributes_encounter)
+                        period_start, period_end, fall_art, service_type_code = None, None, None, None
 
-    with open("encounters.json", "w") as out:
-        json.dump(patients_encounters_map, out, indent=4)
+                        if "period" in enc['resource']:
+                            period_start = enc["resource"]["period"].get("start")
+                            period_end = enc["resource"]["period"].get("end")
+
+                        if "class" in enc["resource"]:
+                            fall_art = enc["resource"]["class"].get("code")
+
+                        if "serviceType" in enc["resource"]:
+                            service_type_code = enc["resource"]["serviceType"].get("coding", [{}])[0].get("code")
+
+                        encounter_results[patient].append({
+                            "condition_id": condition,
+                            "period_start": period_start,
+                            "period_end": period_end,
+                            "fall_art": fall_art,
+                            "service_department_code": service_type_code,
+                        })
+
+    print("encounter_results:", encounter_results)
+    return encounter_results
