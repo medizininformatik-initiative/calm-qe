@@ -1,28 +1,47 @@
+import os
 from collections import defaultdict
 import json
 import time
-from idlelib import search
+from datetime import datetime
+from pathlib import Path
+
+import numpy as np
+import pandas as pd
+from fhirclient.models import encounter
 
 from fhirclient.models.condition import Condition
 from fhirclient.models.encounter import Encounter
+from fhirclient.models.patient import Patient
 
 from Constants import USER_NAME, USER_PASSWORD, ICD_SYSTEM_NAME, ASTHMA_COPD_CODES_FILE
 from FhirHelpersUtils import fetch_bundle_for_code, connect_to_server
+from FhirHelpersUtils import parse_fhir_datetime, compute_los
 from Metadata import gather_metadata
 
 
-def patients_with_asthma_copd(smart):
+def generate_output_filename(prefix_filename, directory):
+    target_file = directory.stem
+
+    if "main_diagnosis_asthma_or_copd_filter" in target_file:
+        return f"main_diagnosis_{prefix_filename}.json"
+    else:
+        return f"total_diagnosis_{prefix_filename}.json"
+
+
+def patients_with_asthma_copd(smart, input_path):
     """
-    It reads the ASTHMA or COPD diseases related codes from "ASTHMA_COPD_CODES_FILE" and
+    It reads ASTHMA or COPD diseases related codes from "ASTHMA_COPD_CODES_FILE" and
     find the patients that have such diagnoses.
     :param smart: Fhir Server Connector
     """
     with open(ASTHMA_COPD_CODES_FILE, 'r') as file:
         main_diagnoses_file = json.load(file)
         main_diagnoses_codes = [item['code'] for item in main_diagnoses_file['codes']]
-    print(main_diagnoses_codes)
+    print('codes main diagnoses:', main_diagnoses_codes)
 
+    basis_filename = "total_asthma_or_copd_diagnosed_patients"
     patients_conditions_map = defaultdict(list)
+
     for code in main_diagnoses_codes:
         while True:
             try:
@@ -39,33 +58,46 @@ def patients_with_asthma_copd(smart):
                 condition = entry['resource']
                 if condition['subject']['reference']:
                     patient_reference = condition['subject']['reference']
-                    patients_conditions_map[patient_reference].append({"id": condition['id'], "code": condition['code']})
+                    attributes_condition = {'id': condition['id'], 'code': condition['code']}
+                    if condition['encounter']['reference']:  # New: Include encounter reference
+                        attributes_condition["encounter"] = condition['encounter']['reference']
+                    if condition['onsetDateTime']:  # New: Include onsetDateTime from conditions
+                        attributes_condition["onsetDateTime"] = condition['onsetDateTime']
+                    patients_conditions_map[patient_reference].append(attributes_condition)
 
-    print(len(patients_conditions_map))
-    gather_metadata("asthma_and_copd_patient_count", len(patients_conditions_map))
-    with open('patients_diagnosed_asthma_copd.json', 'w') as file: #Intermediate results, can be deleted later.
+    gather_metadata(basis_filename, len(patients_conditions_map))
+
+    output_filepath = input_path / f"{basis_filename}.json"
+    with open(output_filepath, 'w') as file:  # Intermediate results.
         json.dump(patients_conditions_map, file, indent=4)
 
+    return output_filepath
 
-def extract_additional_attributes_from_encounters(smart, input_filepath):
 
-    # Extract interested attributes from encounters (period, fallart, service_department_code)
+def filter_main_diagnosis(smart, input_filepath, enabled=True):
+    """
+    From the patients diagnosed ASTHMA or COPD, it filters only for HauptDiagnosis(Main) from their Encounter references.
+    Put the results into JSON file format.
+    :param smart: Fhir Server Connector
+    """
+    if not enabled:
+        return input_filepath
 
-    print("Starting encounters extraction...")
-    encounter_results = defaultdict(list)
+    count_main_diagnose_type = defaultdict(int)
+    admission_dates = defaultdict(list)
+    base_filename = "main_diagnosis_asthma_or_copd_filter"
 
+    patients_with_chief_complaint = defaultdict(list)
     with open(input_filepath, "r") as file:
         patients = json.load(file)
         for patient in patients.keys():
+            print(f"Processing patient with ID: {patient[8:]}...")
             conditions_ids = patients[patient]
             for condition in conditions_ids:
                 while True:  # Connection might get lost sometime, trying to reconnect...
                     try:
-                        bundle = Encounter.where(struct={
-                            '_count': b'100',
-                            'subject': patient,
-                            'diagnosis': 'Condition/' + condition['id']
-                        }).perform(smart.server)
+                        # Check the patient with the specific condition ID has Encounter reference.
+                        bundle = Encounter.where(struct={'_count': b'10', 'subject': patient, 'diagnosis': 'Condition/' + condition['id']}).perform(smart.server)
                         break
                     except Exception as exc:
                         print(f"Generated an exception: {exc} but continue to trying. \n")
@@ -73,31 +105,374 @@ def extract_additional_attributes_from_encounters(smart, input_filepath):
                         time.sleep(3)
 
                 encounter = fetch_bundle_for_code(smart, bundle)
-
+                # If the encounter exist, check the diagnosis from this encounter is "MainDiagnose" or not. If so, put it into result.
                 if encounter:
-                    for i, enc in enumerate(encounter, start=1):
-                        if i == 5:  # temporal test breaker, remove after testing phase
-                            break
+                    for enc in encounter:
+                        if 'diagnosis' in enc['resource']:
+                            for c in enc['resource']['diagnosis']:
+                                if c['use']['coding']:
+                                    for code in c['use']['coding']:
+                                        if code['code'] == "CC" and ('Condition/' + condition['id'] == c['condition']['reference']):  # chief complaint
+                                            patients_with_chief_complaint[patient].append(condition)
+                                            count_main_diagnose_type[condition['code']['coding'][0]['code']] += 1
 
-                        period_start, period_end, fall_art, service_type_code = None, None, None, None
+                                            period_start = enc['resource'].get("period", {}).get("start")
+                                            period_end = enc['resource'].get("period", {}).get("end")
 
-                        if "period" in enc['resource']:
-                            period_start = enc["resource"]["period"].get("start")
-                            period_end = enc["resource"]["period"].get("end")
+                                            attributes_encounters = {
+                                                "period_start": period_start,
+                                                "period_end": period_end,
+                                            }
 
-                        if "class" in enc["resource"]:
-                            fall_art = enc["resource"]["class"].get("code")
+                                            admission_dates[patient].append([condition, attributes_encounters])
 
-                        if "serviceType" in enc["resource"]:
-                            service_type_code = enc["resource"]["serviceType"].get("coding", [{}])[0].get("code")
+    gather_metadata(base_filename, len(patients_with_chief_complaint))
+    gather_metadata("main_diagnosis_counts", count_main_diagnose_type)
+    gather_metadata("main_diagnosis_encounter_count", sum(count_main_diagnose_type.values()))
 
-                        encounter_results[patient].append({
-                            "condition_id": condition,
-                            "period_start": period_start,
-                            "period_end": period_end,
-                            "fall_art": fall_art,
-                            "service_department_code": service_type_code,
+    base_path = Path(input_filepath)
+
+    output_filepath = base_path.with_name(f"{base_filename}-admission_dates.json")
+    with open(output_filepath, "w") as out:
+        json.dump(admission_dates, out, indent=4)
+
+    output_filepath = base_path.with_name(f"{base_filename}.json")
+    with open(output_filepath, "w") as out:
+        json.dump(patients_with_chief_complaint, out, indent=4)
+
+    return output_filepath
+
+
+def process_inpatient_encounter(resource):
+    inpatient_types = ["stationaer", "normalstationaer", "intensivstationaer"]
+
+    is_inpatient = False
+    for type_entry in resource.get("type", []):
+        for coding in type_entry.get("coding", []):
+            code_val = coding.get("code", "").lower()
+            if code_val.lower() in [inpatient.lower() for inpatient in inpatient_types] or code_val.upper() == "IMP":
+                is_inpatient = True
+                break
+        if is_inpatient:
+            break
+    if not is_inpatient and "hospitalization" in resource:
+        is_inpatient = True
+
+    if not is_inpatient:
+        return None
+
+    # Extract period
+    period = resource.get("period", {})
+    start = parse_fhir_datetime(period.get("start"))
+    end = parse_fhir_datetime(period.get("end"))
+
+    # Process LOS
+    los_days = compute_los(start, end)
+
+    return {
+        "encounter_id": resource.get("id"),
+        "start": start.isoformat() if start else None,
+        "end": end.isoformat() if end else None,
+        "los_days": round(los_days, 2) if los_days else None
+    }
+
+
+def filter_patients_by_age_interval(smart, input_filepath, min_age, max_age, enabled=True):
+
+    if not enabled:
+        return None
+
+    if not isinstance(min_age, int) or not isinstance(max_age, int):
+        raise ValueError("'min_age' and 'max_age' must be integers")
+    if min_age > max_age:
+        raise ValueError("min_age must be <= max_age")
+
+    print(f"\nFiltering patients with age in interval [{min_age}, {max_age}] years...")
+
+    matched_patients = defaultdict(list)
+    pid_not_birthdate = []
+    total_processed = 0
+
+    # Search for existing admission_dates.json
+    prefix = input_filepath.stem
+    admission_match = list(input_filepath.parent.glob(f"{prefix}*admission_dates.json"))
+
+    if not admission_match:
+        pass  # TODO: define 'xxx_admission_dates.json' for total_patients
+
+    new_input_filepath = admission_match[0]
+    print(f"Processing {new_input_filepath}...")
+
+    with open(new_input_filepath, "r", encoding="utf-8") as f:
+        admission_data = json.load(f)
+
+    for patient_ref, admissions in admission_data.items():
+        total_processed += 1
+        patient_id = patient_ref.split("/")[-1]
+
+        birth_date = None
+        while True:
+            try:
+                patient = Patient.read(patient_id, smart.server)
+                birth_iso = patient.birthDate.isostring
+                birth_date = parse_fhir_datetime(birth_iso)
+                break
+            except Exception as exc:
+                print(f"Error fetching patient {patient_id}: {exc}, but continue to trying...")
+                smart = connect_to_server(user=USER_NAME, pw=USER_PASSWORD)
+                time.sleep(1)
+
+        if not birth_date:
+            pid_not_birthdate.append(patient_ref)
+            print(f"Skipping patient {patient_ref} - no birth date available.")
+            continue
+
+        for admission in admissions:
+            # admission entries expected to be [condition_obj, admission_iso]
+            if not isinstance(admission, (list, tuple)) or len(admission) < 2:
+                continue
+            condition_obj, admission_val = admission[0], admission[1]
+            admission_date = parse_fhir_datetime(admission_val)
+            if not admission_date:
+                continue
+
+            try:
+                days = (admission_date.date() - birth_date.date()).days
+                if days < 0:
+                    continue
+                age_years = int(days / 365)
+            except Exception:
+                continue
+
+            if min_age <= age_years <= max_age:
+                matched_patients[patient_ref].append({
+                    "condition": condition_obj,
+                    "admission": admission_date.isoformat() if hasattr(admission_date, "isoformat") else str(admission_date),
+                    "age": age_years
+                })
+
+    # gather metadata/counts
+    label = f"{min_age}-{max_age}"
+    interval_count = len(matched_patients)
+    gather_metadata("patient_count_by_age_interval", {label: interval_count})
+    print(f"Found {interval_count} patients in interval [{min_age}, {max_age}] out of {total_processed} processed.")
+
+    new_filename = generate_output_filename(f"age_{min_age}_{max_age}", input_filepath)
+    output_filepath = input_filepath.with_name(new_filename)
+    with open(output_filepath, "w", encoding="utf-8") as out:
+        json.dump({pid: entries for pid, entries in matched_patients.items()}, out, indent=4, ensure_ascii=False)
+
+
+def filter_icu_patients_admission(smart, input_filepath, enabled=True):
+    """
+        From the HauptDiagnosis (Main), filter type of admission, specially ICU patients.
+        Reference: https://simplifier.net/guide/mii-ig-modul-fall-2025/
+        MIIIGModulFall/TechnischeImplementierung/FHIRProfile/EncounterKontaktGesundheitseinrichtung.page.md?version=current
+    """
+    if not enabled:
+        return None
+
+    print("\nFiltering ICU patients...")
+    main_patients_diagnosed = input_filepath
+    icu_patients = defaultdict(int)
+    if os.path.exists(main_patients_diagnosed):
+        with open(main_patients_diagnosed, "r") as file:
+            main_patients_conditions = json.load(file)
+            for patient_id, condition_ids in main_patients_conditions.items():
+                for condition_id in condition_ids:
+                    try:
+                        bundle = Encounter.where({
+                            'subject': f'{patient_id}',
+                            'diagnosis.condition': f'Condition/{condition_id}',
+                            '_count': '50'
+                        }).perform(smart.server)
+                    except Exception as e:
+                        print(f"Generated an exception for {patient_id} with condition/{condition_id}: {e}, but continue trying...")
+                        smart = connect_to_server(user=USER_NAME, pw=USER_PASSWORD)
+                        time.sleep(3)
+
+                if bundle:
+                    encounters = fetch_bundle_for_code(smart, bundle)
+                    for encounter in encounters:
+                        if "resource" in encounter and "type" in encounter['resource']:
+                            for type_entry in encounter["resource"]["type"]:
+                                if "coding" not in type_entry:
+                                    continue
+                                for coding in type_entry["coding"]:
+                                    if "code" in coding and coding["code"].lower() == "intensivstationaer":
+                                        print(f"ICU encounter found for patient {patient_id}")
+                                        cond_id = condition_id["id"] if isinstance(condition_id, dict) else condition_id
+                                        icu_patients.setdefault(patient_id, set()).add(cond_id)
+                else:
+                    print("Skipping patient, no bundle found")
+
+    icu_patients_json = {pid: list(cond_ids) for pid, cond_ids in icu_patients.items()}
+
+    new_filename = generate_output_filename("icu_admission", input_filepath)
+    output_filepath = input_filepath.with_name(new_filename)
+    with open(output_filepath, "w") as out:
+        json.dump(icu_patients_json, out, indent=4)
+
+    gather_metadata("intensive_care_unit_patient_count", len(icu_patients))
+
+
+def calculate_los_inpatients(smart, input_filepath, enabled=True):
+    """
+    Aufenthaltsdauer: calculate "Length of Staying", (LOS) from inpatients.
+    Reference: https://simplifier.net/guide/mii-ig-modul-fall-2025/
+    MIIIGModulFall/TechnischeImplementierung/FHIRProfile/EncounterKontaktGesundheitseinrichtung.page.md?version=current
+    """
+    if not enabled:
+        return None
+
+    print("\nGathering inpatients...")
+    main_patients_diagnosed = input_filepath
+    inpatients = defaultdict()
+
+    if os.path.exists(main_patients_diagnosed):
+        with open(main_patients_diagnosed, "r") as file:
+            main_patients_conditions = json.load(file)
+            for patient_id, condition_ids in main_patients_conditions.items():
+                for condition_id in condition_ids:
+                    bundle = None
+                    try:
+                        bundle = Encounter.where({
+                            'subject': f'{patient_id}',
+                            'diagnosis.condition': f'Condition/{condition_id}',
+                            '_count': '50'
+                        }).perform(smart.server)
+                    except Exception as e:
+                        print(f" Generated an exception for {patient_id} with condition/{condition_id}: {e}, but continue trying...")
+                        smart = connect_to_server(user=USER_NAME, pw=USER_PASSWORD)
+                        time.sleep(3)
+
+                    if bundle:
+                        encounters = fetch_bundle_for_code(smart, bundle)
+                        for encounter in encounters:
+                            if "resource" in encounter:
+                                if "type" in encounter['resource']:
+                                    stay_entry = process_inpatient_encounter(encounter['resource'])
+                                    if stay_entry:
+                                        if patient_id not in inpatients:
+                                            inpatients[patient_id] = []
+                                        inpatients[patient_id].append(stay_entry)
+                    else:
+                        print("Skipping patient, no bundle found")
+    new_filename = generate_output_filename("length_of_stay",  input_filepath)
+    output_filepath = input_filepath.with_name(new_filename)
+    with open(output_filepath, "w", encoding="utf-8") as file:
+        json.dump(inpatients, file, indent=4, ensure_ascii=False)
+
+    print(f"File successfully generated with {len(inpatients)} inpatients")
+
+
+def extract_last_three_encounter(smart, input_filepath, enabled=True):
+    """
+    Extract last three encounter IDs per patient.
+    """
+    if not enabled:
+        return input_filepath
+
+    patients_last_3_encounters = defaultdict(list)
+    patients_admission_encounter = defaultdict(list)
+
+    with open(input_filepath, "r") as file:
+        patients = json.load(file)
+        for patient in patients.keys():
+            print(f"Processing patient with ID: {patient[8:]}...")
+            all_encounters_per_patient = []
+            conditions_ids = patients[patient]
+            for condition in conditions_ids:
+                while True:  # Connection might get lost sometime, trying to reconnect...
+                    try:
+                        # Check the patient with the specific condition ID has Encounter reference.
+                        bundle = Encounter.where(struct={'_count': b'10', 'subject': patient, 'diagnosis': 'Condition/' + condition['id']}).perform(smart.server)
+                        break
+                    except Exception as exc:
+                        print(f"Generated an exception: {exc} but continue to trying. \n")
+                        smart = connect_to_server(user=USER_NAME, pw=USER_PASSWORD)
+                        time.sleep(3)
+
+                encounters = fetch_bundle_for_code(smart, bundle)
+
+                if encounters:
+                    for encounter in encounters:  #Only one encounter should be returned actually since we query by condition ID. #redundant
+                        resource = encounter.get("resource", {})
+                        period = resource.get("period", {})
+                        start = parse_fhir_datetime(period.get("start"))
+                        end = parse_fhir_datetime(period.get("end"))
+
+                        if not start and not end:
+                            continue
+                        all_encounters_per_patient.append({
+                            "encounter_id": resource.get("id"),
+                            "start": start.isoformat() if start else None,
+                            "end": end.isoformat() if end else None,
                         })
 
-    print("encounter_results:", encounter_results)
-    return encounter_results
+            valid_encounters = [e for e in all_encounters_per_patient if e.get("start") or e.get("end")] #Skip if there is no end/start time
+
+            sorted_encounters = sorted(
+                valid_encounters,
+                key=lambda e: e["end"] or e["start"],
+                reverse=True
+            )
+
+            # Keep last 3 encounters
+            patients_last_3_encounters[patient] = sorted_encounters[:3]
+            patients_admission_encounter[patient] = sorted_encounters[0]
+
+    new_filename = generate_output_filename("last_3_encounters", input_filepath)
+    output_filepath = input_filepath.with_name(new_filename)
+    with open(output_filepath, "w", encoding="utf-8") as file:
+        json.dump(patients_last_3_encounters, file, indent=4, ensure_ascii=False)
+
+    new_filename = generate_output_filename("recent_encounter_admission_dates", input_filepath)
+    output_filepath = input_filepath.with_name(new_filename)
+    with open(output_filepath, "w", encoding="utf-8") as file:
+        json.dump(patients_last_3_encounters, file, indent=4, ensure_ascii=False)
+
+    print(f"File successfully generated for extracting last three encounters and admission dates for {len(patients_last_3_encounters)} main diagnosed patients")
+
+
+def get_demographics_patients(smart, input_filepath, enabled=True):
+    '''
+    Obtains demographics from patients from selected patient IDs and export results in tabular form.
+    Reference: https://www.medizininformatik-initiative.de/Kerndatensatz/
+    KDS_Person_V2025/MIIIGModulPerson-TechnischeImplementierung-FHIR-Profile-PatientInPatient.html
+    '''
+    if not enabled:
+        return None
+
+    subdirectory = input_filepath.parent/'csv'
+    subdirectory.mkdir(parents=True, exist_ok=True)
+
+    patient_identifiers, patients_demographics = [], []
+
+    with open(input_filepath, "r") as file:
+        patients = json.load(file)
+        for patient in patients.keys():
+            print(f"Processing patient with ID: {patient[8:]}...")
+            patient_identifiers.append(patient[8:])
+
+    for patient_id in patient_identifiers:
+        while True:
+            try:
+                patient = Patient.read(patient_id, smart.server)
+                patients_demographics.append({
+                    "patient_identifier": patient_id,
+                    "gender": patient.gender,
+                    "birth_date": patient.birthDate.isostring,
+                })
+                break
+            except Exception as exc:
+                print(f"Generated an exception: {exc} but continue to trying. \n")
+                smart = connect_to_server(user=USER_NAME, pw=USER_PASSWORD)
+                time.sleep(3)
+
+    patients_demographics_df = pd.DataFrame(patients_demographics)
+    patients_demographics_df.to_csv(os.path.join(subdirectory, "demographics.xlsx"), index=False, sep=";")
+    print(f"Saving extracted demographics as .xlsx file in {subdirectory}")
+
+def get_dates_from_diagnoses():
+    return None

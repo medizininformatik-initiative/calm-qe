@@ -165,14 +165,14 @@ def execute_thread_for_fetching(code_file, source, patient_list, code_type, func
     '''
 
     if code_type == "LOINC":
-        gather_metadata("patient_count_with_observations", counter)
+        gather_metadata("observations_patient_count", counter)
     elif code_type == "ATC":
         if source is MedicationAdministration:
-            gather_metadata("patient_count_with_medicationAdministrations", counter)
+            gather_metadata("medicationAdministration_patient_count", counter)
         elif source is MedicationRequest:
-            gather_metadata("patient_count_with_medicationRequests", counter)
+            gather_metadata("medicationRequests_patient_count", counter)
         elif source is MedicationStatement:
-            gather_metadata("patient_count_with_medicationStatements", counter)
+            gather_metadata("medicationStatement_patient_count", counter)
     else:
         pass
     print("---------------End of Code------------------------")
@@ -224,7 +224,7 @@ def secondary_conditions_frequencies(code_file):
                                     conditions_counts[coding['code']] += 1
 
     gather_metadata("secondary_conditions_counts", conditions_counts)
-    gather_metadata("patient_count_with_secondary_conditions", len(pats))
+    gather_metadata("secondary_conditions_patient_count", len(pats))
 
 
 def fetch_atc_codes(resource_ref, system, code_list):
@@ -244,7 +244,7 @@ def fetch_atc_codes(resource_ref, system, code_list):
 
 
 def medication_frequencies(code_file):
-    folder_paths =  ["fhir_results/ATC/Administrations", "fhir_results/ATC/Requests", "fhir_results/ATC/Statements"]
+    folder_paths = ["fhir_results/ATC/Administrations", "fhir_results/ATC/Requests", "fhir_results/ATC/Statements"]
     code_list, system = read_input_code_file(code_file)
 
     for folder_path in folder_paths:
