@@ -19,13 +19,12 @@ from FhirHelpersUtils import parse_fhir_datetime, compute_los
 from Metadata import gather_metadata
 
 
-def generate_output_filename(prefix_filename, directory):
-    target_file = directory.stem
+def generate_output_filename(surfix_filename, directory):
+    input_path = Path(directory)
+    target_file = input_path.stem
 
-    if "main_diagnosis_asthma_or_copd_filter" in target_file:
-        return f"main_diagnosis_{prefix_filename}.json"
-    else:
-        return f"total_diagnosis_{prefix_filename}.json"
+    if "total_asthma_or_copd_diagnosed_patients" in target_file:
+        return f"total_diagnosis_{surfix_filename}.json"
 
 
 def patients_with_asthma_copd(smart, input_path):
@@ -53,92 +52,38 @@ def patients_with_asthma_copd(smart, input_path):
                 time.sleep(3)
 
         conditions = fetch_bundle_for_code(smart, bundle)
+
         if conditions:
-            for entry in conditions:
+            for i, entry in enumerate(conditions, start=1):
+                if i == 3:
+                    break
+
                 condition = entry['resource']
                 if condition['subject']['reference']:
                     patient_reference = condition['subject']['reference']
                     attributes_condition = {'id': condition['id'], 'code': condition['code']}
+
                     if condition['encounter']['reference']:  # New: Include encounter reference
                         attributes_condition["encounter"] = condition['encounter']['reference']
+
                     if condition['onsetDateTime']:  # New: Include onsetDateTime from conditions
                         attributes_condition["onsetDateTime"] = condition['onsetDateTime']
                     patients_conditions_map[patient_reference].append(attributes_condition)
 
     gather_metadata(basis_filename, len(patients_conditions_map))
 
+    # total json export
     output_filepath = input_path / f"{basis_filename}.json"
     with open(output_filepath, 'w') as file:  # Intermediate results.
         json.dump(patients_conditions_map, file, indent=4)
 
-    return output_filepath
+    base_path = Path(output_filepath)
+    encounters_filepath = base_path.with_name(f"{basis_filename}-encounters.json")
 
-
-def filter_main_diagnosis(smart, input_filepath, enabled=True):
-    """
-    From the patients diagnosed ASTHMA or COPD, it filters only for HauptDiagnosis(Main) from their Encounter references.
-    Put the results into JSON file format.
-    :param smart: Fhir Server Connector
-    """
-    if not enabled:
-        return input_filepath
-
-    count_main_diagnose_type = defaultdict(int)
-    admission_dates = defaultdict(list)
-    base_filename = "main_diagnosis_asthma_or_copd_filter"
-
-    patients_with_chief_complaint = defaultdict(list)
-    with open(input_filepath, "r") as file:
-        patients = json.load(file)
-        for patient in patients.keys():
-            print(f"Processing patient with ID: {patient[8:]}...")
-            conditions_ids = patients[patient]
-            for condition in conditions_ids:
-                while True:  # Connection might get lost sometime, trying to reconnect...
-                    try:
-                        # Check the patient with the specific condition ID has Encounter reference.
-                        bundle = Encounter.where(struct={'_count': b'10', 'subject': patient, 'diagnosis': 'Condition/' + condition['id']}).perform(smart.server)
-                        break
-                    except Exception as exc:
-                        print(f"Generated an exception: {exc} but continue to trying. \n")
-                        smart = connect_to_server(user=USER_NAME, pw=USER_PASSWORD)
-                        time.sleep(3)
-
-                encounter = fetch_bundle_for_code(smart, bundle)
-                # If the encounter exist, check the diagnosis from this encounter is "MainDiagnose" or not. If so, put it into result.
-                if encounter:
-                    for enc in encounter:
-                        if 'diagnosis' in enc['resource']:
-                            for c in enc['resource']['diagnosis']:
-                                if c['use']['coding']:
-                                    for code in c['use']['coding']:
-                                        if code['code'] == "CC" and ('Condition/' + condition['id'] == c['condition']['reference']):  # chief complaint
-                                            patients_with_chief_complaint[patient].append(condition)
-                                            count_main_diagnose_type[condition['code']['coding'][0]['code']] += 1
-
-                                            period_start = enc['resource'].get("period", {}).get("start")
-                                            period_end = enc['resource'].get("period", {}).get("end")
-
-                                            attributes_encounters = {
-                                                "period_start": period_start,
-                                                "period_end": period_end,
-                                            }
-
-                                            admission_dates[patient].append([condition, attributes_encounters])
-
-    gather_metadata(base_filename, len(patients_with_chief_complaint))
-    gather_metadata("main_diagnosis_counts", count_main_diagnose_type)
-    gather_metadata("main_diagnosis_encounter_count", sum(count_main_diagnose_type.values()))
-
-    base_path = Path(input_filepath)
-
-    output_filepath = base_path.with_name(f"{base_filename}-admission_dates.json")
-    with open(output_filepath, "w") as out:
-        json.dump(admission_dates, out, indent=4)
-
-    output_filepath = base_path.with_name(f"{base_filename}.json")
-    with open(output_filepath, "w") as out:
-        json.dump(patients_with_chief_complaint, out, indent=4)
+    # encounters json export
+    additional_encounters = extract_additional_attributes_from_encounters(smart, output_filepath)
+    with open(encounters_filepath, 'w') as file:
+        json.dump(additional_encounters, file, indent=4)
 
     return output_filepath
 
@@ -193,24 +138,16 @@ def filter_patients_by_age_interval(smart, input_filepath, min_age, max_age, ena
     pid_not_birthdate = []
     total_processed = 0
 
-    # Search for existing admission_dates.json
-    prefix = input_filepath.stem
-    admission_match = list(input_filepath.parent.glob(f"{prefix}*admission_dates.json"))
+    with open(input_filepath, "r", encoding="utf-8") as f:
+        patient_encounters = json.load(f)
 
-    if not admission_match:
-        pass  # TODO: define 'xxx_admission_dates.json' for total_patients
-
-    new_input_filepath = admission_match[0]
-    print(f"Processing {new_input_filepath}...")
-
-    with open(new_input_filepath, "r", encoding="utf-8") as f:
-        admission_data = json.load(f)
-
-    for patient_ref, admissions in admission_data.items():
+    for patient_ref, encounter_attribs in patient_encounters.items():
         total_processed += 1
         patient_id = patient_ref.split("/")[-1]
+        print(f"\nProcessing patient {patient_id}...")
 
         birth_date = None
+
         while True:
             try:
                 patient = Patient.read(patient_id, smart.server)
@@ -227,17 +164,17 @@ def filter_patients_by_age_interval(smart, input_filepath, min_age, max_age, ena
             print(f"Skipping patient {patient_ref} - no birth date available.")
             continue
 
-        for admission in admissions:
-            # admission entries expected to be [condition_obj, admission_iso]
-            if not isinstance(admission, (list, tuple)) or len(admission) < 2:
+        for enc in encounter_attribs:
+            period_start = enc.get("period_start")
+            if not period_start:
                 continue
-            condition_obj, admission_val = admission[0], admission[1]
-            admission_date = parse_fhir_datetime(admission_val)
-            if not admission_date:
+
+            period_start_date = parse_fhir_datetime(period_start)
+            if not period_start_date:
                 continue
 
             try:
-                days = (admission_date.date() - birth_date.date()).days
+                days = (period_start_date.date() - birth_date.date()).days
                 if days < 0:
                     continue
                 age_years = int(days / 365)
@@ -246,8 +183,10 @@ def filter_patients_by_age_interval(smart, input_filepath, min_age, max_age, ena
 
             if min_age <= age_years <= max_age:
                 matched_patients[patient_ref].append({
-                    "condition": condition_obj,
-                    "admission": admission_date.isoformat() if hasattr(admission_date, "isoformat") else str(admission_date),
+                    "condition": enc["condition"],
+                    "period_start": enc.get("period_start"),
+                    "period_end": enc.get("period_end"),
+                    "birth_date": birth_date.isoformat() if birth_date else None,
                     "age": age_years
                 })
 
@@ -257,8 +196,10 @@ def filter_patients_by_age_interval(smart, input_filepath, min_age, max_age, ena
     gather_metadata("patient_count_by_age_interval", {label: interval_count})
     print(f"Found {interval_count} patients in interval [{min_age}, {max_age}] out of {total_processed} processed.")
 
-    new_filename = generate_output_filename(f"age_{min_age}_{max_age}", input_filepath)
-    output_filepath = input_filepath.with_name(new_filename)
+    base_path = Path(input_filepath)
+    new_filename = generate_output_filename(f"filtered_by_age_interval_{min_age}-{max_age}", input_filepath)
+
+    output_filepath = base_path.with_name(new_filename)
     with open(output_filepath, "w", encoding="utf-8") as out:
         json.dump({pid: entries for pid, entries in matched_patients.items()}, out, indent=4, ensure_ascii=False)
 
@@ -474,5 +415,59 @@ def get_demographics_patients(smart, input_filepath, enabled=True):
     patients_demographics_df.to_csv(os.path.join(subdirectory, "demographics.xlsx"), index=False, sep=";")
     print(f"Saving extracted demographics as .xlsx file in {subdirectory}")
 
-def get_dates_from_diagnoses():
-    return None
+
+def extract_additional_attributes_from_encounters(smart, input_filepath):
+
+    # Extract interested attributes from encounters (period, fallart, service_department_code)
+
+    print("Starting encounters extraction...")
+    encounter_results = defaultdict(list)
+
+    with open(input_filepath, "r") as file:
+        patients = json.load(file)
+        for patient in patients.keys():
+            conditions_ids = patients[patient]
+            for condition in conditions_ids:
+                while True:  # Connection might get lost sometime, trying to reconnect...
+                    try:
+                        bundle = Encounter.where(struct={
+                            '_count': b'100',
+                            'subject': patient,
+                            'diagnosis': 'Condition/' + condition['id']
+                        }).perform(smart.server)
+                        break
+                    except Exception as exc:
+                        print(f"Generated an exception: {exc} but continue to trying. \n")
+                        smart = connect_to_server(user=USER_NAME, pw=USER_PASSWORD)
+                        time.sleep(3)
+
+                encounter = fetch_bundle_for_code(smart, bundle)
+
+                if encounter:
+                    for i, enc in enumerate(encounter, start=1):
+                        if i == 5:  # temporal test breaker, remove after testing phase
+                            break
+
+                        period_start, period_end, fall_art, service_type_code = None, None, None, None
+
+                        if "period" in enc['resource']:
+                            period_start = enc["resource"]["period"].get("start")
+                            period_end = enc["resource"]["period"].get("end")
+
+                        if "class" in enc["resource"]:
+                            fall_art = enc["resource"]["class"].get("code")
+
+                        if "serviceType" in enc["resource"]:
+                            service_type_code = enc["resource"]["serviceType"].get("coding", [{}])[0].get("code")
+
+                        encounter_results[patient].append({
+                            "condition": condition,
+                            "period_start": period_start,
+                            "period_end": period_end,
+                            "fall_art": fall_art,
+                            "service_department_code": service_type_code,
+                        })
+
+    print("encounter_results:", encounter_results)
+    return encounter_results
+
