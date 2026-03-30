@@ -11,23 +11,27 @@ logging.basicConfig(level=logging.INFO, format='%(levelname)s - %(message)s')
 """"
 This script is for creating the Cohort Study Data. Study protocol requires the analysis of the patients from HauptDiagnosis with Asthma & COPD.
 Here, script first finds the patients with Asthma or Copd diagnosed. And later it filters only for HauptDiagnosis from their Encounter references.
-HauptDiagnoses are flagged as "CC" (Chief Complaints") in Encounter.Diagnosis.
 Results are saved in "patient_results.txt"
 """
 
-DIR_RESULTS = Path('results')
+DIR_RESULTS = Path('patient_results')
 DIR_RESULTS.mkdir(exist_ok=True)
 
 
 def main():
-    # Connect to FHIR Server
+    # # Connect to FHIR Server
     smart = connect_to_server(user=USER_NAME, pw=USER_PASSWORD)
 
     # Get the patients with ANY TYPE OF DIAGNOSES related with Asthma or COPD.
     diagnoses_filepath = patients_with_asthma_copd(smart, DIR_RESULTS)
 
-    # Filter by patients' age  min_age: int minimal age in years, max_age: integer maximal age in years Example: [2-6]
-    filter_patients_by_age_interval(smart, diagnoses_filepath, min_age=2, max_age=6, enabled=True)
+    # Filter by patients' age  min_age: minimal age in years, max_age:  maximal age in years Example: [0-2], [3-5], etc.
+    age_interval = {
+        'min_age': [0, 3, 6, 12],
+        'max_age': [2, 5, 11, 18]
+    }
+    for min_age, max_age in zip(age_interval['min_age'], age_interval['max_age']):
+        filter_patients_by_age_interval(smart, diagnoses_filepath, min_age=min_age, max_age=max_age, enabled=True)
 
     # Filter patients per type of admission (Intensive-Care-Unit)
     filter_icu_patients_admission(smart, diagnoses_filepath, enabled=True)

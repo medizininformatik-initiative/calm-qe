@@ -196,12 +196,13 @@ def filter_patients_by_age_interval(smart, input_filepath, min_age, max_age, ena
     gather_metadata("patient_count_by_age_interval", {label: interval_count})
     print(f"Found {interval_count} patients in interval [{min_age}, {max_age}] out of {total_processed} processed.")
 
-    base_path = Path(input_filepath)
-    new_filename = generate_output_filename(f"filtered_by_age_interval_{min_age}-{max_age}", input_filepath)
+    if interval_count > 0:
+        base_path = Path(input_filepath)
+        new_filename = generate_output_filename(f"filtered_by_age_interval_{min_age}-{max_age}", input_filepath)
 
-    output_filepath = base_path.with_name(new_filename)
-    with open(output_filepath, "w", encoding="utf-8") as out:
-        json.dump({pid: entries for pid, entries in matched_patients.items()}, out, indent=4, ensure_ascii=False)
+        output_filepath = base_path.with_name(new_filename)
+        with open(output_filepath, "w", encoding="utf-8") as out:
+            json.dump({pid: entries for pid, entries in matched_patients.items()}, out, indent=4, ensure_ascii=False)
 
 
 def filter_icu_patients_admission(smart, input_filepath, enabled=True):

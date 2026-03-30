@@ -17,7 +17,7 @@ def gather_metadata(source, count):
             "total_asthma_or_copd_diagnosed_patients": 0,
             "main_diagnosis_asthma_or_copd_filter": 0,
             "main_diagnosis_encounter_count": 0,  # Not same as main_diagnosis_asthma_or_copd_filter (might be higher). Sums the total number of main diagnoses a patient has received across all encounters, regardless of the specific diagnosis codes or times.
-            "patient_count_by_age_interval": 0,  # todo: modify as dict
+            "patient_count_by_age_interval": defaultdict(int),
             "intensive_care_unit_patient_count": 0,
             "secondary_conditions_patient_count": 0,
             "observations_patient_count": 0,
@@ -36,7 +36,12 @@ def gather_metadata(source, count):
     metadata["execution_time"] = datetime.now().strftime("%H:%M:%S")
 
     if source in metadata:
-        metadata[source] = count
+        if "patient_count_by_age_interval" in source:
+            for key, value in count.items():
+                metadata[source][key] = metadata[source].get(key, 0) + value
+                print("key-value", key, value)
+        else:
+            metadata[source] = count
     elif '_counts' in source.lower():
         metadata[source] = defaultdict(int, {count: 0})
         print(f"Source '{source}' was not defined; but it has been created in Metadata.json file.")
