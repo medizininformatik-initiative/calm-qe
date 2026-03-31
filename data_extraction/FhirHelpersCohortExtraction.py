@@ -420,6 +420,7 @@ def get_demographics_patients(smart, input_filepath, enabled=True):
 def extract_additional_attributes_from_encounters(smart, input_filepath):
 
     # Extract interested attributes from encounters (period, fallart, service_department_code)
+    contact_system = r"http://fhir.de/CodeSystem/kontaktart-de"
 
     print("Starting encounters extraction...")
     encounter_results = defaultdict(list)
@@ -449,7 +450,7 @@ def extract_additional_attributes_from_encounters(smart, input_filepath):
                         if i == 5:  # temporal test breaker, remove after testing phase
                             break
 
-                        period_start, period_end, fall_art, service_type_code = None, None, None, None
+                        period_start, period_end, fall_art, service_type_code, type_contact_code = None, None, None, None, None
 
                         if "period" in enc['resource']:
                             period_start = enc["resource"]["period"].get("start")
@@ -461,12 +462,22 @@ def extract_additional_attributes_from_encounters(smart, input_filepath):
                         if "serviceType" in enc["resource"]:
                             service_type_code = enc["resource"]["serviceType"].get("coding", [{}])[0].get("code")
 
+                        if "type" in enc["resource"]:
+                            for type_entry in enc["resource"]["type"]:
+                                if "coding" not in type_entry:
+                                    continue
+                                for coding in type_entry["coding"]:
+                                    if not contact_system in coding["system"]:
+                                        continue
+                                    type_contact_code = coding.get("code")
+
                         encounter_results[patient].append({
                             "condition": condition,
                             "period_start": period_start,
                             "period_end": period_end,
                             "fall_art": fall_art,
                             "service_department_code": service_type_code,
+                            "type_contact_code": type_contact_code,
                         })
 
     print("encounter_results:", encounter_results)
