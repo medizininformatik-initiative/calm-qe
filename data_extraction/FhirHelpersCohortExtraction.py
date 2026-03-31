@@ -222,11 +222,12 @@ def filter_icu_patients_admission(smart, input_filepath, enabled=True):
             main_patients_conditions = json.load(file)
             for patient_id, condition_ids in main_patients_conditions.items():
                 for condition_id in condition_ids:
+                    cid = condition_id['id'] if isinstance(condition_id, dict) else condition_id
                     try:
                         bundle = Encounter.where({
                             'subject': f'{patient_id}',
-                            'diagnosis.condition': f'Condition/{condition_id}',
-                            '_count': '50'
+                            'diagnosis.condition': f'Condition/{cid}',
+                            '_count': '100'
                         }).perform(smart.server)
                     except Exception as e:
                         print(f"Generated an exception for {patient_id} with condition/{condition_id}: {e}, but continue trying...")
@@ -241,18 +242,19 @@ def filter_icu_patients_admission(smart, input_filepath, enabled=True):
                                 if "coding" not in type_entry:
                                     continue
                                 for coding in type_entry["coding"]:
-                                    if "code" in coding and coding["code"].lower() == "intensivstationaer":
+                                    if "code" in coding and "intensiv" in coding["code"].lower():
                                         print(f"ICU encounter found for patient {patient_id}")
-                                        cond_id = condition_id["id"] if isinstance(condition_id, dict) else condition_id
-                                        icu_patients.setdefault(patient_id, set()).add(cond_id)
+                                        encounter_id = encounter["resource"].get("id")
+                                        icu_patients.setdefault(patient_id, set()).add(encounter_id)
                 else:
                     print("Skipping patient, no bundle found")
 
-    icu_patients_json = {pid: list(cond_ids) for pid, cond_ids in icu_patients.items()}
+    icu_patients_json = {pid: list(enc_ids) for pid, enc_ids in icu_patients.items()}
 
+    base_path = Path(input_filepath)
     new_filename = generate_output_filename("icu_admission", input_filepath)
-    output_filepath = input_filepath.with_name(new_filename)
-    with open(output_filepath, "w") as out:
+    output_filepath = base_path.with_name(new_filename)
+    with open(output_filepath, "w", encoding="utf-8") as out:
         json.dump(icu_patients_json, out, indent=4)
 
     gather_metadata("intensive_care_unit_patient_count", len(icu_patients))
@@ -280,7 +282,7 @@ def calculate_los_inpatients(smart, input_filepath, enabled=True):
                     try:
                         bundle = Encounter.where({
                             'subject': f'{patient_id}',
-                            'diagnosis.condition': f'Condition/{condition_id}',
+                            'diagnosis.condition': f'Condition/{condition_id['id']}',
                             '_count': '50'
                         }).perform(smart.server)
                     except Exception as e:
