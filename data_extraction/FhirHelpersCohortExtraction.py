@@ -320,19 +320,24 @@ def extract_last_three_encounter(smart, input_filepath, enabled=True):
         return input_filepath
 
     patients_last_3_encounters = defaultdict(list)
-    patients_admission_encounter = defaultdict(list)
 
     with open(input_filepath, "r") as file:
         patients = json.load(file)
         for patient in patients.keys():
             print(f"Processing patient with ID: {patient[8:]}...")
             all_encounters_per_patient = []
-            conditions_ids = patients[patient]
-            for condition in conditions_ids:
+            attributes_encounter = patients[patient]
+            for attribute_encounter in attributes_encounter:
+                period_start = parse_fhir_datetime(attribute_encounter["period_start"]).strftime("%Y-%m-%d")
+
                 while True:  # Connection might get lost sometime, trying to reconnect...
                     try:
                         # Check the patient with the specific condition ID has Encounter reference.
-                        bundle = Encounter.where(struct={'_count': b'10', 'subject': patient, 'diagnosis': 'Condition/' + condition['id']}).perform(smart.server)
+                        bundle = Encounter.where(struct={
+                            '_count': b'10',
+                            'subject': patient,
+                            'date': f"lt{period_start}"
+                        }).perform(smart.server)
                         break
                     except Exception as exc:
                         print(f"Generated an exception: {exc} but continue to trying. \n")
@@ -342,39 +347,38 @@ def extract_last_three_encounter(smart, input_filepath, enabled=True):
                 encounters = fetch_bundle_for_code(smart, bundle)
 
                 if encounters:
-                    for encounter in encounters:  #Only one encounter should be returned actually since we query by condition ID. #redundant
-                        resource = encounter.get("resource", {})
-                        period = resource.get("period", {})
-                        start = parse_fhir_datetime(period.get("start"))
-                        end = parse_fhir_datetime(period.get("end"))
+                    for enc in encounters:
+                        start, end, = None, None
 
-                        if not start and not end:
+                        resource = enc.get("resource", {})
+                        if "period" in enc['resource']:
+                            start = enc["resource"]["period"].get("start")
+                            end = enc["resource"]["period"].get("end")
+
+                        if not start:
                             continue
+
                         all_encounters_per_patient.append({
                             "encounter_id": resource.get("id"),
-                            "start": start.isoformat() if start else None,
-                            "end": end.isoformat() if end else None,
+                            "period_start": start if start else None,
+                            "period_end": end if end else None,
                         })
 
-            valid_encounters = [e for e in all_encounters_per_patient if e.get("start") or e.get("end")] #Skip if there is no end/start time
+            valid_encounters = [e for e in all_encounters_per_patient if e.get("period_start")]
 
             sorted_encounters = sorted(
                 valid_encounters,
-                key=lambda e: e["end"] or e["start"],
+                key=lambda e:e["period_start"],
                 reverse=True
             )
 
-            # Keep last 3 encounters
-            patients_last_3_encounters[patient] = sorted_encounters[:3]
-            patients_admission_encounter[patient] = sorted_encounters[0]
+            if len(sorted_encounters) > 0:
+                # Keep last 3 encounters
+                patients_last_3_encounters[patient] = sorted_encounters[:3]
 
-    new_filename = generate_output_filename("last_3_encounters", input_filepath)
-    output_filepath = input_filepath.with_name(new_filename)
-    with open(output_filepath, "w", encoding="utf-8") as file:
-        json.dump(patients_last_3_encounters, file, indent=4, ensure_ascii=False)
-
-    new_filename = generate_output_filename("recent_encounter_admission_dates", input_filepath)
-    output_filepath = input_filepath.with_name(new_filename)
+    base_path = Path(input_filepath)
+    new_filename = generate_output_filename("filtered_by_last_3_encounters", input_filepath)
+    output_filepath = base_path.with_name(new_filename)
     with open(output_filepath, "w", encoding="utf-8") as file:
         json.dump(patients_last_3_encounters, file, indent=4, ensure_ascii=False)
 
