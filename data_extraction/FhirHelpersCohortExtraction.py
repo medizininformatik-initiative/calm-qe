@@ -302,8 +302,10 @@ def calculate_los_inpatients(smart, input_filepath, enabled=True):
                                         inpatients[patient_id].append(stay_entry)
                     else:
                         print("Skipping patient, no bundle found")
+    base_path = Path(input_filepath)
+
     new_filename = generate_output_filename("length_of_stay",  input_filepath)
-    output_filepath = input_filepath.with_name(new_filename)
+    output_filepath = base_path.with_name(new_filename)
     with open(output_filepath, "w", encoding="utf-8") as file:
         json.dump(inpatients, file, indent=4, ensure_ascii=False)
 
@@ -422,7 +424,7 @@ def get_demographics_patients(smart, input_filepath, enabled=True):
 def extract_additional_attributes_from_encounters(smart, input_filepath):
 
     # Extract interested attributes from encounters (period, fallart, service_department_code)
-    contact_system = r"http://fhir.de/CodeSystem/kontaktart-de"
+    contact_system = "http://fhir.de/CodeSystem/kontaktart-de"
 
     print("Starting encounters extraction...")
     encounter_results = defaultdict(list)
