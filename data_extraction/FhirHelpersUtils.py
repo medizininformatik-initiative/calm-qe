@@ -38,9 +38,15 @@ def fetch_bundle_for_code(smart, bundle):
     user = quote(USER_NAME, safe="")
     password = quote(USER_PASSWORD, safe="")
 
-    url = f"https://{user}:{password}@" + bundle.link[0].url.split("://", 1)[1]
-
     while True:
+        entries = bundle.get("entry", [])
+        yield entries
+
+        next_link = next((p for p in bundle.get("link", []) if p.get("relation") == "next"), None)
+        if not next_link:
+            break
+
+        url = f"https://{user}:{password}@" + next_link["url"].split("://", 1)[1]
         while True:
             try:
                 bundle = smart.server.request_json(url)
@@ -50,11 +56,3 @@ def fetch_bundle_for_code(smart, bundle):
                 smart = connect_to_server(user=USER_NAME, pw=USER_PASSWORD)
                 time.sleep(3)
 
-        entries = bundle.get("entry", [])
-        yield entries
-
-        next_pages = [p for p in bundle.get("link", []) if p.get("relation") == "next"]
-        if not next_pages:
-            break
-
-        url = f"https://{user}:{password}@" + next_pages[0]["url"].split("://", 1)[1]
