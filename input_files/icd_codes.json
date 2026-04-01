@@ -121,9 +121,10 @@
 				"J45.909",
 				"J45.990",
 				"J45.991",
-				"J45.998"
+				"J45.998",
+				"J46"
 			],
-			"description": "haupt_diagnose"
+			"description": "haupt-Nebendiagnose"
 		},
 		{
 			"code": [
@@ -1426,6 +1427,483 @@
 				"L99.8"
 			],
 			"description": "haut_unterhaut"
+		},
+		{
+			"code": [
+				"Z99.0",
+				"Z99.1"
+			],
+			"description": "Abhängigkeit von unterstützenden Apparaten, medizinischen Geräten oder Hilfsmitteln"
+		},
+		{
+			"code": [
+				"Z99.11"
+			],
+			"description": "Abhängigkeit von Heimbeatmung"
+		},
+		{
+			"code": [
+				"E66",
+				"E66.0",
+				"E66.00",
+				"E66.01",
+				"E66.04",
+				"E66.05",
+				"E66.06",
+				"E66.07",
+				"E66.08",
+				"E66.09",
+				"E66.1",
+				"E66.10",
+				"E66.11",
+				"E66.14",
+				"E66.15",
+				"E66.16",
+				"E66.17",
+				"E66.18",
+				"E66.19",
+				"E66.2",
+				"E66.20",
+				"E66.21",
+				"E66.24",
+				"E66.25",
+				"E66.26",
+				"E66.27",
+				"E66.28",
+				"E66.29",
+				"E66.8",
+				"E66.80",
+				"E66.81",
+				"E66.84",
+				"E66.85",
+				"E66.86",
+				"E66.87",
+				"E66.88",
+				"E66.89",
+				"E66.9",
+				"E66.90",
+				"E66.91",
+				"E66.94",
+				"E66.95",
+				"E66.96",
+				"E66.97",
+				"E66.98",
+				"E66.99"
+			],
+			"description": "Adipositas"
+		},
+		{
+			"code": [
+				"J80",
+				"J80.0",
+				"J80.01",
+				"J80.02",
+				"J80.03",
+				"J80.04",
+				"J80.05",
+				"J80.06",
+				"J80.09"
+			],
+			"description": "Akutes Atemnotsyndrom des Kindes, Jugendlichen und Erwachsenen [ARDS]"
+		},
+		{
+			"code": [
+				"I70",
+				"I70.0",
+				"I70.1",
+				"I70.2",
+				"I70.20",
+				"I70.21",
+				"I70.22",
+				"I70.23",
+				"I70.24",
+				"I70.25",
+				"I70.26",
+				"I70.29",
+				"I70.8",
+				"I70.9"
+			],
+			"description": "Atherosklerose"
+		},
+		{
+			"code": [
+				"L20",
+				"L20.0",
+				"L20.8",
+				"L20.9"
+			],
+			"description": "Atopisches [endogenes] Ekzem"
+		},
+		{
+			"code": [
+				"C34",
+				"C34.0",
+				"C34.1",
+				"C34.2",
+				"C34.3",
+				"C34.8",
+				"C34.9"
+			],
+			"description": "Bösartige Neubildung der Bronchien und der Lunge"
+		},
+		{
+			"code": [
+				"D02.2"
+			],
+			"description": "Carcinoma in situ des Mittelohres und des Atmungssystems"
+		},
+		{
+			"code": [
+				"I25",
+				"I25.0",
+				"I25.1",
+				"I25.10",
+				"I25.11",
+				"I25.12",
+				"I25.13",
+				"I25.14",
+				"I25.15",
+				"I25.16",
+				"I25.19",
+				"I25.2",
+				"I25.20",
+				"I25.21",
+				"I25.22",
+				"I25.29",
+				"I25.3",
+				"I25.4",
+				"I25.5",
+				"I25.6",
+				"I25.8",
+				"I25.9"
+			],
+			"description": "Chronische ischämische Herzkrankheit"
+		},
+		{
+			"code": [
+				"F32",
+				"F32.0",
+				"F32.1",
+				"F32.2",
+				"F32.3",
+				"F32.8",
+				"F32.9"
+			],
+			"description": "Depressive Episode"
+		},
+		{
+			"code": [
+				"E11",
+				"E11.0",
+				"E11.01",
+				"E11.1",
+				"E11.11",
+				"E11.2",
+				"E11.20",
+				"E11.21",
+				"E11.3",
+				"E11.30",
+				"E11.31",
+				"E11.4",
+				"E11.40",
+				"E11.41",
+				"E11.5",
+				"E11.50",
+				"E11.51",
+				"E11.6",
+				"E11.60",
+				"E11.61",
+				"E11.7",
+				"E11.72",
+				"E11.73",
+				"E11.74",
+				"E11.75",
+				"E11.8",
+				"E11.80",
+				"E11.81",
+				"E11.9",
+				"E11.90",
+				"E11.91"
+			],
+			"description": "Diabetes mellitus, Typ 2"
+		},
+		{
+			"code": [
+				"J43",
+				"J43.0",
+				"J43.1",
+				"J43.2",
+				"J43.8",
+				"J43.9"
+			],
+			"description": "Emphysem"
+		},
+		{
+			"code": [
+				"I10",
+				"I10.0",
+				"I10.00",
+				"I10.01",
+				"I10.1",
+				"I10.10",
+				"I10.11",
+				"I10.9",
+				"I10.90",
+				"I10.91"
+			],
+			"description": "Essentielle (primäre) Hypertonie"
+		},
+		{
+			"code": [
+				"K74",
+				"K74.0",
+				"K74.1",
+				"K74.2",
+				"K74.3",
+				"K74.4",
+				"K74.5",
+				"K74.6",
+				"K74.7",
+				"K74.70",
+				"K74.71",
+				"K74.72"
+			],
+			"description": "Fibrose und Zirrhose der Leber"
+		},
+		{
+			"code": [
+				"I50",
+				"I50.0",
+				"I50.00",
+				"I50.01",
+				"I50.02",
+				"I50.03",
+				"I50.04",
+				"I50.05",
+				"I50.1",
+				"I50.11",
+				"I50.12",
+				"I50.13",
+				"I50.14",
+				"I50.19",
+				"I50.9"
+			],
+			"description": "Herzinsuffizienz"
+		},
+		{
+			"code": [
+				"J18",
+				"J18.0",
+				"J18.1",
+				"J18.2",
+				"J18.8",
+				"J18.9"
+			],
+			"description": "Pneumonie, Erreger nicht näher bezeichnet"
+		},
+		{
+			"code": [
+				"F17",
+				"F17.0",
+				"F17.1",
+				"F17.2",
+				"F17.3",
+				"F17.4",
+				"F17.5",
+				"F17.6",
+				"F17.7",
+				"F17.8",
+				"F17.9"
+			],
+			"description": "Psychische und Verhaltensstörungen durch Tabak"
+		},
+		{
+			"code": [
+				"J96",
+				"J96.0",
+				"J96.00",
+				"J96.01",
+				"J96.09",
+				"J96.1",
+				"J96.10",
+				"J96.11",
+				"J96.19",
+				"J96.9",
+				"J96.90",
+				"J96.91",
+				"J96.99"
+			],
+			"description": "Respiratorische Insuffizienz, anderenorts nicht klassifiziert"
+		},
+		{
+			"code": [
+				"M54",
+				"M54.0",
+				"M54.00",
+				"M54.01",
+				"M54.02",
+				"M54.03",
+				"M54.04",
+				"M54.05",
+				"M54.06",
+				"M54.07",
+				"M54.08",
+				"M54.09",
+				"M54.1",
+				"M54.10",
+				"M54.11",
+				"M54.12",
+				"M54.13",
+				"M54.14",
+				"M54.15",
+				"M54.16",
+				"M54.17",
+				"M54.18",
+				"M54.19",
+				"M54.2",
+				"M54.3",
+				"M54.4",
+				"M54.5",
+				"M54.6",
+				"M54.8",
+				"M54.80",
+				"M54.81",
+				"M54.82",
+				"M54.83",
+				"M54.84",
+				"M54.85",
+				"M54.86",
+				"M54.87",
+				"M54.88",
+				"M54.89",
+				"M54.9",
+				"M54.90",
+				"M54.91",
+				"M54.92",
+				"M54.93",
+				"M54.94",
+				"M54.95",
+				"M54.96",
+				"M54.97",
+				"M54.98",
+				"M54.99"
+			],
+			"description": "Rückenschmerzen"
+		},
+		{
+			"code": [
+				"G47",
+				"G47.0",
+				"G47.1",
+				"G47.2",
+				"G47.3",
+				"G47.30",
+				"G47.31",
+				"G47.32",
+				"G47.38",
+				"G47.39",
+				"G47.4",
+				"G47.8",
+				"G47.9"
+			],
+			"description": "Schlafstörungen"
+		},
+		{
+			"code": [
+				"I27",
+				"I27.0",
+				"I27.00",
+				"I27.01",
+				"I27.02",
+				"I27.08",
+				"I27.1",
+				"I27.2",
+				"I27.20",
+				"I27.21",
+				"I27.22",
+				"I27.28",
+				"I27.8",
+				"I27.9"
+			],
+			"description": "Sonstige pulmonale Herzkrankheiten"
+		},
+		{
+			"code": [
+				"R06",
+				"R06.0",
+				"R06.1",
+				"R06.2",
+				"R06.3",
+				"R06.4",
+				"R06.5",
+				"R06.6",
+				"R06.7",
+				"R06.8",
+				"R06.80",
+				"R06.88"
+			],
+			"description": "Störungen der Atmung"
+		},
+		{
+			"code": [
+				"J30",
+				"J30.0",
+				"J30.1",
+				"J30.2",
+				"J30.3",
+				"J30.4"
+			],
+			"description": "Vasomotorische und allergische Rhinopathie"
+		},
+		{
+			"code": [
+				"J30",
+				"J30.0",
+				"J30.1",
+				"J30.2",
+				"J30.3"
+			],
+			"description": "Vasomotorische und allergische Rhinopathie"
+		},
+		{
+			"code": "L27.2",
+			"description": "Dermatitis durch aufgenommene Nahrungsmittel"
+		},
+		{
+			"code": "L50.0",
+			"description": "Allergische Urtikaria"
+		},
+		{
+			"code": "K52.2",
+			"description": "Allergische und alimentäre Gastroenteritis und Kolitis"
+		},
+		{
+			"code": [
+				"T78",
+				"T78.0",
+				"T78.1",
+				"T78.2",
+				"T78.3",
+				"T78.4",
+				"T78.6",
+				"T78.7"
+			],
+			"description": "Unerwünschte Nebenwirkungen, anderenorts nicht klassifiziert"
+		},
+		{
+			"code": [
+				"T88.6",
+				"T88.7"
+				],
+			"description": "Sonstige Komplikationen bei chirurgischen Eingriffen und medizinischer Behandlung, anderenorts nicht klassifiziert"
+		},
+		{
+			"code": "Z88",
+			"description": "Allergie gegenüber Arzneimitteln, Drogen oder biologisch aktiven Substanzen in der Eigenanamnese"
+		},
+		{
+			"code": "Z91.0",
+			"description": "Allergie, ausgenommen Allergie gegenüber Arzneimitteln, Drogen oder biologisch aktiven Substanzen, in der Eigenanamnese"
 		}
 	]
 }

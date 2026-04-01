@@ -1,124 +1,240 @@
 {
-  "codes": [
-    {"code": "J44", "description": "Description1"},
-    {"code": "J44.0", "description": "Description2"},
-    {"code": "J44.00", "description": "Description1"},
-    {"code": "J44.1", "description": "Description1"},
-    {"code": "J44.2", "description": "Description2"},
-    {"code": "J44.3", "description": "Description1"},
-    {"code": "J44.4", "description": "Description1"},
-    {"code": "J44.5", "description": "Description2"},
-    {"code": "J44.6", "description": "Description1"},
-    {"code": "J44.7", "description": "Description1"},
-    {"code": "J44.8", "description": "Description2"},
-    {"code": "J44.9", "description": "Description1"},
-    {"code": "J44.01", "description": "Description1"},
-    {"code": "J44.02", "description": "Description2"},
-    {"code": "J44.03", "description": "Description1"},
-    {"code": "J44.04", "description": "Description1"},
-    {"code": "J44.05", "description": "Description2"},
-    {"code": "J44.06", "description": "Description1"},
-    {"code": "J44.07", "description": "Description1"},
-    {"code": "J44.08", "description": "Description2"},
-    {"code": "J44.09", "description": "Description1"},
-    {"code": "J44.10", "description": "Description1"},
-    {"code": "J44.11", "description": "Description2"},
-    {"code": "J44.12", "description": "Description1"},
-    {"code": "J44.13", "description": "Description1"},
-    {"code": "J44.14", "description": "Description2"},
-    {"code": "J44.15", "description": "Description1"},
-    {"code": "J44.16", "description": "Description1"},
-    {"code": "J44.17", "description": "Description2"},
-    {"code": "J44.18", "description": "Description1"},
-    {"code": "J44.19", "description": "Description1"},
-    {"code": "J44.80", "description": "Description1"},
-    {"code": "J44.81", "description": "Description2"},
-    {"code": "J44.82", "description": "Description1"},
-    {"code": "J44.83", "description": "Description1"},
-    {"code": "J44.84", "description": "Description2"},
-    {"code": "J44.85", "description": "Description1"},
-    {"code": "J44.86", "description": "Description1"},
-    {"code": "J44.87", "description": "Description2"},
-    {"code": "J44.88", "description": "Description1"},
-    {"code": "J44.89", "description": "Description1"},
-    {"code": "J44.90", "description": "Description2"},
-    {"code": "J44.91", "description": "Description1"},
-    {"code": "J44.92", "description": "Description1"},
-    {"code": "J44.93", "description": "Description2"},
-    {"code": "J44.94", "description": "Description1"},
-    {"code": "J44.95", "description": "Description1"},
-    {"code": "J44.96", "description": "Description2"},
-    {"code": "J44.97", "description": "Description1"},
-    {"code": "J44.98", "description": "Description1"},
-    {"code": "J44.99", "description": "Description1"},
-    {"code": "J45", "description": "Description2"},
-    {"code": "J45.00", "description": "Description1"},
-    {"code": "J45.0", "description": "Description2"},
-    {"code": "J45.1", "description": "Description1"},
-    {"code": "J45.2", "description": "Description1"},
-    {"code": "J45.3", "description": "Description2"},
-    {"code": "J45.4", "description": "Description1"},
-    {"code": "J45.5", "description": "Description1"},
-    {"code": "J45.6", "description": "Description2"},
-    {"code": "J45.7", "description": "Description1"},
-    {"code": "J45.8", "description": "Description1"},
-    {"code": "J45.9", "description": "Description1"},
-    {"code": "J45.01", "description": "Description1"},
-    {"code": "J45.02", "description": "Description2"},
-    {"code": "J45.03", "description": "Description1"},
-    {"code": "J45.04", "description": "Description1"},
-    {"code": "J45.05", "description": "Description2"},
-    {"code": "J45.06", "description": "Description1"},
-    {"code": "J45.07", "description": "Description1"},
-    {"code": "J45.08", "description": "Description2"},
-    {"code": "J45.09", "description": "Description1"},
-    {"code": "J45.10", "description": "Description2"},
-    {"code": "J45.11", "description": "Description1"},
-    {"code": "J45.12", "description": "Description1"},
-    {"code": "J45.13", "description": "Description2"},
-    {"code": "J45.14", "description": "Description1"},
-    {"code": "J45.15", "description": "Description1"},
-    {"code": "J45.16", "description": "Description1"},
-    {"code": "J45.17", "description": "Description1"},
-    {"code": "J45.18", "description": "Description2"},
-    {"code": "J45.19", "description": "Description1"},
-    {"code": "J45.20", "description": "Description2"},
-    {"code": "J45.21", "description": "Description1"},
-    {"code": "J45.22", "description": "Description1"},
-    {"code": "J45.30", "description": "Description1"},
-    {"code": "J45.31", "description": "Description1"},
-    {"code": "J45.32", "description": "Description2"},
-    {"code": "J45.40", "description": "Description1"},
-    {"code": "J45.41", "description": "Description2"},
-    {"code": "J45.42", "description": "Description1"},
-    {"code": "J45.50", "description": "Description1"},
-    {"code": "J45.51", "description": "Description1"},
-    {"code": "J45.52", "description": "Description2"},
-    {"code": "J45.80", "description": "Description1"},
-    {"code": "J45.81", "description": "Description2"},
-    {"code": "J45.82", "description": "Description1"},
-    {"code": "J45.83", "description": "Description1"},
-    {"code": "J45.84", "description": "Description1"},
-    {"code": "J45.85", "description": "Description2"},
-    {"code": "J45.86", "description": "Description1"},
-    {"code": "J45.87", "description": "Description1"},
-    {"code": "J45.88", "description": "Description2"},
-    {"code": "J45.89", "description": "Description1"},
-    {"code": "J45.90", "description": "Description1"},
-    {"code": "J45.91", "description": "Description1"},
-    {"code": "J45.92", "description": "Description2"},
-    {"code": "J45.93", "description": "Description1"},
-    {"code": "J45.94", "description": "Description1"},
-    {"code": "J45.95", "description": "Description2"},
-    {"code": "J45.96", "description": "Description1"},
-    {"code": "J45.97", "description": "Description1"},
-    {"code": "J45.98", "description": "Description2"},
-    {"code": "J45.99", "description": "Description1"},
-    {"code": "J45.901", "description": "Description2"},
-    {"code": "J45.902", "description": "Description1"},
-    {"code": "J45.909", "description": "Description1"},
-    {"code": "J45.990", "description": "Description2"},
-    {"code": "J45.991", "description": "Description1"},
-    {"code": "J45.998", "description": "Description1"}
-  ]
+	"codes": [
+		{
+			"code": "J44",
+			"description": "Sonstige chronische obstruktive Lungenkrankheit"
+		},
+		{
+			"code": "J44.0",
+			"description": "Sonstige chronische obstruktive Lungenkrankheit"
+		},
+		{
+			"code": "J44.00",
+			"description": "Sonstige chronische obstruktive Lungenkrankheit"
+		},
+		{
+			"code": "J44.01",
+			"description": "Sonstige chronische obstruktive Lungenkrankheit"
+		},
+		{
+			"code": "J44.02",
+			"description": "Sonstige chronische obstruktive Lungenkrankheit"
+		},
+		{
+			"code": "J44.03",
+			"description": "Sonstige chronische obstruktive Lungenkrankheit"
+		},
+		{
+			"code": "J44.09",
+			"description": "Sonstige chronische obstruktive Lungenkrankheit"
+		},
+		{
+			"code": "J44.1",
+			"description": "Sonstige chronische obstruktive Lungenkrankheit"
+		},
+		{
+			"code": "J44.10",
+			"description": "Sonstige chronische obstruktive Lungenkrankheit"
+		},
+		{
+			"code": "J44.11",
+			"description": "Sonstige chronische obstruktive Lungenkrankheit"
+		},
+		{
+			"code": "J44.12",
+			"description": "Sonstige chronische obstruktive Lungenkrankheit"
+		},
+		{
+			"code": "J44.13",
+			"description": "Sonstige chronische obstruktive Lungenkrankheit"
+		},
+		{
+			"code": "J44.19",
+			"description": "Sonstige chronische obstruktive Lungenkrankheit"
+		},
+		{
+			"code": "J44.8",
+			"description": "Sonstige chronische obstruktive Lungenkrankheit"
+		},
+		{
+			"code": "J44.80",
+			"description": "Sonstige chronische obstruktive Lungenkrankheit"
+		},
+		{
+			"code": "J44.81",
+			"description": "Sonstige chronische obstruktive Lungenkrankheit"
+		},
+		{
+			"code": "J44.82",
+			"description": "Sonstige chronische obstruktive Lungenkrankheit"
+		},
+		{
+			"code": "J44.83",
+			"description": "Sonstige chronische obstruktive Lungenkrankheit"
+		},
+		{
+			"code": "J44.89",
+			"description": "Sonstige chronische obstruktive Lungenkrankheit"
+		},
+		{
+			"code": "J44.9",
+			"description": "Sonstige chronische obstruktive Lungenkrankheit"
+		},
+		{
+			"code": "J44.90",
+			"description": "Sonstige chronische obstruktive Lungenkrankheit"
+		},
+		{
+			"code": "J44.91",
+			"description": "Sonstige chronische obstruktive Lungenkrankheit"
+		},
+		{
+			"code": "J44.92",
+			"description": "Sonstige chronische obstruktive Lungenkrankheit"
+		},
+		{
+			"code": "J44.93",
+			"description": "Sonstige chronische obstruktive Lungenkrankheit"
+		},
+		{
+			"code": "J44.99",
+			"description": "Sonstige chronische obstruktive Lungenkrankheit"
+		},
+		{
+			"code": "J45",
+			"description": "Asthma bronchiale"
+		},
+		{
+			"code": "J45.0",
+			"description": "Asthma bronchiale"
+		},
+		{
+			"code": "J45.00",
+			"description": "Asthma bronchiale"
+		},
+		{
+			"code": "J45.01",
+			"description": "Asthma bronchiale"
+		},
+		{
+			"code": "J45.02",
+			"description": "Asthma bronchiale"
+		},
+		{
+			"code": "J45.03",
+			"description": "Asthma bronchiale"
+		},
+		{
+			"code": "J45.04",
+			"description": "Asthma bronchiale"
+		},
+		{
+			"code": "J45.05",
+			"description": "Asthma bronchiale"
+		},
+		{
+			"code": "J45.09",
+			"description": "Asthma bronchiale"
+		},
+		{
+			"code": "J45.1",
+			"description": "Asthma bronchiale"
+		},
+		{
+			"code": "J45.10",
+			"description": "Asthma bronchiale"
+		},
+		{
+			"code": "J45.11",
+			"description": "Asthma bronchiale"
+		},
+		{
+			"code": "J45.12",
+			"description": "Asthma bronchiale"
+		},
+		{
+			"code": "J45.13",
+			"description": "Asthma bronchiale"
+		},
+		{
+			"code": "J45.14",
+			"description": "Asthma bronchiale"
+		},
+		{
+			"code": "J45.15",
+			"description": "Asthma bronchiale"
+		},
+		{
+			"code": "J45.19",
+			"description": "Asthma bronchiale"
+		},
+		{
+			"code": "J45.8",
+			"description": "Asthma bronchiale"
+		},
+		{
+			"code": "J45.80",
+			"description": "Asthma bronchiale"
+		},
+		{
+			"code": "J45.81",
+			"description": "Asthma bronchiale"
+		},
+		{
+			"code": "J45.82",
+			"description": "Asthma bronchiale"
+		},
+		{
+			"code": "J45.83",
+			"description": "Asthma bronchiale"
+		},
+		{
+			"code": "J45.84",
+			"description": "Asthma bronchiale"
+		},
+		{
+			"code": "J45.85",
+			"description": "Asthma bronchiale"
+		},
+		{
+			"code": "J45.89",
+			"description": "Asthma bronchiale"
+		},
+		{
+			"code": "J45.9",
+			"description": "Asthma bronchiale"
+		},
+		{
+			"code": "J45.90",
+			"description": "Asthma bronchiale"
+		},
+		{
+			"code": "J45.91",
+			"description": "Asthma bronchiale"
+		},
+		{
+			"code": "J45.92",
+			"description": "Asthma bronchiale"
+		},
+		{
+			"code": "J45.93",
+			"description": "Asthma bronchiale"
+		},
+		{
+			"code": "J45.94",
+			"description": "Asthma bronchiale"
+		},
+		{
+			"code": "J45.95",
+			"description": "Asthma bronchiale"
+		},
+		{
+			"code": "J45.99",
+			"description": "Asthma bronchiale"
+		},
+		{
+			"code": "J46",
+			"description": "Status asthmaticus"
+		}
+	]
 }
