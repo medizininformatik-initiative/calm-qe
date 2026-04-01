@@ -2,7 +2,10 @@ import os
 from collections import defaultdict
 import json
 import time
+from concurrent.futures import ThreadPoolExecutor, as_completed
 
+from fhirclient.models.bundle import Bundle
+from fhirclient.models.condition import Condition
 from fhirclient.models.medication import Medication
 from fhirclient.models.medicationadministration import MedicationAdministration
 from fhirclient.models.medicationrequest import MedicationRequest
@@ -10,33 +13,29 @@ from fhirclient.models.medicationstatement import MedicationStatement
 
 from Constants import USER_NAME, USER_PASSWORD, ICD_SYSTEM_NAME, LOINC_SYSTEM_NAME, MAX_WORKERS, ATC_SYSTEM_NAME, \
     ASTHMA_COPD_CODES_FILE
-from concurrent.futures import ThreadPoolExecutor, as_completed
-
 from FhirHelpersUtils import connect_to_server, fetch_bundle_for_code
 from Metadata import gather_metadata
+
 
 def read_input_code_file(filename):
     """
     :param filename:  input file of code list
-    :return:
+    :return: code_list
     """
     with open(filename, "r") as fp:
         lines = json.load(fp)
 
         if 'loinc_codes' in filename:
-            system = LOINC_SYSTEM_NAME
             if not os.path.exists(f"fhir_results/LOINC/"):
                 os.makedirs(f"fhir_results/LOINC/")
             code_list = [item['code'] for item in lines['codes']]
 
         elif 'icd_codes' in filename:
-            system = ICD_SYSTEM_NAME
             if not os.path.exists(f"fhir_results/ICD/"):
                 os.makedirs(f"fhir_results/ICD/")
             code_list = [code for item in lines['codes'] for code in item['code']]
 
         elif 'atc_codes' in filename:
-            system = ATC_SYSTEM_NAME
             if not os.path.exists(f"fhir_results/ATC/"):
                 os.makedirs(f"fhir_results/ATC/")
                 os.makedirs(f"fhir_results/ATC/Administrations/")
@@ -44,119 +43,178 @@ def read_input_code_file(filename):
                 os.makedirs(f"fhir_results/ATC/Statements/")
             code_list = [code['code'] for code in lines]
 
-    return code_list, system
+    return code_list
 
-def write_results(entries, patient_counter, code_type, source):
+
+def patients_with_asthma_copd(smart):
     """
-    It reads all Resources in the bundle and write to output files per patient.
+    It reads the ASTHMA or COPD diseases related codes from "ASTHMA_COPD_CODES_FILE" and
+    find the patients with such diagnoses.
+    :param smart: Fhir Server Connector
     """
-    if code_type == "LOINC":
-        whole_path = "fhir_results/LOINC/" + patient_counter + "_patient_observations.json"
-    elif code_type == "ICD":
-        whole_path = "fhir_results/ICD/" + patient_counter + "_patient_conditions.json"
-    elif code_type == "ATC":
-        if source is MedicationAdministration:
-            whole_path = "fhir_results/ATC/Administrations/" + patient_counter + "_patient_medicationAdministrations.json"
-        elif source is MedicationRequest:
-            whole_path = "fhir_results/ATC/Requests/" + patient_counter + "_patient_medicationRequests.json"
-        elif source is MedicationStatement:
-            whole_path = "fhir_results/ATC/Statements/" + patient_counter + "_patient_medicationStatements.json"
+    with open(ASTHMA_COPD_CODES_FILE, 'r') as file:
+        diagnoses_file = json.load(file)
+        diagnoses_codes = [item['code'] for item in diagnoses_file['codes']]
 
-    with open(whole_path, 'w') as file:
-        json.dump(entries, file, indent=4)
+    patients_conditions_map = defaultdict(list)
+    for code in diagnoses_codes:
+        while True:
+            try:
+                bundle = Bundle(smart.server.request_json(
+                    Condition.where(struct={'_count': "1000", 'code': ICD_SYSTEM_NAME + '|' + code}).construct()),
+                                strict=False)
+                break
+            except Exception as exc:
+                print(f"Generated an exception: {exc} but continue trying.\n")
+                smart = connect_to_server(user=USER_NAME, pw=USER_PASSWORD)
+                time.sleep(3)
+
+        for entries in fetch_bundle_for_code(smart, bundle):
+            for entry in entries:
+                condition = entry['resource']
+                if condition['subject']['reference']:
+                    patient_reference = condition['subject']['reference']
+                    patients_conditions_map[patient_reference].append(
+                        {"id": condition['id'], "code": condition['code']})
+
+    gather_metadata("asthma_and_copd_patient_count", len(patients_conditions_map))
+    with open('patients_diagnosed_asthma_copd.json', 'w') as file:  #intermediate results, can be deleted later.
+        json.dump(patients_conditions_map, file, indent=4)
 
 
+def observations(patient, code_set, source, smart):
+    patient_id = patient.split("/")[-1]
+    whole_path = f"fhir_results/LOINC/{patient_id}_patient_observations.json"
 
-def observations(patient, code_file, source, smart):
-    print(f"Creating queries for patient {patient} for observation resources...\n")
     while True:
         try:
-            bundle = source.where(struct={'_count': b'1000', 'subject': patient}).perform(smart.server)
+            bundle = Bundle(
+                smart.server.request_json(source.where(struct={'_count': '1000', 'subject': patient}).construct()),
+                strict=False)
             break
         except Exception as exc:
-            print(f"Generated an exception: {exc} but continue to trying... \n")
+            print(f"Generated an exception: {exc} but continue trying.\n")
             time.sleep(3)
             smart = connect_to_server(user=USER_NAME, pw=USER_PASSWORD)
 
-    observations_bundles = fetch_bundle_for_code(smart, bundle)
-    code_list, system = read_input_code_file(code_file)
-    filtered_results = []
-    for observation in observations_bundles:
-        if 'code' in observation['resource'] and 'coding' in observation['resource']['code']:
-            for coding in observation['resource']['code']['coding']:
-                if LOINC_SYSTEM_NAME == coding['system'] and coding['code'] in code_list:
-                    filtered_results.append(observation)
-    print(f"Patient {patient} has {len(filtered_results)} observations.")
-    return filtered_results
+    count = 0
+    file = None
+    try:
+        for entries in fetch_bundle_for_code(smart, bundle):
+            for observation in entries:
+                resource = observation.get("resource", {})
+                codings = resource.get("code", {}).get("coding", [])
+                for coding in codings:
+                    if LOINC_SYSTEM_NAME == coding['system'] and coding['code'] in code_set:
+                        if file is None:
+                            file = open(whole_path, "w")
+                        json.dump(observation, file, separators=(",", ":"))
+                        file.write("\n")
+                        count += 1
+    finally:
+        if file is not None:
+            file.close()
+    return count
 
-def conditions(patient, code_file, source, smart,):
-    code_list, system = read_input_code_file(code_file)
-    sub_code_lists = [code_list[i:i + 30] for i in range(0, len(code_list), 30)]  # Smaller chunks of code list
-    conditions = []
-    print(f"Creating queries for patient {patient} for conditions...\n")
-    for sub_code_list in sub_code_lists:
-        sub_code_list_str = ','.join([system + '|' + code for code in sub_code_list])
-        while True:
-            try:
-                bundle = source.where(struct={'_count': b'1000', 'subject': patient, 'code': sub_code_list_str}).perform(smart.server)
-                break
-            except Exception as exc:
-                print(f"Generated an exception: {exc} but continue to trying... \n")
-                time.sleep(3)
-                smart = connect_to_server(user=USER_NAME, pw=USER_PASSWORD)
 
-        batch_result = fetch_bundle_for_code(smart, bundle)
+def conditions(patient, code_list, source, smart):
+    patient_id = patient.split("/")[-1]
+    whole_path = "fhir_results/ICD/" + patient_id + "_patient_conditions.json"
 
-        if len(batch_result) > 0:
-            conditions.extend(batch_result)
+    sub_code_lists = [code_list[i:i + 30] for i in range(0, len(code_list), 30)]  # smaller chunks of code list
 
-    return conditions
+    count = 0
+    file = None
+    try:
+        for sub_code_list in sub_code_lists:
+            sub_code_list_str = ','.join([ICD_SYSTEM_NAME + '|' + code for code in sub_code_list])
+            while True:
+                try:
+                    bundle = Bundle(smart.server.request_json(source.where(
+                        struct={'_count': '1000', 'subject': patient, 'code': sub_code_list_str}).construct()),
+                                    strict=False)
+                    break
+                except Exception as exc:
+                    print(f"Generated an exception: {exc} but continue trying.\n")
+                    time.sleep(3)
+                    smart = connect_to_server(user=USER_NAME, pw=USER_PASSWORD)
 
-def medications(patient, code_file, source, smart):
-    code_list, system = read_input_code_file(code_file)
-    code_list_str = ','.join([system + '|' + code for code in code_list])
+            for entries in fetch_bundle_for_code(smart, bundle):
+                for condition in entries:
+                    if file is None:
+                        file = open(whole_path, "w")
+                    json.dump(condition, file, separators=(",", ":"))
+                    file.write("\n")
+                    count += 1
+    finally:
+        if file is not None:
+            file.close()
+    return count
 
-    print(f"Creating queries for patient {patient}...\n")
+
+def medications(patient, code_list, source, smart):
+    code_list_str = ','.join([ATC_SYSTEM_NAME + '|' + code for code in code_list])
+    patient_id = patient.split("/")[-1]
+
+    if source is MedicationAdministration:
+        whole_path = "fhir_results/ATC/Administrations/" + patient_id + "_patient_medicationAdministrations.json"
+    elif source is MedicationRequest:
+        whole_path = "fhir_results/ATC/Requests/" + patient_id + "_patient_medicationRequests.json"
+    elif source is MedicationStatement:
+        whole_path = "fhir_results/ATC/Statements/" + patient_id + "_patient_medicationStatements.json"
+
     while True:
         try:
             if source == Medication:
-                bundle = (source.where(struct={'_count': b'1000', 'subject': patient, 'code': code_list_str})
-                          .perform(smart.server))
+                bundle = Bundle(smart.server.request_json(
+                    source.where(struct={'_count': '1000', 'subject': patient, 'code': code_list_str}).construct()),
+                    strict=False)
             else:
-                bundle = source.where(
-                    struct={'_count': b'1000', 'patient': patient, 'medication.code': code_list_str}).perform(
-                    smart.server)
+                bundle = Bundle(smart.server.request_json(source.where(
+                    struct={'_count': '1000', 'patient': patient, 'medication.code': code_list_str}).construct()),
+                                strict=False)
             break
         except Exception as exc:
-            print(f"Generated an exception: {exc} but continue to trying... \n")
+            print(f"Generated an exception: {exc} but continue trying.\n")
             smart = connect_to_server(user=USER_NAME, pw=USER_PASSWORD)
             time.sleep(3)
-    medications_bundles = fetch_bundle_for_code(smart, bundle)
-    return medications_bundles
+    count = 0
+    file = None
+    try:
+        for entries in fetch_bundle_for_code(smart, bundle):
+            for medicationProfile in entries:
+                if file is None:
+                    file = open(whole_path, "w")
+                json.dump(medicationProfile, file, separators=(",", ":"))
+                file.write("\n")
+                count += 1
+    finally:
+        if file is not None:
+            file.close()
+    return count
 
-def execute_thread_for_fetching(code_file, source, patient_list, code_type, function_to_run):
+
+def execute_thread_for_fetching(code_set, source, patient_list, code_type, function_to_run):
     """
     Threads for running fetch queries parallel.
     """
     smart = connect_to_server(user=USER_NAME, pw=USER_PASSWORD)
+    processed = 0
+    total_patients = len(patient_list)
     with ThreadPoolExecutor(max_workers=MAX_WORKERS) as executor:
-        future_to_code = {executor.submit(function_to_run, patient, code_file, source, smart): patient for patient in patient_list}
-        counter = 0
+        future_to_code = {executor.submit(function_to_run, patient, code_set, source, smart): patient for patient in
+                          patient_list}
         for future in as_completed(future_to_code):
             patient = future_to_code[future]
+            processed += 1
             try:
-                entries = future.result()
-                if entries:
-                    counter += 1
-                    write_results(entries, str(counter), code_type, source)
-                print(f"Processed patient {patient} with {len(entries)} entries.\n")
+                count = future.result()
+                print(f"[{processed}/{total_patients}] {patient} with {count} {code_type} entries processed")
             except Exception as exc:
-                print(f"Patient {patient} generated an exception: {exc}.\n")
-
+                print(f"[{processed}/{total_patients}] [{code_type}] {patient} generated an exception: {exc}")
 
     ###META DATA COLLECTION###
     '''
-    patient_count_with_secondary_conditions: Number of cohort patients that has secondary conditions (non main diagnosis ASTHMA OR COPD) 
     patient_count_with_observations: Number of cohort patients that has at least one observation
     patient_count_with_medications: Number of cohort patients that has at least one medication
     conditions_counts: Frequency of each ICD code 
@@ -165,71 +223,63 @@ def execute_thread_for_fetching(code_file, source, patient_list, code_type, func
     '''
 
     if code_type == "LOINC":
-        gather_metadata("patient_count_with_observations", counter)
+        gather_metadata("patient_count_with_observations", count)
     elif code_type == "ATC":
         if source is MedicationAdministration:
-            gather_metadata("patient_count_with_medicationAdministrations", counter)
+            gather_metadata("patient_count_with_medicationAdministrations", count)
         elif source is MedicationRequest:
-            gather_metadata("patient_count_with_medicationRequests", counter)
+            gather_metadata("patient_count_with_medicationRequests", count)
         elif source is MedicationStatement:
-            gather_metadata("patient_count_with_medicationStatements", counter)
+            gather_metadata("patient_count_with_medicationStatements", count)
     else:
         pass
     print("---------------End of Code------------------------")
 
+
 def observation_frequencies(code_file):
     folder_path = "fhir_results/LOINC"
     observations_counts = defaultdict(int)
-    code_list, system = read_input_code_file(code_file)
+    code_list = read_input_code_file(code_file)
 
     for filename in os.listdir(folder_path):
         if filename.endswith(".json"):
             file_path = os.path.join(folder_path, filename)
             with open(file_path, 'r') as json_file:
-                data = json.load(json_file)
-                for observation in data:
-                    if 'code' in observation['resource'] and 'coding' in observation['resource']['code']:
-                        for coding in observation['resource']['code']['coding']:
-                            if LOINC_SYSTEM_NAME == coding['system'] and coding['code'] in code_list:
-                                observations_counts[coding['code']] += 1
+                for line in json_file:
+                    observation = json.loads(line)
+                    resource = observation.get("resource", {})
+                    codings = resource.get("code", {}).get("coding", [])
+                    for coding in codings:
+                        if LOINC_SYSTEM_NAME == coding['system'] and coding['code'] in code_list:
+                            observations_counts[coding['code']] += 1
 
     for code, frequency in observations_counts.items():
         print(f"{code}: {frequency}")
     gather_metadata("observations_counts", observations_counts)
 
-def secondary_conditions_frequencies(code_file):
+
+def conditions_frequencies(code_file):
     folder_path = "fhir_results/ICD"
-    code_list, system = read_input_code_file(code_file)
+    code_list = read_input_code_file(code_file)
     conditions_counts = defaultdict(int)
-
-    pats = set()
-    main_diagnoses_ids = set()
-
-    with open("patients_main_diagnosed_asthma_copd.json", "r") as file:
-        patients = json.load(file)
-        for conditions in patients.values():
-            main_diagnoses_ids.update(condition['id'] for condition in conditions)
 
     for filename in os.listdir(folder_path):
         if filename.endswith(".json"):
             file_path = os.path.join(folder_path, filename)
             with open(file_path, 'r') as json_file:
-                data = json.load(json_file)
-                for condition in data:
-                    if 'code' in condition['resource'] and 'coding' in condition['resource']['code']:
-                        for coding in condition['resource']['code']['coding']:
-                            if ICD_SYSTEM_NAME == coding['system'] and coding['code'] in code_list:
-                                if condition['resource']['id'] not in main_diagnoses_ids:
-                                    pats.add(condition['resource']['subject']['reference'])
-                                    conditions_counts[coding['code']] += 1
+                for line in json_file:
+                    condition = json.loads(line)
+                    resource = condition.get("resource", {})
+                    codings = resource.get("code", {}).get("coding", [])
+                    for coding in codings:
+                        if ICD_SYSTEM_NAME == coding['system'] and coding['code'] in code_list:
+                            conditions_counts[coding['code']] += 1
 
-    gather_metadata("secondary_conditions_counts", conditions_counts)
-    gather_metadata("patient_count_with_secondary_conditions", len(pats))
+    gather_metadata("conditions_counts", conditions_counts)
 
 
-def fetch_atc_codes(resource_ref, system, code_list):
-    smart = connect_to_server(user=USER_NAME, pw=USER_PASSWORD)
-
+def fetch_atc_codes(resource_ref, code_list, smart):
+    system = ATC_SYSTEM_NAME
     try:
         source, medication_reference_id = resource_ref.split('/')
         if source:
@@ -244,8 +294,10 @@ def fetch_atc_codes(resource_ref, system, code_list):
 
 
 def medication_frequencies(code_file):
-    folder_paths =  ["fhir_results/ATC/Administrations", "fhir_results/ATC/Requests", "fhir_results/ATC/Statements"]
-    code_list, system = read_input_code_file(code_file)
+    smart = connect_to_server(user=USER_NAME, pw=USER_PASSWORD)
+    folder_paths = ["fhir_results/ATC/Administrations", "fhir_results/ATC/Requests", "fhir_results/ATC/Statements"]
+    code_list = read_input_code_file(code_file)
+    system = ATC_SYSTEM_NAME
 
     for folder_path in folder_paths:
         medication_type_and_med_reference = {}
@@ -260,16 +312,18 @@ def medication_frequencies(code_file):
             if filename.endswith(".json"):
                 file_path = os.path.join(folder_path, filename)
                 with (open(file_path, 'r') as json_file):
-                    data = json.load(json_file)
-                    print(f"\nReading {filename}")
+                    for line in json_file:
+                        medicationProfile = json.loads(line)
+                        if 'resource' in medicationProfile:
+                            resource_type = medicationProfile['resource']['resourceType']
+                            resource_ref = medicationProfile['resource']['medicationReference']['reference']
 
-                    for medicationReference in data:
-                        if 'resource' in medicationReference:
-                            resource_type = medicationReference['resource']['resourceType']
-                            resource_ref = medicationReference['resource']['medicationReference']['reference']
-
-                            code_name = fetch_atc_codes(resource_ref, system, code_list)
-                            print("Fetched code name:", code_name)
+                            try:
+                                code_name = fetch_atc_codes(resource_ref, system, code_list, smart)
+                            except Exception as exc:
+                                print(f"Generated an exception: {exc} but continue trying.\n")
+                                smart = connect_to_server(user=USER_NAME, pw=USER_PASSWORD)
+                                time.sleep(3)
 
                             if resource_type not in medication_type_and_med_reference:
                                 medication_type_and_med_reference[resource_type] = {}
@@ -286,12 +340,9 @@ def medication_frequencies(code_file):
             resource_structure[resource_type]["counting"]["total_count"] = total_count
             resource_structure[resource_type]["counting"]["details_count"] = details_count
 
-        print("final resource outcome", resource_structure)
         if "Administrations" in folder_path:
             gather_metadata("medicationAdministrations_counts", resource_structure)
         elif "Requests" in folder_path:
             gather_metadata("medicationRequests_counts", resource_structure)
         elif "Statements" in folder_path:
             gather_metadata("medicationStatements_counts", resource_structure)
-
-
