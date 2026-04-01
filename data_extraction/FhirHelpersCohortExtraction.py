@@ -54,10 +54,7 @@ def patients_with_asthma_copd(smart, input_path):
         conditions = fetch_bundle_for_code(smart, bundle)
 
         if conditions:
-            for i, entry in enumerate(conditions, start=1):
-                if i == 3:
-                    break
-
+            for entry in conditions:
                 condition = entry['resource']
                 if condition['subject']['reference']:
                     patient_reference = condition['subject']['reference']
@@ -115,7 +112,7 @@ def process_inpatient_encounter(resource):
     los_days = compute_los(start, end)
 
     return {
-        "encounter_id": resource.get("id"),
+        "encounter": resource.get("id"),
         "start": start.isoformat() if start else None,
         "end": end.isoformat() if end else None,
         "los_days": round(los_days, 2) if los_days else None
@@ -359,7 +356,7 @@ def extract_last_three_encounter(smart, input_filepath, enabled=True):
                             continue
 
                         all_encounters_per_patient.append({
-                            "encounter_id": resource.get("id"),
+                            "encounter": resource.get("id"),
                             "period_start": start if start else None,
                             "period_end": end if end else None,
                         })
@@ -454,10 +451,7 @@ def extract_additional_attributes_from_encounters(smart, input_filepath):
                 encounter = fetch_bundle_for_code(smart, bundle)
 
                 if encounter:
-                    for i, enc in enumerate(encounter, start=1):
-                        if i == 5:  # temporal test breaker, remove after testing phase
-                            break
-
+                    for enc in encounter:
                         period_start, period_end, fall_art, service_type_code, type_contact_code = None, None, None, None, None
 
                         if "period" in enc['resource']:
@@ -490,4 +484,3 @@ def extract_additional_attributes_from_encounters(smart, input_filepath):
 
     print("encounter_results:", encounter_results)
     return encounter_results
-
