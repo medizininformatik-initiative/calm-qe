@@ -199,11 +199,14 @@ def execute_thread_for_fetching(code_set, source, patient_list, code_type, funct
     with ThreadPoolExecutor(max_workers=MAX_WORKERS) as executor:
         future_to_code = {executor.submit(function_to_run, patient, code_set, source, smart): patient for patient in
                           patient_list}
+        patient_counter = 0
         for future in as_completed(future_to_code):
             patient = future_to_code[future]
             processed += 1
             try:
                 count = future.result()
+                if count > 0:
+                    patient_counter += 1
                 print(f"[{processed}/{total_patients}] {patient} with {count} {code_type} entries processed")
             except Exception as exc:
                 print(f"[{processed}/{total_patients}] [{code_type}] {patient} generated an exception: {exc}")
@@ -218,14 +221,14 @@ def execute_thread_for_fetching(code_set, source, patient_list, code_type, funct
     '''
 
     if code_type == "LOINC":
-        gather_metadata("patient_count_with_observations", count)
+        gather_metadata("patient_count_with_observations", patient_counter)
     elif code_type == "ATC":
         if source is MedicationAdministration:
-            gather_metadata("patient_count_with_medicationAdministrations", count)
+            gather_metadata("patient_count_with_medicationAdministrations", patient_counter)
         elif source is MedicationRequest:
-            gather_metadata("patient_count_with_medicationRequests", count)
+            gather_metadata("patient_count_with_medicationRequests", patient_counter)
         elif source is MedicationStatement:
-            gather_metadata("patient_count_with_medicationStatements", count)
+            gather_metadata("patient_count_with_medicationStatements", patient_counter)
     else:
         pass
     print("---------------End of Code------------------------")
