@@ -39,23 +39,16 @@ USER_NAME = os.getenv("USER_NAME", "user1")
 USER_PASSWORD = os.getenv("USER_PASSWORD", "pass123")
 SERVER_NAME = os.getenv("SERVER_NAME", "server.fhir.diz.uni.de/fhir")
 
-#### Creation of Cohort Patients List
+#### Creation of Cohort Patients List and Extraction of the Resources from Cohort Patients
 ------------------------------------------
-This section identifies patients diagnosed with "Asthma" or "COPD".
+This script identifies patients diagnosed with "Asthma" or "COPD".
 
-Initially, `CohortPatientsExecute.py` reads from the input_files folder `asthma_copd_codes.json` automatically. This JSON file includes all the ICD-10 codes available related to "Asthma" and "COPD". Modifications to this code list are possible based on unique needs when required.
+ `ExtractCohortwithResourcesExecute.py` reads from the input_files folder `asthma_copd_codes.json` automatically. This JSON file includes all the ICD-10 codes available related to "Asthma" and "COPD". Modifications to this code list are possible based on unique needs when required.
 The usage of this file is determined in `Constants.py`. 
 
 The script outputs all the patients' IDs and corresponding diagnoses in `patients_diagnosed_asthma_copd.json`.
 
-###### Usage:
-```
-python .\data_extraction\CohortPatientsExecute.py
-```
-#### Extraction of the Resources from Cohort Patients
-----------------------------------------------------
-
-After the first part is complete, the analysis continues with the fetching, extraction, and count of secondary Conditions, Observations and Medication data available after running `ExtractResourcesForCohortExecute.py`. 
+After the first part is complete, the analysis continues with the fetching, extraction, and count of secondary Conditions, Observations and Medication. 
 
 The script generates separate JSON files for each resource type (e.g., Conditions, Observations, Medications) per patient.
 

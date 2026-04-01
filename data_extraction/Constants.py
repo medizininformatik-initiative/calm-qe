@@ -10,4 +10,4 @@ ASTHMA_COPD_CODES_FILE = "input_files/asthma_copd_codes.json"
 ICD_SYSTEM_NAME = 'http://fhir.de/CodeSystem/bfarm/icd-10-gm'
 LOINC_SYSTEM_NAME = 'http://loinc.org'
 ATC_SYSTEM_NAME = "http://fhir.de/CodeSystem/bfarm/atc"
-MAX_WORKERS = min(32, (os.cpu_count() or 1) * 5)
+MAX_WORKERS = min(6, (os.cpu_count() or 1) * 5)
