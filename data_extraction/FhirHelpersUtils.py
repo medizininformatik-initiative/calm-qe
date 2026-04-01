@@ -1,10 +1,11 @@
 import time
-from urllib.parse import quote
-
+import pytz
 import urllib3
+from urllib.parse import quote
 from fhirclient import client
 from Constants import USER_NAME, USER_PASSWORD, SERVER_NAME
 from datetime import datetime, timezone
+from fhirclient.models.bundle import Bundle
 
 try:
     from zoneinfo import ZoneInfo
@@ -28,7 +29,7 @@ def connect_to_server(user, pw):
         "api_base": f"https://{user}:{pw}@{SERVER_NAME}"}
 
     smart = client.FHIRClient(settings=settings)
-    smart.server.session.verify = False # todo:remove
+    # smart.server.session.verify = False
     return smart
 
 def fetch_bundle_for_code(smart, bundle):
@@ -44,8 +45,9 @@ def fetch_bundle_for_code(smart, bundle):
     #handle special character
     user = quote(USER_NAME, safe="")
     password = quote(USER_PASSWORD, safe="")
+    bundle_obj = Bundle(bundle)
 
-    url = f"https://{user}:{password}@" + bundle.link[0].url.split("://", 1)[1]
+    url = f"https://{user}:{password}@" + bundle_obj.link[0].url.split("://", 1)[1]
 
     while True:
         while True:

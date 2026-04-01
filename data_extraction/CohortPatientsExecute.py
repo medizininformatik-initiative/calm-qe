@@ -19,19 +19,19 @@ DIR_RESULTS.mkdir(exist_ok=True)
 
 
 def main():
-    # # Connect to FHIR Server
+    # Connect to FHIR Server
     smart = connect_to_server(user=USER_NAME, pw=USER_PASSWORD)
 
     # Get the patients with ANY TYPE OF DIAGNOSES related with Asthma or COPD.
-    diagnoses_filepath = patients_with_asthma_copd(smart, DIR_RESULTS)
+    diagnoses_filepath, encounters_filepath = patients_with_asthma_copd(smart, DIR_RESULTS)
 
     # Filter by patients' age  min_age: minimal age in years, max_age:  maximal age in years Example: [0-2], [3-5], etc.
     age_interval = {
-        'min_age': [0, 3, 6, 12],
-        'max_age': [2, 5, 11, 18]
+        'min_age': [0, 6, 13, 25],
+        'max_age': [5, 12, 24, 120]
     }
     for min_age, max_age in zip(age_interval['min_age'], age_interval['max_age']):
-        filter_patients_by_age_interval(smart, diagnoses_filepath, min_age=min_age, max_age=max_age, enabled=True)
+        filter_patients_by_age_interval(smart, encounters_filepath, min_age=min_age, max_age=max_age, enabled=True)
 
     # Filter patients per type of admission (Intensive-Care-Unit)
     filter_icu_patients_admission(smart, diagnoses_filepath, enabled=True)
@@ -40,7 +40,7 @@ def main():
     calculate_los_inpatients(smart, diagnoses_filepath, enabled=True)
 
     # Extract last 3 encounter for each patient
-    extract_last_three_encounter(smart, diagnoses_filepath, enabled=True)
+    extract_last_three_encounter(smart, encounters_filepath, enabled=True)
 
     # Export patient's demographics
     get_demographics_patients(smart, diagnoses_filepath, enabled=True)

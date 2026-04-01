@@ -212,11 +212,11 @@ def execute_thread_for_fetching(code_set, source, patient_list, code_type, funct
         gather_metadata("observations_patient_count", count)
     elif code_type == "ATC":
         if source is MedicationAdministration:
-            gather_metadata("medicationAdministration_patient_count", count)
+            gather_metadata("patient_count_with_medicationAdministrations", count)
         elif source is MedicationRequest:
-            gather_metadata("medicationRequests_patient_count", count)
+            gather_metadata("patient_count_with_medicationRequests", count)
         elif source is MedicationStatement:
-            gather_metadata("medicationStatement_patient_count", count)
+            gather_metadata("patient_count_with_medicationStatements", count)
     else:
         pass
     print("---------------End of Code------------------------")

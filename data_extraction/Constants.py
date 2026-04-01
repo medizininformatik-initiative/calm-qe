@@ -1,9 +1,10 @@
 import os
 from dotenv import load_dotenv
 
-USER_NAME = os.getenv("USER_NAME", "PUT YOUR USER NAME HERE")
-USER_PASSWORD = os.getenv("USER_PASSWORD", "PUT YOUR PASSWORD HERE")
-SERVER_NAME = os.getenv("SERVER_NAME", "PUT YOUR SERVER NAME HERE")
+load_dotenv()
+USER_NAME = os.getenv("USER_NAME")
+USER_PASSWORD = os.getenv("USER_PASSWORD")
+SERVER_NAME = os.getenv("SERVER_NAME")
 ICD_CODE_FILE = "input_files/icd_codes.json"
 LOINC_CODE_FILE = "input_files/loinc_codes.json"
 ATC_CODE_FILE = "input_files/atc_codes.json"

@@ -15,10 +15,9 @@ def gather_metadata(source, count):
         metadata = {
             "execution_date": datetime.now().strftime("%Y-%m-%d"),
             "execution_time": datetime.now().strftime("%H:%M:%S"),
-            "total_asthma_or_copd_diagnosed_patients": 0,
+            "patients_diagnosed_asthma_copd": 0,
             "patient_count_by_age_interval": defaultdict(int),
-            "intensive_care_unit_patient_count": 0,
-            "asthma_and_copd_patient_count": 0,
+            "patient_count_in_intensive_care": 0,
             "patient_count_with_observations": 0,
             "patient_count_with_medicationRequests": 0,
             "patient_count_with_medicationAdministrations": 0,

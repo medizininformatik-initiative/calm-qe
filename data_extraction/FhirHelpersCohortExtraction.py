@@ -23,8 +23,8 @@ def generate_output_filename(surfix_filename, directory):
     input_path = Path(directory)
     target_file = input_path.stem
 
-    if "total_asthma_or_copd_diagnosed_patients" in target_file:
-        return f"total_diagnosis_{surfix_filename}.json"
+    if "patients_diagnosed_asthma_copd" in target_file:
+        return f"patients_{surfix_filename}.json"
 
 
 def patients_with_asthma_copd(smart, input_path):
@@ -34,34 +34,32 @@ def patients_with_asthma_copd(smart, input_path):
     :param smart: Fhir Server Connector
     """
     with open(ASTHMA_COPD_CODES_FILE, 'r') as file:
-        main_diagnoses_file = json.load(file)
-        main_diagnoses_codes = [item['code'] for item in main_diagnoses_file['codes']]
-    print('codes main diagnoses:', main_diagnoses_codes)
+        diagnoses_file = json.load(file)
+        diagnoses_codes = [item['code'] for item in diagnoses_file['codes']]
 
-    basis_filename = "total_asthma_or_copd_diagnosed_patients"
+    basis_filename = "patients_diagnosed_asthma_copd"
     patients_conditions_map = defaultdict(list)
 
-    for code in main_diagnoses_codes:
+    for code in diagnoses_codes:
         while True:
             try:
-                bundle = Condition.where(struct={'_count': b'1000', 'code': ICD_SYSTEM_NAME + '|' + code}).perform(smart.server)
+                bundle = smart.server.request_json(
+                    Condition.where(struct={'_count': '1000', 'code': ICD_SYSTEM_NAME + '|' + code}).construct())
                 break
             except Exception as exc:
-                print(f"Generated an exception: {exc} but continue to trying.\n")
+                print(f"Generated an exception: {exc} but continue trying.\n")
                 smart = connect_to_server(user=USER_NAME, pw=USER_PASSWORD)
                 time.sleep(3)
 
-        conditions = fetch_bundle_for_code(smart, bundle)
-
-        if conditions:
-            for entry in conditions:
+        for entries in fetch_bundle_for_code(smart, bundle):
+            for entry in entries:
                 condition = entry['resource']
                 if condition['subject']['reference']:
                     patient_reference = condition['subject']['reference']
                     attributes_condition = {'id': condition['id'], 'code': condition['code']}
 
                     if condition['encounter']['reference']:  # New: Include encounter reference
-                        attributes_condition["encounter"] = condition['encounter']['reference']
+                        attributes_condition["encounter"] = condition['encounter']['reference'].split("/")[1]
 
                     if condition['onsetDateTime']:  # New: Include onsetDateTime from conditions
                         attributes_condition["onsetDateTime"] = condition['onsetDateTime']
@@ -74,15 +72,14 @@ def patients_with_asthma_copd(smart, input_path):
     with open(output_filepath, 'w') as file:  # Intermediate results.
         json.dump(patients_conditions_map, file, indent=4)
 
+    # encounters json export
     base_path = Path(output_filepath)
     encounters_filepath = base_path.with_name(f"{basis_filename}-encounters.json")
-
-    # encounters json export
     additional_encounters = extract_additional_attributes_from_encounters(smart, output_filepath)
     with open(encounters_filepath, 'w') as file:
         json.dump(additional_encounters, file, indent=4)
 
-    return output_filepath
+    return output_filepath, encounters_filepath
 
 
 def process_inpatient_encounter(resource):
@@ -115,7 +112,7 @@ def process_inpatient_encounter(resource):
         "encounter": resource.get("id"),
         "start": start.isoformat() if start else None,
         "end": end.isoformat() if end else None,
-        "los_days": round(los_days, 2) if los_days else None
+        "days": round(los_days, 2) if los_days else None
     }
 
 
@@ -143,8 +140,6 @@ def filter_patients_by_age_interval(smart, input_filepath, min_age, max_age, ena
         patient_id = patient_ref.split("/")[-1]
         print(f"\nProcessing patient {patient_id}...")
 
-        birth_date = None
-
         while True:
             try:
                 patient = Patient.read(patient_id, smart.server)
@@ -162,16 +157,16 @@ def filter_patients_by_age_interval(smart, input_filepath, min_age, max_age, ena
             continue
 
         for enc in encounter_attribs:
-            period_start = enc.get("period_start")
-            if not period_start:
+            start = enc.get("start")
+            if not start:
                 continue
 
-            period_start_date = parse_fhir_datetime(period_start)
-            if not period_start_date:
+            start_date = parse_fhir_datetime(start)
+            if not start_date:
                 continue
 
             try:
-                days = (period_start_date.date() - birth_date.date()).days
+                days = (start_date.date() - birth_date.date()).days
                 if days < 0:
                     continue
                 age_years = int(days / 365)
@@ -181,9 +176,9 @@ def filter_patients_by_age_interval(smart, input_filepath, min_age, max_age, ena
             if min_age <= age_years <= max_age:
                 matched_patients[patient_ref].append({
                     "condition": enc["condition"],
-                    "period_start": enc.get("period_start"),
-                    "period_end": enc.get("period_end"),
-                    "birth_date": birth_date.isoformat() if birth_date else None,
+                    "start": enc.get("start"),
+                    "end": enc.get("end"),
+                    "birthdate": birth_date.isoformat() if birth_date else None,
                     "age": age_years
                 })
 
@@ -221,27 +216,27 @@ def filter_icu_patients_admission(smart, input_filepath, enabled=True):
                 for condition_id in condition_ids:
                     cid = condition_id['id'] if isinstance(condition_id, dict) else condition_id
                     try:
-                        bundle = Encounter.where({
+                        bundle = smart.server.request_json(
+                            Encounter.where({
                             'subject': f'{patient_id}',
                             'diagnosis.condition': f'Condition/{cid}',
                             '_count': '100'
-                        }).perform(smart.server)
+                        }).construct())
                     except Exception as e:
                         print(f"Generated an exception for {patient_id} with condition/{condition_id}: {e}, but continue trying...")
                         smart = connect_to_server(user=USER_NAME, pw=USER_PASSWORD)
                         time.sleep(3)
 
-                if bundle:
-                    encounters = fetch_bundle_for_code(smart, bundle)
-                    for encounter in encounters:
-                        if "resource" in encounter and "type" in encounter['resource']:
-                            for type_entry in encounter["resource"]["type"]:
+                for entry in fetch_bundle_for_code(smart, bundle):
+                    for enc in entry:
+                        if "resource" in enc and "type" in enc['resource']:
+                            for type_entry in enc["resource"]["type"]:
                                 if "coding" not in type_entry:
                                     continue
                                 for coding in type_entry["coding"]:
                                     if "code" in coding and "intensiv" in coding["code"].lower():
                                         print(f"ICU encounter found for patient {patient_id}")
-                                        encounter_id = encounter["resource"].get("id")
+                                        encounter_id = enc["resource"].get("id")
                                         icu_patients.setdefault(patient_id, set()).add(encounter_id)
                 else:
                     print("Skipping patient, no bundle found")
@@ -249,12 +244,12 @@ def filter_icu_patients_admission(smart, input_filepath, enabled=True):
     icu_patients_json = {pid: list(enc_ids) for pid, enc_ids in icu_patients.items()}
 
     base_path = Path(input_filepath)
-    new_filename = generate_output_filename("icu_admission", input_filepath)
+    new_filename = generate_output_filename("filtered_by_icu_admission", input_filepath)
     output_filepath = base_path.with_name(new_filename)
     with open(output_filepath, "w", encoding="utf-8") as out:
         json.dump(icu_patients_json, out, indent=4)
 
-    gather_metadata("intensive_care_unit_patient_count", len(icu_patients))
+    gather_metadata("patient_count_in_intensive_care", len(icu_patients))
 
 
 def calculate_los_inpatients(smart, input_filepath, enabled=True):
@@ -277,22 +272,22 @@ def calculate_los_inpatients(smart, input_filepath, enabled=True):
                 for condition_id in condition_ids:
                     bundle = None
                     try:
-                        bundle = Encounter.where({
+                        bundle = smart.server.request_json(
+                            Encounter.where({
                             'subject': f'{patient_id}',
                             'diagnosis.condition': f'Condition/{condition_id['id']}',
                             '_count': '50'
-                        }).perform(smart.server)
+                        }).construct())
                     except Exception as e:
                         print(f" Generated an exception for {patient_id} with condition/{condition_id}: {e}, but continue trying...")
                         smart = connect_to_server(user=USER_NAME, pw=USER_PASSWORD)
                         time.sleep(3)
 
-                    if bundle:
-                        encounters = fetch_bundle_for_code(smart, bundle)
-                        for encounter in encounters:
-                            if "resource" in encounter:
-                                if "type" in encounter['resource']:
-                                    stay_entry = process_inpatient_encounter(encounter['resource'])
+                    for entry in fetch_bundle_for_code(smart, bundle):
+                        for enc in entry:
+                            if "resource" in enc:
+                                if "type" in enc['resource']:
+                                    stay_entry = process_inpatient_encounter(enc['resource'])
                                     if stay_entry:
                                         if patient_id not in inpatients:
                                             inpatients[patient_id] = []
@@ -325,26 +320,25 @@ def extract_last_three_encounter(smart, input_filepath, enabled=True):
             all_encounters_per_patient = []
             attributes_encounter = patients[patient]
             for attribute_encounter in attributes_encounter:
-                period_start = parse_fhir_datetime(attribute_encounter["period_start"]).strftime("%Y-%m-%d")
+                start = parse_fhir_datetime(attribute_encounter["start"]).strftime("%Y-%m-%d")
 
                 while True:  # Connection might get lost sometime, trying to reconnect...
                     try:
                         # Check the patient with the specific condition ID has Encounter reference.
-                        bundle = Encounter.where(struct={
+                        bundle = smart.server.request_json(
+                            Encounter.where(struct={
                             '_count': b'10',
                             'subject': patient,
-                            'date': f"lt{period_start}"
-                        }).perform(smart.server)
+                            'date': f"lt{start}"
+                        }).construct())
                         break
                     except Exception as exc:
                         print(f"Generated an exception: {exc} but continue to trying. \n")
                         smart = connect_to_server(user=USER_NAME, pw=USER_PASSWORD)
                         time.sleep(3)
 
-                encounters = fetch_bundle_for_code(smart, bundle)
-
-                if encounters:
-                    for enc in encounters:
+                for entry in fetch_bundle_for_code(smart, bundle):
+                    for enc in entry:
                         start, end, = None, None
 
                         resource = enc.get("resource", {})
@@ -357,15 +351,15 @@ def extract_last_three_encounter(smart, input_filepath, enabled=True):
 
                         all_encounters_per_patient.append({
                             "encounter": resource.get("id"),
-                            "period_start": start if start else None,
-                            "period_end": end if end else None,
+                            "start": start if start else None,
+                            "end": end if end else None,
                         })
 
-            valid_encounters = [e for e in all_encounters_per_patient if e.get("period_start")]
+            valid_encounters = [e for e in all_encounters_per_patient if e.get("start")]
 
             sorted_encounters = sorted(
                 valid_encounters,
-                key=lambda e:e["period_start"],
+                key=lambda e:e["start"],
                 reverse=True
             )
 
@@ -407,9 +401,9 @@ def get_demographics_patients(smart, input_filepath, enabled=True):
             try:
                 patient = Patient.read(patient_id, smart.server)
                 patients_demographics.append({
-                    "patient_identifier": patient_id,
+                    "patient": patient_id,
                     "gender": patient.gender,
-                    "birth_date": patient.birthDate.isostring,
+                    "birthdate": patient.birthDate.isostring,
                 })
                 break
             except Exception as exc:
@@ -418,8 +412,8 @@ def get_demographics_patients(smart, input_filepath, enabled=True):
                 time.sleep(3)
 
     patients_demographics_df = pd.DataFrame(patients_demographics)
-    patients_demographics_df.to_csv(os.path.join(subdirectory, "demographics.xlsx"), index=False, sep=";")
-    print(f"Saving extracted demographics as .xlsx file in {subdirectory}")
+    patients_demographics_df.to_csv(os.path.join(subdirectory, "demographics.csv"), index=False, sep=";")
+    print(f"Saving extracted demographics as .csv file in {subdirectory}")
 
 
 def extract_additional_attributes_from_encounters(smart, input_filepath):
@@ -433,30 +427,29 @@ def extract_additional_attributes_from_encounters(smart, input_filepath):
     with open(input_filepath, "r") as file:
         patients = json.load(file)
         for patient in patients.keys():
-            conditions_ids = patients[patient]
-            for condition in conditions_ids:
+            attributes_conditions = patients[patient]
+            for attr_condition in attributes_conditions:
+                encounter_id = attr_condition['encounter'] if isinstance(attr_condition, dict) else attr_condition
                 while True:  # Connection might get lost sometime, trying to reconnect...
                     try:
-                        bundle = Encounter.where(struct={
-                            '_count': b'100',
-                            'subject': patient,
-                            'diagnosis': 'Condition/' + condition['id']
-                        }).perform(smart.server)
+                        bundle = Encounter.read(encounter_id, smart.server)
+                        enc = {"resource": bundle.as_json()}
                         break
                     except Exception as exc:
                         print(f"Generated an exception: {exc} but continue to trying. \n")
                         smart = connect_to_server(user=USER_NAME, pw=USER_PASSWORD)
                         time.sleep(3)
 
-                encounter = fetch_bundle_for_code(smart, bundle)
+                encounters = [enc] if enc else None
 
-                if encounter:
-                    for enc in encounter:
-                        period_start, period_end, fall_art, service_type_code, type_contact_code = None, None, None, None, None
+                if encounters:
+                    for enc in encounters:
+                        start, end, fall_art, service_type_code, type_contact_code = None, None, None, None, None
 
-                        if "period" in enc['resource']:
-                            period_start = enc["resource"]["period"].get("start")
-                            period_end = enc["resource"]["period"].get("end")
+                        resource = enc.get("resource", {})
+                        if "period" in resource:
+                            start = enc["resource"]["period"].get("start")
+                            end = enc["resource"]["period"].get("end")
 
                         if "class" in enc["resource"]:
                             fall_art = enc["resource"]["class"].get("code")
@@ -469,18 +462,16 @@ def extract_additional_attributes_from_encounters(smart, input_filepath):
                                 if "coding" not in type_entry:
                                     continue
                                 for coding in type_entry["coding"]:
-                                    if not contact_system in coding["system"]:
-                                        continue
-                                    type_contact_code = coding.get("code")
+                                    if contact_system in coding["system"]:
+                                        type_contact_code = coding.get("code")
 
                         encounter_results[patient].append({
-                            "condition": condition,
-                            "period_start": period_start,
-                            "period_end": period_end,
-                            "fall_art": fall_art,
-                            "service_department_code": service_type_code,
-                            "type_contact_code": type_contact_code,
+                            "condition": attr_condition,
+                            "start": start,
+                            "end": end,
+                            "case": fall_art,
+                            "serviceDepartment": service_type_code,
+                            "typeContact": type_contact_code,
                         })
 
-    print("encounter_results:", encounter_results)
     return encounter_results
