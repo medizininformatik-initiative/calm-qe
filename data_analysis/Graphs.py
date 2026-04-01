@@ -42,13 +42,11 @@ meta_data = load_json("fhir_results/metadata.json")
 #Add other type of medication resources if you have other sources...
 data_overview = {
     "Asthma & COPD Patient Count": meta_data['asthma_and_copd_patient_count'],
-    "Patients with Chief Complaint": meta_data['asthma_and_copd_patients_with_chief_complaint'],
-    "Patients with Secondary Conditions": meta_data['patient_count_with_secondary_conditions'],
+    "Patients with Conditions": meta_data['patient_count_with_conditions'],
     "Patients with Observations": meta_data['patient_count_with_observations'],
     "Patients with MedicationAdministrations": meta_data['patient_count_with_medicationAdministrations']
 }
-main_diagnosis_counts = meta_data['main_diagnosis_counts']
-secondary_conditions_counts = meta_data['secondary_conditions_counts']
+conditions_counts = meta_data['conditions_counts']
 observations_counts = meta_data['observations_counts']
 
 #Only creating medication administration graph, you can add other type of medication as well!
@@ -57,7 +55,6 @@ if meta_data.get('medicationAdministrations_counts', {}).get('MedicationAdminist
     medications_exist = True
     medications_counts = {list(item.keys())[0]: list(item.values())[0] for item in meta_data['medicationAdministrations_counts']['MedicationAdministration']['counting']['details_count']}
 
-print(medications_counts)
 group_observation = {"Allergiediagnostik":[
     "23800-6",
     "15234-8",
@@ -115,22 +112,22 @@ group_observation = {"Allergiediagnostik":[
     "Autoimmundiagnostik":["5128-4", "29953-7","53027-9"]}
 
 
-# Calculate group total counts for secondary conditions
+# Calculate group total counts for  conditions
 icd_codes = load_json("input_files/icd_codes.json")
-secondary_conditions_groups_sums = defaultdict(int)
+conditions_groups_sums = defaultdict(int)
 for group in icd_codes["codes"]:
-    group_sum = sum(secondary_conditions_counts.get(code, 0) for code in group["code"])
-    secondary_conditions_groups_sums[group["description"]] = group_sum
+    group_sum = sum(conditions_counts.get(code, 0) for code in group["code"])
+    conditions_groups_sums[group["description"]] = group_sum
 
-#Calculate group and individual total counts of Main Diagnoses COPD vs Asthma
-main_diagnosis_group_sums = defaultdict(int)
-main_diagnosis_individual_sums = defaultdict(int)
-for code, count in main_diagnosis_counts.items():
-    main_diagnosis_individual_sums[code] = count
+#Calculate group and individual total counts of Diagnoses COPD vs Asthma
+diagnosis_group_sums = defaultdict(int)
+diagnosis_individual_sums = defaultdict(int)
+for code, count in conditions_counts.items():
+    diagnosis_individual_sums[code] = count
     if code.startswith("J44"):
-        main_diagnosis_group_sums["J44.*"] += count
+        diagnosis_group_sums["J44.*"] += count
     elif code.startswith("J45"):
-        main_diagnosis_group_sums["J45.*"] += count
+        diagnosis_group_sums["J45.*"] += count
 
 #Calculate group total for observation counts
 observations_groups_sums = defaultdict(int)
@@ -139,9 +136,9 @@ for group, codes in group_observation.items():
 
 # Plot the graphs
 create_bar_graph('vertical', data_overview.keys(), data_overview.values(), 'Data Overview', '', '', True, "dataOverview.png")
-create_bar_graph('horizontal', secondary_conditions_groups_sums.keys(), secondary_conditions_groups_sums.values(), 'Secondary Condition Groups Counts', 'Total Count', 'Condition Groups', False, "secondaryConditions.png")
-create_bar_graph('vertical', main_diagnosis_group_sums.keys(), main_diagnosis_group_sums.values(), 'Count of Main Diagnoses COPD vs Asthma', 'Main Diagnosis Groups', 'Total Count', False, "mainDiagnosisGroups.png")
-create_bar_graph('vertical', main_diagnosis_individual_sums.keys(), main_diagnosis_individual_sums.values(), 'Main Diagnosis', 'Main Diagnosis', 'Total Count', False, "mainDiagnosis.png")
+create_bar_graph('horizontal', conditions_groups_sums.keys(), conditions_groups_sums.values(), 'Condition Groups Counts', 'Total Count', 'Condition Groups', False, "Conditions.png")
+create_bar_graph('vertical', diagnosis_group_sums.keys(), diagnosis_group_sums.values(), 'Count of Diagnoses COPD vs Asthma', 'Diagnosis Groups', 'Total Count', False, "DiagnosisGroups.png")
+create_bar_graph('vertical', diagnosis_individual_sums.keys(), diagnosis_individual_sums.values(), 'Diagnosis', 'Diagnosis', 'Total Count', False, "Diagnosis.png")
 create_bar_graph('vertical', observations_groups_sums.keys(), observations_groups_sums.values(), 'Observation Group Counts', 'Observation Groups', 'Total Count', False, "observationGroups.png")
 if medications_exist:
     create_bar_graph('vertical', medications_counts.keys(), medications_counts.values(), 'MedicationAdministrations', 'Medications', 'Total Count', False, "medicationAdministrations.png")

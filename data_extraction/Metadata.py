@@ -3,6 +3,7 @@ import os
 from collections import defaultdict
 from datetime import datetime
 
+os.makedirs('fhir_results', exist_ok=True)
 
 def gather_metadata(source, count):
     metadata_file_path = 'fhir_results/metadata.json'
@@ -15,17 +16,14 @@ def gather_metadata(source, count):
             "execution_date": datetime.now().strftime("%Y-%m-%d"),
             "execution_time": datetime.now().strftime("%H:%M:%S"),
             "total_asthma_or_copd_diagnosed_patients": 0,
-            "main_diagnosis_asthma_or_copd_filter": 0,
-            "main_diagnosis_encounter_count": 0,  # Not same as main_diagnosis_asthma_or_copd_filter (might be higher). Sums the total number of main diagnoses a patient has received across all encounters, regardless of the specific diagnosis codes or times.
             "patient_count_by_age_interval": defaultdict(int),
             "intensive_care_unit_patient_count": 0,
-            "secondary_conditions_patient_count": 0,
-            "observations_patient_count": 0,
-            "medicationRequests_patient_count": 0,
-            "medicationAdministration_patient_count": 0,
-            "medicationStatement_patient_count": 0,
-            "main_diagnosis_counts": defaultdict(int),
-            "secondary_conditions_counts": defaultdict(int),
+            "asthma_and_copd_patient_count": 0,
+            "patient_count_with_observations": 0,
+            "patient_count_with_medicationRequests": 0,
+            "patient_count_with_medicationAdministrations": 0,
+            "patient_count_with_medicationStatements": 0,
+            "conditions_counts": defaultdict(int),
             "observations_counts": defaultdict(int),
             "medicationAdministrations_counts": defaultdict(int),
             "medicationRequests_counts": defaultdict(int),
@@ -52,4 +50,4 @@ def gather_metadata(source, count):
     with open(metadata_file_path, 'w') as metadata_file:
         json.dump(metadata, metadata_file, indent=4)
 
-    print("Metadata has been saved")
+    print("Metadata has been saved.")

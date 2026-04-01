@@ -29,29 +29,28 @@ pip install -r requirements.txt
 
 Before running the scripts, ensure that FHIR server configurations are added in `data_extraction/Constants.py` file.
 You should update the following fields:
-- USER_NAME = "Your User Name"
-- USER_PASSWORD = "Your Password"
-- SERVER_NAME = "Your FHIR Server Base URL"
 
-#### Creation of Cohort Patients List
+- USER_NAME = os.getenv("USER_NAME", "PUT YOUR USERNAME HERE")
+- USER_PASSWORD = os.getenv("USER_PASSWORD", "PUT YOUR PASSWORD HERE")
+- SERVER_NAME = os.getenv("SERVER_NAME", "PUT YOUR FHIR SERVER NAME HERE")
+
+For instance:
+USER_NAME = os.getenv("USER_NAME", "user1")
+USER_PASSWORD = os.getenv("USER_PASSWORD", "pass123")
+SERVER_NAME = os.getenv("SERVER_NAME", "server.fhir.diz.uni.de/fhir")
+
+#### Creation of Cohort Patients List and Extraction of the Resources from Cohort Patients
 ------------------------------------------
-This section identifies patients with "Asthma" or "COPD" as main diagnosis.
+This script identifies patients diagnosed with "Asthma" or "COPD".
 
-Initially `CohortPatientsExecute.py`, reads from the input_files folder `asthma_copd_codes.json` automatically. This json file includes all the ICD-10 codes available related to "Asthma" and "COPD". Modifications to this code list are possible based on unique needs when required.
+ `ExtractCohortwithResourcesExecute.py` reads from the input_files folder `asthma_copd_codes.json` automatically. This JSON file includes all the ICD-10 codes available related to "Asthma" and "COPD". Modifications to this code list are possible based on unique needs when required.
 The usage of this file is determined in `Constants.py`. 
 
-The script outputs all the patients' IDs and corresponding diagnoses in `patients_main_diagnosed_asthma_copd.json`.
+The script outputs all the patients' IDs and corresponding diagnoses in `patients_diagnosed_asthma_copd.json`.
 
-###### Usage:
-```
-python .\data_extraction\CohortPatientsExecute.py
-```
-#### Extraction of the Resources from Cohort Patients
-----------------------------------------------------
+After the first part is complete, the analysis continues with the fetching, extraction, and count of secondary Conditions, Observations and Medication. 
 
-After the first part is complete, the analysis continues with the fetching, extraction, and count of secondary Conditions, Observations and Medication data available after running `ExtractResourcesForCohortExecute.py`. 
-
-The script generates separate json files for each resource type (e.g., Conditions, Observations, Medications) per patient.
+The script generates separate JSON files for each resource type (e.g., Conditions, Observations, Medications) per patient.
 
 After compiling the script, a `metadata.json` is generated as part of the outcomes to provide a general and quantitative overview of the items generated.
 
@@ -67,7 +66,7 @@ Instead of setting up and running the scripts manually, you can run the scripts 
 - USER_PASSWORD = "Your Password"
 - SERVER_NAME = "Your Fhir Server Base URL"
 
-After making sure the docker is installed, you can run the following commands.
+After making sure Docker is installed, you can run the following commands.
 ```
 docker build -t fhir-cohort-resources-extraction .
 
