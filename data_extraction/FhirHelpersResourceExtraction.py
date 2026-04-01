@@ -317,7 +317,7 @@ def medication_frequencies(code_file):
                             resource_ref = medicationProfile['resource']['medicationReference']['reference']
 
                             try:
-                                code_name = fetch_atc_codes(resource_ref, system, code_list, smart)
+                                code_name = fetch_atc_codes(resource_ref, code_list, smart)
                             except Exception as exc:
                                 print(f"Generated an exception: {exc} but continue trying.\n")
                                 smart = connect_to_server(user=USER_NAME, pw=USER_PASSWORD)
