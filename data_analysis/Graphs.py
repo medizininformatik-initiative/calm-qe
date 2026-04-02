@@ -42,7 +42,6 @@ meta_data = load_json("fhir_results/metadata.json")
 #Add other type of medication resources if you have other sources...
 data_overview = {
     "Asthma & COPD Patient Count": meta_data['asthma_and_copd_patient_count'],
-    "Patients with Conditions": meta_data['patient_count_with_conditions'],
     "Patients with Observations": meta_data['patient_count_with_observations'],
     "Patients with MedicationAdministrations": meta_data['patient_count_with_medicationAdministrations']
 }
