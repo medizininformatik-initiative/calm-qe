@@ -46,26 +46,39 @@ def read_input_code_file(filename):
     return code_list
 
 
-def write_results(entries, patient_counter, code_type, source):
+def patients_with_asthma_copd(smart):
     """
-    It reads all Resources in the bundle and write to output files per patient.
+    It reads the ASTHMA or COPD diseases related codes from "ASTHMA_COPD_CODES_FILE" and
+    find the patients with such diagnoses.
+    :param smart: Fhir Server Connector
     """
-    if code_type == "LOINC":
-        whole_path = "fhir_results/LOINC/" + patient_counter + "_patient_observations.json"
-    elif code_type == "ICD":
-        whole_path = "fhir_results/ICD/" + patient_counter + "_patient_conditions.json"
-    elif code_type == "ATC":
-        if source is MedicationAdministration:
-            whole_path = "fhir_results/ATC/Administrations/" + patient_counter + "_patient_medicationAdministrations.json"
-        elif source is MedicationRequest:
-            whole_path = "fhir_results/ATC/Requests/" + patient_counter + "_patient_medicationRequests.json"
-        elif source is MedicationStatement:
-            whole_path = "fhir_results/ATC/Statements/" + patient_counter + "_patient_medicationStatements.json"
+    with open(ASTHMA_COPD_CODES_FILE, 'r') as file:
+        diagnoses_file = json.load(file)
+        diagnoses_codes = [item['code'] for item in diagnoses_file['codes']]
 
-    with open(whole_path, 'w') as file:
-        json.dump(entries, file, indent=4)
+    patients_conditions_map = defaultdict(list)
+    for code in diagnoses_codes:
+        while True:
+            try:
+                bundle = smart.server.request_json(
+                    Condition.where(struct={'_count': "1000", 'code': ICD_SYSTEM_NAME + '|' + code}).construct())
+                break
+            except Exception as exc:
+                print(f"Generated an exception: {exc} but continue trying.\n")
+                smart = connect_to_server(user=USER_NAME, pw=USER_PASSWORD)
+                time.sleep(3)
 
+        for entries in fetch_bundle_for_code(smart, bundle):
+            for entry in entries:
+                condition = entry['resource']
+                if condition['subject']['reference']:
+                    patient_reference = condition['subject']['reference']
+                    patients_conditions_map[patient_reference].append(
+                        {"id": condition['id'], "code": condition['code']})
 
+    gather_metadata("asthma_and_copd_patient_count", len(patients_conditions_map))
+    with open('patients_diagnosed_asthma_copd.json', 'w') as file:  #intermediate results, can be deleted later.
+        json.dump(patients_conditions_map, file, indent=4)
 
 
 def observations(patient, code_set, source, smart):
@@ -74,9 +87,7 @@ def observations(patient, code_set, source, smart):
 
     while True:
         try:
-            bundle = Bundle(
-                smart.server.request_json(source.where(struct={'_count': '1000', 'subject': patient}).construct()),
-                strict=False)
+            bundle = smart.server.request_json(source.where(struct={'_count': '1000', 'subject': patient}).construct())
             break
         except Exception as exc:
             print(f"Generated an exception: {exc} but continue trying.\n")
@@ -116,9 +127,8 @@ def conditions(patient, code_list, source, smart):
             sub_code_list_str = ','.join([ICD_SYSTEM_NAME + '|' + code for code in sub_code_list])
             while True:
                 try:
-                    bundle = Bundle(smart.server.request_json(source.where(
-                        struct={'_count': '1000', 'subject': patient, 'code': sub_code_list_str}).construct()),
-                                    strict=False)
+                    bundle = smart.server.request_json(source.where(
+                        struct={'_count': '1000', 'subject': patient, 'code': sub_code_list_str}).construct())
                     break
                 except Exception as exc:
                     print(f"Generated an exception: {exc} but continue trying.\n")
@@ -152,13 +162,11 @@ def medications(patient, code_list, source, smart):
     while True:
         try:
             if source == Medication:
-                bundle = Bundle(smart.server.request_json(
-                    source.where(struct={'_count': '1000', 'subject': patient, 'code': code_list_str}).construct()),
-                    strict=False)
+                bundle = smart.server.request_json(
+                    source.where(struct={'_count': '1000', 'subject': patient, 'code': code_list_str}).construct())
             else:
-                bundle = Bundle(smart.server.request_json(source.where(
-                    struct={'_count': '1000', 'patient': patient, 'medication.code': code_list_str}).construct()),
-                                strict=False)
+                bundle = smart.server.request_json(source.where(
+                    struct={'_count': '1000', 'patient': patient, 'medication.code': code_list_str}).construct())
             break
         except Exception as exc:
             print(f"Generated an exception: {exc} but continue trying.\n")
@@ -190,11 +198,14 @@ def execute_thread_for_fetching(code_set, source, patient_list, code_type, funct
     with ThreadPoolExecutor(max_workers=MAX_WORKERS) as executor:
         future_to_code = {executor.submit(function_to_run, patient, code_set, source, smart): patient for patient in
                           patient_list}
+        patient_counter = 0
         for future in as_completed(future_to_code):
             patient = future_to_code[future]
             processed += 1
             try:
                 count = future.result()
+                if count > 0:
+                    patient_counter += 1
                 print(f"[{processed}/{total_patients}] {patient} with {count} {code_type} entries processed")
             except Exception as exc:
                 print(f"[{processed}/{total_patients}] [{code_type}] {patient} generated an exception: {exc}")
@@ -209,14 +220,14 @@ def execute_thread_for_fetching(code_set, source, patient_list, code_type, funct
     '''
 
     if code_type == "LOINC":
-        gather_metadata("observations_patient_count", count)
+        gather_metadata("patient_count_with_observations", patient_counter)
     elif code_type == "ATC":
         if source is MedicationAdministration:
-            gather_metadata("patient_count_with_medicationAdministrations", count)
+            gather_metadata("patient_count_with_medicationAdministrations", patient_counter)
         elif source is MedicationRequest:
-            gather_metadata("patient_count_with_medicationRequests", count)
+            gather_metadata("patient_count_with_medicationRequests", patient_counter)
         elif source is MedicationStatement:
-            gather_metadata("patient_count_with_medicationStatements", count)
+            gather_metadata("patient_count_with_medicationStatements", patient_counter)
     else:
         pass
     print("---------------End of Code------------------------")
@@ -305,7 +316,7 @@ def medication_frequencies(code_file):
                             resource_ref = medicationProfile['resource']['medicationReference']['reference']
 
                             try:
-                                code_name = fetch_atc_codes(resource_ref, system, code_list, smart)
+                                code_name = fetch_atc_codes(resource_ref, code_list, smart)
                             except Exception as exc:
                                 print(f"Generated an exception: {exc} but continue trying.\n")
                                 smart = connect_to_server(user=USER_NAME, pw=USER_PASSWORD)

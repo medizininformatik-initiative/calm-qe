@@ -29,7 +29,7 @@ def connect_to_server(user, pw):
         "api_base": f"https://{user}:{pw}@{SERVER_NAME}"}
 
     smart = client.FHIRClient(settings=settings)
-    # smart.server.session.verify = False
+    smart.server.session.verify = False
     return smart
 
 def fetch_bundle_for_code(smart, bundle):
@@ -45,11 +45,16 @@ def fetch_bundle_for_code(smart, bundle):
     #handle special character
     user = quote(USER_NAME, safe="")
     password = quote(USER_PASSWORD, safe="")
-    bundle_obj = Bundle(bundle)
-
-    url = f"https://{user}:{password}@" + bundle_obj.link[0].url.split("://", 1)[1]
 
     while True:
+        entries = bundle.get("entry", [])
+        yield entries
+
+        next_link = next((p for p in bundle.get("link", []) if p.get("relation") == "next"), None)
+        if not next_link:
+            break
+
+        url = f"https://{user}:{password}@" + next_link["url"].split("://", 1)[1]
         while True:
             try:
                 bundle = smart.server.request_json(url)
