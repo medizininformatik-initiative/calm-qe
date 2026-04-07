@@ -12,6 +12,7 @@ from fhirclient.models import encounter
 from fhirclient.models.condition import Condition
 from fhirclient.models.encounter import Encounter
 from fhirclient.models.patient import Patient
+from fhirclient.server import FHIRNotFoundException
 
 from Constants import USER_NAME, USER_PASSWORD, ICD_SYSTEM_NAME, ASTHMA_COPD_CODES_FILE
 from FhirHelpersUtils import fetch_bundle_for_code, connect_to_server
@@ -423,6 +424,7 @@ def extract_additional_attributes_from_encounters(smart, input_filepath):
 
     print("Starting encounters extraction...")
     encounter_results = defaultdict(list)
+    non_found_encounter_results = defaultdict(list)
 
     with open(input_filepath, "r") as file:
         patients = json.load(file)
@@ -432,11 +434,23 @@ def extract_additional_attributes_from_encounters(smart, input_filepath):
                 encounter_id = attr_condition['encounter'] if isinstance(attr_condition, dict) else attr_condition
                 while True:  # Connection might get lost sometime, trying to reconnect...
                     try:
-                        bundle = Encounter.read(encounter_id, smart.server)
-                        enc = {"resource": bundle.as_json()}
+                        entry_encounter = Encounter.read(encounter_id, smart.server)
+                        enc = {"resource": entry_encounter.as_json()}
+                        break
+                    except FHIRNotFoundException:
+                        print(f"Encounter {encounter_id} not found. Skipping")
+                        non_found_encounter_results[patient].append(encounter_id)
+                        enc = None
                         break
                     except Exception as exc:
-                        print(f"Generated an exception: {exc} but continue to trying. \n")
+                        status = getattr(getattr(exc, "response", None), "status_code", None)
+                        if status == 410:
+                            print(f"Exception{exc}.Encounter {encounter_id} missing or deleted. Skipping")
+                            non_found_encounter_results[patient].append(encounter_id)
+                            enc = None
+                            break
+
+                        print(f"Generated an exception: {exc} in but continue to trying. \n")
                         smart = connect_to_server(user=USER_NAME, pw=USER_PASSWORD)
                         time.sleep(3)
 
@@ -473,5 +487,8 @@ def extract_additional_attributes_from_encounters(smart, input_filepath):
                             "serviceDepartment": service_type_code,
                             "typeContact": type_contact_code,
                         })
-
+    base_path = Path(input_filepath)
+    output_filepath = base_path.parent / "not_found_encounters.json"
+    with open(output_filepath, "w", encoding="utf-8") as file:
+        json.dump(non_found_encounter_results, file, indent=4, ensure_ascii=False)
     return encounter_results
