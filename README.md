@@ -70,11 +70,11 @@ This section of the script filters patients from `asthma_copd_codes.json` by:
 
 In addition, the script:
 
-- Calculates the length of staying for inpatients
-- Extracts the last 3 encounters from a patient
-- Exports demographics from patients
+- calculates the length of staying for inpatients
+- extracts the last 3 encounters from a patient
+- exports demographics from patients
 
-- After compiling the script, a metadata.json is generated as part of the outcomes to provide a general and quantitative overview of the items generated.
+After compiling the script, a metadata.json is generated as part of the outcomes to provide a general and quantitative overview of the items generated.
 
 ###### Usage:
 ```
