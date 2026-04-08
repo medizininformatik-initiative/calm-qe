@@ -1,5 +1,6 @@
 import json
 import logging
+from pathlib import Path
 
 from FhirHelpersUtils import connect_to_server
 
@@ -25,15 +26,18 @@ based on LOINC, ICD, ATC Codes respectively for each Cohort patient. It shows th
 i.e., counting them. It also fetches the resources and save them in output files for each patient separately.
 """
 
+DIR_RESULTS = Path('additional_results')
+DIR_RESULTS.mkdir(exist_ok=True)
+
 def main():
     logging.info("Start...")
     smart = connect_to_server(user=USER_NAME, pw=USER_PASSWORD)
 
     #Get the patients with "ANY TYPE OF DIAGNOSED" Asthma or COPD.
-    patients_with_asthma_copd(smart)
+    diagnosis_path = patients_with_asthma_copd(smart, DIR_RESULTS)
 
     #Input is the patient list in a text file from Cohort Data Extraction part
-    with open("patients_diagnosed_asthma_copd.json", "r") as file:
+    with open(diagnosis_path, "r") as file:
         input_file = json.load(file)
         patients = [patient for patient in input_file.keys()]
 
