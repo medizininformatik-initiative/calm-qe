@@ -28,13 +28,14 @@ pip install -r requirements.txt
 **2. Configure FHIR Server Connection**
 
 Before running the scripts, ensure that FHIR server configurations are added in `data_extraction/Constants.py` file.
-You should update the following fields:
+You should update the following fields including a _**.env**_ file
 
-- USER_NAME = os.getenv("USER_NAME", "PUT YOUR USERNAME HERE")
-- USER_PASSWORD = os.getenv("USER_PASSWORD", "PUT YOUR PASSWORD HERE")
-- SERVER_NAME = os.getenv("SERVER_NAME", "PUT YOUR FHIR SERVER NAME HERE")
+- USER_NAME = os.getenv("USER_NAME")
+- USER_PASSWORD = os.getenv("USER_PASSWORD")
+- SERVER_NAME = os.getenv("SERVER_NAME")
 
-For instance:
+Or for instance by adding credentials directly in these fields:
+
 USER_NAME = os.getenv("USER_NAME", "user1")
 USER_PASSWORD = os.getenv("USER_PASSWORD", "pass123")
 SERVER_NAME = os.getenv("SERVER_NAME", "server.fhir.diz.uni.de/fhir")
@@ -57,6 +58,27 @@ After compiling the script, a `metadata.json` is generated as part of the outcom
 ###### Usage:
 ```
 python .\data_extraction\ExtractResourcesForCohortExecute.py
+```
+
+#### Applying additional requirements 
+
+After compiling the first part of the script, `CohortPatientsAdditionalFilters.py` generates a summary of participants by extracting interested attributes from encounters.
+
+This section of the script filters patients from `asthma_copd_codes.json` by:
+- age intervals [0-5], [6-12], [13-24], and [25, ∞). 
+- patients admitted in intensive care.
+
+In addition, the script:
+
+- Calculates the length of staying for inpatients
+- Extracts the last 3 encounters from a patient
+- Exports demographics from patients
+
+- After compiling the script, a metadata.json is generated as part of the outcomes to provide a general and quantitative overview of the items generated.
+
+###### Usage:
+```
+python .\data_extraction\CohortPatientsAdditionalFilters.py
 ```
 
 #### Run Using Docker (OPTIONAL)
