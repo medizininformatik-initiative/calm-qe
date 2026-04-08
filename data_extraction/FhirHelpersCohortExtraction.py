@@ -19,68 +19,14 @@ from FhirHelpersUtils import fetch_bundle_for_code, connect_to_server
 from FhirHelpersUtils import parse_fhir_datetime, compute_los
 from Metadata import gather_metadata
 
+basis_filename = "patients_diagnosed_asthma_copd"
 
 def generate_output_filename(surfix_filename, directory):
     input_path = Path(directory)
     target_file = input_path.stem
 
-    if "patients_diagnosed_asthma_copd" in target_file:
+    if basis_filename in target_file:
         return f"patients_{surfix_filename}.json"
-
-
-def patients_with_asthma_copd(smart, input_path):
-    """
-    It reads ASTHMA or COPD diseases related codes from "ASTHMA_COPD_CODES_FILE" and
-    find the patients that have such diagnoses.
-    :param smart: Fhir Server Connector
-    """
-    with open(ASTHMA_COPD_CODES_FILE, 'r') as file:
-        diagnoses_file = json.load(file)
-        diagnoses_codes = [item['code'] for item in diagnoses_file['codes']]
-
-    basis_filename = "patients_diagnosed_asthma_copd"
-    patients_conditions_map = defaultdict(list)
-
-    for code in diagnoses_codes:
-        while True:
-            try:
-                bundle = smart.server.request_json(
-                    Condition.where(struct={'_count': '1000', 'code': ICD_SYSTEM_NAME + '|' + code}).construct())
-                break
-            except Exception as exc:
-                print(f"Generated an exception: {exc} but continue trying.\n")
-                smart = connect_to_server(user=USER_NAME, pw=USER_PASSWORD)
-                time.sleep(3)
-
-        for entries in fetch_bundle_for_code(smart, bundle):
-            for entry in entries:
-                condition = entry['resource']
-                if condition['subject']['reference']:
-                    patient_reference = condition['subject']['reference']
-                    attributes_condition = {'id': condition['id'], 'code': condition['code']}
-
-                    if condition['encounter']['reference']:  # New: Include encounter reference
-                        attributes_condition["encounter"] = condition['encounter']['reference'].split("/")[1]
-
-                    if condition['onsetDateTime']:  # New: Include onsetDateTime from conditions
-                        attributes_condition["onsetDateTime"] = condition['onsetDateTime']
-                    patients_conditions_map[patient_reference].append(attributes_condition)
-
-    gather_metadata(basis_filename, len(patients_conditions_map))
-
-    # total json export
-    output_filepath = input_path / f"{basis_filename}.json"
-    with open(output_filepath, 'w') as file:  # Intermediate results.
-        json.dump(patients_conditions_map, file, indent=4)
-
-    # encounters json export
-    base_path = Path(output_filepath)
-    encounters_filepath = base_path.with_name(f"{basis_filename}-encounters.json")
-    additional_encounters = extract_additional_attributes_from_encounters(smart, output_filepath)
-    with open(encounters_filepath, 'w') as file:
-        json.dump(additional_encounters, file, indent=4)
-
-    return output_filepath, encounters_filepath
 
 
 def process_inpatient_encounter(resource):
@@ -221,7 +167,7 @@ def filter_icu_patients_admission(smart, input_filepath, enabled=True):
                             Encounter.where({
                             'subject': f'{patient_id}',
                             'diagnosis.condition': f'Condition/{cid}',
-                            '_count': '100'
+                            '_count': '1000'
                         }).construct())
                     except Exception as e:
                         print(f"Generated an exception for {patient_id} with condition/{condition_id}: {e}, but continue trying...")
@@ -239,8 +185,6 @@ def filter_icu_patients_admission(smart, input_filepath, enabled=True):
                                         print(f"ICU encounter found for patient {patient_id}")
                                         encounter_id = enc["resource"].get("id")
                                         icu_patients.setdefault(patient_id, set()).add(encounter_id)
-                else:
-                    print("Skipping patient, no bundle found")
 
     icu_patients_json = {pid: list(enc_ids) for pid, enc_ids in icu_patients.items()}
 
@@ -293,8 +237,7 @@ def calculate_los_inpatients(smart, input_filepath, enabled=True):
                                         if patient_id not in inpatients:
                                             inpatients[patient_id] = []
                                         inpatients[patient_id].append(stay_entry)
-                    else:
-                        print("Skipping patient, no bundle found")
+
     base_path = Path(input_filepath)
 
     new_filename = generate_output_filename("length_of_stay",  input_filepath)
@@ -422,17 +365,23 @@ def extract_additional_attributes_from_encounters(smart, input_filepath):
     # Extract interested attributes from encounters (period, fallart, service_department_code)
     contact_system = "http://fhir.de/CodeSystem/kontaktart-de"
 
-    print("Starting encounters extraction...")
+    print("Starting additional encounters extraction...")
     encounter_results = defaultdict(list)
     non_found_encounter_results = defaultdict(list)
+    base_path = Path(input_filepath)
 
     with open(input_filepath, "r") as file:
         patients = json.load(file)
         for patient in patients.keys():
             attributes_conditions = patients[patient]
-            for attr_condition in attributes_conditions:
+            duplicated_encounter = set()
+            for count, attr_condition in enumerate(attributes_conditions, start=1):
                 encounter_id = attr_condition['encounter'] if isinstance(attr_condition, dict) else attr_condition
-                while True:  # Connection might get lost sometime, trying to reconnect...
+
+                if encounter_id in duplicated_encounter or duplicated_encounter.add(encounter_id):
+                    continue
+
+                for _ in range(3):
                     try:
                         entry_encounter = Encounter.read(encounter_id, smart.server)
                         enc = {"resource": entry_encounter.as_json()}
@@ -445,14 +394,14 @@ def extract_additional_attributes_from_encounters(smart, input_filepath):
                     except Exception as exc:
                         status = getattr(getattr(exc, "response", None), "status_code", None)
                         if status == 410:
-                            print(f"Exception{exc}.Encounter {encounter_id} missing or deleted. Skipping")
+                            print(f"Exception {status}. Encounter {encounter_id} missing or deleted. Skipping")
                             non_found_encounter_results[patient].append(encounter_id)
                             enc = None
                             break
 
                         print(f"Generated an exception: {exc} in but continue to trying. \n")
                         smart = connect_to_server(user=USER_NAME, pw=USER_PASSWORD)
-                        time.sleep(3)
+                        time.sleep(1)
 
                 encounters = [enc] if enc else None
 
@@ -487,8 +436,15 @@ def extract_additional_attributes_from_encounters(smart, input_filepath):
                             "serviceDepartment": service_type_code,
                             "typeContact": type_contact_code,
                         })
-    base_path = Path(input_filepath)
-    output_filepath = base_path.parent / "not_found_encounters.json"
+
+    # Extended encounters
+    encounters_filepath = base_path.with_name(f"{basis_filename}_extended_encounters.json")
+    with open(encounters_filepath, 'w') as file:
+        json.dump(encounter_results, file, indent=4)
+
+    # Missing encounters
+    output_filepath = base_path.parent / f"missing_encounters.json"
     with open(output_filepath, "w", encoding="utf-8") as file:
         json.dump(non_found_encounter_results, file, indent=4, ensure_ascii=False)
-    return encounter_results
+
+    return encounters_filepath
