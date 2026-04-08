@@ -46,7 +46,7 @@ def read_input_code_file(filename):
     return code_list
 
 
-def patients_with_asthma_copd(smart):
+def patients_with_asthma_copd(smart, results_path):
     """
     It reads the ASTHMA or COPD diseases related codes from "ASTHMA_COPD_CODES_FILE" and
     find the patients with such diagnoses.
@@ -73,12 +73,24 @@ def patients_with_asthma_copd(smart):
                 condition = entry['resource']
                 if condition['subject']['reference']:
                     patient_reference = condition['subject']['reference']
-                    patients_conditions_map[patient_reference].append(
-                        {"id": condition['id'], "code": condition['code']})
+                    patient_attributes_map = {'id': condition['id'], 'code': condition['code']}
+
+                    if condition['encounter']['reference']:  # New: Include encounter reference
+                        patient_attributes_map["encounter"] = condition['encounter']['reference'].split("/")[1]
+
+                    if condition['onsetDateTime']:  # New: Include onsetDateTime from conditions
+                        patient_attributes_map["onsetDateTime"] = condition['onsetDateTime']
+                    patients_conditions_map[patient_reference].append(patient_attributes_map)
 
     gather_metadata("asthma_and_copd_patient_count", len(patients_conditions_map))
     with open('patients_diagnosed_asthma_copd.json', 'w') as file:  #intermediate results, can be deleted later.
         json.dump(patients_conditions_map, file, indent=4)
+
+    output_filepath = results_path / f"patients_diagnosed_asthma_copd.json"
+    with open(output_filepath, 'w') as file:  # Intermediate results.
+        json.dump(patients_conditions_map, file, indent=4)
+
+    return output_filepath
 
 
 def observations(patient, code_set, source, smart):
