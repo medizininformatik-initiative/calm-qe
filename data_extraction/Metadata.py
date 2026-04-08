@@ -15,8 +15,8 @@ def gather_metadata(source, count):
         metadata = {
             "execution_date": datetime.now().strftime("%Y-%m-%d"),
             "execution_time": datetime.now().strftime("%H:%M:%S"),
-            "patients_diagnosed_asthma_copd": 0,
-            "patient_count_by_age_interval": defaultdict(int),
+            "asthma_and_copd_patient_count": 0,
+            "patient_count_by_age_interval": defaultdict(int), # The sum of age count might differ compared with the total count since a patient sometimes have more than one condition at different times.
             "patient_count_in_intensive_care": 0,
             "patient_count_with_observations": 0,
             "patient_count_with_medicationRequests": 0,
@@ -36,7 +36,6 @@ def gather_metadata(source, count):
         if "patient_count_by_age_interval" in source:
             for key, value in count.items():
                 metadata[source][key] = metadata[source].get(key, 0) + value
-                print("key-value", key, value)
         else:
             metadata[source] = count
     elif '_counts' in source.lower():
