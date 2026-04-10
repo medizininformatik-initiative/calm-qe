@@ -447,4 +447,59 @@ def extract_additional_attributes_from_encounters(smart, input_filepath):
     with open(output_filepath, "w", encoding="utf-8") as file:
         json.dump(non_found_encounter_results, file, indent=4, ensure_ascii=False)
 
+    # Export patients summary in csv
+    simple_flattening(encounter_results, base_path)
+
     return encounters_filepath
+
+
+def simple_flattening(patients_attr_map, path):
+    # New: Flatten to export as CSV file
+    subdirectory = path.parent / 'csv'
+    subdirectory.mkdir(parents=True, exist_ok=True)
+
+    df_rows = []
+    for patient_reference, patient_attributes in patients_attr_map.items():
+        for attribute in patient_attributes:
+            label = list(attribute.keys())
+            condition_id = attribute.get("condition").get("id")
+            attrib_enc = attribute.get("condition")
+            code = attribute.get("condition").get("code")
+
+            row = {
+                'patient': patient_reference,
+                f'{label[0]}': condition_id if condition_id else None,
+                'encounter': attrib_enc.get('encounter') if attrib_enc.get('encounter') else None,
+                'onsetDateTime':attrib_enc.get('onsetDateTime') if attrib_enc.get('onsetDateTime') else None,
+                f'{label[1]}': attribute.get("start")  if attribute.get("start") else None,
+                f'{label[2]}': attribute.get("end")  if attribute.get("end") else None,
+                f'{label[3]}': attribute.get("case") if attribute.get("case") else None,
+                f'{label[4]}': attribute.get("serviceDepartment") if attribute.get("serviceDepartment") else None,
+                f'{label[5]}': attribute.get("typeContact") if attribute.get("typeContact") else None,
+            }
+
+            # codes from conditions
+            if isinstance(code, dict):
+                coding_list = code.get('coding', [])
+                if coding_list:
+                    for code in coding_list:
+                       row.update({
+                            'code': code.get('code') if code.get('code') else None,
+                            'system': code.get('system') if code.get('system') else None,
+                            'version': code.get('version') if code.get('version') else None
+                        })
+
+
+            df_rows.append(row)
+
+    # New: reorder columns and export them :)
+    df = pd.DataFrame(df_rows)
+    last_columns = 3
+    position_targeted = 2
+    cols = df.columns.tolist()
+    to_move = cols[-last_columns:]
+    new_order = cols[:position_targeted] + to_move + cols[position_targeted:-last_columns]
+    df = df[new_order]
+
+    df.to_csv(f"{subdirectory}/{basis_filename}_extended_encounters.csv", sep=";", index=False)
+    print(f"Exported {len(df)} patients to {basis_filename}.csv")
