@@ -375,7 +375,7 @@ def extract_additional_attributes_from_encounters(smart, input_filepath):
         for patient in patients.keys():
             attributes_conditions = patients[patient]
             duplicated_encounter = set()
-            for count, attr_condition in enumerate(attributes_conditions, start=1):
+            for attr_condition in attributes_conditions:
                 encounter_id = attr_condition['encounter'] if isinstance(attr_condition, dict) else attr_condition
 
                 if encounter_id in duplicated_encounter or duplicated_encounter.add(encounter_id):
