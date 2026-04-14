@@ -21,6 +21,7 @@ from Metadata import gather_metadata
 
 basis_filename = "patients_diagnosed_asthma_copd"
 
+
 def generate_output_filename(surfix_filename, directory):
     input_path = Path(directory)
     target_file = input_path.stem
@@ -64,7 +65,6 @@ def process_inpatient_encounter(resource):
 
 
 def filter_patients_by_age_interval(smart, input_filepath, min_age, max_age, enabled=True):
-
     if not enabled:
         return None
 
@@ -165,10 +165,10 @@ def filter_icu_patients_admission(smart, input_filepath, enabled=True):
                     try:
                         bundle = smart.server.request_json(
                             Encounter.where({
-                            'subject': f'{patient_id}',
-                            'diagnosis.condition': f'Condition/{cid}',
-                            '_count': '1000'
-                        }).construct())
+                                'subject': f'{patient_id}',
+                                'diagnosis.condition': f'Condition/{cid}',
+                                '_count': '1000'
+                            }).construct())
                     except Exception as e:
                         print(f"Generated an exception for {patient_id} with condition/{condition_id}: {e}, but continue trying...")
                         smart = connect_to_server(user=USER_NAME, pw=USER_PASSWORD)
@@ -219,10 +219,10 @@ def calculate_los_inpatients(smart, input_filepath, enabled=True):
                     try:
                         bundle = smart.server.request_json(
                             Encounter.where({
-                            'subject': f'{patient_id}',
-                            'diagnosis.condition': f'Condition/{condition_id['id']}',
-                            '_count': '50'
-                        }).construct())
+                                'subject': f'{patient_id}',
+                                'diagnosis.condition': f'Condition/{condition_id['id']}',
+                                '_count': '50'
+                            }).construct())
                     except Exception as e:
                         print(f" Generated an exception for {patient_id} with condition/{condition_id}: {e}, but continue trying...")
                         smart = connect_to_server(user=USER_NAME, pw=USER_PASSWORD)
@@ -240,7 +240,7 @@ def calculate_los_inpatients(smart, input_filepath, enabled=True):
 
     base_path = Path(input_filepath)
 
-    new_filename = generate_output_filename("length_of_stay",  input_filepath)
+    new_filename = generate_output_filename("length_of_stay", input_filepath)
     output_filepath = base_path.with_name(new_filename)
     with open(output_filepath, "w", encoding="utf-8") as file:
         json.dump(inpatients, file, indent=4, ensure_ascii=False)
@@ -256,58 +256,36 @@ def extract_last_three_encounter(smart, input_filepath, enabled=True):
         return input_filepath
 
     patients_last_3_encounters = defaultdict(list)
+    print("\nFiltering the last three encounters per patient...")
 
     with open(input_filepath, "r") as file:
         patients = json.load(file)
         for patient in patients.keys():
-            print(f"Processing patient with ID: {patient[8:]}...")
-            all_encounters_per_patient = []
             attributes_encounter = patients[patient]
+            all_encounters_per_patient = []
+
             for attribute_encounter in attributes_encounter:
-                start = parse_fhir_datetime(attribute_encounter["start"]).strftime("%Y-%m-%d")
+                encounter_id = attribute_encounter.get('condition').get('encounter')
 
-                while True:  # Connection might get lost sometime, trying to reconnect...
-                    try:
-                        # Check the patient with the specific condition ID has Encounter reference.
-                        bundle = smart.server.request_json(
-                            Encounter.where(struct={
-                            '_count': b'10',
-                            'subject': patient,
-                            'date': f"lt{start}"
-                        }).construct())
-                        break
-                    except Exception as exc:
-                        print(f"Generated an exception: {exc} but continue to trying. \n")
-                        smart = connect_to_server(user=USER_NAME, pw=USER_PASSWORD)
-                        time.sleep(3)
+                if attribute_encounter.get("start") or attribute_encounter.get("end") is not None:
+                    start = parse_fhir_datetime(attribute_encounter["start"]).isoformat()
+                    end = parse_fhir_datetime(attribute_encounter["end"]).isoformat()
 
-                for entry in fetch_bundle_for_code(smart, bundle):
-                    for enc in entry:
-                        start, end, = None, None
-
-                        resource = enc.get("resource", {})
-                        if "period" in enc['resource']:
-                            start = enc["resource"]["period"].get("start")
-                            end = enc["resource"]["period"].get("end")
-
-                        if not start:
-                            continue
-
-                        all_encounters_per_patient.append({
-                            "encounter": resource.get("id"),
-                            "start": start if start else None,
-                            "end": end if end else None,
-                        })
+                all_encounters_per_patient.append({
+                    'encounter': encounter_id,
+                    'start': start,
+                    'end': end,
+                })
 
             valid_encounters = [e for e in all_encounters_per_patient if e.get("start")]
 
             sorted_encounters = sorted(
                 valid_encounters,
-                key=lambda e:e["start"],
+                key=lambda e: e.get("start"),
                 reverse=True
             )
 
-            if len(sorted_encounters) > 0:
+            if sorted_encounters:
                 # Keep last 3 encounters
                 patients_last_3_encounters[patient] = sorted_encounters[:3]
 
@@ -361,7 +339,6 @@ def get_demographics_patients(smart, input_filepath, enabled=True):
 
 
 def extract_additional_attributes_from_encounters(smart, input_filepath):
-
     # Extract interested attributes from encounters (period, fallart, service_department_code)
     contact_system = "http://fhir.de/CodeSystem/kontaktart-de"
 
@@ -468,14 +445,14 @@ def simple_flattening(patients_attr_map, path):
 
             row = {
                 'patient': patient_reference,
-                f'{label[0]}': condition_id if condition_id else None,
-                'encounter': attrib_enc.get('encounter') if attrib_enc.get('encounter') else None,
-                'onsetDateTime':attrib_enc.get('onsetDateTime') if attrib_enc.get('onsetDateTime') else None,
-                f'{label[1]}': attribute.get("start")  if attribute.get("start") else None,
-                f'{label[2]}': attribute.get("end")  if attribute.get("end") else None,
-                f'{label[3]}': attribute.get("case") if attribute.get("case") else None,
-                f'{label[4]}': attribute.get("serviceDepartment") if attribute.get("serviceDepartment") else None,
-                f'{label[5]}': attribute.get("typeContact") if attribute.get("typeContact") else None,
+                f'{label[0]}': condition_id,
+                'encounter': attrib_enc.get('encounter'),
+                'onsetDateTime': attrib_enc.get('onsetDateTime'),
+                f'{label[1]}': attribute.get("start"),
+                f'{label[2]}': attribute.get("end"),
+                f'{label[3]}': attribute.get("case"),
+                f'{label[4]}': attribute.get("serviceDepartment"),
+                f'{label[5]}': attribute.get("typeContact"),
             }
 
             # codes from conditions
@@ -483,12 +460,11 @@ def simple_flattening(patients_attr_map, path):
                 coding_list = code.get('coding', [])
                 if coding_list:
                     for code in coding_list:
-                       row.update({
-                            'code': code.get('code') if code.get('code') else None,
-                            'system': code.get('system') if code.get('system') else None,
-                            'version': code.get('version') if code.get('version') else None
+                        row.update({
+                            'code': code.get('code'),
+                            'system': code.get('system'),
+                            'version': code.get('version')
                         })
-
 
             df_rows.append(row)
 
