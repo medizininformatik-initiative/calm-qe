@@ -380,39 +380,34 @@ def extract_additional_attributes_from_encounters(smart, input_filepath):
                         smart = connect_to_server(user=USER_NAME, pw=USER_PASSWORD)
                         time.sleep(1)
 
-                encounters = [enc] if enc else None
+                if enc:
+                    resource = enc.get("resource", {})
+                    if "period" in resource:
+                        start = resource["period"].get("start")
+                        end = resource["period"].get("end")
 
-                if encounters:
-                    for enc in encounters:
-                        start, end, fall_art, service_type_code, type_contact_code = None, None, None, None, None
+                    if "class" in resource:
+                        fall_art = resource["class"].get("code")
 
-                        resource = enc.get("resource", {})
-                        if "period" in resource:
-                            start = enc["resource"]["period"].get("start")
-                            end = enc["resource"]["period"].get("end")
+                    if "serviceType" in resource:
+                        service_type_code = resource["serviceType"].get("coding", [{}])[0].get("code")
 
-                        if "class" in enc["resource"]:
-                            fall_art = enc["resource"]["class"].get("code")
+                    if "type" in resource:
+                        for type_entry in resource["type"]:
+                            if "coding" not in type_entry:
+                                continue
+                            for coding in type_entry["coding"]:
+                                if contact_system in coding["system"]:
+                                    type_contact_code = coding.get("code")
 
-                        if "serviceType" in enc["resource"]:
-                            service_type_code = enc["resource"]["serviceType"].get("coding", [{}])[0].get("code")
-
-                        if "type" in enc["resource"]:
-                            for type_entry in enc["resource"]["type"]:
-                                if "coding" not in type_entry:
-                                    continue
-                                for coding in type_entry["coding"]:
-                                    if contact_system in coding["system"]:
-                                        type_contact_code = coding.get("code")
-
-                        encounter_results[patient].append({
-                            "condition": attr_condition,
-                            "start": start,
-                            "end": end,
-                            "case": fall_art,
-                            "serviceDepartment": service_type_code,
-                            "typeContact": type_contact_code,
-                        })
+                    encounter_results[patient].append({
+                        "condition": attr_condition,
+                        "start": start,
+                        "end": end,
+                        "case": fall_art,
+                        "serviceDepartment": service_type_code,
+                        "typeContact": type_contact_code,
+                    })
 
     # Extended encounters
     encounters_filepath = base_path.with_name(f"{basis_filename}_extended_encounters.json")
