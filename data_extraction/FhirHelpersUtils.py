@@ -1,7 +1,8 @@
 import time
+from urllib.parse import quote, urlsplit, urlunsplit
+
 import pytz
 import urllib3
-from urllib.parse import quote
 from fhirclient import client
 from Constants import USER_NAME, USER_PASSWORD, SERVER_NAME
 from datetime import datetime, timezone
@@ -15,7 +16,7 @@ except ImportError:
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
-def connect_to_server(user, pw):
+def connect_to_server(user, pw, protocol="https"):
     """
     Creates the FhirClient object for requests later.
     :param user: Username for connection to server
@@ -26,13 +27,13 @@ def connect_to_server(user, pw):
 
     settings = {
         "app_id": "calm_qe",
-        "api_base": f"https://{user}:{pw}@{SERVER_NAME}"}
+        "api_base": f"{protocol}://{user}:{pw}@{SERVER_NAME}"}
 
     smart = client.FHIRClient(settings=settings)
     smart.server.session.verify = False
     return smart
 
-def fetch_bundle_for_code(smart, bundle):
+def fetch_bundle_for_code(smart, bundle, protocol="https"):
     """
     Send query request to the Fhir server via Smart,
     return the result in a bundle. If the result bundle is too big (at most 1K entries),
@@ -54,24 +55,23 @@ def fetch_bundle_for_code(smart, bundle):
         if not next_link:
             break
 
-        url = f"https://{user}:{password}@" + next_link["url"].split("://", 1)[1]
+        url_parts = urlsplit(next_link["url"])
+        url = urlunsplit((
+            url_parts.scheme or protocol,
+            f"{user}:{password}@{url_parts.netloc}",
+            url_parts.path,
+            url_parts.query,
+            url_parts.fragment,
+        ))
+
         while True:
             try:
                 bundle = smart.server.request_json(url)
                 break
             except Exception as exc:
                 print(f"Generated an exception: {exc} but continue trying.\n")
-                smart = connect_to_server(user=USER_NAME, pw=USER_PASSWORD)
+                smart = connect_to_server(user=USER_NAME, pw=USER_PASSWORD, protocol=protocol)
                 time.sleep(3)
-
-        entries = bundle.get("entry", [])
-        yield entries
-
-        next_pages = [p for p in bundle.get("link", []) if p.get("relation") == "next"]
-        if not next_pages:
-            break
-
-        url = f"https://{user}:{password}@" + next_pages[0]["url"].split("://", 1)[1]
 
 
 def parse_fhir_datetime(timestamp):

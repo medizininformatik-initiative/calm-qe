@@ -12,7 +12,7 @@ from fhirclient.models.medicationrequest import MedicationRequest
 from fhirclient.models.medicationstatement import MedicationStatement
 
 from Constants import USER_NAME, USER_PASSWORD, ICD_SYSTEM_NAME, LOINC_SYSTEM_NAME, MAX_WORKERS, ATC_SYSTEM_NAME, \
-    ASTHMA_COPD_CODES_FILE
+    ASTHMA_COPD_CODES_FILE, PROTOCOL
 from FhirHelpersUtils import connect_to_server, fetch_bundle_for_code
 from Metadata import gather_metadata
 
@@ -52,6 +52,7 @@ def patients_with_asthma_copd(smart, results_path):
     find the patients with such diagnoses.
     :param smart: Fhir Server Connector
     """
+    protocol = PROTOCOL
     with open(ASTHMA_COPD_CODES_FILE, 'r') as file:
         diagnoses_file = json.load(file)
         diagnoses_codes = [item['code'] for item in diagnoses_file['codes']]
@@ -65,10 +66,10 @@ def patients_with_asthma_copd(smart, results_path):
                 break
             except Exception as exc:
                 print(f"Generated an exception: {exc} but continue trying.\n")
-                smart = connect_to_server(user=USER_NAME, pw=USER_PASSWORD)
+                smart = connect_to_server(user=USER_NAME, pw=USER_PASSWORD, protocol= protocol)
                 time.sleep(3)
 
-        for entries in fetch_bundle_for_code(smart, bundle):
+        for entries in fetch_bundle_for_code(smart, bundle, protocol):
             for entry in entries:
                 condition = entry['resource']
                 if condition['subject']['reference']:
@@ -96,7 +97,7 @@ def patients_with_asthma_copd(smart, results_path):
 def observations(patient, code_set, source, smart):
     patient_id = patient.split("/")[-1]
     whole_path = f"fhir_results/LOINC/{patient_id}_patient_observations.json"
-
+    protocol = PROTOCOL
     while True:
         try:
             bundle = smart.server.request_json(source.where(struct={'_count': '1000', 'subject': patient}).construct())
@@ -104,12 +105,12 @@ def observations(patient, code_set, source, smart):
         except Exception as exc:
             print(f"Generated an exception: {exc} but continue trying.\n")
             time.sleep(3)
-            smart = connect_to_server(user=USER_NAME, pw=USER_PASSWORD)
+            smart = connect_to_server(user=USER_NAME, pw=USER_PASSWORD, protocol= protocol)
 
     count = 0
     file = None
     try:
-        for entries in fetch_bundle_for_code(smart, bundle):
+        for entries in fetch_bundle_for_code(smart, bundle, protocol):
             for observation in entries:
                 resource = observation.get("resource", {})
                 codings = resource.get("code", {}).get("coding", [])
@@ -129,7 +130,7 @@ def observations(patient, code_set, source, smart):
 def conditions(patient, code_list, source, smart):
     patient_id = patient.split("/")[-1]
     whole_path = "fhir_results/ICD/" + patient_id + "_patient_conditions.json"
-
+    protocol = PROTOCOL
     sub_code_lists = [code_list[i:i + 30] for i in range(0, len(code_list), 30)]  # smaller chunks of code list
 
     count = 0
@@ -145,9 +146,9 @@ def conditions(patient, code_list, source, smart):
                 except Exception as exc:
                     print(f"Generated an exception: {exc} but continue trying.\n")
                     time.sleep(3)
-                    smart = connect_to_server(user=USER_NAME, pw=USER_PASSWORD)
+                    smart = connect_to_server(user=USER_NAME, pw=USER_PASSWORD, protocol= protocol)
 
-            for entries in fetch_bundle_for_code(smart, bundle):
+            for entries in fetch_bundle_for_code(smart, bundle, protocol):
                 for condition in entries:
                     if file is None:
                         file = open(whole_path, "w")
@@ -163,6 +164,7 @@ def conditions(patient, code_list, source, smart):
 def medications(patient, code_list, source, smart):
     code_list_str = ','.join([ATC_SYSTEM_NAME + '|' + code for code in code_list])
     patient_id = patient.split("/")[-1]
+    protocol = PROTOCOL
 
     if source is MedicationAdministration:
         whole_path = "fhir_results/ATC/Administrations/" + patient_id + "_patient_medicationAdministrations.json"
@@ -182,12 +184,12 @@ def medications(patient, code_list, source, smart):
             break
         except Exception as exc:
             print(f"Generated an exception: {exc} but continue trying.\n")
-            smart = connect_to_server(user=USER_NAME, pw=USER_PASSWORD)
+            smart = connect_to_server(user=USER_NAME, pw=USER_PASSWORD, protocol= PROTOCOL)
             time.sleep(3)
     count = 0
     file = None
     try:
-        for entries in fetch_bundle_for_code(smart, bundle):
+        for entries in fetch_bundle_for_code(smart, bundle, protocol):
             for medicationProfile in entries:
                 if file is None:
                     file = open(whole_path, "w")
@@ -204,7 +206,8 @@ def execute_thread_for_fetching(code_set, source, patient_list, code_type, funct
     """
     Threads for running fetch queries parallel.
     """
-    smart = connect_to_server(user=USER_NAME, pw=USER_PASSWORD)
+    protocol = PROTOCOL
+    smart = connect_to_server(user=USER_NAME, pw=USER_PASSWORD, protocol= protocol)
     processed = 0
     total_patients = len(patient_list)
     with ThreadPoolExecutor(max_workers=MAX_WORKERS) as executor:
@@ -303,11 +306,11 @@ def fetch_atc_codes(resource_ref, code_list, smart):
 
 
 def medication_frequencies(code_file):
-    smart = connect_to_server(user=USER_NAME, pw=USER_PASSWORD)
+    smart = connect_to_server(user=USER_NAME, pw=USER_PASSWORD, protocol= PROTOCOL)
     folder_paths = ["fhir_results/ATC/Administrations", "fhir_results/ATC/Requests", "fhir_results/ATC/Statements"]
     code_list = read_input_code_file(code_file)
     system = ATC_SYSTEM_NAME
-
+    protocol = PROTOCOL
     for folder_path in folder_paths:
         medication_type_and_med_reference = {}
         resource_structure = defaultdict(lambda: {
@@ -331,7 +334,7 @@ def medication_frequencies(code_file):
                                 code_name = fetch_atc_codes(resource_ref, code_list, smart)
                             except Exception as exc:
                                 print(f"Generated an exception: {exc} but continue trying.\n")
-                                smart = connect_to_server(user=USER_NAME, pw=USER_PASSWORD)
+                                smart = connect_to_server(user=USER_NAME, pw=USER_PASSWORD, protocol= protocol)
                                 time.sleep(3)
 
                             if resource_type not in medication_type_and_med_reference:

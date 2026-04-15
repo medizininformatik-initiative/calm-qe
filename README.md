@@ -2,12 +2,11 @@
 
 This repository is developed to create "Study Data" for [CALM-QE Project]( https://www.calm-qe.de/).
 
+The purpose of this set of scripts is to identify a cohort of patients whose diagnoses are associated with Asthma or Chronic Obstructive Pulmonary Disease (COPD) from a given FHIR server. The scripts extract the relevant patient population (the “cohort”) based on these conditions.
 
-The purpose of this set of scripts is to determine a cohort dataset specifically for patients whose primary diagnoses are associated with Asthma or Chronic Obstructive Pulmonary Disease (COPD). The scripts identify and extract
-locally relevant patient data from FHIR server resources available.
-This obtained cohort dataset determines a primary set to continue a further analysis to determine and quantify patients with secondary conditions, observations, and specific medication records related.
+In addition, they retrieve comprehensive clinical data for each patient in the cohort to support further analysis. This includes secondary conditions, observations, and associated medication records.
 
-To run this project is necessary to cover the following requirements: 
+To run this project, it is necessary to cover the following requirements: 
 -	Connection to a FHIR Server 
 -	Python 3.12 
 -	Docker (optional)
@@ -33,12 +32,14 @@ You should update the following fields including a _**.env**_ file
 - USER_NAME = os.getenv("USER_NAME")
 - USER_PASSWORD = os.getenv("USER_PASSWORD")
 - SERVER_NAME = os.getenv("SERVER_NAME")
+- PROTOCOL = os.getenv("PROTOCOL")
 
 Or for instance by adding credentials directly in these fields:
 
 USER_NAME = os.getenv("USER_NAME", "user1")
 USER_PASSWORD = os.getenv("USER_PASSWORD", "pass123")
 SERVER_NAME = os.getenv("SERVER_NAME", "server.fhir.diz.uni.de/fhir")
+PROTOCOL = os.getenv("PROTOCOL", "https")
 
 #### Creation of Cohort Patients List and Extraction of the Resources from Cohort Patients
 ------------------------------------------
@@ -49,7 +50,7 @@ The usage of this file is determined in `Constants.py`.
 
 The script outputs all the patients' IDs and corresponding diagnoses in `patients_diagnosed_asthma_copd.json`.
 
-After the first part is complete, the analysis continues with the fetching, extraction, and count of secondary Conditions, Observations and Medication. 
+After the first part is complete, the analysis continues with the fetching, extraction, and counting of secondary Conditions, Observations, and Medication. 
 
 The script generates separate JSON files for each resource type (e.g., Conditions, Observations, Medications) per patient.
 
@@ -87,6 +88,7 @@ Instead of setting up and running the scripts manually, you can run the scripts 
 - USER_NAME = "Your User Name"
 - USER_PASSWORD = "Your Password"
 - SERVER_NAME = "Your Fhir Server Base URL"
+- PROTOCOL = "Your protocol type, e.g. https or http"
 
 After making sure Docker is installed, you can run the following commands.
 ```

@@ -5,6 +5,7 @@ load_dotenv()
 USER_NAME = os.getenv("USER_NAME")
 USER_PASSWORD = os.getenv("USER_PASSWORD")
 SERVER_NAME = os.getenv("SERVER_NAME")
+PROTOCOL = os.getenv("PROTOCOL")
 ICD_CODE_FILE = "input_files/icd_codes.json"
 LOINC_CODE_FILE = "input_files/loinc_codes.json"
 ATC_CODE_FILE = "input_files/atc_codes.json"
