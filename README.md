@@ -2,12 +2,11 @@
 
 This repository is developed to create "Study Data" for [CALM-QE Project]( https://www.calm-qe.de/).
 
+The purpose of this set of scripts is to identify a cohort of patients whose diagnoses are associated with Asthma or Chronic Obstructive Pulmonary Disease (COPD) from a given FHIR server. The scripts extract the relevant patient population (the “cohort”) based on these conditions.
 
-The purpose of this set of scripts is to determine a cohort dataset specifically for patients whose primary diagnoses are associated with Asthma or Chronic Obstructive Pulmonary Disease (COPD). The scripts identify and extract
-locally relevant patient data from FHIR server resources available.
-This obtained cohort dataset determines a primary set to continue further analysis to determine and quantify patients with secondary conditions, observations, and specific medication records related.
+In addition, they retrieve comprehensive clinical data for each patient in the cohort to support further analysis. This includes secondary conditions, observations, and associated medication records.
 
-To run this project is necessary to cover the following requirements: 
+To run this project, it is necessary to cover the following requirements: 
 -	Connection to a FHIR Server 
 -	Python 3.12 
 -	Docker (optional)
@@ -67,7 +66,8 @@ Instead of setting up and running the scripts manually, you can run the scripts 
 - USER_NAME = "Your User Name"
 - USER_PASSWORD = "Your Password"
 - SERVER_NAME = "Your Fhir Server Base URL"
-- PROTOCOL = "Your protocol type, e.g https or http"
+- PROTOCOL = "Your protocol type, e.g. https or http"
+
 After making sure Docker is installed, you can run the following commands.
 ```
 docker build -t fhir-cohort-resources-extraction .
