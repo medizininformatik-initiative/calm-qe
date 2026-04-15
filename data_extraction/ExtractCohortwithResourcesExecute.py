@@ -9,7 +9,7 @@ from fhirclient.models.medicationrequest import MedicationRequest
 from fhirclient.models.medicationstatement import MedicationStatement
 from fhirclient.models.observation import Observation
 
-from Constants import USER_NAME, USER_PASSWORD,ICD_CODE_FILE, LOINC_CODE_FILE, ATC_CODE_FILE
+from Constants import USER_NAME, USER_PASSWORD, ICD_CODE_FILE, LOINC_CODE_FILE, ATC_CODE_FILE, PROTOCOL
 from FhirHelpersResourceExtraction import (execute_thread_for_fetching, observations, conditions, medications,
                                            observation_frequencies, conditions_frequencies,
                                            medication_frequencies, read_input_code_file, patients_with_asthma_copd)
@@ -27,7 +27,7 @@ i.e., counting them. It also fetches the resources and save them in output files
 
 def main():
     logging.info("Start...")
-    smart = connect_to_server(user=USER_NAME, pw=USER_PASSWORD)
+    smart = connect_to_server(user=USER_NAME, pw=USER_PASSWORD, protocol= PROTOCOL)
 
     #Get the patients with "ANY TYPE OF DIAGNOSED" Asthma or COPD.
     patients_with_asthma_copd(smart)
@@ -36,7 +36,6 @@ def main():
     with open("patients_diagnosed_asthma_copd.json", "r") as file:
         input_file = json.load(file)
         patients = [patient for patient in input_file.keys()]
-
 
     ####Conditions#####
     code_list = read_input_code_file(ICD_CODE_FILE)
