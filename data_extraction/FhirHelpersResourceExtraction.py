@@ -78,8 +78,8 @@ def patients_with_asthma_copd(smart, results_path):
                     if condition['encounter']['reference']:  # New: Include encounter reference
                         patient_attributes_map["encounter"] = condition['encounter']['reference'].split("/")[1]
 
-                    if condition['onsetDateTime']:  # New: Include onsetDateTime from conditions
-                        patient_attributes_map["onsetDateTime"] = condition['onsetDateTime']
+                    if condition['recordedDate']:  # New: Include recordedDate from conditions
+                        patient_attributes_map["recordedDate"] = condition['recordedDate']
                     patients_conditions_map[patient_reference].append(patient_attributes_map)
 
     gather_metadata("asthma_and_copd_patient_count", len(patients_conditions_map))

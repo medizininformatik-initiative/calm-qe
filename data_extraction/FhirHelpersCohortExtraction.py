@@ -437,14 +437,16 @@ def simple_flattening(patients_attr_map, path):
             condition_id = attribute.get("condition").get("id")
             attrib_enc = attribute.get("condition")
             code = attribute.get("condition").get("code")
+            patient_id = patient_reference.split("/")[1]
 
+            # rename labels to more suitable description of an attribute
             row = {
-                'patient': patient_reference,
+                'patient': patient_id,
                 f'{label[0]}': condition_id,
+                'recordedDiagnosisDate': attrib_enc.get('recordedDate'),
                 'encounter': attrib_enc.get('encounter'),
-                'onsetDateTime': attrib_enc.get('onsetDateTime'),
-                f'{label[1]}': attribute.get("start"),
-                f'{label[2]}': attribute.get("end"),
+                f'admissionDate': attribute.get("start"),
+                f'dischargeDate': attribute.get("end"),
                 f'{label[3]}': attribute.get("case"),
                 f'{label[4]}': attribute.get("serviceDepartment"),
                 f'{label[5]}': attribute.get("typeContact"),
