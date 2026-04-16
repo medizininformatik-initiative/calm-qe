@@ -81,6 +81,13 @@ After compiling the script, a metadata.json is generated as part of the outcomes
 ```
 python .\data_extraction\CohortPatientsAdditionalFilters.py
 ```
+###### Additional notes:
+Each additional filter have a enable-disable option, in case not all the filters are required to apply. 
+
+Example:
+```
+filter_patients_by_age_interval(smart, encounters_filepath, min_age=min_age, max_age=max_age, enabled=False)
+```
 
 #### Run Using Docker (OPTIONAL)
 --------------------------------
@@ -90,11 +97,28 @@ Instead of setting up and running the scripts manually, you can run the scripts 
 - SERVER_NAME = "Your Fhir Server Base URL"
 - PROTOCOL = "Your protocol type, e.g. https or http"
 
-After making sure Docker is installed, you can run the following commands.
+###### Usage:
 ```
 docker build -t fhir-cohort-resources-extraction .
 
 docker run --name calm-qe fhir-cohort-resources-extraction
+```
+
+### Alternative: using .env and docker-compose.yaml 
+
+To avoid plain-text credentials, 
+1. create a `.env`, in the main project's path, and store your credentials: 
+
+   - USER_NAME = "Your User Name"
+   - USER_PASSWORD = "Your Password"
+   - SERVER_NAME = "Your Fhir Server Base URL"
+   - PROTOCOL = "Your protocol type, e.g. https or http"
+
+1. remove or comment all ENV variables from `dockerfile`
+2. run the following command after making sure docker is already installed.
+
+```
+docker-compose -p calm-qe up -d
 ```
 
 
