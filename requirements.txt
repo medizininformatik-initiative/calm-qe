@@ -1,5 +1,5 @@
-requests==2.32.3
-urllib3==2.2.2
+requests>=2.33.0
+urllib3==2.6.3
 fhirclient==4.2.0
 matplotlib~=3.9.3
 pytz~=2025.2
