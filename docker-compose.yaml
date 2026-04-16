@@ -1,0 +1,11 @@
+services:
+  app:
+    build: .
+    container_name: fhir-cohort-resources-extraction
+    environment:
+      - USER_NAME=${USER_NAME}
+      - USER_PASSWORD=${USER_PASSWORD}
+      - SERVER_NAME=${SERVER_NAME}
+      - PROTOCOL=${PROTOCOL}
+volumes:
+  app:
