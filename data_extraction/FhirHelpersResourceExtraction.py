@@ -84,13 +84,11 @@ def patients_with_asthma_copd(smart, results_path):
                     patients_conditions_map[patient_reference].append(patient_attributes_map)
 
     gather_metadata("asthma_and_copd_patient_count", len(patients_conditions_map))
-    with open('patients_diagnosed_asthma_copd.json', 'w') as file:  #intermediate results, can be deleted later.
-        json.dump(patients_conditions_map, file, indent=4)
 
     output_filepath = results_path / f"patients_diagnosed_asthma_copd.json"
     with open(output_filepath, 'w') as file:  # Intermediate results.
         json.dump(patients_conditions_map, file, indent=4)
-
+    print("Saved .json file", output_filepath)
     return output_filepath
 
 

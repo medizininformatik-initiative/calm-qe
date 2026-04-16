@@ -266,9 +266,9 @@ def extract_last_three_encounter(smart, input_filepath, enabled=True):
 
             for attribute_encounter in attributes_encounter:
                 encounter_id = attribute_encounter.get('condition').get('encounter')
+                start = parse_fhir_datetime(attribute_encounter["start"]).isoformat()
 
-                if attribute_encounter.get("start") or attribute_encounter.get("end") is not None:
-                    start = parse_fhir_datetime(attribute_encounter["start"]).isoformat()
+                if attribute_encounter.get("end") is not None:
                     end = parse_fhir_datetime(attribute_encounter["end"]).isoformat()
 
                 all_encounters_per_patient.append({
