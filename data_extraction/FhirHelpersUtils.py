@@ -1,4 +1,5 @@
 import time
+import logging
 from urllib.parse import quote, urlsplit, urlunsplit
 
 import pytz
@@ -7,6 +8,7 @@ from fhirclient import client
 from Constants import USER_NAME, USER_PASSWORD, SERVER_NAME
 from datetime import datetime, timezone
 from fhirclient.models.bundle import Bundle
+
 
 try:
     from zoneinfo import ZoneInfo
@@ -69,7 +71,7 @@ def fetch_bundle_for_code(smart, bundle, protocol="https"):
                 bundle = smart.server.request_json(url)
                 break
             except Exception as exc:
-                print(f"Generated an exception: {exc} but continue trying.\n")
+                logging.error(f"Generated an exception: {exc} but continue trying.\n")
                 smart = connect_to_server(user=USER_NAME, pw=USER_PASSWORD, protocol=protocol)
                 time.sleep(3)
 

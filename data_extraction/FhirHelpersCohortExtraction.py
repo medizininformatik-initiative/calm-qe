@@ -1,4 +1,5 @@
 import os
+import logging
 from collections import defaultdict
 import json
 import time
@@ -73,7 +74,7 @@ def filter_patients_by_age_interval(smart, input_filepath, min_age, max_age, ena
     if min_age > max_age:
         raise ValueError("min_age must be <= max_age")
 
-    print(f"\nFiltering patients with age in interval [{min_age}, {max_age}] years...")
+    logging.info(f"\nFiltering patients with age in interval [{min_age}, {max_age}] years...")
 
     matched_patients = defaultdict(list)
     pid_not_birthdate = []
@@ -85,7 +86,7 @@ def filter_patients_by_age_interval(smart, input_filepath, min_age, max_age, ena
     for patient_ref, encounter_attribs in patient_encounters.items():
         total_processed += 1
         patient_id = patient_ref.split("/")[-1]
-        print(f"\nProcessing patient {patient_id}...")
+        logging.info(f"\nProcessing patient {patient_id}...")
 
         while True:
             try:
@@ -94,13 +95,13 @@ def filter_patients_by_age_interval(smart, input_filepath, min_age, max_age, ena
                 birth_date = parse_fhir_datetime(birth_iso)
                 break
             except Exception as exc:
-                print(f"Error fetching patient {patient_id}: {exc}, but continue to trying...")
+                logging.error(f"Error fetching patient {patient_id}: {exc}, but continue to trying...")
                 smart = connect_to_server(user=USER_NAME, pw=USER_PASSWORD)
                 time.sleep(1)
 
         if not birth_date:
             pid_not_birthdate.append(patient_ref)
-            print(f"Skipping patient {patient_ref} - no birth date available.")
+            logging.warning(f"Skipping patient {patient_ref} - no birth date available.")
             continue
 
         for enc in encounter_attribs:
@@ -133,7 +134,7 @@ def filter_patients_by_age_interval(smart, input_filepath, min_age, max_age, ena
     label = f"{min_age}-{max_age}"
     interval_count = len(matched_patients)
     gather_metadata("patient_count_by_age_interval", {label: interval_count})
-    print(f"Found {interval_count} patients in interval [{min_age}, {max_age}] out of {total_processed} processed.")
+    logging.info(f"Found {interval_count} patients in interval [{min_age}, {max_age}] out of {total_processed} processed.")
 
     if interval_count > 0:
         base_path = Path(input_filepath)
@@ -153,7 +154,7 @@ def filter_icu_patients_admission(smart, input_filepath, enabled=True):
     if not enabled:
         return None
 
-    print("\nFiltering ICU patients...")
+    logging.info("\nFiltering ICU patients...")
     main_patients_diagnosed = input_filepath
     icu_patients = defaultdict(int)
     if os.path.exists(main_patients_diagnosed):
@@ -170,7 +171,7 @@ def filter_icu_patients_admission(smart, input_filepath, enabled=True):
                                 '_count': '1000'
                             }).construct())
                     except Exception as e:
-                        print(f"Generated an exception for {patient_id} with condition/{condition_id}: {e}, but continue trying...")
+                        logging.error(f"Generated an exception for {patient_id} with condition/{condition_id}: {e}, but continue trying...")
                         smart = connect_to_server(user=USER_NAME, pw=USER_PASSWORD)
                         time.sleep(3)
 
@@ -182,7 +183,7 @@ def filter_icu_patients_admission(smart, input_filepath, enabled=True):
                                     continue
                                 for coding in type_entry["coding"]:
                                     if "code" in coding and "intensiv" in coding["code"].lower():
-                                        print(f"ICU encounter found for patient {patient_id}")
+                                        logging.info(f"ICU encounter found for patient {patient_id}")
                                         encounter_id = enc["resource"].get("id")
                                         icu_patients.setdefault(patient_id, set()).add(encounter_id)
 
@@ -206,7 +207,7 @@ def calculate_los_inpatients(smart, input_filepath, enabled=True):
     if not enabled:
         return None
 
-    print("\nGathering inpatients...")
+    logging.info("\nGathering inpatients...")
     main_patients_diagnosed = input_filepath
     inpatients = defaultdict()
 
@@ -224,7 +225,7 @@ def calculate_los_inpatients(smart, input_filepath, enabled=True):
                                 '_count': '50'
                             }).construct())
                     except Exception as e:
-                        print(f" Generated an exception for {patient_id} with condition/{condition_id}: {e}, but continue trying...")
+                        logging.error(f" Generated an exception for {patient_id} with condition/{condition_id}: {e}, but continue trying...")
                         smart = connect_to_server(user=USER_NAME, pw=USER_PASSWORD)
                         time.sleep(3)
 
@@ -245,7 +246,7 @@ def calculate_los_inpatients(smart, input_filepath, enabled=True):
     with open(output_filepath, "w", encoding="utf-8") as file:
         json.dump(inpatients, file, indent=4, ensure_ascii=False)
 
-    print(f"File successfully generated with {len(inpatients)} inpatients")
+    logging.info(f"File successfully generated with {len(inpatients)} inpatients")
 
 
 def extract_last_three_encounter(smart, input_filepath, enabled=True):
@@ -256,7 +257,7 @@ def extract_last_three_encounter(smart, input_filepath, enabled=True):
         return input_filepath
 
     patients_last_3_encounters = defaultdict(list)
-    print("\nFiltering the last three encounters per patient...")
+    logging.info("\nFiltering the last three encounters per patient...")
 
     with open(input_filepath, "r") as file:
         patients = json.load(file)
@@ -296,7 +297,7 @@ def extract_last_three_encounter(smart, input_filepath, enabled=True):
     with open(output_filepath, "w", encoding="utf-8") as file:
         json.dump(patients_last_3_encounters, file, indent=4, ensure_ascii=False)
 
-    print(f"File successfully generated for extracting last three encounters and admission dates for {len(patients_last_3_encounters)} main diagnosed patients")
+    logging.info(f"File successfully generated for extracting last three encounters and admission dates for {len(patients_last_3_encounters)} main diagnosed patients")
 
 
 def get_demographics_patients(smart, input_filepath, enabled=True):
@@ -316,7 +317,7 @@ def get_demographics_patients(smart, input_filepath, enabled=True):
     with open(input_filepath, "r") as file:
         patients = json.load(file)
         for patient in patients.keys():
-            print(f"Processing patient with ID: {patient[8:]}...")
+            logging.info(f"Processing patient with ID: {patient[8:]}...")
             patient_identifiers.append(patient[8:])
 
     for patient_id in patient_identifiers:
@@ -330,20 +331,20 @@ def get_demographics_patients(smart, input_filepath, enabled=True):
                 })
                 break
             except Exception as exc:
-                print(f"Generated an exception: {exc} but continue to trying. \n")
+                logging.error(f"Generated an exception: {exc} but continue to trying. \n")
                 smart = connect_to_server(user=USER_NAME, pw=USER_PASSWORD)
                 time.sleep(3)
 
     patients_demographics_df = pd.DataFrame(patients_demographics)
     patients_demographics_df.to_csv(os.path.join(subdirectory, "demographics.csv"), index=False, sep=";")
-    print(f"Saving extracted demographics as .csv file in {subdirectory}")
+    logging.info(f"Saving extracted demographics as .csv file in {subdirectory}")
 
 
 def extract_additional_attributes_from_encounters(smart, input_filepath):
     # Extract interested attributes from encounters (period, fallart, service_department_code)
     contact_system = "http://fhir.de/CodeSystem/kontaktart-de"
 
-    print("Starting additional encounters extraction...")
+    logging.info("Starting additional encounters extraction...")
     encounter_results = defaultdict(list)
     non_found_encounter_results = defaultdict(list)
     base_path = Path(input_filepath)
@@ -365,19 +366,19 @@ def extract_additional_attributes_from_encounters(smart, input_filepath):
                         enc = {"resource": entry_encounter.as_json()}
                         break
                     except FHIRNotFoundException:
-                        print(f"Encounter {encounter_id} not found. Skipping")
+                        logging.error(f"Encounter {encounter_id} not found. Skipping")
                         non_found_encounter_results[patient].append(encounter_id)
                         enc = None
                         break
                     except Exception as exc:
                         status = getattr(getattr(exc, "response", None), "status_code", None)
                         if status == 410:
-                            print(f"Exception {status}. Encounter {encounter_id} missing or deleted. Skipping")
+                            logging.error(f"Exception {status}. Encounter {encounter_id} missing or deleted. Skipping")
                             non_found_encounter_results[patient].append(encounter_id)
                             enc = None
                             break
 
-                        print(f"Generated an exception: {exc} in but continue to trying. \n")
+                        logging.warning(f"Generated an exception: {exc} in but continue to trying. \n")
                         smart = connect_to_server(user=USER_NAME, pw=USER_PASSWORD)
                         time.sleep(1)
 
@@ -476,4 +477,4 @@ def simple_flattening(patients_attr_map, path):
     df = df[new_order]
 
     df.to_csv(f"{subdirectory}/{basis_filename}_extended_encounters.csv", sep=";", index=False)
-    print(f"Exported {len(df)} patients to {basis_filename}.csv")
+    logging.info(f"Exported {len(df)} patients to {basis_filename}.csv")

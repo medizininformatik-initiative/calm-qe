@@ -1,4 +1,5 @@
 import os
+import logging
 from collections import defaultdict
 import json
 import time
@@ -65,7 +66,7 @@ def patients_with_asthma_copd(smart, results_path):
                     Condition.where(struct={'_count': "1000", 'code': ICD_SYSTEM_NAME + '|' + code}).construct())
                 break
             except Exception as exc:
-                print(f"Generated an exception: {exc} but continue trying.\n")
+                logging.error(f"Generated an exception: {exc} but continue trying.\n")
                 smart = connect_to_server(user=USER_NAME, pw=USER_PASSWORD, protocol= protocol)
                 time.sleep(3)
 
@@ -88,7 +89,7 @@ def patients_with_asthma_copd(smart, results_path):
     output_filepath = results_path / f"patients_diagnosed_asthma_copd.json"
     with open(output_filepath, 'w') as file:  # Intermediate results.
         json.dump(patients_conditions_map, file, indent=4)
-    print("Saved .json file", output_filepath)
+    logging.info("Saved .json file", output_filepath)
     return output_filepath
 
 
@@ -101,7 +102,7 @@ def observations(patient, code_set, source, smart):
             bundle = smart.server.request_json(source.where(struct={'_count': '1000', 'subject': patient}).construct())
             break
         except Exception as exc:
-            print(f"Generated an exception: {exc} but continue trying.\n")
+            logging.error(f"Generated an exception: {exc} but continue trying.\n")
             time.sleep(3)
             smart = connect_to_server(user=USER_NAME, pw=USER_PASSWORD, protocol= protocol)
 
@@ -142,7 +143,7 @@ def conditions(patient, code_list, source, smart):
                         struct={'_count': '1000', 'subject': patient, 'code': sub_code_list_str}).construct())
                     break
                 except Exception as exc:
-                    print(f"Generated an exception: {exc} but continue trying.\n")
+                    logging.error(f"Generated an exception: {exc} but continue trying.\n")
                     time.sleep(3)
                     smart = connect_to_server(user=USER_NAME, pw=USER_PASSWORD, protocol= protocol)
 
@@ -181,7 +182,7 @@ def medications(patient, code_list, source, smart):
                     struct={'_count': '1000', 'patient': patient, 'medication.code': code_list_str}).construct())
             break
         except Exception as exc:
-            print(f"Generated an exception: {exc} but continue trying.\n")
+            logging.error(f"Generated an exception: {exc} but continue trying.\n")
             smart = connect_to_server(user=USER_NAME, pw=USER_PASSWORD, protocol= PROTOCOL)
             time.sleep(3)
     count = 0
@@ -219,9 +220,9 @@ def execute_thread_for_fetching(code_set, source, patient_list, code_type, funct
                 count = future.result()
                 if count > 0:
                     patient_counter += 1
-                print(f"[{processed}/{total_patients}] {patient} with {count} {code_type} entries processed")
+                logging.info(f"[{processed}/{total_patients}] {patient} with {count} {code_type} entries processed")
             except Exception as exc:
-                print(f"[{processed}/{total_patients}] [{code_type}] {patient} generated an exception: {exc}")
+                logging.error(f"[{processed}/{total_patients}] [{code_type}] {patient} generated an exception: {exc}")
 
     ###META DATA COLLECTION###
     '''
@@ -243,7 +244,7 @@ def execute_thread_for_fetching(code_set, source, patient_list, code_type, funct
             gather_metadata("patient_count_with_medicationStatements", patient_counter)
     else:
         pass
-    print("---------------End of Code------------------------")
+    logging.info("---------------End of Code------------------------")
 
 
 def observation_frequencies(code_file):
@@ -264,7 +265,7 @@ def observation_frequencies(code_file):
                             observations_counts[coding['code']] += 1
 
     for code, frequency in observations_counts.items():
-        print(f"{code}: {frequency}")
+        logging.info(f"{code}: {frequency}")
     gather_metadata("observations_counts", observations_counts)
 
 
@@ -300,7 +301,7 @@ def fetch_atc_codes(resource_ref, code_list, smart):
                         return coding.code
 
     except Exception as error:
-        print(f"Generated an exception:{error} for {resource_ref}")
+        logging.error(f"Generated an exception:{error} for {resource_ref}")
 
 
 def medication_frequencies(code_file):
@@ -331,7 +332,7 @@ def medication_frequencies(code_file):
                             try:
                                 code_name = fetch_atc_codes(resource_ref, code_list, smart)
                             except Exception as exc:
-                                print(f"Generated an exception: {exc} but continue trying.\n")
+                                logging.error(f"Generated an exception: {exc} but continue trying.\n")
                                 smart = connect_to_server(user=USER_NAME, pw=USER_PASSWORD, protocol= protocol)
                                 time.sleep(3)
 
@@ -340,7 +341,7 @@ def medication_frequencies(code_file):
                             medication_type_and_med_reference[resource_type][code_name] = (
                                     medication_type_and_med_reference[resource_type].get(code_name, 0) + 1)
                         else:
-                            print(f"{filename}  has no 'resource' statement within this file.")
+                            logging.info(f"{filename}  has no 'resource' statement within this file.")
 
         # Estimates TOTAL counts per medication resource and structures data as outcomes
         for resource_type, num_references in medication_type_and_med_reference.items():

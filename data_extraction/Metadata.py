@@ -1,5 +1,6 @@
 import json
 import os
+import logging
 from collections import defaultdict
 from datetime import datetime
 
@@ -40,12 +41,12 @@ def gather_metadata(source, count):
             metadata[source] = count
     elif '_counts' in source.lower():
         metadata[source] = defaultdict(int, {count: 0})
-        print(f"Source '{source}' was not defined; but it has been created in Metadata.json file.")
+        logging.info(f"Source '{source}' was not defined; but it has been created in Metadata.json file.")
     else:
         metadata[source] = count
-        print(f"Source '{source}' was not defined; but it has been created in Metadata.json file.")
+        logging.info(f"Source '{source}' was not defined; but it has been created in Metadata.json file.")
 
     with open(metadata_file_path, 'w') as metadata_file:
         json.dump(metadata, metadata_file, indent=4)
 
-    print("Metadata has been saved.")
+    logging.info("Metadata has been saved.")
