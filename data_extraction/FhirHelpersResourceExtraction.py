@@ -99,7 +99,8 @@ def observations(patient, code_set, source, smart):
     protocol = PROTOCOL
     while True:
         try:
-            bundle = smart.server.request_json(source.where(struct={'_count': '1000', 'subject': patient}).construct())
+            response = smart.server.post_as_form(url=f"{smart.server.base_uri}/Observation/_search", formdata={'_count': '1000', 'subject': patient})
+            bundle = response.json()
             break
         except Exception as exc:
             logging.error(f"Generated an exception: {exc} but continue trying.\n")
@@ -139,8 +140,9 @@ def conditions(patient, code_list, source, smart):
             sub_code_list_str = ','.join([ICD_SYSTEM_NAME + '|' + code for code in sub_code_list])
             while True:
                 try:
-                    bundle = smart.server.request_json(source.where(
-                        struct={'_count': '1000', 'subject': patient, 'code': sub_code_list_str}).construct())
+                    response = smart.server.post_as_form(url=f"{smart.server.base_uri}/Condition/_search", formdata={'_count': '1000', 'subject': patient, 'code': sub_code_list_str})
+                    bundle = response.json()
+
                     break
                 except Exception as exc:
                     logging.error(f"Generated an exception: {exc} but continue trying.\n")
