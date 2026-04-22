@@ -92,7 +92,7 @@ def patients_with_asthma_copd(smart, results_path):
     output_filepath = results_path / f"patients_diagnosed_asthma_copd.json"
     with open(output_filepath, 'w') as file:  # Intermediate results.
         json.dump(patients_conditions_map, file, indent=4)
-    logging.info("Saved .json file", output_filepath)
+    logging.info(f"Saved .json file {output_filepath}")
     return output_filepath
 
 
