@@ -13,18 +13,15 @@ To run this project, it is necessary to cover the following requirements:
 
 The installation can be orchestrated directly by copying this repository locally and following the _**Set up**_ instructions, or run it directly with [**Docker**](#run-using-docker-optional). 
 
-#### Set up 
-------------
-
-
-**1. Install requirements**
+## Set up
+### 1. Install requirements
 
 Install all the required packages:
 
 ```bash
 pip install -r requirements.txt
 ```
-**2. Configure FHIR Server Connection**
+### 2. Configure FHIR Server Connection
 
 Before running the scripts, ensure that FHIR server configurations are added in `data_extraction/Constants.py` file. 
 You should update the following fields including a _**.env**_ file:
@@ -45,8 +42,7 @@ USER_PASSWORD = os.getenv("USER_PASSWORD", "pass123")
 SERVER_NAME = os.getenv("SERVER_NAME", "server.fhir.diz.uni.de/fhir")
 PROTOCOL = os.getenv("PROTOCOL", "https")
 ```
-#### Creation of Cohort Patients List and Extraction of the Resources from Cohort Patients
-------------------------------------------
+## Creation of Cohort Patients List and Extraction of the Resources from Cohort Patients
 This script identifies patients diagnosed with "Asthma" or "COPD".
 
  `ExtractCohortwithResourcesExecute.py` reads from the input_files folder `asthma_copd_codes.json` automatically. This JSON file includes all the ICD-10 codes available related to "Asthma" and "COPD". Modifications to this code list are possible based on unique needs when required.
@@ -60,12 +56,12 @@ The script generates separate JSON files for each resource type (e.g., Condition
 
 After compiling the script, a `metadata.json` is generated as part of the outcomes to provide a general and quantitative overview of the items generated.
 
-###### Usage:
+### Usage:
 ```bash
 python .\data_extraction\ExtractResourcesForCohortExecute.py
 ```
 
-#### Applying additional requirements 
+## Applying additional requirements 
 
 After compiling the first part of the script, `CohortPatientsAdditionalFilters.py` generates a summary of participants by extracting interested attributes from encounters.
 
@@ -81,11 +77,11 @@ In addition, the script:
 
 After compiling the script, a metadata.json is generated as part of the outcomes to provide a general and quantitative overview of the items generated.
 
-###### Usage:
+### Usage:
 ```bash
 python .\data_extraction\CohortPatientsAdditionalFilters.py
 ```
-###### Additional notes:
+### Additional notes:
 Each additional filter have a enable-disable option, in case not all the filters are required to apply. 
 
 Example:
@@ -93,12 +89,11 @@ Example:
 filter_patients_by_age_interval(smart, encounters_filepath, min_age=min_age, max_age=max_age, enabled=False)
 ```
 
-#### Run Using Docker (OPTIONAL)
---------------------------------
+## Run Using Docker (OPTIONAL)
 Instead of setting up and running the scripts manually, you can run the scripts in a container environment.
 Please refer to the [Set up](#set-up) section for instructions on how to create and configure the `.env` file.
 
-###### Usage:
+### Usage:
 ```bash
 docker build -t fhir-cohort-resources-extraction .
 
@@ -124,7 +119,7 @@ To avoid plain-text credentials,
 2. Run the following command after making sure docker is already installed.
 
    ```bash
-   docker-compose -p calm-qe up -d
+   docker-compose up -d
    ```
 
 
