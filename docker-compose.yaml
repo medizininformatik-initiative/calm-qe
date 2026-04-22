@@ -4,5 +4,7 @@ services:
     container_name: fhir-cohort-resources-extraction
     env_file:
       - .env
-volumes:
-  app:
+    volumes:
+      - ./additional_results:/app/additional_results
+      - ./fhir_results:/app/fhir_results
+      - ./graphs:/app/graphs

@@ -102,7 +102,12 @@ Please refer to the [Set up](#set-up) section for instructions on how to create 
 ```bash
 docker build -t fhir-cohort-resources-extraction .
 
-docker run --name calm-qe --env-file .env fhir-cohort-resources-extraction
+docker run --env-file .env \
+           --name calm-qe \
+           -v ./additional_results:/app/additional_results \
+           -v ./fhir_results:/app/fhir_results \
+           -v ./graphs:/app/graphs \
+           fhir-cohort-resources-extraction
 ```
 
 ### Alternative: using docker compose
@@ -119,7 +124,7 @@ To avoid plain-text credentials,
 2. Run the following command after making sure docker is already installed.
 
    ```bash
-   docker-compose -p calm-qe up -d --build
+   docker-compose -p calm-qe up -d
    ```
 
 
