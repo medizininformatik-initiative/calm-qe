@@ -21,26 +21,30 @@ The installation can be orchestrated directly by copying this repository locally
 
 Install all the required packages:
 
-```
+```bash
 pip install -r requirements.txt
 ```
 **2. Configure FHIR Server Connection**
 
-Before running the scripts, ensure that FHIR server configurations are added in `data_extraction/Constants.py` file.
-You should update the following fields including a _**.env**_ file
+Before running the scripts, ensure that FHIR server configurations are added in `data_extraction/Constants.py` file. 
+You should update the following fields including a _**.env**_ file:
 
-- USER_NAME = os.getenv("USER_NAME")
-- USER_PASSWORD = os.getenv("USER_PASSWORD")
-- SERVER_NAME = os.getenv("SERVER_NAME")
-- PROTOCOL = os.getenv("PROTOCOL")
+```env
+USER_NAME=user1
+USER_PASSWORD=pass123
+SERVER_NAME=server.fhir.diz.uni.de/fhir
+PROTOCOL=https
+```
+An example environment file (`.env.example`) is included in the repository.
+
 
 Or for instance by adding credentials directly in these fields:
-
+```python
 USER_NAME = os.getenv("USER_NAME", "user1")
 USER_PASSWORD = os.getenv("USER_PASSWORD", "pass123")
 SERVER_NAME = os.getenv("SERVER_NAME", "server.fhir.diz.uni.de/fhir")
 PROTOCOL = os.getenv("PROTOCOL", "https")
-
+```
 #### Creation of Cohort Patients List and Extraction of the Resources from Cohort Patients
 ------------------------------------------
 This script identifies patients diagnosed with "Asthma" or "COPD".
@@ -57,7 +61,7 @@ The script generates separate JSON files for each resource type (e.g., Condition
 After compiling the script, a `metadata.json` is generated as part of the outcomes to provide a general and quantitative overview of the items generated.
 
 ###### Usage:
-```
+```bash
 python .\data_extraction\ExtractResourcesForCohortExecute.py
 ```
 
@@ -78,48 +82,45 @@ In addition, the script:
 After compiling the script, a metadata.json is generated as part of the outcomes to provide a general and quantitative overview of the items generated.
 
 ###### Usage:
-```
+```bash
 python .\data_extraction\CohortPatientsAdditionalFilters.py
 ```
 ###### Additional notes:
 Each additional filter have a enable-disable option, in case not all the filters are required to apply. 
 
 Example:
-```
+```python
 filter_patients_by_age_interval(smart, encounters_filepath, min_age=min_age, max_age=max_age, enabled=False)
 ```
 
 #### Run Using Docker (OPTIONAL)
 --------------------------------
-Instead of setting up and running the scripts manually, you can run the scripts in a container environment. First, define the necessary credentials to connect to a FHIR Server in `dockerfile` as follows: 
-- USER_NAME = "Your User Name"
-- USER_PASSWORD = "Your Password"
-- SERVER_NAME = "Your Fhir Server Base URL"
-- PROTOCOL = "Your protocol type, e.g. https or http"
+Instead of setting up and running the scripts manually, you can run the scripts in a container environment.
+Please refer to the [Set up](#set-up) section for instructions on how to create and configure the `.env` file.
 
 ###### Usage:
-```
+```bash
 docker build -t fhir-cohort-resources-extraction .
 
-docker run --name calm-qe fhir-cohort-resources-extraction
+docker run --name calm-qe --env-file .env fhir-cohort-resources-extraction
 ```
 
-### Alternative: using .env and docker-compose.yaml 
+### Alternative: using docker compose
 
 To avoid plain-text credentials, 
-1. create a `.env`, in the main project's path, and store your credentials: 
+1. Create a `.env`, in the main project's path, and store your credentials: 
 
-   - USER_NAME = "Your User Name"
-   - USER_PASSWORD = "Your Password"
-   - SERVER_NAME = "Your Fhir Server Base URL"
-   - PROTOCOL = "Your protocol type, e.g. https or http"
+   ```dotenv
+   USER_NAME=YOUR_USERNAME
+   USER_PASSWORD=YOUR_PASSWORD
+   SERVER_NAME=YOUR_SERVER_NAME
+   PROTOCOL=YOUR_PROTOCOL_TYPE
+   ```
+2. Run the following command after making sure docker is already installed.
 
-1. remove or comment all ENV variables from `dockerfile`
-2. run the following command after making sure docker is already installed.
-
-```
-docker-compose -p calm-qe up -d
-```
+   ```bash
+   docker-compose -p calm-qe up -d --build
+   ```
 
 
 
