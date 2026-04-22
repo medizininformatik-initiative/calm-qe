@@ -77,8 +77,11 @@ def patients_with_asthma_copd(smart, results_path):
                     patient_reference = condition['subject']['reference']
                     patient_attributes_map = {'id': condition['id'], 'code': condition['code']}
 
-                    if condition['encounter']['reference']:  # New: Include encounter reference
-                        patient_attributes_map["encounter"] = condition['encounter']['reference'].split("/")[1]
+                    if 'encounter' in condition and "reference" in condition["encounter"]:
+                        if condition['encounter']['reference']:  # New: Include encounter reference
+                            patient_attributes_map["encounter"] = condition['encounter']['reference'].split("/")[1]
+                    else:
+                        logging.warning(f"No encounter or encounter-reference found for Condition/{condition['id']}")
 
                     if condition['recordedDate']:  # New: Include recordedDate from conditions
                         patient_attributes_map["recordedDate"] = condition['recordedDate']
