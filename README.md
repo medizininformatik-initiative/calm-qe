@@ -90,14 +90,17 @@ filter_patients_by_age_interval(smart, encounters_filepath, min_age=min_age, max
 ```
 
 ## Run Using Docker (OPTIONAL)
-Instead of setting up and running the scripts manually, you can run the scripts in a container environment.
+Instead of setting up and running the scripts manually, you can run them in a containerized environment.
 Please refer to the [Set up](#set-up) section for instructions on how to create and configure the `.env` file.
 
-### Usage:
+### Build the Docker image
 ```bash
 docker build -t fhir-cohort-resources-extraction .
-
-docker run --env-file .env \
+```
+### Run the container
+```bash
+docker run --rm \
+           --env-file .env \
            --name calm-qe \
            -v ./additional_results:/app/additional_results \
            -v ./fhir_results:/app/fhir_results \
