@@ -442,8 +442,6 @@ def simple_flattening(patients_attr_map, path):
     for patient_reference, patient_attributes in patients_attr_map.items():
         for attribute in patient_attributes:
             label = list(attribute.keys())
-            logging.info(attribute)
-            logging.info(label)
             condition_id = attribute.get("condition").get("id")
             attrib_enc = attribute.get("condition")
             code = attribute.get("condition").get("code")
