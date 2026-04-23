@@ -86,7 +86,7 @@ def filter_patients_by_age_interval(smart, input_filepath, min_age, max_age, ena
     for patient_ref, encounter_attribs in patient_encounters.items():
         total_processed += 1
         patient_id = patient_ref.split("/")[-1]
-        logging.info(f"\nProcessing patient {patient_id}...")
+        logging.info(f"Processing patient {patient_id}...")
 
         while True:
             try:
