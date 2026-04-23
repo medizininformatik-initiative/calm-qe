@@ -1,7 +1,10 @@
 import json
 import os
 from collections import defaultdict
+import matplotlib
+matplotlib.use("Agg")
 import matplotlib.pyplot as plt
+
 
 def load_json(filepath):
     """Loads json file"""
