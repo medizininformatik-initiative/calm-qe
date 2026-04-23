@@ -355,6 +355,9 @@ def extract_additional_attributes_from_encounters(smart, input_filepath):
             attributes_conditions = patients[patient]
             duplicated_encounter = set()
             for attr_condition in attributes_conditions:
+                if 'encounter' not in attr_condition:
+                    logging.warning(f'Missing "encounter" in attr_condition for Condition/{attr_condition["id"]}. Skipping.')
+                    continue
                 encounter_id = attr_condition['encounter'] if isinstance(attr_condition, dict) else attr_condition
 
                 if encounter_id in duplicated_encounter or duplicated_encounter.add(encounter_id):
@@ -382,34 +385,37 @@ def extract_additional_attributes_from_encounters(smart, input_filepath):
                         smart = connect_to_server(user=USER_NAME, pw=USER_PASSWORD)
                         time.sleep(1)
 
-                if enc:
+                if enc is not None:
                     resource = enc.get("resource", {})
-                    if "period" in resource:
-                        start = resource["period"].get("start")
-                        end = resource["period"].get("end")
 
-                    if "class" in resource:
-                        fall_art = resource["class"].get("code")
+                    period = resource.get("period", {})
+                    start = period.get("start")
+                    end = period.get("end")
 
-                    if "serviceType" in resource:
-                        service_type_code = resource["serviceType"].get("coding", [{}])[0].get("code")
+                    fall_art = resource.get("class", {}).get("code")
 
-                    if "type" in resource:
-                        for type_entry in resource["type"]:
-                            if "coding" not in type_entry:
-                                continue
-                            for coding in type_entry["coding"]:
-                                if contact_system in coding["system"]:
-                                    type_contact_code = coding.get("code")
+                    service_type_code = None
+                    service_type_codings = resource.get("serviceType", {}).get("coding", [])
+                    if len(service_type_codings) > 0:
+                        service_type_code = service_type_codings[0].get("code")
 
-                    encounter_results[patient].append({
-                        "condition": attr_condition,
-                        "start": start,
-                        "end": end,
-                        "case": fall_art,
-                        "serviceDepartment": service_type_code,
-                        "typeContact": type_contact_code,
-                    })
+                    type_contact_code = None
+                    for type_entry in resource.get("type", []):
+                        for coding in type_entry.get("coding", []):
+                            if contact_system in coding.get("system", ""):
+                                type_contact_code = coding.get("code")
+
+                    encounter_results[patient].append(
+                        {
+                            "condition": attr_condition,
+                            "start": start,
+                            "end": end,
+                            "case": fall_art,
+                            "serviceDepartment": service_type_code,
+                            "typeContact": type_contact_code,
+                        }
+                    )
+
 
     # Extended encounters
     encounters_filepath = base_path.with_name(f"{basis_filename}_extended_encounters.json")
@@ -436,6 +442,8 @@ def simple_flattening(patients_attr_map, path):
     for patient_reference, patient_attributes in patients_attr_map.items():
         for attribute in patient_attributes:
             label = list(attribute.keys())
+            logging.info(attribute)
+            logging.info(label)
             condition_id = attribute.get("condition").get("id")
             attrib_enc = attribute.get("condition")
             code = attribute.get("condition").get("code")
