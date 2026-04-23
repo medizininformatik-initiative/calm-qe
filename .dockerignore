@@ -70,3 +70,8 @@ mkdocs.yml
 ehthumbs.db
 Thumbs.db
 desktop.ini
+
+# Exclude generated results from the Docker build context
+graphs/
+additional_results/
+fhir_results/
