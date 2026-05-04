@@ -89,12 +89,8 @@ def parse_fhir_datetime(timestamp):
     return dt.astimezone(timezone.utc)
 
 
-def compute_los(start, end):
-    if not start:
+def compute_los(start_stamp, end_stamp):
+    if not start_stamp or not end_stamp:
         return None
-    if not end:
-        tz = pytz.timezone("Europe/Berlin")
-        now_local = datetime.now(tz)
-        end = now_local.astimezone(pytz.UTC)
-    delta = end - start
+    delta = end_stamp - start_stamp
     return delta.total_seconds() / 86400

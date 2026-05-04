@@ -267,7 +267,9 @@ def extract_last_three_encounter(smart, input_filepath, enabled=True):
 
             for attribute_encounter in attributes_encounter:
                 encounter_id = attribute_encounter.get('condition').get('encounter')
-                start = parse_fhir_datetime(attribute_encounter["start"]).isoformat()
+                if attribute_encounter.get("start") is not None:
+                    parsed_start = attribute_encounter.get("start")
+                    start = parsed_start.isoformat() if parsed_start else attribute_encounter["start"]
 
                 if attribute_encounter.get("end") is not None:
                     parsed_end = parse_fhir_datetime(attribute_encounter["end"])
