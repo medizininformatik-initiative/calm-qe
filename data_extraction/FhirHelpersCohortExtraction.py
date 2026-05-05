@@ -77,7 +77,6 @@ def filter_patients_by_age_interval(smart, input_filepath, min_age, max_age, ena
     logging.info(f"\nFiltering patients with age in interval [{min_age}, {max_age}] years...")
 
     matched_patients = defaultdict(list)
-    pid_not_birthdate = []
     total_processed = 0
 
     with open(input_filepath, "r", encoding="utf-8") as f:
@@ -90,7 +89,13 @@ def filter_patients_by_age_interval(smart, input_filepath, min_age, max_age, ena
 
         while True:
             try:
+                birth_date = None
                 patient = Patient.read(patient_id, smart.server)
+
+                if patient.birthDate is None:
+                    logging.warning(f"Skipping patient {patient_id} - no birth date available.")
+                    break
+
                 birth_iso = patient.birthDate.isostring
                 birth_date = parse_fhir_datetime(birth_iso)
                 break
@@ -100,8 +105,7 @@ def filter_patients_by_age_interval(smart, input_filepath, min_age, max_age, ena
                 time.sleep(1)
 
         if not birth_date:
-            pid_not_birthdate.append(patient_ref)
-            logging.warning(f"Skipping patient {patient_ref} - no birth date available.")
+            logging.warning(f"Skipping patient {patient_id} - unable to parse.")
             continue
 
         for enc in encounter_attribs:
@@ -118,7 +122,8 @@ def filter_patients_by_age_interval(smart, input_filepath, min_age, max_age, ena
                 if days < 0:
                     continue
                 age_years = int(days / 365)
-            except Exception:
+            except Exception as e:
+                logging.warning(f"Skipping patient {patient_ref}. {e}.")
                 continue
 
             if min_age <= age_years <= max_age:
@@ -143,6 +148,8 @@ def filter_patients_by_age_interval(smart, input_filepath, min_age, max_age, ena
         output_filepath = base_path.with_name(new_filename)
         with open(output_filepath, "w", encoding="utf-8") as out:
             json.dump({pid: entries for pid, entries in matched_patients.items()}, out, indent=4, ensure_ascii=False)
+    else:
+        logging.warning(f"No count found for patients in interval [{min_age}, {max_age}] ")
 
 
 def filter_icu_patients_admission(smart, input_filepath, enabled=True):
@@ -249,7 +256,7 @@ def calculate_los_inpatients(smart, input_filepath, enabled=True):
     logging.info(f"File successfully generated with {len(inpatients)} inpatients")
 
 
-def extract_last_three_encounter(smart, input_filepath, enabled=True):
+def extract_last_three_encounter(input_filepath, enabled=True):
     """
     Extract last three encounter IDs per patient.
     """
@@ -267,6 +274,8 @@ def extract_last_three_encounter(smart, input_filepath, enabled=True):
 
             for attribute_encounter in attributes_encounter:
                 encounter_id = attribute_encounter.get('condition').get('encounter')
+
+                start, end = None, None
                 if attribute_encounter.get("start") is not None:
                     parsed_start = attribute_encounter.get("start")
                     start = parsed_start.isoformat() if parsed_start else attribute_encounter["start"]
@@ -326,10 +335,23 @@ def get_demographics_patients(smart, input_filepath, enabled=True):
         while True:
             try:
                 patient = Patient.read(patient_id, smart.server)
+                birth_date, birth_iso, gender = None, None, None
+
+                if patient.birthDate is None:
+                    logging.warning(f"Patient {patient_id} has no birthdate available.")
+                    break
+
+                birth_iso = patient.birthDate.isostring
+                birth_date = parse_fhir_datetime(birth_iso)
+
+                if patient.gender is None:
+                    logging.warning(f"Patient {patient_id} has no gender available.")
+                    continue
+
                 patients_demographics.append({
                     "patient": patient_id,
-                    "gender": patient.gender,
-                    "birthdate": patient.birthDate.isostring,
+                    "gender": gender,
+                    "birthdate": birth_date.isoformat() if birth_date else str(birth_iso),
                 })
                 break
             except Exception as exc:
@@ -391,8 +413,8 @@ def extract_additional_attributes_from_encounters(smart, input_filepath):
                     resource = enc.get("resource", {})
 
                     period = resource.get("period", {})
-                    start = period.get("start")
-                    end = period.get("end")
+                    start = period.get("start") if period else None
+                    end = period.get("end") if period else None
 
                     fall_art = resource.get("class", {}).get("code")
 
@@ -452,14 +474,14 @@ def simple_flattening(patients_attr_map, path):
             # rename labels to more suitable description of an attribute
             row = {
                 'patient': patient_id,
-                f'{label[0]}': condition_id,
+                'condition': condition_id,
                 'recordedDiagnosisDate': attrib_enc.get('recordedDate'),
                 'encounter': attrib_enc.get('encounter'),
-                f'admissionDate': attribute.get("start"),
-                f'dischargeDate': attribute.get("end"),
-                f'{label[3]}': attribute.get("case"),
-                f'{label[4]}': attribute.get("serviceDepartment"),
-                f'{label[5]}': attribute.get("typeContact"),
+                'admissionDate': attribute.get("start"),
+                'dischargeDate': attribute.get("end"),
+                'case': attribute.get("case"),
+                'serviceDepartment': attribute.get("serviceDepartment"),
+                'typeContact': attribute.get("typeContact"),
             }
 
             # codes from conditions
@@ -476,13 +498,16 @@ def simple_flattening(patients_attr_map, path):
             df_rows.append(row)
 
     # New: reorder columns and export them :)
-    df = pd.DataFrame(df_rows)
-    last_columns = 3
-    position_targeted = 2
-    cols = df.columns.tolist()
-    to_move = cols[-last_columns:]
-    new_order = cols[:position_targeted] + to_move + cols[position_targeted:-last_columns]
-    df = df[new_order]
+    if df_rows:
+        df = pd.DataFrame(df_rows)
+        last_columns = 3
+        position_targeted = 2
+        cols = df.columns.tolist()
+        to_move = cols[-last_columns:]
+        new_order = cols[:position_targeted] + to_move + cols[position_targeted:-last_columns]
+        df = df[new_order]
 
-    df.to_csv(f"{subdirectory}/{basis_filename}_extended_encounters.csv", sep=";", index=False)
-    logging.info(f"Exported {len(df)} patients to {basis_filename}.csv")
+        df.to_csv(f"{subdirectory}/{basis_filename}_extended_encounters.csv", sep=";", index=False)
+        logging.info(f"Exported {len(df)} patients to {basis_filename}.csv")
+    else:
+        logging.warning("No rows to export to CSV")
