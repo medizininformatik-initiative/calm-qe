@@ -281,7 +281,7 @@ def extract_last_three_encounter(input_filepath, enabled=True):
 
                 start, end = None, None
                 if attribute_encounter.get("start") is not None:
-                    parsed_start = attribute_encounter.get("start")
+                    parsed_start = parse_fhir_datetime(attribute_encounter.get("start"))
                     start = parsed_start.isoformat() if parsed_start else attribute_encounter["start"]
 
                 if attribute_encounter.get("end") is not None:
