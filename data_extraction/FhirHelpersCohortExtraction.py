@@ -393,14 +393,14 @@ def extract_additional_attributes_from_encounters(smart, input_filepath):
                         enc = {"resource": entry_encounter.as_json()}
                         break
                     except FHIRNotFoundException:
-                        logging.error(f"Encounter {encounter_id} not found. Skipping")
+                        logging.warning(f"Encounter {encounter_id} not found. Skipping")
                         non_found_encounter_results[patient].append(encounter_id)
                         enc = None
                         break
                     except Exception as exc:
                         status = getattr(getattr(exc, "response", None), "status_code", None)
                         if status == 410:
-                            logging.error(f"Exception {status}. Encounter {encounter_id} missing or deleted. Skipping")
+                            logging.warning(f"Exception {status}. Encounter {encounter_id} missing or deleted. Skipping")
                             non_found_encounter_results[patient].append(encounter_id)
                             enc = None
                             break
