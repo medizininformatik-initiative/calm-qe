@@ -29,6 +29,8 @@ def generate_output_filename(surfix_filename, directory):
 
     if basis_filename in target_file:
         return f"patients_{surfix_filename}.json"
+    else:
+        logging.error(f"Input file '{target_file}' does not match expected naming pattern")
 
 
 def process_inpatient_encounter(resource):
@@ -124,7 +126,7 @@ def filter_patients_by_age_interval(smart, input_filepath, min_age, max_age, ena
                 age_years = int(days / 365)
 
                 if age_years < 1:
-                    return round(age_years, 2)
+                    age_years = round(age_years, 2)
 
             except Exception as e:
                 logging.warning(f"Skipping patient {patient_ref}. {e}.")
@@ -227,12 +229,13 @@ def calculate_los_inpatients(smart, input_filepath, enabled=True):
             main_patients_conditions = json.load(file)
             for patient_id, condition_ids in main_patients_conditions.items():
                 for condition_id in condition_ids:
+                    cid = condition_id['id'] if isinstance(condition_id, dict) else condition_id
                     bundle = None
                     try:
                         bundle = smart.server.request_json(
                             Encounter.where({
                                 'subject': f'{patient_id}',
-                                'diagnosis.condition': f'Condition/{condition_id['id']}',
+                                'diagnosis.condition': f'Condition/{cid}',
                                 '_count': '50'
                             }).construct())
                     except Exception as e:
@@ -277,16 +280,20 @@ def extract_last_three_encounter(input_filepath, enabled=True):
             all_encounters_per_patient = []
 
             for attribute_encounter in attributes_encounter:
-                encounter_id = attribute_encounter.get('condition').get('encounter')
+                condition = attribute_encounter.get('condition')
+                if not condition:
+                    logging.warning(f"Missing condition data for encounter. Skipping.")
+                    continue
+                encounter_id = condition.get('encounter')
 
                 start, end = None, None
                 if attribute_encounter.get("start") is not None:
                     parsed_start = parse_fhir_datetime(attribute_encounter.get("start"))
-                    start = parsed_start.isoformat() if parsed_start else attribute_encounter["start"]
+                    start = parsed_start.isoformat() if parsed_start else attribute_encounter.get("start")
 
                 if attribute_encounter.get("end") is not None:
                     parsed_end = parse_fhir_datetime(attribute_encounter["end"])
-                    end = parsed_end.isoformat() if parsed_end else attribute_encounter["end"]
+                    end = parsed_end.isoformat() if parsed_end else attribute_encounter.get("end")
 
                 all_encounters_per_patient.append({
                     'encounter': encounter_id,
@@ -339,7 +346,6 @@ def get_demographics_patients(smart, input_filepath, enabled=True):
         while True:
             try:
                 patient = Patient.read(patient_id, smart.server)
-                birth_date, birth_iso, gender = None, None, None
 
                 if patient.birthDate is None:
                     logging.warning(f"Patient {patient_id} has no birthdate available.")
@@ -351,6 +357,7 @@ def get_demographics_patients(smart, input_filepath, enabled=True):
                 if patient.gender is None:
                     logging.warning(f"Patient {patient_id} has no gender available.")
                     continue
+                gender = patient.gender
 
                 patients_demographics.append({
                     "patient": patient_id,
@@ -388,8 +395,9 @@ def extract_additional_attributes_from_encounters(smart, input_filepath):
                     continue
                 encounter_id = attr_condition['encounter'] if isinstance(attr_condition, dict) else attr_condition
 
-                if encounter_id in duplicated_encounter or duplicated_encounter.add(encounter_id):
+                if encounter_id in duplicated_encounter:
                     continue
+                duplicated_encounter.add(encounter_id)
 
                 for _ in range(3):
                     try:
@@ -415,11 +423,9 @@ def extract_additional_attributes_from_encounters(smart, input_filepath):
 
                 if enc is not None:
                     resource = enc.get("resource", {})
-
                     period = resource.get("period", {})
                     start = period.get("start") if period else None
                     end = period.get("end") if period else None
-
                     fall_art = resource.get("class", {}).get("code")
 
                     service_type_code = None
@@ -443,7 +449,6 @@ def extract_additional_attributes_from_encounters(smart, input_filepath):
                             "typeContact": type_contact_code,
                         }
                     )
-
 
     # Extended encounters
     encounters_filepath = base_path.with_name(f"{basis_filename}_extended_encounters.json")
@@ -469,7 +474,6 @@ def simple_flattening(patients_attr_map, path):
     df_rows = []
     for patient_reference, patient_attributes in patients_attr_map.items():
         for attribute in patient_attributes:
-            label = list(attribute.keys())
             condition_id = attribute.get("condition").get("id")
             attrib_enc = attribute.get("condition")
             code = attribute.get("condition").get("code")
