@@ -41,7 +41,7 @@ def main():
     calculate_los_inpatients(smart, diagnoses_filepath, enabled=True)
 
     # Extract last 3 encounter for each patient
-    extract_last_three_encounter(smart, encounters_filepath, enabled=True)
+    extract_last_three_encounter(encounters_filepath, enabled=True)
 
     # Export patient's demographics
     get_demographics_patients(smart, diagnoses_filepath, enabled=True)
