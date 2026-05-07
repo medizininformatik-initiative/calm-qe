@@ -352,7 +352,10 @@ def get_demographics_patients(smart, input_filepath, enabled=True):
                     logging.warning(f"Patient {patient_id} has no birthdate available.")
                     break
 
-                birth_iso = patient.birthDate.isostring
+                birth_iso = getattr(patient.birthDate, 'isostring', None) if patient.birthDate else None
+                if not birth_iso:
+                    logging.warning(f"Skipping patient {patient_id} - birth date has no attribute isostring.")
+                    break
                 birth_date = parse_fhir_datetime(birth_iso)
 
                 if patient.gender is None:
@@ -363,7 +366,7 @@ def get_demographics_patients(smart, input_filepath, enabled=True):
                 patients_demographics.append({
                     "patient": patient_id,
                     "gender": gender,
-                    "birthdate": birth_date.isoformat() if birth_date else str(birth_iso),
+                    "birthdate": birth_date.isoformat() if birth_date else None,
                 })
                 break
             except Exception as exc:
