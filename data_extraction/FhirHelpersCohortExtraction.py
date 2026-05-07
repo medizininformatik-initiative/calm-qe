@@ -123,10 +123,7 @@ def filter_patients_by_age_interval(smart, input_filepath, min_age, max_age, ena
                 days = (start_date.date() - birth_date.date()).days
                 if days < 0:
                     continue
-                age_years = int(days / 365)
-
-                if age_years < 1:
-                    age_years = round(age_years, 2)
+                age_years = round((days / 365), 2) if days < 365 else int(days // 365)
 
             except Exception as e:
                 logging.warning(f"Skipping patient {patient_ref}. {e}.")
