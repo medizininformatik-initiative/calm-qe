@@ -89,16 +89,20 @@ def filter_patients_by_age_interval(smart, input_filepath, min_age, max_age, ena
         patient_id = patient_ref.split("/")[-1]
         logging.info(f"Processing patient {patient_id}...")
 
+        birth_date = None
         while True:
             try:
-                birth_date = None
                 patient = Patient.read(patient_id, smart.server)
 
                 if patient.birthDate is None:
                     logging.warning(f"Skipping patient {patient_id} - no birth date available.")
                     break
 
-                birth_iso = patient.birthDate.isostring
+                birth_iso = getattr(patient.birthDate, 'isostring', None) if patient.birthDate else None
+                if not birth_iso:
+                    logging.warning(f"Skipping patient {patient_id} - birth date has no attribute isostring.")
+                    break
+
                 birth_date = parse_fhir_datetime(birth_iso)
                 break
             except Exception as exc:
