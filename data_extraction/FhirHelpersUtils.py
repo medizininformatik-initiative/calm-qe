@@ -30,11 +30,10 @@ def connect_to_server(user, pw, protocol="https"):
 
     settings = {
         "app_id": "calm_qe",
-        "api_base": f"https://{user}:{pw}@{SERVER_NAME}"}
+        "api_base": f"{protocol}://{user}:{pw}@{SERVER_NAME}"}
 
     smart = client.FHIRClient(settings=settings)
     smart.server.session.verify = False
-
     return smart
 
 def fetch_bundle_for_code(smart, bundle, protocol="https"):
