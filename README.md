@@ -61,9 +61,17 @@ After compiling the script, a `metadata.json` is generated as part of the outcom
 python .\data_extraction\ExtractResourcesForCohortExecute.py
 ```
 
+## Generating visual charts
+
+After successfully compiling `ExtractCohortwithResourcesExecute.py`, use the generated resources to visualize a descriptive overview from the generated data using: 
+### Usage:
+```bash
+python .\data_analysis\Graphs.py
+```
+
 ## Applying additional requirements 
 
-After compiling the first part of the script, `CohortPatientsAdditionalFilters.py` generates a summary of participants by extracting interested attributes from encounters.
+Once compiling the first part of the script, `CohortPatientsAdditionalFilters.py`, generates a summary of participants by extracting interested attributes from encounters.
 
 This section of the script filters patients from `asthma_copd_codes.json` by:
 - age intervals [0-5], [6-12], [13-24], and [25, ∞). 
