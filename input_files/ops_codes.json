@@ -1,0 +1,80 @@
+  {
+  "codes": [
+      {
+    "code": "8-700.0",
+    "description": "Offenhalten der oberen Atemwege durch oropharyngealen Tubus."
+      },
+    {
+    "code": "8-700.1",
+    "description": "Offenhalten der oberen Atemwege durch nasopharyngealen Tubus."
+    },
+    {
+    "code": "8-700.x",
+    "description": "Offenhalten der oberen Atemwege: Sonstige."
+    },
+    {
+    "code": "8-701",
+    "description": "Einfache endotracheale Intubation."
+     },
+    {
+    "code": "8-706",
+    "description": "Anlegen einer Maske zur maschinellen Beatmung."
+      },
+    {
+    "code": "8-713",
+    "description": "Maschinelle Beatmung und Atemunterstützung bei Erwachsenen."
+     },
+    {
+    "code": "8-714.1",
+    "description": "Spezialverfahren zur maschinellen Beatmung bei schwerem Atemversagen: Oszillationsbeatmung."
+    },
+    {
+    "code": "8-714.x",
+    "description": "Spezialverfahren zur maschinellen Beatmung bei schwerem Atemversagen: Sonstige."
+    },
+    {
+    "code": "8-714.y",
+    "description": "Spezialverfahren zur maschinellen Beatmung bei schwerem Atemversagen: N.n.bez."
+    },
+    {
+    "code": "8-716.0",
+    "description": "Einstellung einer häuslichen maschinellen Beatmung: Ersteinstellung."
+    },
+    {
+    "code": "8-716.00",
+    "description": "Einstellung einer häuslichen maschinellen Beatmung: Ersteinstellung: Nicht invasive häusliche Beatmung."
+    },
+    {
+    "code": "8-716.1",
+    "description": "Einstellung einer häuslichen maschinellen Beatmung: Kontrolle oder Optimierung einer früher eingeleiteten häuslichen Beatmung."
+    },
+    {
+    "code": "8-716.10",
+    "description": "Einstellung einer häuslichen maschinellen Beatmung: Kontrolle oder Optimierung einer früher eingeleiteten häuslichen Beatmung: Nicht invasive häusliche Beatmung."
+    },
+    {
+    "code": "8-716.11",
+    "description": "Einstellung einer häuslichen maschinellen Beatmung: Kontrolle oder Optimierung einer früher eingeleiteten häuslichen Beatmung: Invasive häusliche Beatmung."
+    },
+    {
+    "code": "8-716.20",
+    "description": "Einstellung einer häuslichen maschinellen Beatmung: Beendigung einer früher eingeleiteten häuslichen Beatmung: Nicht invasive häusliche Beatmung."
+    },
+    {
+    "code": "8-717.0",
+    "description": "Einstellung einer nasalen oder oronasalen Überdrucktherapie bei schlafbezogenen Atemstörungen: Ersteinstellung."
+    },
+    {
+    "code": "8-717.1",
+    "description": "Einstellung einer nasalen oder oronasalen Überdrucktherapie bei schlafbezogenen Atemstörungen: Kontrolle oder Optimierung einer früher eingeleiteten nasalen oder oronasalen Überdrucktherapie."
+    },
+    {
+    "code": "8-717.2",
+    "description": "Einstellung einer nasalen oder oronasalen Überdrucktherapie bei schlafbezogenen Atemstörungen: Beendigung einer früher eingeleiteten nasalen oder oronasalen Überdrucktherapie."
+    },
+    {
+    "code": "8-717.3",
+    "description": "Einstellung einer nasalen oder oronasalen Überdrucktherapie bei schlafbezogenen Atemstörungen: Wiederaufnahme einer früher beendeten nasalen oder oronasalen Überdrucktherapie."
+    }
+  ]
+}

@@ -9,11 +9,12 @@ from fhirclient.models.medicationadministration import MedicationAdministration
 from fhirclient.models.medicationrequest import MedicationRequest
 from fhirclient.models.medicationstatement import MedicationStatement
 from fhirclient.models.observation import Observation
+from fhirclient.models.procedure import Procedure
 
-from Constants import USER_NAME, USER_PASSWORD, ICD_CODE_FILE, LOINC_CODE_FILE, ATC_CODE_FILE, PROTOCOL
-from FhirHelpersResourceExtraction import (execute_thread_for_fetching, observations, conditions, medications,
-                                           observation_frequencies, conditions_frequencies,
-                                           medication_frequencies, read_input_code_file, patients_with_asthma_copd)
+from Constants import USER_NAME, USER_PASSWORD, ICD_CODE_FILE, LOINC_CODE_FILE, ATC_CODE_FILE,PROCEDURES_FILE, PROTOCOL
+from FhirHelpersResourceExtraction import (execute_thread_for_fetching, observations, conditions, medications, procedures,
+                                           observation_frequencies, conditions_frequencies, medication_frequencies,
+                                           read_input_code_file, patients_with_asthma_copd)
 
 logging.basicConfig(level=logging.INFO, format='%(levelname)s - %(message)s')
 
@@ -48,6 +49,10 @@ def main():
     ####Observations####
     code_list = read_input_code_file(LOINC_CODE_FILE)
     execute_thread_for_fetching(set(code_list), Observation, patients, "LOINC", observations)
+
+    ###Procedures####
+    code_list = read_input_code_file(PROCEDURES_FILE)
+    execute_thread_for_fetching(set(code_list), Procedure, patients, "OPS", procedures)
 
     ##Medications####
     medication_profiles = {

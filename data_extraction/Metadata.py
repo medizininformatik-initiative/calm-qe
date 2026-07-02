@@ -20,6 +20,7 @@ def gather_metadata(source, count):
             "patient_count_by_age_interval": defaultdict(int), # The sum of age count might differ compared with the total count since a patient sometimes have more than one condition at different times.
             "patient_count_in_intensive_care": 0,
             "patient_count_with_observations": 0,
+            "patient_count_with_procedures": 0,
             "patient_count_with_medicationRequests": 0,
             "patient_count_with_medicationAdministrations": 0,
             "patient_count_with_medicationStatements": 0,

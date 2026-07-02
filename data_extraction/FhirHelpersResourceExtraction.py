@@ -12,8 +12,8 @@ from fhirclient.models.medicationadministration import MedicationAdministration
 from fhirclient.models.medicationrequest import MedicationRequest
 from fhirclient.models.medicationstatement import MedicationStatement
 
-from Constants import USER_NAME, USER_PASSWORD, ICD_SYSTEM_NAME, LOINC_SYSTEM_NAME, MAX_WORKERS, ATC_SYSTEM_NAME, \
-    ASTHMA_COPD_CODES_FILE, PROTOCOL
+from Constants import (USER_NAME, USER_PASSWORD, ICD_SYSTEM_NAME, LOINC_SYSTEM_NAME, OPS_SYSTEM_NAME, MAX_WORKERS,
+                       ATC_SYSTEM_NAME, ASTHMA_COPD_CODES_FILE, PROTOCOL)
 from FhirHelpersUtils import connect_to_server, fetch_bundle_for_code
 from Metadata import gather_metadata
 
@@ -35,6 +35,11 @@ def read_input_code_file(filename):
             if not os.path.exists(f"fhir_results/ICD/"):
                 os.makedirs(f"fhir_results/ICD/")
             code_list = [code for item in lines['codes'] for code in item['code']]
+
+        elif 'ops_codes' in filename:
+            if not os.path.exists(f"fhir_results/OPS/"):
+                os.makedirs(f"fhir_results/OPS/")
+            code_list = [item['code'] for item in lines['codes']]
 
         elif 'atc_codes' in filename:
             if not os.path.exists(f"fhir_results/ATC/"):
@@ -205,6 +210,41 @@ def medications(patient, code_list, source, smart):
             file.close()
     return count
 
+def procedures(patient, code_set, source, smart):
+    patient_id = patient.split("/")[-1]
+    whole_path = f"fhir_results/OPS/{patient_id}_patient_procedures.json"
+    protocol = PROTOCOL
+    while True:
+        try:
+            response = smart.server.post_as_form(
+                url=f"{smart.server.base_uri}/Procedure/_search",
+                formdata={'_count': '1000', 'subject': patient})
+            bundle = response.json()
+            break
+        except Exception as exc:
+            logging.error(f"Generated an exception: {exc} but continue trying.\n")
+            time.sleep(3)
+            smart = connect_to_server(user=USER_NAME, pw=USER_PASSWORD, protocol= protocol)
+
+    count = 0
+    file = None
+    try:
+        for entries in fetch_bundle_for_code(smart, bundle, protocol):
+            for procedure in entries:
+                resource = procedure.get("resource", {})
+                codings = resource.get("code", {}).get("coding", [])
+                for coding in codings:
+                    if OPS_SYSTEM_NAME == coding['system'] and coding['code'] in code_set:
+                        if file is None:
+                            file = open(whole_path, "w")
+                        json.dump(procedure, file, separators=(",", ":"))
+                        file.write("\n")
+                        count += 1
+    finally:
+        if file is not None:
+            file.close()
+    return count
+
 
 def execute_thread_for_fetching(code_set, source, patient_list, code_type, function_to_run):
     """
@@ -236,6 +276,7 @@ def execute_thread_for_fetching(code_set, source, patient_list, code_type, funct
     conditions_counts: Frequency of each ICD code 
     observations_counts:Frequency of each LOINC code 
     medication_counts: Frequency of each ATC code 
+    procedures_counts: Frequency of each OPS code 
     '''
 
     if code_type == "LOINC":
@@ -247,6 +288,8 @@ def execute_thread_for_fetching(code_set, source, patient_list, code_type, funct
             gather_metadata("patient_count_with_medicationRequests", patient_counter)
         elif source is MedicationStatement:
             gather_metadata("patient_count_with_medicationStatements", patient_counter)
+    elif code_type == "OPS":
+        gather_metadata("patient_count_with_procedures", patient_counter)
     else:
         pass
     logging.info("---------------End of Code------------------------")
