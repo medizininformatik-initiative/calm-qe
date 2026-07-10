@@ -27,26 +27,26 @@ def read_input_code_file(filename):
         lines = json.load(fp)
 
         if 'loinc_codes' in filename:
-            if not os.path.exists(f"fhir_results/LOINC/"):
-                os.makedirs(f"fhir_results/LOINC/")
+            if not os.path.exists(f"fhir_results/Observations/"):
+                os.makedirs(f"fhir_results/Observations/")
             code_list = [item['code'] for item in lines['codes']]
 
         elif 'icd_codes' in filename:
-            if not os.path.exists(f"fhir_results/ICD/"):
-                os.makedirs(f"fhir_results/ICD/")
+            if not os.path.exists(f"fhir_results/Conditions/"):
+                os.makedirs(f"fhir_results/Conditions/")
             code_list = [code for item in lines['codes'] for code in item['code']]
 
         elif 'ops_codes' in filename:
-            if not os.path.exists(f"fhir_results/OPS/"):
-                os.makedirs(f"fhir_results/OPS/")
+            if not os.path.exists(f"fhir_results/Procedures/"):
+                os.makedirs(f"fhir_results/Procedures/")
             code_list = [item['code'] for item in lines['codes']]
 
         elif 'atc_codes' in filename:
-            if not os.path.exists(f"fhir_results/ATC/"):
-                os.makedirs(f"fhir_results/ATC/")
-                os.makedirs(f"fhir_results/ATC/Administrations/")
-                os.makedirs(f"fhir_results/ATC/Requests/")
-                os.makedirs(f"fhir_results/ATC/Statements/")
+            if not os.path.exists(f"fhir_results/Medications/"):
+                os.makedirs(f"fhir_results/Medications/")
+                os.makedirs(f"fhir_results/Medications/Administration/")
+                os.makedirs(f"fhir_results/Medications/Request/")
+                os.makedirs(f"fhir_results/Medications/Statement/")
             code_list = [code['code'] for code in lines]
 
     return code_list
@@ -103,7 +103,7 @@ def patients_with_asthma_copd(smart, results_path):
 
 def observations(patient, code_set, source, smart):
     patient_id = patient.split("/")[-1]
-    whole_path = f"fhir_results/LOINC/{patient_id}_patient_observations.json"
+    whole_path = f"fhir_results/Observations/{patient_id}_patient_observations.json"
     protocol = PROTOCOL
     while True:
         try:
@@ -137,7 +137,7 @@ def observations(patient, code_set, source, smart):
 
 def conditions(patient, code_list, source, smart):
     patient_id = patient.split("/")[-1]
-    whole_path = "fhir_results/ICD/" + patient_id + "_patient_conditions.json"
+    whole_path = "fhir_results/Conditions/" + patient_id + "_patient_conditions.json"
     protocol = PROTOCOL
     sub_code_lists = [code_list[i:i + 30] for i in range(0, len(code_list), 30)]  # smaller chunks of code list
 
@@ -176,11 +176,11 @@ def medications(patient, code_list, source, smart):
     protocol = PROTOCOL
 
     if source is MedicationAdministration:
-        whole_path = "fhir_results/ATC/Administrations/" + patient_id + "_patient_medicationAdministrations.json"
+        whole_path = "fhir_results/Medications/Administration/" + patient_id + "_patient_medicationAdministrations.json"
     elif source is MedicationRequest:
-        whole_path = "fhir_results/ATC/Requests/" + patient_id + "_patient_medicationRequests.json"
+        whole_path = "fhir_results/Medications/Request/" + patient_id + "_patient_medicationRequests.json"
     elif source is MedicationStatement:
-        whole_path = "fhir_results/ATC/Statements/" + patient_id + "_patient_medicationStatements.json"
+        whole_path = "fhir_results/Medications/Statement/" + patient_id + "_patient_medicationStatements.json"
 
     while True:
         try:
@@ -212,7 +212,8 @@ def medications(patient, code_list, source, smart):
 
 def procedures(patient, code_set, source, smart):
     patient_id = patient.split("/")[-1]
-    whole_path = f"fhir_results/OPS/{patient_id}_patient_procedures.json"
+    whole_path = f"fhir_results/Procedures/{patient_id}_patient_procedures.json"
+    logging.info(f"Fetching patient encounters...{patient_id}")
     protocol = PROTOCOL
     while True:
         try:
@@ -244,6 +245,81 @@ def procedures(patient, code_set, source, smart):
         if file is not None:
             file.close()
     return count
+
+def encounters(patient, encounter, smart):
+    patient_id = patient.split("/")[-1]
+
+    if not os.path.exists(f"fhir_results/Encounters/"):
+        os.makedirs(f"fhir_results/Encounters/")
+
+    whole_path = f"fhir_results/Encounters/{patient_id}_patient_encounters.json"
+    logging.info(f"Fetching patient encounters...{patient_id}")
+    protocol = PROTOCOL
+    while True:
+        try:
+            response = smart.server.post_as_form(
+                url=f"{smart.server.base_uri}/Encounter/_search",
+                formdata={"_id": encounter})
+            bundle = response.json()
+            break
+        except Exception as exc:
+            logging.error(f"Generated an exception: {exc} but continue trying.\n")
+            time.sleep(3)
+            smart = connect_to_server(user=USER_NAME, pw=USER_PASSWORD, protocol=protocol)
+
+    res_count = 0
+    file = None
+    try:
+        for entries in fetch_bundle_for_code(smart, bundle, protocol):
+            if entries:
+                for encounter in entries:
+                    resource = encounter.get("resource", {})
+                    if resource and file is None:
+                        file = open(whole_path, "w")
+                        json.dump(encounter, file, separators=(",", ":"))
+                        file.write("\n")
+                        res_count += 1
+    finally:
+        if file is not None:
+            file.close()
+    return res_count
+
+def patienten(patient_id, smart):
+
+    if not os.path.exists(f"fhir_results/Patients/"):
+        os.makedirs(f"fhir_results/Patients/")
+
+    whole_path = f"fhir_results/Patients/{patient_id}_patient.json"
+    logging.info(f"Fetching patient...{patient_id}")
+    protocol = PROTOCOL
+    while True:
+        try:
+            response = smart.server.post_as_form(
+                url=f"{smart.server.base_uri}/Patient/_search",
+                formdata={"_id": patient_id})
+            bundle = response.json()
+            break
+        except Exception as exc:
+            logging.error(f"Generated an exception: {exc} but continue trying.\n")
+            time.sleep(3)
+            smart = connect_to_server(user=USER_NAME, pw=USER_PASSWORD, protocol=protocol)
+
+    res_count = 0
+    file = None
+    try:
+        for entries in fetch_bundle_for_code(smart, bundle, protocol):
+            if entries:
+                for patient in entries:
+                    resource = patient.get("resource", {})
+                    if resource and file is None:
+                        file = open(whole_path, "w")
+                        json.dump(patient, file, separators=(",", ":"))
+                        file.write("\n")
+                        res_count += 1
+    finally:
+        if file is not None:
+            file.close()
+    return res_count
 
 
 def execute_thread_for_fetching(code_set, source, patient_list, code_type, function_to_run):
