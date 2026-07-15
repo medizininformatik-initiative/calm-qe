@@ -11,10 +11,10 @@ from fhirclient.models.medicationstatement import MedicationStatement
 from fhirclient.models.observation import Observation
 from fhirclient.models.procedure import Procedure
 
-from Constants import USER_NAME, USER_PASSWORD, ICD_CODE_FILE, LOINC_CODE_FILE, ATC_CODE_FILE,PROCEDURES_FILE, PROTOCOL
+from Constants import USER_NAME, USER_PASSWORD, ICD_CODE_FILE, LOINC_CODE_FILE, ATC_CODE_FILE,OPS_CODE_FILE, PROTOCOL
 from FhirHelpersResourceExtraction import (execute_thread_for_fetching, observations, conditions, medications, procedures,
                                            observation_frequencies, conditions_frequencies, medication_frequencies,
-                                           read_input_code_file, patients_with_asthma_copd)
+                                           procedure_frequencies, read_input_code_file, patients_with_asthma_copd)
 
 logging.basicConfig(level=logging.INFO, format='%(levelname)s - %(message)s')
 
@@ -51,7 +51,7 @@ def main():
     execute_thread_for_fetching(set(code_list), Observation, patients, "LOINC", observations)
 
     ###Procedures####
-    code_list = read_input_code_file(PROCEDURES_FILE)
+    code_list = read_input_code_file(OPS_CODE_FILE)
     execute_thread_for_fetching(set(code_list), Procedure, patients, "OPS", procedures)
 
     ##Medications####
@@ -68,6 +68,7 @@ def main():
     """ Post processing: Analysis """
     conditions_frequencies(ICD_CODE_FILE)
     observation_frequencies(LOINC_CODE_FILE)
+    procedure_frequencies(OPS_CODE_FILE)
     medication_frequencies(ATC_CODE_FILE)
 
 if __name__ == "__main__":

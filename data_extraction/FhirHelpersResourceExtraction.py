@@ -14,7 +14,7 @@ from fhirclient.models.medicationstatement import MedicationStatement
 
 from Constants import (USER_NAME, USER_PASSWORD, ICD_SYSTEM_NAME, LOINC_SYSTEM_NAME, OPS_SYSTEM_NAME, MAX_WORKERS,
                        ATC_SYSTEM_NAME, ASTHMA_COPD_CODES_FILE, PROTOCOL)
-from FhirHelpersUtils import connect_to_server, fetch_bundle_for_code
+from FhirHelpersUtils import connect_to_server, fetch_bundle_for_code, parse_fhir_datetime
 from Metadata import gather_metadata
 
 
@@ -372,8 +372,8 @@ def execute_thread_for_fetching(code_set, source, patient_list, code_type, funct
 
 
 def observation_frequencies(code_file):
-    folder_path = "fhir_results/LOINC"
-    observations_counts = defaultdict(int)
+    folder_path = "fhir_results/Observations"
+    observations_counts = defaultdict(lambda: defaultdict(int))
     code_list = read_input_code_file(code_file)
 
     for filename in os.listdir(folder_path):
@@ -384,19 +384,31 @@ def observation_frequencies(code_file):
                     observation = json.loads(line)
                     resource = observation.get("resource", {})
                     codings = resource.get("code", {}).get("coding", [])
+                    effective_datetime = resource.get("effectiveDateTime", {})
+                    if effective_datetime:
+                        try:
+                            date = parse_fhir_datetime(effective_datetime)
+                            year = date.date().year
+                        except ValueError:
+                            logging.warning("Invalid year format, skipping...")
+
                     for coding in codings:
                         if LOINC_SYSTEM_NAME == coding['system'] and coding['code'] in code_list:
-                            observations_counts[coding['code']] += 1
+                            observations_counts[year][coding['code']] += 1
 
-    for code, frequency in observations_counts.items():
-        logging.info(f"{code}: {frequency}")
-    gather_metadata("observations_counts", observations_counts)
+    # Gather metadata
+    for year in sorted(observations_counts):
+        logging.info(f"[{year}]")
+        for code, frequency in observations_counts[year].items():
+            logging.info(f"{code}: {frequency}")
+
+    gather_metadata("observations_counts", dict(sorted(observations_counts.items())))
 
 
 def conditions_frequencies(code_file):
-    folder_path = "fhir_results/ICD"
+    folder_path = "fhir_results/Conditions"
     code_list = read_input_code_file(code_file)
-    conditions_counts = defaultdict(int)
+    conditions_counts = defaultdict(lambda: defaultdict(int))
 
     for filename in os.listdir(folder_path):
         if filename.endswith(".json"):
@@ -406,11 +418,58 @@ def conditions_frequencies(code_file):
                     condition = json.loads(line)
                     resource = condition.get("resource", {})
                     codings = resource.get("code", {}).get("coding", [])
+                    recorded_date = resource.get("recordedDate", {})
+                    if recorded_date:
+                        try:
+                            date = parse_fhir_datetime(recorded_date)
+                            year = date.date().year
+                        except ValueError:
+                            logging.warning("Invalid year format, skipping...")
+
                     for coding in codings:
                         if ICD_SYSTEM_NAME == coding['system'] and coding['code'] in code_list:
-                            conditions_counts[coding['code']] += 1
+                            conditions_counts[year][coding['code']] += 1
+    # Gather metadata
+    logging.info(f"Conditions frequencies...")
+    for year in sorted(conditions_counts):
+        logging.info(f"[{year}]")
+        for code, frequency in conditions_counts[year].items():
+            logging.info(f"{code}: {frequency}")
 
-    gather_metadata("conditions_counts", conditions_counts)
+    gather_metadata("conditions_counts", dict(sorted(conditions_counts.items())))
+
+def procedure_frequencies(code_file):
+    folder_path = "fhir_results/Procedures"
+    code_list = read_input_code_file(code_file)
+    procedure_counts = defaultdict(lambda: defaultdict(int))
+
+    for filename in os.listdir(folder_path):
+        if filename.endswith(".json"):
+            file_path = os.path.join(folder_path, filename)
+            with open(file_path, 'r') as json_file:
+                for line in json_file:
+                    procedure = json.loads(line)
+                    resource = procedure.get("resource", {})
+                    codings = resource.get("code", {}).get("coding", [])
+                    performed_date = resource.get("performedDateTime", {})
+                    if performed_date:
+                        try:
+                            date = parse_fhir_datetime(performed_date)
+                            year = date.date().year
+                        except ValueError:
+                            logging.warning("Invalid year format, skipping...")
+
+                    for coding in codings:
+                        if OPS_SYSTEM_NAME == coding['system'] and coding['code'] in code_list:
+                            procedure_counts[year][coding['code']] += 1
+    # Gather metadata
+    logging.info(f"Procedure frequencies...")
+    for year in sorted(procedure_counts):
+        logging.info(f"[{year}]")
+        for code, frequency in procedure_counts[year].items():
+            logging.info(f"{code}: {frequency}")
+
+    gather_metadata("procedures_counts", dict(sorted(procedure_counts.items())))
 
 
 def fetch_atc_codes(resource_ref, code_list, smart):
