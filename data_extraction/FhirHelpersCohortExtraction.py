@@ -107,6 +107,11 @@ def filter_patients_by_age_interval(smart, input_filepath, min_age, max_age, ena
                 birth_date = parse_fhir_datetime(birth_iso)
                 break
             except Exception as exc:
+                status = getattr(getattr(exc, "response", None), "status_code", None)
+                if 410 or 404 in status:
+                    logging.warning(f"Exception {status}. Patient {patient_id} missing or deleted. Skipping..")
+                    birth_date = None
+                    break
                 logging.error(f"Error fetching patient {patient_id}: {exc}, but continue to trying...")
                 smart = connect_to_server(user=USER_NAME, pw=USER_PASSWORD)
                 time.sleep(1)
