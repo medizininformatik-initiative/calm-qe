@@ -1,80 +1,472 @@
   {
   "codes": [
-      {
-    "code": "8-700.0",
-    "description": "Offenhalten der oberen Atemwege durch oropharyngealen Tubus."
-      },
     {
-    "code": "8-700.1",
-    "description": "Offenhalten der oberen Atemwege durch nasopharyngealen Tubus."
+        "code":"1-620",
+        "description":"Diagnostische Tracheobronchoskopie"
     },
     {
-    "code": "8-700.x",
-    "description": "Offenhalten der oberen Atemwege: Sonstige."
+        "code":"1-620.0",
+        "description":"Diagnostische Tracheobronchoskopie: Mit flexiblem Instrument"
     },
     {
-    "code": "8-701",
-    "description": "Einfache endotracheale Intubation."
-     },
-    {
-    "code": "8-706",
-    "description": "Anlegen einer Maske zur maschinellen Beatmung."
-      },
-    {
-    "code": "8-713",
-    "description": "Maschinelle Beatmung und Atemunterstützung bei Erwachsenen."
-     },
-    {
-    "code": "8-714.1",
-    "description": "Spezialverfahren zur maschinellen Beatmung bei schwerem Atemversagen: Oszillationsbeatmung."
+        "code":"1-620.00",
+        "description":"Diagnostische Tracheobronchoskopie: Mit flexiblem Instrument: Ohne weitere Maßnahmen"
     },
     {
-    "code": "8-714.x",
-    "description": "Spezialverfahren zur maschinellen Beatmung bei schwerem Atemversagen: Sonstige."
+        "code":"1-620.01",
+        "description":"Diagnostische Tracheobronchoskopie: Mit flexiblem Instrument: Mit bronchoalveolärer Lavage"
     },
     {
-    "code": "8-714.y",
-    "description": "Spezialverfahren zur maschinellen Beatmung bei schwerem Atemversagen: N.n.bez."
+        "code":"1-620.02",
+        "description":"Diagnostische Tracheobronchoskopie: Mit flexiblem Instrument: Mit Alveoloskopie"
     },
     {
-    "code": "8-716.0",
-    "description": "Einstellung einer häuslichen maschinellen Beatmung: Ersteinstellung."
+        "code":"1-620.03",
+        "description":"Diagnostische Tracheobronchoskopie: Mit flexiblem Instrument: Mit katheterbasierter Luftstrommessung"
     },
     {
-    "code": "8-716.00",
-    "description": "Einstellung einer häuslichen maschinellen Beatmung: Ersteinstellung: Nicht invasive häusliche Beatmung."
+        "code":"1-620.0x",
+        "description":"Diagnostische Tracheobronchoskopie: Mit flexiblem Instrument: Sonstige"
     },
     {
-    "code": "8-716.1",
-    "description": "Einstellung einer häuslichen maschinellen Beatmung: Kontrolle oder Optimierung einer früher eingeleiteten häuslichen Beatmung."
+        "code":"1-620.1",
+        "description":"Diagnostische Tracheobronchoskopie: Mit starrem Instrument"
     },
     {
-    "code": "8-716.10",
-    "description": "Einstellung einer häuslichen maschinellen Beatmung: Kontrolle oder Optimierung einer früher eingeleiteten häuslichen Beatmung: Nicht invasive häusliche Beatmung."
+        "code":"1-620.10",
+        "description":"Diagnostische Tracheobronchoskopie: Mit starrem Instrument: Ohne weitere Maßnahmen"
     },
     {
-    "code": "8-716.11",
-    "description": "Einstellung einer häuslichen maschinellen Beatmung: Kontrolle oder Optimierung einer früher eingeleiteten häuslichen Beatmung: Invasive häusliche Beatmung."
+        "code":"1-620.11",
+        "description":"Diagnostische Tracheobronchoskopie: Mit starrem Instrument: Mit katheterbasierter Luftstrommessung"
     },
     {
-    "code": "8-716.20",
-    "description": "Einstellung einer häuslichen maschinellen Beatmung: Beendigung einer früher eingeleiteten häuslichen Beatmung: Nicht invasive häusliche Beatmung."
+        "code":"1-620.1x",
+        "description":"Diagnostische Tracheobronchoskopie: Mit starrem Instrument: Sonstige"
     },
     {
-    "code": "8-717.0",
-    "description": "Einstellung einer nasalen oder oronasalen Überdrucktherapie bei schlafbezogenen Atemstörungen: Ersteinstellung."
+        "code":"1-620.2",
+        "description":"Diagnostische Tracheobronchoskopie: Mit Autofluoreszenzlicht"
     },
     {
-    "code": "8-717.1",
-    "description": "Einstellung einer nasalen oder oronasalen Überdrucktherapie bei schlafbezogenen Atemstörungen: Kontrolle oder Optimierung einer früher eingeleiteten nasalen oder oronasalen Überdrucktherapie."
+        "code":"1-620.3",
+        "description":"Diagnostische Tracheobronchoskopie: Mit flexiblem ultradünnen Instrument"
     },
     {
-    "code": "8-717.2",
-    "description": "Einstellung einer nasalen oder oronasalen Überdrucktherapie bei schlafbezogenen Atemstörungen: Beendigung einer früher eingeleiteten nasalen oder oronasalen Überdrucktherapie."
+        "code":"1-620.30",
+        "description":"Diagnostische Tracheobronchoskopie: Mit flexiblem ultradünnen Instrument: Ohne weitere Maßnahmen"
     },
     {
-    "code": "8-717.3",
-    "description": "Einstellung einer nasalen oder oronasalen Überdrucktherapie bei schlafbezogenen Atemstörungen: Wiederaufnahme einer früher beendeten nasalen oder oronasalen Überdrucktherapie."
+        "code":"1-620.31",
+        "description":"Diagnostische Tracheobronchoskopie: Mit flexiblem ultradünnen Instrument: Mit bronchoalveolärer Lavage"
+    },
+    {
+        "code":"1-620.32",
+        "description":"Diagnostische Tracheobronchoskopie: Mit flexiblem ultradünnen Instrument: Mit Alveoloskopie"
+    },
+    {
+        "code":"1-620.3x",
+        "description":"Diagnostische Tracheobronchoskopie: Mit flexiblem ultradünnen Instrument: Sonstige"
+    },
+    {
+        "code":"1-620.4",
+        "description":"Diagnostische Tracheobronchoskopie: Mit flexiblem Einmal-Instrument"
+    },
+    {
+        "code":"1-620.40",
+        "description":"Diagnostische Tracheobronchoskopie: Mit flexiblem Einmal-Instrument: Ohne weitere Maßnahmen"
+    },
+    {
+        "code":"1-620.41",
+        "description":"Diagnostische Tracheobronchoskopie: Mit flexiblem Einmal-Instrument: Mit bronchoalveolärer Lavage"
+    },
+    {
+        "code":"1-620.42",
+        "description":"Diagnostische Tracheobronchoskopie: Mit flexiblem Einmal-Instrument: Mit Alveoloskopie"
+    },
+    {
+        "code":"1-620.43",
+        "description":"Diagnostische Tracheobronchoskopie: Mit flexiblem Einmal-Instrument: Mit katheterbasierter Luftstrommessung"
+    },
+    {
+        "code":"1-620.4x",
+        "description":"Diagnostische Tracheobronchoskopie: Mit flexiblem Einmal-Instrument: Sonstige"
+    },
+    {
+        "code":"1-620.x",
+        "description":"Diagnostische Tracheobronchoskopie: Sonstige"
+    },
+    {
+        "code":"1-620.y",
+        "description":"Diagnostische Tracheobronchoskopie: N.n.bez."
+    },
+    {
+        "code":"1-690",
+        "description":"Diagnostische Bronchoskopie und Tracheoskopie durch Inzision und intraoperativ"
+    },
+    {
+        "code":"1-690.0",
+        "description":"Diagnostische Bronchoskopie und Tracheoskopie durch Inzision und intraoperativ: Bronchoskopie"
+    },
+    {
+        "code":"1-690.1",
+        "description":"Diagnostische Bronchoskopie und Tracheoskopie durch Inzision und intraoperativ: Tracheoskopie"
+    },
+    {
+        "code":"1-700",
+        "description":"Spezifische allergologische Provokationstestung"
+    },
+    {
+        "code":"1-790",
+        "description":"Polysomnographie"
+    },
+    {
+        "code":"1-791",
+        "description":"Kardiorespiratorische Polygraphie"
+    },
+    {
+        "code":"8-100",
+        "description":"Fremdkörperentfernung durch Endoskopie"
+    },
+    {
+        "code":"8-700.0",
+        "description":"Offenhalten der oberen Atemwege: Durch oropharyngealen Tubus"
+    },
+    {
+        "code":"8-700.1",
+        "description":"Offenhalten der oberen Atemwege: Durch nasopharyngealen Tubus"
+    },
+    {
+        "code":"8-700.x",
+        "description":"Offenhalten der oberen Atemwege: Sonstige"
+    },
+    {
+        "code":"8-701",
+        "description":"Einfache endotracheale Intubation"
+    },
+    {
+        "code":"8-706",
+        "description":"Anlegen einer Maske zur maschinellen Beatmung"
+    },
+    {
+        "code":"8-713",
+        "description":"Maschinelle Beatmung und Atemunterstützung bei Erwachsenen"
+    },
+    {
+        "code":"8-714.1",
+        "description":"Spezialverfahren zur maschinellen Beatmung bei schwerem Atemversagen: Oszillationsbeatmung"
+    },
+    {
+        "code":"8-714.x",
+        "description":"Spezialverfahren zur maschinellen Beatmung bei schwerem Atemversagen: Sonstige"
+    },
+    {
+        "code":"8-714.y",
+        "description":"Spezialverfahren zur maschinellen Beatmung bei schwerem Atemversagen: N.n.bez."
+    },
+    {
+        "code":"8-716.0",
+        "description":"Einstellung einer häuslichen maschinellen Beatmung: Ersteinstellung"
+    },
+    {
+        "code":"8-716.00",
+        "description":"Einstellung einer häuslichen maschinellen Beatmung: Ersteinstellung: Nicht invasive häusliche Beatmung"
+    },
+    {
+        "code":"8-716.1",
+        "description":"Einstellung einer häuslichen maschinellen Beatmung: Kontrolle oder Optimierung einer früher eingeleiteten häuslichen Beatmung"
+    },
+    {
+        "code":"8-716.10",
+        "description":"Einstellung einer häuslichen maschinellen Beatmung: Kontrolle oder Optimierung einer früher eingeleiteten häuslichen Beatmung: Nicht invasive häusliche Beatmung"
+    },
+    {
+        "code":"8-716.11",
+        "description":"Einstellung einer häuslichen maschinellen Beatmung: Kontrolle oder Optimierung einer früher eingeleiteten häuslichen Beatmung: Invasive häusliche Beatmung"
+    },
+    {
+        "code":"8-716.20",
+        "description":"Einstellung einer häuslichen maschinellen Beatmung: Beendigung einer früher eingeleiteten häuslichen Beatmung: Nicht invasive häusliche Beatmung"
+    },
+    {
+        "code":"8-717.0",
+        "description":"Einstellung einer nasalen oder oronasalen Überdrucktherapie bei schlafbezogenen Atemstörungen: Ersteinstellung"
+    },
+    {
+        "code":"8-717.1",
+        "description":"Einstellung einer nasalen oder oronasalen Überdrucktherapie bei schlafbezogenen Atemstörungen: Kontrolle oder Optimierung einer früher eingeleiteten nasalen oder oronasalen Überdrucktherapie"
+    },
+    {
+        "code":"8-852",
+        "description":"Extrakorporaler Gasaustausch ECLA mit/ohne Herzunterstützung"
+    },
+    {
+        "code":"8-852.0",
+        "description":"Extrakorporaler Gasaustausch ECLA mit/ohne Herzunterstützung: V-V ECMO ohne Herzunterstützung"
+    },
+    {
+        "code":"8-852.00",
+        "description":"Extrakorporaler Gasaustausch ECLA mit/ohne Herzunterstützung: V-V ECMO ohne Herzunterstützung: Dauer der Behandlung bis unter 48 Stunden"
+    },
+    {
+        "code":"8-852.01",
+        "description":"Extrakorporaler Gasaustausch ECLA mit/ohne Herzunterstützung: V-V ECMO ohne Herzunterstützung: Dauer der Behandlung 48 bis unter 96 Stunden"
+    },
+    {
+        "code":"8-852.03",
+        "description":"Extrakorporaler Gasaustausch ECLA mit/ohne Herzunterstützung: V-V ECMO ohne Herzunterstützung: Dauer der Behandlung 96 bis unter 144 Stunden"
+    },
+    {
+        "code":"8-852.04",
+        "description":"Extrakorporaler Gasaustausch ECLA mit/ohne Herzunterstützung: V-V ECMO ohne Herzunterstützung: Dauer der Behandlung 144 bis unter 192 Stunden"
+    },
+    {
+        "code":"8-852.05",
+        "description":"Extrakorporaler Gasaustausch ECLA mit/ohne Herzunterstützung: V-V ECMO ohne Herzunterstützung: Dauer der Behandlung 192 bis unter 240 Stunden"
+    },
+    {
+        "code":"8-852.06",
+        "description":"Extrakorporaler Gasaustausch ECLA mit/ohne Herzunterstützung: V-V ECMO ohne Herzunterstützung: Dauer der Behandlung 240 bis unter 288 Stunden"
+    },
+    {
+        "code":"8-852.07",
+        "description":"Extrakorporaler Gasaustausch ECLA mit/ohne Herzunterstützung: V-V ECMO ohne Herzunterstützung: Dauer der Behandlung 288 bis unter 384 Stunden"
+    },
+    {
+        "code":"8-852.08",
+        "description":"Extrakorporaler Gasaustausch ECLA mit/ohne Herzunterstützung: V-V ECMO ohne Herzunterstützung: Dauer der Behandlung 384 bis unter 480 Stunden"
+    },
+    {
+        "code":"8-852.09",
+        "description":"Extrakorporaler Gasaustausch ECLA mit/ohne Herzunterstützung: V-V ECMO ohne Herzunterstützung: Dauer der Behandlung 480 bis unter 576 Stunden"
+    },
+    {
+        "code":"8-852.0b",
+        "description":"Extrakorporaler Gasaustausch ECLA mit/ohne Herzunterstützung: V-V ECMO ohne Herzunterstützung: Dauer der Behandlung 576 bis unter 768 Stunden"
+    },
+    {
+        "code":"8-852.0c",
+        "description":"Extrakorporaler Gasaustausch ECLA mit/ohne Herzunterstützung: V-V ECMO ohne Herzunterstützung: Dauer der Behandlung 768 bis unter 960 Stunden"
+    },
+    {
+        "code":"8-852.0d",
+        "description":"Extrakorporaler Gasaustausch ECLA mit/ohne Herzunterstützung: V-V ECMO ohne Herzunterstützung: Dauer der Behandlung 960 bis unter 1.152 Stunden"
+    },
+    {
+        "code":"8-852.0f",
+        "description":"Extrakorporaler Gasaustausch ECLA mit/ohne Herzunterstützung: V-V ECMO ohne Herzunterstützung: Dauer der Behandlung 1.152 bis unter 1.344 Stunden"
+    },
+    {
+        "code":"8-852.0g",
+        "description":"Extrakorporaler Gasaustausch ECLA mit/ohne Herzunterstützung: V-V ECMO ohne Herzunterstützung: Dauer der Behandlung 1.344 bis unter 1.536 Stunden"
+    },
+    {
+        "code":"8-852.0h",
+        "description":"Extrakorporaler Gasaustausch ECLA mit/ohne Herzunterstützung: V-V ECMO ohne Herzunterstützung: Dauer der Behandlung 1.536 bis unter 1.728 Stunden"
+    },
+    {
+        "code":"8-852.0j",
+        "description":"Extrakorporaler Gasaustausch ECLA mit/ohne Herzunterstützung: V-V ECMO ohne Herzunterstützung: Dauer der Behandlung 1.728 bis unter 1.920 Stunden"
+    },
+    {
+        "code":"8-852.0k",
+        "description":"Extrakorporaler Gasaustausch ECLA mit/ohne Herzunterstützung: V-V ECMO ohne Herzunterstützung: Dauer der Behandlung 1.920 bis unter 2.112 Stunden"
+    },
+    {
+        "code":"8-852.0m",
+        "description":"Extrakorporaler Gasaustausch ECLA mit/ohne Herzunterstützung: V-V ECMO ohne Herzunterstützung: Dauer der Behandlung 2.112 bis unter 2.304 Stunden"
+    },
+    {
+        "code":"8-852.0n",
+        "description":"Extrakorporaler Gasaustausch ECLA mit/ohne Herzunterstützung: V-V ECMO ohne Herzunterstützung: Dauer der Behandlung 2.304 bis unter 2.496 Stunden"
+    },
+    {
+        "code":"8-852.0p",
+        "description":"Extrakorporaler Gasaustausch ECLA mit/ohne Herzunterstützung: V-V ECMO ohne Herzunterstützung: Dauer der Behandlung 2.496 bis unter 2.688 Stunden"
+    },
+    {
+        "code":"8-852.0q",
+        "description":"Extrakorporaler Gasaustausch ECLA mit/ohne Herzunterstützung: V-V ECMO ohne Herzunterstützung: Dauer der Behandlung 2.688 bis unter 2.880 Stunden"
+    },
+    {
+        "code":"8-852.0r",
+        "description":"Extrakorporaler Gasaustausch ECLA mit/ohne Herzunterstützung: V-V ECMO ohne Herzunterstützung: Dauer der Behandlung 2.880 bis unter 3.072 Stunden"
+    },
+    {
+        "code":"8-852.0s",
+        "description":"Extrakorporaler Gasaustausch ECLA mit/ohne Herzunterstützung: V-V ECMO ohne Herzunterstützung: Dauer der Behandlung 3.072 bis unter 3.264 Stunden"
+    },
+    {
+        "code":"8-852.0t",
+        "description":"Extrakorporaler Gasaustausch ECLA mit/ohne Herzunterstützung: V-V ECMO ohne Herzunterstützung: Dauer der Behandlung 3.264 bis unter 3.456 Stunden"
+    },
+    {
+        "code":"8-852.0u",
+        "description":"Extrakorporaler Gasaustausch ECLA mit/ohne Herzunterstützung: V-V ECMO ohne Herzunterstützung: Dauer der Behandlung 3.456 bis unter 3.648 Stunden"
+    },
+    {
+        "code":"8-852.0v",
+        "description":"Extrakorporaler Gasaustausch ECLA mit/ohne Herzunterstützung: V-V ECMO ohne Herzunterstützung: Dauer der Behandlung 3.648 bis unter 3.840 Stunden"
+    },
+    {
+        "code":"8-852.0w",
+        "description":"Extrakorporaler Gasaustausch ECLA mit/ohne Herzunterstützung: V-V ECMO ohne Herzunterstützung: Dauer der Behandlung 3.840 bis unter 4.032 Stunden"
+    },
+    {
+        "code":"8-852.0z",
+        "description":"Extrakorporaler Gasaustausch ECLA mit/ohne Herzunterstützung: V-V ECMO ohne Herzunterstützung: Dauer der Behandlung 4.032 oder mehr Stunden"
+    },
+    {
+        "code":"8-852.1",
+        "description":"Extrakorporaler Gasaustausch ECLA mit/ohne Herzunterstützung: Prä-ECMO-Therapie"
+    },
+    {
+        "code":"8-852.2",
+        "description":"Extrakorporaler Gasaustausch ECLA mit/ohne Herzunterstützung: PECLA"
+    },
+    {
+        "code":"8-852.20",
+        "description":"Extrakorporaler Gasaustausch ECLA mit/ohne Herzunterstützung: PECLA: Dauer der Behandlung bis unter 144 Stunden"
+    },
+    {
+        "code":"8-852.21",
+        "description":"Extrakorporaler Gasaustausch ECLA mit/ohne Herzunterstützung: PECLA: Dauer der Behandlung 144 bis unter 288 Stunden"
+    },
+    {
+        "code":"8-852.22",
+        "description":"Extrakorporaler Gasaustausch ECLA mit/ohne Herzunterstützung: PECLA: Dauer der Behandlung 288 bis unter 432 Stunden"
+    },
+    {
+        "code":"8-852.23",
+        "description":"Extrakorporaler Gasaustausch ECLA mit/ohne Herzunterstützung: PECLA: Dauer der Behandlung 432 bis unter 720 Stunden"
+    },
+    {
+        "code":"8-852.24",
+        "description":"Extrakorporaler Gasaustausch ECLA mit/ohne Herzunterstützung: PECLA: Dauer der Behandlung 720 bis unter 1.008 Stunden"
+    },
+    {
+        "code":"8-852.25",
+        "description":"Extrakorporaler Gasaustausch ECLA mit/ohne Herzunterstützung: PECLA: Dauer der Behandlung 1.008 oder mehr Stunden"
+    },
+    {
+        "code":"8-852.3",
+        "description":"Extrakorporaler Gasaustausch ECLA mit/ohne Herzunterstützung: Mini-HLM"
+    },
+    {
+        "code":"8-852.30",
+        "description":"Extrakorporaler Gasaustausch ECLA mit/ohne Herzunterstützung: Mini-HLM: Dauer der Behandlung bis unter 48 Stunden"
+    },
+    {
+        "code":"8-852.31",
+        "description":"Extrakorporaler Gasaustausch ECLA mit/ohne Herzunterstützung: Mini-HLM: Dauer der Behandlung 48 bis unter 96 Stunden"
+    },
+    {
+        "code":"8-852.33",
+        "description":"Extrakorporaler Gasaustausch ECLA mit/ohne Herzunterstützung: Mini-HLM: Dauer der Behandlung 96 bis unter 144 Stunden"
+    },
+    {
+        "code":"8-852.34",
+        "description":"Extrakorporaler Gasaustausch ECLA mit/ohne Herzunterstützung: Mini-HLM: Dauer der Behandlung 144 bis unter 192 Stunden"
+    },
+    {
+        "code":"8-852.35",
+        "description":"Extrakorporaler Gasaustausch ECLA mit/ohne Herzunterstützung: Mini-HLM: Dauer der Behandlung 192 bis unter 240 Stunden"
+    },
+    {
+        "code":"8-852.36",
+        "description":"Extrakorporaler Gasaustausch ECLA mit/ohne Herzunterstützung: Mini-HLM: Dauer der Behandlung 240 bis unter 288 Stunden"
+    },
+    {
+        "code":"8-852.37",
+        "description":"Extrakorporaler Gasaustausch ECLA mit/ohne Herzunterstützung: Mini-HLM: Dauer der Behandlung 288 bis unter 384 Stunden"
+    },
+    {
+        "code":"8-852.38",
+        "description":"Extrakorporaler Gasaustausch ECLA mit/ohne Herzunterstützung: Mini-HLM: Dauer der Behandlung 384 bis unter 480 Stunden"
+    },
+    {
+        "code":"8-852.39",
+        "description":"Extrakorporaler Gasaustausch ECLA mit/ohne Herzunterstützung: Mini-HLM: Dauer der Behandlung 480 bis unter 576 Stunden"
+    },
+    {
+        "code":"8-852.3b",
+        "description":"Extrakorporaler Gasaustausch ECLA mit/ohne Herzunterstützung: Mini-HLM: Dauer der Behandlung 576 bis unter 768 Stunden"
+    },
+    {
+        "code":"8-852.3c",
+        "description":"Extrakorporaler Gasaustausch ECLA mit/ohne Herzunterstützung: Mini-HLM: Dauer der Behandlung 768 bis unter 960 Stunden"
+    },
+    {
+        "code":"8-852.3d",
+        "description":"Extrakorporaler Gasaustausch ECLA mit/ohne Herzunterstützung: Mini-HLM: Dauer der Behandlung 960 bis unter 1.152 Stunden"
+    },
+    {
+        "code":"8-852.3e",
+        "description":"Extrakorporaler Gasaustausch ECLA mit/ohne Herzunterstützung: Mini-HLM: Dauer der Behandlung 1.152 oder mehr Stunden"
+    },
+    {
+        "code":"8-852.4",
+        "description":"Extrakorporaler Gasaustausch ECLA mit/ohne Herzunterstützung: Anwendung eines doppellumigen Katheters als Kanüle"
+    },
+    {
+        "code":"8-852.5",
+        "description":"Extrakorporaler Gasaustausch ECLA mit/ohne Herzunterstützung: Veno-venöse extrakorporale CO2-Elimination"
+    },
+    {
+        "code":"8-852.6",
+        "description":"Extrakorporaler Gasaustausch ECLA mit/ohne Herzunterstützung: Anwendung eines RA-PA-ECMO-Modul bei Rechtsherz-Unterstützung"
+    },
+    {
+        "code":"8-852.60",
+        "description":"Anwendung eines RA-PA-ECMO-Modul bei Rechtsherz-Unterstützung: Dauer der Behandlung bis unter 48 Stunden"
+    },
+    {
+        "code":"8-852.61",
+        "description":"Anwendung eines RA-PA-ECMO-Modul bei Rechtsherz-Unterstützung: Dauer der Behandlung 48 bis unter 96 Stunden"
+    },
+    {
+        "code":"8-852.63",
+        "description":"Anwendung eines RA-PA-ECMO-Modul bei Rechtsherz-Unterstützung: Dauer der Behandlung 96 bis unter 144 Stunden"
+    },
+    {
+        "code":"8-852.64",
+        "description":"Anwendung eines RA-PA-ECMO-Modul bei Rechtsherz-Unterstützung: Dauer der Behandlung 144 bis unter 192 Stunden"
+    },
+    {
+        "code":"8-852.65",
+        "description":"Anwendung eines RA-PA-ECMO-Modul bei Rechtsherz-Unterstützung: Dauer der Behandlung 192 bis unter 240 Stunden"
+    },
+    {
+        "code":"8-852.66",
+        "description":"Anwendung eines RA-PA-ECMO-Modul bei Rechtsherz-Unterstützung: Dauer der Behandlung 240 bis unter 288 Stunden"
+    },
+    {
+        "code":"8-852.67",
+        "description":"Anwendung eines RA-PA-ECMO-Modul bei Rechtsherz-Unterstützung: Dauer der Behandlung 288 bis unter 384 Stunden"
+    },
+    {
+        "code":"8-852.68",
+        "description":"Anwendung eines RA-PA-ECMO-Modul bei Rechtsherz-Unterstützung: Dauer der Behandlung 384 bis unter 480 Stunden"
+    },
+    {
+        "code":"8-852.69",
+        "description":"Anwendung eines RA-PA-ECMO-Modul bei Rechtsherz-Unterstützung: Dauer der Behandlung 480 bis unter 576 Stunden"
+    },
+    {
+        "code":"8-852.6b",
+        "description":"Anwendung eines RA-PA-ECMO-Modul bei Rechtsherz-Unterstützung: Dauer der Behandlung 576 bis unter 768 Stunden"
+    },
+    {
+        "code":"8-852.6c",
+        "description":"Anwendung eines RA-PA-ECMO-Modul bei Rechtsherz-Unterstützung: Dauer der Behandlung 768 bis unter 960 Stunden"
+    },
+    {
+        "code":"8-852.6d",
+        "description":"Anwendung eines RA-PA-ECMO-Modul bei Rechtsherz-Unterstützung: Dauer der Behandlung 960 bis unter 1.152 Stunden"
+    },
+    {
+        "code":"8-852.6e",
+        "description":"Anwendung eines RA-PA-ECMO-Modul bei Rechtsherz-Unterstützung: Dauer der Behandlung 1.152 oder mehr Stunden"
     }
   ]
 }
