@@ -4,7 +4,7 @@ This repository is developed to create "Study Data" for [CALM-QE Project]( https
 
 The purpose of this set of scripts is to identify a cohort of patients whose diagnoses are associated with Asthma or Chronic Obstructive Pulmonary Disease (COPD) from a given FHIR server. The scripts extract the relevant patient population (the “cohort”) based on these conditions.
 
-In addition, they retrieve comprehensive clinical data for each patient in the cohort to support further analysis. This includes secondary conditions, observations, and associated medication records.
+In addition, they retrieve comprehensive clinical data for each patient in the cohort to support further analysis. This includes secondary conditions, observations, procedures, and associated medication records.
 
 To run this project, it is necessary to cover the following requirements: 
 -	Connection to a FHIR Server 
@@ -74,7 +74,7 @@ python .\data_analysis\Graphs.py
 Once compiling the first part of the script, `CohortPatientsAdditionalFilters.py`, generates a summary of participants by extracting interested attributes from encounters.
 
 This section of the script filters patients from `asthma_copd_codes.json` by:
-- age intervals [0-5], [6-12], [13-24], and [25, ∞). 
+- age intervals [0-5], [6-11], [12-18], [18-24], and [25, ∞). 
 - patients admitted in intensive care.
 
 In addition, the script:
