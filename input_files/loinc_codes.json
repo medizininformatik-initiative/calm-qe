@@ -1759,6 +1759,234 @@
         {
             "code": "4049-3",
             "description": "Theophylline [Mass/volume] in Serum or Plasma"
+        },
+        {
+            "code": "19852-3",
+            "description": "Inspiratory capacity by Spirometry"
+        },
+        {
+            "code": "19857-2",
+            "description": "Total lung capacity by Helium rebreathing"
+        },
+        {
+            "code": "19858-0",
+            "description": "Total lung capacity by Helium single breath"
+        },
+        {
+            "code": "19859-8",
+            "description": "Total lung capacity by Plethysmograph body box"
+        },
+        {
+            "code": "19862-2",
+            "description": "Total lung capacity"
+        },
+        {
+            "code": "19863-0",
+            "description": "Vital capacity [Volume] Respiratory system by Helium rebreathing"
+        },
+        {
+            "code": "19864-8",
+            "description": "Vital capacity [Volume] Respiratory system by Helium single breath"
+        },
+        {
+            "code": "19866-3",
+            "description": "Vital capacity [Volume] Respiratory system by Spirometry"
+        },
+        {
+            "code": "19867-1",
+            "description": "Vital capacity [Volume] Respiratory system"
+        },
+        {
+            "code": "19868-9",
+            "description": "Forced vital capacity [Volume] Respiratory system by Spirometry"
+        },
+        {
+            "code": "19870-5",
+            "description": "Forced vital capacity [Volume] Respiratory system"
+        },
+        {
+            "code": "19874-7",
+            "description": "Forced vital capacity [Volume] Respiratory system by Spirometry post bronchodilation"
+        },
+        {
+            "code": "19875-4",
+            "description": "Forced vital capacity [Volume] Respiratory system post bronchodilation"
+        },
+        {
+            "code": "19876-2",
+            "description": "Forced vital capacity [Volume] Respiratory system by Spirometry pre bronchodilation"
+        },
+        {
+            "code": "19877-0",
+            "description": "Forced vital capacity [Volume] Respiratory system pre bronchodilation"
+        },
+        {
+            "code": "19911-7",
+            "description": "Diffusion capacity.carbon monoxide"
+        },
+        {
+            "code": "19912-5",
+            "description": "Diffusion capacity.carbon monoxide adjusted for hemoglobin by Helium single breath"
+        },
+        {
+            "code": "19916-6",
+            "description": "Diffusion capacity/Alveolar volume"
+        },
+        {
+            "code": "19926-5",
+            "description": "FEV1/FVC"
+        },
+        {
+            "code": "19935-6",
+            "description": "Maximum expiratory gas flow Respiratory system airway by Peak flow meter"
+        },
+        {
+            "code": "20143-4",
+            "description": "Residual volume by Helium rebreathing"
+        },
+        {
+            "code": "20144-2",
+            "description": "Residual volume by Helium single breath"
+        },
+        {
+            "code": "20146-7",
+            "description": "Residual volume"
+        },
+        {
+            "code": "20150-9",
+            "description": "FEV1"
+        },
+        {
+            "code": "20155-8",
+            "description": "FEV1 post bronchodilation"
+        },
+        {
+            "code": "20157-4",
+            "description": "FEV1 pre bronchodilation"
+        },
+        {
+            "code": "33452-4",
+            "description": "Maximum expiratory gas flow Respiratory system airway"
+        },
+        {
+            "code": "43252-6",
+            "description": "Residual volume/Total capacity Predicted"
+        },
+        {
+            "code": "43253-4",
+            "description": "FEV1 pre dose methacholine"
+        },
+        {
+            "code": "43255-9",
+            "description": "FEV1 post dose methacholine"
+        },
+        {
+            "code": "43256-7",
+            "description": "FEV1 post 25 mg/mL methacholine"
+        },
+        {
+            "code": "43257-5",
+            "description": "FEV1 post 2.5 mg/mL methacholine"
+        },
+        {
+            "code": "43258-3",
+            "description": "FEV1 post 10 mg/mL methacholine"
+        },
+        {
+            "code": "43259-1",
+            "description": "FEV1 post 0.25 mg/mL methacholine"
+        },
+        {
+            "code": "43260-9",
+            "description": "FEV1 post 0.025 mg/mL methacholine"
+        },
+        {
+            "code": "69970-2",
+            "description": "FEV1/FVC post bronchodilation"
+        },
+        {
+            "code": "69975-1",
+            "description": "Maximum expiratory gas flow Respiratory system airway pre bronchodilation"
+        },
+        {
+            "code": "69976-9",
+            "description": "Maximum expiratory gas flow Respiratory system airway post bronchodilation"
+        },
+        {
+            "code": "75946-4",
+            "description": "Airway resistance"
+        },
+        {
+            "code": "81440-0",
+            "description": "Vital capacity [Volume] Respiratory system pre bronchodilation"
+        },
+        {
+            "code": "81441-8",
+            "description": "Vital capacity [Volume] Respiratory system post bronchodilation"
+        },
+        {
+            "code": "81442-6",
+            "description": "Airway resistance post bronchodilation"
+        },
+        {
+            "code": "81443-4",
+            "description": "Airway resistance pre bronchodilation"
+        },
+        {
+            "code": "81450-9",
+            "description": "Total lung capacity pre bronchodilation"
+        },
+        {
+            "code": "81451-7",
+            "description": "Total lung capacity post bronchodilation"
+        },
+        {
+            "code": "81452-5",
+            "description": "Residual volume pre bronchodilation"
+        },
+        {
+            "code": "81453-3",
+            "description": "Residual volume post bronchodilation"
+        },
+        {
+            "code": "81454-1",
+            "description": "Residual volume/Total capacity pre bronchodilation"
+        },
+        {
+            "code": "81455-8",
+            "description": "Residual volume/Total capacity post bronchodilation"
+        },
+        {
+            "code": "82615-6",
+            "description": "Vital capacity [Volume] Respiratory system by Spirometry pre bronchodilation"
+        },
+        {
+            "code": "82616-4",
+            "description": "Vital capacity [Volume] Respiratory system by Spirometry post bronchodilation"
+        },
+        {
+            "code": "82617-2",
+            "description": "Total lung capacity by Helium rebreathing pre bronchodilation"
+        },
+        {
+            "code": "82618-0",
+            "description": "Total lung capacity by Helium rebreathing post bronchodilation"
+        },
+        {
+            "code": "82619-8",
+            "description": "Diffusion capacity/Alveolar volume pre bronchodilation"
+        },
+        {
+            "code": "82620-6",
+            "description": "Diffusion capacity/Alveolar volume post bronchodilation"
+        },
+        {
+            "code": "91980-3",
+            "description": "Specific airway resistance by Plethysmograph body box"
+        },
+        {
+            "code": "98083-9",
+            "description": "Specific airway resistance mean by Plethysmograph body box post bronchodilation"
         }
     ]
 }
