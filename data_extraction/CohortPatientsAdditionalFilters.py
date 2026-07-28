@@ -26,10 +26,10 @@ def main():
     diagnoses_filepath = Path(DIR_RESULTS, 'patients_diagnosed_asthma_copd.json')
     encounters_filepath = extract_additional_attributes_from_encounters(smart, diagnoses_filepath)
 
-    # Filter by patients' age  min_age: minimal age in years, max_age:  maximal age in years Example: [0-2], [3-5], etc.
+    # Filter by patients' age  min_age: minimal age in years, max_age: maximal age in years Example: [0-2], [3-5], etc.
     age_interval = {
-        'min_age': [0, 6, 13, 25],
-        'max_age': [5, 12, 24, 120]
+        'min_age': [0, 6, 12, 18, 25],
+        'max_age': [5, 11, 18, 24, 120]
     }
     for min_age, max_age in zip(age_interval['min_age'], age_interval['max_age']):
         filter_patients_by_age_interval(smart, encounters_filepath, min_age=min_age, max_age=max_age, enabled=True)
