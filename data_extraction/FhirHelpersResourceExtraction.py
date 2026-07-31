@@ -11,6 +11,7 @@ from fhirclient.models.medication import Medication
 from fhirclient.models.medicationadministration import MedicationAdministration
 from fhirclient.models.medicationrequest import MedicationRequest
 from fhirclient.models.medicationstatement import MedicationStatement
+from fhirclient.models.list import List as MedicationList
 
 from Constants import (USER_NAME, USER_PASSWORD, ICD_SYSTEM_NAME, LOINC_SYSTEM_NAME, OPS_SYSTEM_NAME, MAX_WORKERS,
                        ATC_SYSTEM_NAME, ASTHMA_COPD_CODES_FILE, PROTOCOL)
@@ -47,6 +48,7 @@ def read_input_code_file(filename):
                 os.makedirs(f"fhir_results/Medications/Administration/")
                 os.makedirs(f"fhir_results/Medications/Request/")
                 os.makedirs(f"fhir_results/Medications/Statement/")
+                os.makedirs(f"fhir_results/Medications/List/")
             code_list = [code['code'] for code in lines]
 
     return code_list
@@ -181,12 +183,17 @@ def medications(patient, code_list, source, smart):
         whole_path = "fhir_results/Medications/Request/" + patient_id + "_patient_medicationRequests.json"
     elif source is MedicationStatement:
         whole_path = "fhir_results/Medications/Statement/" + patient_id + "_patient_medicationStatements.json"
+    elif source is MedicationList:
+        whole_path = "fhir_results/Medications/List/" + patient_id + "_patient_medicationList.json"
 
     while True:
         try:
             if source == Medication:
                 bundle = smart.server.request_json(
                     source.where(struct={'_count': '1000', 'subject': patient, 'code': code_list_str}).construct())
+            elif source == MedicationList:
+                bundle = smart.server.request_json(
+                    source.where(struct={'_count': '1000', 'subject': patient, 'code': 'E230'}).construct())
             else:
                 bundle = smart.server.request_json(source.where(
                     struct={'_count': '1000', 'patient': patient, 'medication.code': code_list_str}).construct())
@@ -364,6 +371,8 @@ def execute_thread_for_fetching(code_set, source, patient_list, code_type, funct
             gather_metadata("patient_count_with_medicationRequests", patient_counter)
         elif source is MedicationStatement:
             gather_metadata("patient_count_with_medicationStatements", patient_counter)
+        elif source is MedicationList:
+            gather_metadata("patient_count_with_medicationList", patient_counter)
     elif code_type == "OPS":
         gather_metadata("patient_count_with_procedures", patient_counter)
     else:
@@ -540,3 +549,5 @@ def medication_frequencies(code_file):
             gather_metadata("medicationRequests_counts", resource_structure)
         elif "Statements" in folder_path:
             gather_metadata("medicationStatements_counts", resource_structure)
+        elif "List" in folder_path:
+            gather_metadata("medicationList_counts", resource_structure)

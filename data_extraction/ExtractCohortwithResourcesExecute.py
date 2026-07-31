@@ -8,6 +8,7 @@ from fhirclient.models.condition import Condition
 from fhirclient.models.medicationadministration import MedicationAdministration
 from fhirclient.models.medicationrequest import MedicationRequest
 from fhirclient.models.medicationstatement import MedicationStatement
+from fhirclient.models.list import List as MedicationList
 from fhirclient.models.observation import Observation
 from fhirclient.models.procedure import Procedure
 
@@ -32,7 +33,7 @@ DIR_RESULTS.mkdir(exist_ok=True)
 
 def main():
     logging.info("Start...")
-    smart = connect_to_server(user=USER_NAME, pw=USER_PASSWORD, protocol= PROTOCOL)
+    smart = connect_to_server(user=USER_NAME, pw=USER_PASSWORD, protocol=PROTOCOL)
 
     #Get the patients with "ANY TYPE OF DIAGNOSED" Asthma or COPD.
     diagnosis_path = patients_with_asthma_copd(smart, DIR_RESULTS)
@@ -59,6 +60,7 @@ def main():
         'MedicationAdministration': MedicationAdministration,
         'MedicationRequest': MedicationRequest,
         'MedicationStatement': MedicationStatement,
+        'List': MedicationList
     }
 
     for profile in medication_profiles.values():
