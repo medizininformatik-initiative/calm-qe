@@ -9,9 +9,13 @@ from FhirHelpersCohortExtraction import extract_additional_attributes_from_encou
 logging.basicConfig(level=logging.INFO, format='%(levelname)s - %(message)s')
 
 """"
-This script is for creating the Cohort Study Data. Study protocol requires the analysis of the patients from HauptDiagnosis with Asthma & COPD.
-Here, script first finds the patients with Asthma or Copd diagnosed. And later it filters only for HauptDiagnosis from their Encounter references.
-Results are saved in "additional_results.txt"
+This part of the script is designed to complete the extracted main cohort. 
+It uses the identified patients with Asthma or COPD and then performs the following tasks:
+- Extracts Encounter and Patients bundles.
+- Identifies patients based on specific filters.
+- Calculates the length of stay for inpatients.
+The results are saved as "metadata.json" in the "additional_results" folder, while the extracted bundles are saved in
+the "fhir_results" folder.
 """
 
 DIR_RESULTS = Path('additional_results')

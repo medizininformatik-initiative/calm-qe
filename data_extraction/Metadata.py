@@ -24,6 +24,7 @@ def gather_metadata(source, count):
             "patient_count_with_medicationRequests": 0,
             "patient_count_with_medicationAdministrations": 0,
             "patient_count_with_medicationStatements": 0,
+            "patient_count_with_medicationList": 0,
             "conditions_counts": defaultdict(int),
             "observations_counts": defaultdict(int),
             "procedures_counts": defaultdict(int),

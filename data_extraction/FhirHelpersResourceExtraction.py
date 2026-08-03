@@ -11,6 +11,7 @@ from fhirclient.models.medication import Medication
 from fhirclient.models.medicationadministration import MedicationAdministration
 from fhirclient.models.medicationrequest import MedicationRequest
 from fhirclient.models.medicationstatement import MedicationStatement
+from fhirclient.models.list import List as MedicationList
 
 from Constants import (USER_NAME, USER_PASSWORD, ICD_SYSTEM_NAME, LOINC_SYSTEM_NAME, OPS_SYSTEM_NAME, MAX_WORKERS,
                        ATC_SYSTEM_NAME, ASTHMA_COPD_CODES_FILE, PROTOCOL)
@@ -44,9 +45,10 @@ def read_input_code_file(filename):
         elif 'atc_codes' in filename:
             if not os.path.exists(f"fhir_results/Medications/"):
                 os.makedirs(f"fhir_results/Medications/")
-                os.makedirs(f"fhir_results/Medications/Administrations/")
-                os.makedirs(f"fhir_results/Medications/Requests/")
-                os.makedirs(f"fhir_results/Medications/Statements/")
+                os.makedirs(f"fhir_results/Medications/Administration/")
+                os.makedirs(f"fhir_results/Medications/Request/")
+                os.makedirs(f"fhir_results/Medications/Statement/")
+                os.makedirs(f"fhir_results/Medications/List/")
             code_list = [code['code'] for code in lines]
 
     return code_list
@@ -176,17 +178,22 @@ def medications(patient, code_list, source, smart):
     protocol = PROTOCOL
 
     if source is MedicationAdministration:
-        whole_path = "fhir_results/Medications/Administrations/" + patient_id + "_patient_medicationAdministrations.json"
+        whole_path = "fhir_results/Medications/Administration/" + patient_id + "_patient_medicationAdministration.json"
     elif source is MedicationRequest:
-        whole_path = "fhir_results/Medications/Requests/" + patient_id + "_patient_medicationRequests.json"
+        whole_path = "fhir_results/Medications/Request/" + patient_id + "_patient_medicationRequest.json"
     elif source is MedicationStatement:
-        whole_path = "fhir_results/Medications/Statements/" + patient_id + "_patient_medicationStatements.json"
+        whole_path = "fhir_results/Medications/Statement/" + patient_id + "_patient_medicationStatement.json"
+    elif source is MedicationList:
+        whole_path = "fhir_results/Medications/List/" + patient_id + "_patient_medicationList.json"
 
     while True:
         try:
             if source == Medication:
                 bundle = smart.server.request_json(
                     source.where(struct={'_count': '1000', 'subject': patient, 'code': code_list_str}).construct())
+            elif source == MedicationList:
+                bundle = smart.server.request_json(
+                    source.where(struct={'_count': '1000', 'subject': patient, 'code': 'E230'}).construct())
             else:
                 bundle = smart.server.request_json(source.where(
                     struct={'_count': '1000', 'patient': patient, 'medication.code': code_list_str}).construct())
@@ -213,6 +220,7 @@ def medications(patient, code_list, source, smart):
 def procedures(patient, code_set, source, smart):
     patient_id = patient.split("/")[-1]
     whole_path = f"fhir_results/Procedures/{patient_id}_patient_procedures.json"
+    logging.info(f"Fetching patient encounters...{patient_id}")
     protocol = PROTOCOL
     while True:
         try:
@@ -363,6 +371,8 @@ def execute_thread_for_fetching(code_set, source, patient_list, code_type, funct
             gather_metadata("patient_count_with_medicationRequests", patient_counter)
         elif source is MedicationStatement:
             gather_metadata("patient_count_with_medicationStatements", patient_counter)
+        elif source is MedicationList:
+            gather_metadata("patient_count_with_medicationList", patient_counter)
     elif code_type == "OPS":
         gather_metadata("patient_count_with_procedures", patient_counter)
     else:
@@ -488,9 +498,10 @@ def fetch_atc_codes(resource_ref, code_list, smart):
 
 def medication_frequencies(code_file):
     smart = connect_to_server(user=USER_NAME, pw=USER_PASSWORD, protocol= PROTOCOL)
-    folder_paths = ["fhir_results/Medications/Administrations",
-                    "fhir_results/Medications/Requests",
-                    "fhir_results/Medications/Statements"]
+    folder_paths = ["fhir_results/Medications/Administration",
+                    "fhir_results/Medications/Request",
+                    "fhir_results/Medications/Statement",
+                    "fhir_results/Medications/List"]
     code_list = read_input_code_file(code_file)
     system = ATC_SYSTEM_NAME
     protocol = PROTOCOL
@@ -535,9 +546,11 @@ def medication_frequencies(code_file):
             resource_structure[resource_type]["counting"]["total_count"] = total_count
             resource_structure[resource_type]["counting"]["details_count"] = details_count
 
-        if "Administrations" in folder_path:
+        if "Administration" in folder_path:
             gather_metadata("medicationAdministrations_counts", resource_structure)
-        elif "Requests" in folder_path:
+        elif "Request" in folder_path:
             gather_metadata("medicationRequests_counts", resource_structure)
-        elif "Statements" in folder_path:
+        elif "Statement" in folder_path:
             gather_metadata("medicationStatements_counts", resource_structure)
+        elif "List" in folder_path:
+            gather_metadata("medicationList_counts", resource_structure)
