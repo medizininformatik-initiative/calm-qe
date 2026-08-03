@@ -13,6 +13,202 @@
             "description": "IgE [Mass/volume] in Serum"
         },
         {
+            "code": "30187-9",
+            "description": "Food Allergen Mix 5 (Peanut+Cow milk+Egg white+Cod+Soybean+Wheat) IgE Ab [Units/volume] in Serum by Multidisk"
+        },
+        {
+            "code": "23801-4",
+            "description": "Food Allergen Mix 5 (Peanut+Cow milk+Egg white+Cod+Soybean+Wheat) IgE Ab [Presence] in Serum by Multidisk"
+        },
+        {
+            "code": "26954-8",
+            "description": "Aspergillus fumigatus IgG Ab [Mass/volume] in Serum"
+        },
+        {
+            "code": "6206-7",
+            "description": "Peanut IgE Ab [Units/volume] in Serum"
+        },
+        {
+            "code": "6136-6",
+            "description": "Hazelnut IgE Ab [Units/volume] in Serum"
+        },
+        {
+            "code": "6095-4",
+            "description": "American house dust mite IgE Ab [Units/volume] in Serum"
+        },
+        {
+            "code": "58752-7",
+            "description": "Wheat recombinant (rTri a) 19 IgE Ab [Units/volume] in Serum"
+        },
+        {
+            "code": "30984-9",
+            "description": "Silver Birch recombinant (rBet v) 1 IgE Ab [Units/volume] in Serum"
+        },
+        {
+            "code": "7258-7",
+            "description": "Cow milk IgE Ab [Units/volume] in Serum"
+        },
+        {
+            "code": "6106-9",
+            "description": "Egg white IgE Ab [Units/volume] in Serum"
+        },
+        {
+            "code": "63457-6",
+            "description": "European house dust mite recombinant (rDer p) 2 IgE Ab [Units/volume] in Serum"
+        },
+        {
+            "code": "63456-8",
+            "description": "European house dust mite native (nDer p) 1 IgE Ab [Units/volume] in Serum"
+        },
+        {
+            "code": "15284-3",
+            "description": "Grey Alder IgE Ab [Units/volume] in Serum"
+        },
+        {
+            "code": "96278-7",
+            "description": "Dermatophagoides pteronyssinus recombinant (rDer p) 23 IgE Ab [Units/volume] in Serum"
+        },
+        {
+            "code": "30993-0",
+            "description": "Aspergillus fumigatus recombinant (rAsp f) 6 IgE Ab [Units/volume] in Serum"
+        },
+        {
+            "code": "30992-2",
+            "description": "Aspergillus fumigatus recombinant (rAsp f) 4 IgE Ab [Units/volume] in Serum"
+        },
+        {
+            "code": "58754-3",
+            "description": "Olive pollen native (nOle e) 1 IgE Ab [Units/volume] in Serum"
+        },
+        {
+            "code": "58984-6",
+            "description": "Bromelin MUXF3 IgE Ab [Units/volume] in Serum"
+        },
+        {
+            "code": "78384-5",
+            "description": "Cat dander native (nFel d) 1 IgE Ab [Units/volume] in Serum"
+        },
+        {
+            "code": "30994-8",
+            "description": "Timothy recombinant (rPhl p) 1 IgE Ab [Units/volume] in Serum"
+        },
+        {
+            "code": "58778-2",
+            "description": "Peanut recombinant (rAra h) 2 IgE Ab [Units/volume] in Serum"
+        },
+        {
+            "code": "6085-5",
+            "description": "Common Ragweed IgE Ab [Units/volume] in Serum"
+        },
+        {
+            "code": "58773-3",
+            "description": "Dog recombinant (rCan f) 1 IgE Ab [Units/volume] in Serum"
+        },
+        {
+            "code": "58772-5",
+            "description": "Dog recombinant (rCan f) 2 IgE Ab [Units/volume] in Serum"
+        },
+        {
+            "code": "6126-7",
+            "description": "Glycyphagus domesticus IgE Ab [Units/volume] in Serum"
+        },
+        {
+            "code": "63458-4",
+            "description": "Mugwort native (nArt v) 1 IgE Ab [Units/volume] in Serum"
+        },
+        {
+            "code": "6248-9",
+            "description": "Soybean IgE Ab [Units/volume] in Serum"
+        },
+        {
+            "code": "65782-5",
+            "description": "Common ragweed native (nAmb a) 1 IgE Ab [Units/volume] in Serum"
+        },
+        {
+            "code": "6740-5",
+            "description": "Yellow Jacket IgE Ab [Units/volume] in Serum"
+        },
+        {
+            "code": "60240-9",
+            "description": "Common wasp recombinant (rVes v) 5 IgE Ab [Units/volume] in Serum"
+        },
+        {
+            "code": "66714-7",
+            "description": "Common wasp recombinant (rVes v) 1 IgE Ab [Units/volume] in Serum"
+        },
+        {
+            "code": "21603-6",
+            "description": "Wheat dust IgE Ab [Units/volume] in Serum"
+        },
+        {
+            "code": "58779-0",
+            "description": "Peanut recombinant (rAra h) 1 IgE Ab [Units/volume] in Serum"
+        },
+        {
+            "code": "63477-4",
+            "description": "Peanut recombinant (rAra h) 8 IgE Ab [Units/volume] in Serum"
+        },
+        {
+            "code": "59391-3",
+            "description": "Peach recombinant (rPru p) 3 IgE Ab [Units/volume] in Serum"
+        },
+        {
+            "code": "58777-4",
+            "description": "Peanut recombinant (rAra h) 3 IgE Ab [Units/volume] in Serum"
+        },
+        {
+            "code": "60421-5",
+            "description": "Honey bee phospholipase A2 recombinant (rApi m) 1 IgE Ab [Units/volume] in Serum"
+        },
+        {
+            "code": "64965-7",
+            "description": "Peanut recombinant (rAra h) 9 IgE Ab [Units/volume] in Serum"
+        },
+        {
+            "code": "79167-3",
+            "description": "Honey bee recombinant (rApi m) 2 IgE Ab [Units/volume] in Serum"
+        },
+        {
+            "code": "94275-5",
+            "description": "Honey bee acid phosphatase recombinant (rApi m) 3 IgE Ab [Units/volume] in Serum"
+        },
+        {
+            "code": "6844-5",
+            "description": "Honey bee IgE Ab [Units/volume] in Serum"
+        },
+        {
+            "code": "94276-3",
+            "description": "Honey bee dipeptidyl peptidase recombinant (rApi m) 5 IgE Ab [Units/volume] in Serum"
+        },
+        {
+            "code": "82613-1",
+            "description": "Honey bee recombinant (rApi m) 10 IgE Ab [Units/volume] in Serum"
+        },
+        {
+            "code": "6082-2",
+            "description": "Codfish IgE Ab [Units/volume] in Serum"
+        },
+        {
+            "code": "81788-2",
+            "description": "Hazelnut recombinant (rCor a) 14 IgE Ab [Units/volume] in Serum"
+        },
+        {
+            "code": "90880-6",
+            "description": "Peanut recombinant (rAra h) 6 IgE Ab [Units/volume] in Serum"
+        },
+        {
+            "code": "69421-6",
+            "description": "Hazelnut recombinant (rCor a) 1 IgE Ab [Units/volume] in Serum"
+        },
+        {
+            "code": "58753-5",
+            "description": "Hazelnut recombinant (rCor a) 8 IgE Ab [Units/volume] in Serum"
+        },
+        {
+            "code": "64966-5",
+            "description": "Wheat recombinant (rTri a) 14 IgE Ab [Units/volume] in Serum"
+        },
+        {
             "code": "7492-2",
             "description": "Multiple inhalant allergen IgE Ab [Units/volume] in Serum"
         },
@@ -25,12 +221,8 @@
             "description": "European house dust mite IgE Ab [Units/volume] in Serum"
         },
         {
-            "code": "7279-3",
-            "description": "European house dust mite triggered histamine release [Units/volume] in Blood"
-        },
-        {
-            "code": "63463-4",
-            "description": "European house dust mite recombinant (rDer p) 10 IgE Ab [Units/volume] in Serum"
+            "code": "81772-6",
+            "description": "European house dust mite IgG Ab [Mass/volume] in Serum"
         },
         {
             "code": "6833-8",
@@ -43,50 +235,6 @@
         {
             "code": "6265-3",
             "description": "Timothy IgE Ab [Units/volume] in Serum"
-        },
-        {
-            "code": "30994-8",
-            "description": "Timothy recombinant (rPhl p) 1 IgE Ab [Units/volume] in Serum"
-        },
-        {
-            "code": "58981-2",
-            "description": "Timothy recombinant (rPhl p) 5b IgE Ab [Units/volume] in Serum"
-        },
-        {
-            "code": "34428-3",
-            "description": "Timothy recombinant (rPhl p) 12 IgE Ab [Units/volume] in Serum"
-        },
-        {
-            "code": "30999-7",
-            "description": "Timothy recombinant (rPhl p) 7 IgE Ab [Units/volume] in Serum"
-        },
-        {
-            "code": "30995-5",
-            "description": "Timothy recombinant (rPhl p) 2 IgE Ab [Units/volume] in Serum"
-        },
-        {
-            "code": "31000-3",
-            "description": "Timothy recombinant (rPhl p) 11 IgE Ab [Units/volume] in Serum"
-        },
-        {
-            "code": "30998-9",
-            "description": "Timothy recombinant (rPhl p) 6 IgE Ab [Units/volume] in Serum"
-        },
-        {
-            "code": "30997-1",
-            "description": "Timothy native (nPhl p) 4 IgE Ab [Units/volume] in Serum"
-        },
-        {
-            "code": "34429-1",
-            "description": "Timothy recombinant (rPhl p) 1 + 5b IgE Ab [Units/volume] in Serum"
-        },
-        {
-            "code": "34430-9",
-            "description": "Timothy recombinant (rPhl p) 7 + 12 IgE Ab [Units/volume] in Serum"
-        },
-        {
-            "code": "30996-3",
-            "description": "Timothy recombinant (rPhl p) 5 IgE Ab [Units/volume] in Serum"
         },
         {
             "code": "6236-4",
@@ -105,22 +253,6 @@
             "description": "Silver Birch IgE Ab [Units/volume] in Serum"
         },
         {
-            "code": "30984-9",
-            "description": "Silver Birch recombinant (rBet v) 1 IgE Ab [Units/volume] in Serum"
-        },
-        {
-            "code": "30985-6",
-            "description": "Silver Birch recombinant (rBet v) 2 IgE Ab [Units/volume] in Serum"
-        },
-        {
-            "code": "34250-1",
-            "description": "Silver Birch recombinant (rBet v) 4 IgE Ab [Units/volume] in Serum"
-        },
-        {
-            "code": "34425-9",
-            "description": "Silver Birch recombinant (rBet v) 1 + 2 IgE Ab [Units/volume] in Serum"
-        },
-        {
             "code": "6183-8",
             "description": "Mugwort IgE Ab [Units/volume] in Serum"
         },
@@ -135,6 +267,10 @@
         {
             "code": "30539-1",
             "description": "Neutrophil cytoplasmic Ab.perinuclear [Presence] in Serum"
+        },
+        {
+            "code": "17357-5",
+            "description": "Neutrophil cytoplasmic Ab.perinuclear [Presence] in Serum by Immunofluorescence"
         },
         {
             "code": "14277-8",
@@ -153,10 +289,6 @@
             "description": "Rheumatoid factor [Units/volume] in Serum or Plasma"
         },
         {
-            "code": "30231-5",
-            "description": "Rheumatoid factor [Units/volume] in Body fluid"
-        },
-        {
             "code": "33577-8",
             "description": "Rheumatoid factor IgM [Titer] in Serum by Nephelometry"
         },
@@ -167,6 +299,10 @@
         {
             "code": "53027-9",
             "description": "Cyclic citrullinated peptide Ab [Units/volume] in Serum"
+        },
+        {
+            "code": "33935-8",
+            "description": "Cyclic citrullinated peptide IgG Ab [Units/volume] in Serum or Plasma"
         },
         {
             "code": "5130-0",
@@ -189,6 +325,10 @@
             "description": "Nucleosome Ab [Units/volume] in Serum"
         },
         {
+            "code": "89506-0",
+            "description": "Nucleosome Ab [Presence] in Serum by Line blot"
+        },
+        {
             "code": "59026-5",
             "description": "U1 small nuclear ribonucleoprotein 70kD Ab [Units/volume] in Serum"
         },
@@ -201,8 +341,16 @@
             "description": "PM-SCL extractable nuclear Ab [Units/volume] in Serum"
         },
         {
+            "code": "43119-7",
+            "description": "Extractable nuclear Ab panel - Serum"
+        },
+        {
             "code": "53022-0",
             "description": "U1 small nuclear ribonucleoprotein Ab [Presence] in Serum"
+        },
+        {
+            "code": "89501-1",
+            "description": "Smith extractable nuclear Ab+Ribonucleoprotein extractable nuclear Ab [Presence] in Serum by Line blot"
         },
         {
             "code": "43182-5",
@@ -225,6 +373,10 @@
             "description": "Sjogrens syndrome-A extractable nuclear 60kD Ab [Presence] in Serum"
         },
         {
+            "code": "56724-8",
+            "description": "Sjogrens syndrome-A extractable nuclear Ab [Presence] in Serum by Immunoblot"
+        },
+        {
             "code": "45142-7",
             "description": "Sjogrens syndrome-B extractable nuclear Ab [Units/volume] in Serum by Immunoassay"
         },
@@ -237,12 +389,24 @@
             "description": "SCL-70 extractable nuclear Ab [Presence] in Serum"
         },
         {
+            "code": "56693-5",
+            "description": "SCL-70 extractable nuclear Ab [Presence] in Serum by Immunoblot"
+        },
+        {
             "code": "5234-0",
             "description": "Jo-1 extractable nuclear Ab [Presence] in Serum by Immunoassay"
         },
         {
             "code": "8076-2",
             "description": "Jo-1 extractable nuclear Ab [Presence] in Serum"
+        },
+        {
+            "code": "56731-3",
+            "description": "Jo-1 extractable nuclear Ab [Presence] in Serum by Immunoblot"
+        },
+        {
+            "code": "82918-4",
+            "description": "Jo-1 extractable nuclear IgG Ab [Presence] in Serum by Line blot"
         },
         {
             "code": "29643-4",
@@ -253,8 +417,16 @@
             "description": "Myeloperoxidase Ab [Presence] in Serum"
         },
         {
+            "code": "46266-3",
+            "description": "Myeloperoxidase Ab [Units/volume] in Serum by Immunoassay"
+        },
+        {
             "code": "63310-7",
             "description": "Proteinase 3 Ab [Presence] in Serum by Immunoassay"
+        },
+        {
+            "code": "46267-1",
+            "description": "Proteinase 3 Ab [Units/volume] in Serum by Immunoassay"
         },
         {
             "code": "46128-5",
@@ -267,6 +439,10 @@
         {
             "code": "10863-9",
             "description": "Endomysium IgA Ab [Titer] in Serum"
+        },
+        {
+            "code": "2458-8",
+            "description": "IgA [Mass/volume] in Serum or Plasma"
         },
         {
             "code": "718-7",
@@ -877,6 +1053,10 @@
             "description": "Urea [Moles/volume] in Arterial blood"
         },
         {
+            "code": "3094-0",
+            "description": "Urea nitrogen [Mass/volume] in Serum or Plasma"
+        },
+        {
             "code": "33914-3",
             "description": "Glomerular filtration rate [Volume Rate/Area] in Serum or Plasma by Creatinine-based formula (MDRD)/1.73 sq M"
         },
@@ -893,8 +1073,16 @@
             "description": "Phosphate [Moles/volume] in Serum or Plasma"
         },
         {
+            "code": "2777-1",
+            "description": "Phosphate [Mass/volume] in Serum or Plasma"
+        },
+        {
             "code": "1988-5",
             "description": "C reactive protein [Mass/volume] in Serum or Plasma"
+        },
+        {
+            "code": "30522-7",
+            "description": "C reactive protein [Mass/volume] in Serum or Plasma by High sensitivity method"
         },
         {
             "code": "75241-0",
@@ -909,6 +1097,10 @@
             "description": "Thyrotropin [Units/volume] in Serum or Plasma"
         },
         {
+            "code": "11580-8",
+            "description": "Thyrotropin [Units/volume] in Serum or Plasma by Detection limit <= 0.005 mIU/L"
+        },
+        {
             "code": "83126-3",
             "description": "Triiodothyronine (T3) Free [Moles/volume] in Serum or Plasma by Immunoassay"
         },
@@ -921,6 +1113,10 @@
             "description": "Triiodothyronine (T3) Free [Mass/volume] in Serum or Plasma"
         },
         {
+            "code": "83127-1",
+            "description": "Triiodothyronine (T3) Free [Mass/volume] in Serum or Plasma by Immunoassay"
+        },
+        {
             "code": "83121-4",
             "description": "Thyroxine (T4) free [Moles/volume] in Serum or Plasma by Immunoassay"
         },
@@ -931,6 +1127,10 @@
         {
             "code": "3024-7",
             "description": "Thyroxine (T4) free [Mass/volume] in Serum or Plasma"
+        },
+        {
+            "code": "83122-2",
+            "description": "Thyroxine (T4) free [Mass/volume] in Serum or Plasma by Immunoassay"
         },
         {
             "code": "66120-7",
@@ -1097,6 +1297,10 @@
             "description": "Natriuretic peptide B [Mass/volume] in Blood"
         },
         {
+            "code": "83107-3",
+            "description": "Natriuretic peptide.B prohormone N-Terminal [Mass/volume] in Serum or Plasma by Immunoassay"
+        },
+        {
             "code": "26464-8",
             "description": "Leukocytes [#/volume] in Blood"
         },
@@ -1174,7 +1378,7 @@
         },
         {
             "code": "21000-5",
-            "description": "Deprecated Erythrocyte distribution width [Entitic volume] by Automated count"
+            "description": "Erythrocyte distribution width [Entitic volume] by Automated count"
         },
         {
             "code": "788-0",
@@ -1449,8 +1653,16 @@
             "description": "Urobilinogen [Presence] in Urine by Test strip"
         },
         {
+            "code": "50563-6",
+            "description": "Urobilinogen [Mass/volume] in Urine by Automated test strip"
+        },
+        {
             "code": "2514-8",
             "description": "Ketones [Presence] in Urine by Test strip"
+        },
+        {
+            "code": "50557-8",
+            "description": "Ketones [Mass/volume] in Urine by Automated test strip"
         },
         {
             "code": "20454-5",
@@ -1461,6 +1673,10 @@
             "description": "Glucose [Presence] in Urine by Test strip"
         },
         {
+            "code": "53328-1",
+            "description": "Glucose [Mass/volume] in Urine by Automated test strip"
+        },
+        {
             "code": "5799-2",
             "description": "Leukocyte esterase [Presence] in Urine by Test strip"
         },
@@ -1469,8 +1685,16 @@
             "description": "Leukocytes [Presence] in Urine"
         },
         {
+            "code": "46702-7",
+            "description": "Leukocytes [#/area] in Urine sediment by Automated count"
+        },
+        {
             "code": "5802-4",
             "description": "Nitrite [Presence] in Urine by Test strip"
+        },
+        {
+            "code": "50558-6",
+            "description": "Nitrite [Presence] in Urine by Automated test strip"
         },
         {
             "code": "5794-3",
@@ -1489,6 +1713,10 @@
             "description": "Bilirubin.total [Presence] in Urine by Test strip"
         },
         {
+            "code": "50551-1",
+            "description": "Bilirubin.total [Presence] in Urine by Automated test strip"
+        },
+        {
             "code": "30405-5",
             "description": "Leukocytes [#/volume] in Urine"
         },
@@ -1499,10 +1727,6 @@
         {
             "code": "24122-4",
             "description": "Leukocytes [#/volume] in Urine by Manual count"
-        },
-        {
-            "code": "46702-7",
-            "description": "Leukocytes [#/area] in Urine sediment by Automated count"
         },
         {
             "code": "105907-0",
@@ -1523,6 +1747,10 @@
         {
             "code": "30383-4",
             "description": "Epithelial cells [#/volume] in Urine"
+        },
+        {
+            "code": "33342-7",
+            "description": "Epithelial cells [#/area] in Urine sediment by Automated count"
         },
         {
             "code": "30391-7",
@@ -1605,10 +1833,6 @@
             "description": "Protein [Presence] in 24 hour Urine by Test strip"
         },
         {
-            "code": "2888-6",
-            "description": "Protein [Mass/volume] in Urine"
-        },
-        {
             "code": "21525-1",
             "description": "Sodium [Moles/volume] in 24 hour Urine"
         },
@@ -1621,16 +1845,16 @@
             "description": "Urea [Mass/volume] in 24 hour Urine"
         },
         {
-            "code": "3092-4",
-            "description": "Urea [Mass/volume] in Urine"
-        },
-        {
-            "code": "23786-7",
-            "description": "Urea [Mass/volume] in Specimen"
-        },
-        {
             "code": "48999-7",
             "description": "Urea [Mass/time] in 24 hour Urine"
+        },
+        {
+            "code": "3095-7",
+            "description": "Urea nitrogen [Mass/volume] in Urine"
+        },
+        {
+            "code": "12967-6",
+            "description": "Urea nitrogen [Mass/volume] in 24 hour Urine"
         },
         {
             "code": "25973-9",
@@ -1645,6 +1869,10 @@
             "description": "Phosphate [Mass or Moles] in 24 hour Urine"
         },
         {
+            "code": "2778-9",
+            "description": "Phosphate [Mass/volume] in Urine"
+        },
+        {
             "code": "46723-3",
             "description": "Alpha-1-Microglobulin [Mass/volume] in Urine"
         },
@@ -1655,10 +1883,6 @@
         {
             "code": "2350-7",
             "description": "Glucose [Mass/volume] in Urine"
-        },
-        {
-            "code": "53328-1",
-            "description": "Glucose [Mass/volume] in Urine by Automated test strip"
         },
         {
             "code": "5792-7",
@@ -1673,20 +1897,20 @@
             "description": "Microalbumin [Mass/volume] in 24 hour Urine"
         },
         {
+            "code": "61196-2",
+            "description": "Albumin [Mass/volume] in Urine from Fetus"
+        },
+        {
+            "code": "21059-1",
+            "description": "Albumin [Mass/volume] in 24 hour Urine"
+        },
+        {
             "code": "9192-6",
             "description": "Urine output 24 hour"
         },
         {
             "code": "11279-7",
             "description": "Urine sediment comments by Light microscopy Narrative"
-        },
-        {
-            "code": "53315-8",
-            "description": "Urinalysis microscopic panel - Urine Qualitative by Automated"
-        },
-        {
-            "code": "50556-0",
-            "description": "Urinalysis dipstick panel - Urine by Automated test strip"
         },
         {
             "code": "24356-8",
@@ -1709,6 +1933,10 @@
             "description": "IgG [Mass/volume] in Urine"
         },
         {
+            "code": "6781-9",
+            "description": "IgG [Mass/volume] in Urine by Immunoassay"
+        },
+        {
             "code": "21194-6",
             "description": "Chloride [Moles/volume] in 24 hour Urine"
         },
@@ -1725,8 +1953,16 @@
             "description": "Urate [Mass/volume] in Urine"
         },
         {
+            "code": "3088-2",
+            "description": "Urate renal clearance in 24 hour Urine and Serum or Plasma"
+        },
+        {
             "code": "25362-5",
             "description": "Calcium [Moles/volume] in 24 hour Urine"
+        },
+        {
+            "code": "2004-0",
+            "description": "Calcium [Moles/volume] in Urine"
         },
         {
             "code": "25954-9",
