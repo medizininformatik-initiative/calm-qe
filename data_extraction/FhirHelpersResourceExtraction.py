@@ -44,9 +44,9 @@ def read_input_code_file(filename):
         elif 'atc_codes' in filename:
             if not os.path.exists(f"fhir_results/Medications/"):
                 os.makedirs(f"fhir_results/Medications/")
-                os.makedirs(f"fhir_results/Medications/Administration/")
-                os.makedirs(f"fhir_results/Medications/Request/")
-                os.makedirs(f"fhir_results/Medications/Statement/")
+                os.makedirs(f"fhir_results/Medications/Administrations/")
+                os.makedirs(f"fhir_results/Medications/Requests/")
+                os.makedirs(f"fhir_results/Medications/Statements/")
             code_list = [code['code'] for code in lines]
 
     return code_list
@@ -176,11 +176,11 @@ def medications(patient, code_list, source, smart):
     protocol = PROTOCOL
 
     if source is MedicationAdministration:
-        whole_path = "fhir_results/Medications/Administration/" + patient_id + "_patient_medicationAdministrations.json"
+        whole_path = "fhir_results/Medications/Administrations/" + patient_id + "_patient_medicationAdministrations.json"
     elif source is MedicationRequest:
-        whole_path = "fhir_results/Medications/Request/" + patient_id + "_patient_medicationRequests.json"
+        whole_path = "fhir_results/Medications/Requests/" + patient_id + "_patient_medicationRequests.json"
     elif source is MedicationStatement:
-        whole_path = "fhir_results/Medications/Statement/" + patient_id + "_patient_medicationStatements.json"
+        whole_path = "fhir_results/Medications/Statements/" + patient_id + "_patient_medicationStatements.json"
 
     while True:
         try:
@@ -213,7 +213,6 @@ def medications(patient, code_list, source, smart):
 def procedures(patient, code_set, source, smart):
     patient_id = patient.split("/")[-1]
     whole_path = f"fhir_results/Procedures/{patient_id}_patient_procedures.json"
-    logging.info(f"Fetching patient encounters...{patient_id}")
     protocol = PROTOCOL
     while True:
         try:
@@ -489,7 +488,9 @@ def fetch_atc_codes(resource_ref, code_list, smart):
 
 def medication_frequencies(code_file):
     smart = connect_to_server(user=USER_NAME, pw=USER_PASSWORD, protocol= PROTOCOL)
-    folder_paths = ["fhir_results/ATC/Administrations", "fhir_results/ATC/Requests", "fhir_results/ATC/Statements"]
+    folder_paths = ["fhir_results/Medications/Administrations",
+                    "fhir_results/Medications/Requests",
+                    "fhir_results/Medications/Statements"]
     code_list = read_input_code_file(code_file)
     system = ATC_SYSTEM_NAME
     protocol = PROTOCOL

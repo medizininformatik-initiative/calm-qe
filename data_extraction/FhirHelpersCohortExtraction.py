@@ -377,6 +377,10 @@ def get_demographics_patients(smart, input_filepath, enabled=True):
                 })
                 break
             except Exception as exc:
+                status = getattr(getattr(exc, "response", None), "status_code", None)
+                if 410 or 404 in status:
+                    logging.warning(f"Exception {status}. Patient {patient_id} missing or deleted. Skipping..")
+                    break
                 logging.error(f"Generated an exception: {exc} but continue to trying. \n")
                 smart = connect_to_server(user=USER_NAME, pw=USER_PASSWORD)
                 time.sleep(3)
@@ -514,7 +518,6 @@ def simple_flattening(patients_attr_map, path):
                             'system': code.get('system'),
                             'version': code.get('version')
                         })
-
             df_rows.append(row)
 
     # New: reorder columns and export them :)
