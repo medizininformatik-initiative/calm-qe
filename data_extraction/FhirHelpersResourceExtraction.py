@@ -5,7 +5,6 @@ import json
 import time
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
-from fhirclient.models.bundle import Bundle
 from fhirclient.models.condition import Condition
 from fhirclient.models.medication import Medication
 from fhirclient.models.medicationadministration import MedicationAdministration
@@ -292,10 +291,6 @@ def encounters(patient, encounter, smart):
     return res_count
 
 def patienten(patient_id, smart):
-
-    if not os.path.exists(f"fhir_results/Patients/"):
-        os.makedirs(f"fhir_results/Patients/")
-
     whole_path = f"fhir_results/Patients/{patient_id}_patient.json"
     logging.info(f"Fetching patient...{patient_id}")
     protocol = PROTOCOL
@@ -400,17 +395,13 @@ def observation_frequencies(code_file):
                             year = date.date().year
                         except ValueError:
                             logging.warning("Invalid year format, skipping...")
+                            continue
 
-                    for coding in codings:
-                        if LOINC_SYSTEM_NAME == coding['system'] and coding['code'] in code_list:
-                            observations_counts[year][coding['code']] += 1
+                        for coding in codings:
+                            if LOINC_SYSTEM_NAME == coding['system'] and coding['code'] in code_list:
+                                observations_counts[year][coding['code']] += 1
 
     # Gather metadata
-    for year in sorted(observations_counts):
-        logging.info(f"[{year}]")
-        for code, frequency in observations_counts[year].items():
-            logging.info(f"{code}: {frequency}")
-
     gather_metadata("observations_counts", dict(sorted(observations_counts.items())))
 
 
@@ -430,21 +421,15 @@ def conditions_frequencies(code_file):
                     recorded_date = resource.get("recordedDate", {})
                     if recorded_date:
                         try:
-                            date = parse_fhir_datetime(recorded_date)
-                            year = date.date().year
+                            year = parse_fhir_datetime(recorded_date).date().year
                         except ValueError:
                             logging.warning("Invalid year format, skipping...")
+                            continue
 
-                    for coding in codings:
-                        if ICD_SYSTEM_NAME == coding['system'] and coding['code'] in code_list:
-                            conditions_counts[year][coding['code']] += 1
+                        for coding in codings:
+                            if ICD_SYSTEM_NAME == coding['system'] and coding['code'] in code_list:
+                                conditions_counts[year][coding['code']] += 1
     # Gather metadata
-    logging.info(f"Conditions frequencies...")
-    for year in sorted(conditions_counts):
-        logging.info(f"[{year}]")
-        for code, frequency in conditions_counts[year].items():
-            logging.info(f"{code}: {frequency}")
-
     gather_metadata("conditions_counts", dict(sorted(conditions_counts.items())))
 
 def procedure_frequencies(code_file):
@@ -467,17 +452,11 @@ def procedure_frequencies(code_file):
                             year = date.date().year
                         except ValueError:
                             logging.warning("Invalid year format, skipping...")
-
-                    for coding in codings:
-                        if OPS_SYSTEM_NAME == coding['system'] and coding['code'] in code_list:
-                            procedure_counts[year][coding['code']] += 1
+                            continue
+                        for coding in codings:
+                            if OPS_SYSTEM_NAME == coding['system'] and coding['code'] in code_list:
+                                procedure_counts[year][coding['code']] += 1
     # Gather metadata
-    logging.info(f"Procedure frequencies...")
-    for year in sorted(procedure_counts):
-        logging.info(f"[{year}]")
-        for code, frequency in procedure_counts[year].items():
-            logging.info(f"{code}: {frequency}")
-
     gather_metadata("procedures_counts", dict(sorted(procedure_counts.items())))
 
 
@@ -503,7 +482,6 @@ def medication_frequencies(code_file):
                     "fhir_results/Medications/Statement",
                     "fhir_results/Medications/List"]
     code_list = read_input_code_file(code_file)
-    system = ATC_SYSTEM_NAME
     protocol = PROTOCOL
     for folder_path in folder_paths:
         medication_type_and_med_reference = {}
