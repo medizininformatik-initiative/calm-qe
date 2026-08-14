@@ -187,10 +187,7 @@ def medications(patient, code_list, source, smart):
 
     while True:
         try:
-            if source == Medication:
-                bundle = smart.server.request_json(
-                    source.where(struct={'_count': '1000', 'subject': patient, 'code': code_list_str}).construct())
-            elif source == MedicationList:
+            if source == MedicationList:
                 bundle = smart.server.request_json(
                     source.where(struct={'_count': '1000', 'subject': patient, 'code': 'E230'}).construct())
             else:
