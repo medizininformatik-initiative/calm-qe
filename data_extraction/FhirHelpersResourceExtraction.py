@@ -213,7 +213,7 @@ def medications(patient, code_list, source, smart):
             file.close()
     return count
 
-def procedures(patient, code_set, source, smart):
+def procedures(patient, code_set, smart):
     patient_id = patient.split("/")[-1]
     whole_path = f"fhir_results/Procedures/{patient_id}_patient_procedures.json"
     logging.info(f"Fetching patient encounters...{patient_id}")
@@ -249,14 +249,11 @@ def procedures(patient, code_set, source, smart):
             file.close()
     return count
 
-def encounters(patient, encounter, smart):
-    patient_id = patient.split("/")[-1]
-
+def encounters(encounter, smart):
     if not os.path.exists(f"fhir_results/Encounters/"):
         os.makedirs(f"fhir_results/Encounters/")
 
-    whole_path = f"fhir_results/Encounters/{patient_id}_patient_encounters.json"
-    logging.info(f"Fetching patient encounters...{patient_id}")
+    whole_path = f"fhir_results/Encounters/{encounter}_encounter.json"
     protocol = PROTOCOL
     while True:
         try:
@@ -287,9 +284,11 @@ def encounters(patient, encounter, smart):
             file.close()
     return res_count
 
-def patienten(patient_id, smart):
+def fetch_patients(patient_id, smart):
+    if not os.path.exists(f"fhir_results/Patients/"):
+        os.makedirs(f"fhir_results/Patients/")
+
     whole_path = f"fhir_results/Patients/{patient_id}_patient.json"
-    logging.info(f"Fetching patient...{patient_id}")
     protocol = PROTOCOL
     while True:
         try:
@@ -330,8 +329,12 @@ def execute_thread_for_fetching(code_set, source, patient_list, code_type, funct
     processed = 0
     total_patients = len(patient_list)
     with ThreadPoolExecutor(max_workers=MAX_WORKERS) as executor:
-        future_to_code = {executor.submit(function_to_run, patient, code_set, source, smart): patient for patient in
-                          patient_list}
+        if not code_set and code_type is None:
+            future_to_code = {executor.submit(function_to_run, patient, smart): patient for patient in
+                              patient_list}
+        else:
+            future_to_code = {executor.submit(function_to_run, patient, code_set, source, smart): patient for patient in
+                              patient_list}
         patient_counter = 0
         for future in as_completed(future_to_code):
             patient = future_to_code[future]

@@ -11,11 +11,13 @@ from fhirclient.models.medicationstatement import MedicationStatement
 from fhirclient.models.list import List as MedicationList
 from fhirclient.models.observation import Observation
 from fhirclient.models.procedure import Procedure
+from fhirclient.models.patient import Patient
 
 from Constants import USER_NAME, USER_PASSWORD, ICD_CODE_FILE, LOINC_CODE_FILE, ATC_CODE_FILE,OPS_CODE_FILE, PROTOCOL
 from FhirHelpersResourceExtraction import (execute_thread_for_fetching, observations, conditions, medications, procedures,
                                            observation_frequencies, conditions_frequencies, medication_frequencies,
-                                           procedure_frequencies, read_input_code_file, patients_with_asthma_copd)
+                                           procedure_frequencies, read_input_code_file, patients_with_asthma_copd,
+                                           fetch_patients, encounters)
 
 logging.basicConfig(level=logging.INFO, format='%(levelname)s - %(message)s')
 
@@ -42,10 +44,17 @@ def main():
     with open(diagnosis_path, "r") as file:
         input_file = json.load(file)
         patients = [patient for patient in input_file.keys()]
+        enc_list = [encounter['encounter'] for encounters_list in input_file.values() for encounter in encounters_list if 'encounter' in encounter]
 
-    ####Conditions#####
+    ####Patients#####
+    execute_thread_for_fetching(None, Patient, patients, None, fetch_patients)
+
+    ####Conditions####
     code_list = read_input_code_file(ICD_CODE_FILE)
     execute_thread_for_fetching(code_list, Condition, patients, "ICD", conditions)
+
+    ####Encounters####
+    execute_thread_for_fetching(None, Patient, enc_list, None, encounters)
 
     ####Observations####
     code_list = read_input_code_file(LOINC_CODE_FILE)

@@ -19,7 +19,6 @@ from Constants import USER_NAME, USER_PASSWORD, ICD_SYSTEM_NAME, ASTHMA_COPD_COD
 from FhirHelpersUtils import fetch_bundle_for_code, connect_to_server
 from FhirHelpersUtils import parse_fhir_datetime, compute_los
 from Metadata import gather_metadata
-from FhirHelpersResourceExtraction import encounters, patienten
 
 basis_filename = "patients_diagnosed_asthma_copd"
 
@@ -353,7 +352,6 @@ def get_demographics_patients(smart, input_filepath, enabled=True):
         while True:
             try:
                 patient = Patient.read(patient_id, smart.server)
-                patienten(patient_id, smart)
 
                 if patient.birthDate is None:
                     logging.warning(f"Patient {patient_id} has no birthdate available.")
@@ -437,7 +435,6 @@ def extract_additional_attributes_from_encounters(smart, input_filepath):
                         time.sleep(1)
 
                 if enc is not None:
-                    encounters(patient, encounter_id, smart)
                     resource = enc.get("resource", {})
                     period = resource.get("period", {})
                     start = period.get("start") if period else None
