@@ -11,6 +11,7 @@ from fhirclient.models.medicationadministration import MedicationAdministration
 from fhirclient.models.medicationrequest import MedicationRequest
 from fhirclient.models.medicationstatement import MedicationStatement
 from fhirclient.models.list import List as MedicationList
+from fhirclient.models.patient import Patient
 
 from Constants import (USER_NAME, USER_PASSWORD, ICD_SYSTEM_NAME, LOINC_SYSTEM_NAME, OPS_SYSTEM_NAME, MAX_WORKERS,
                        ATC_SYSTEM_NAME, ASTHMA_COPD_CODES_FILE, PROTOCOL)
@@ -284,41 +285,27 @@ def encounters(encounter, smart):
             file.close()
     return res_count
 
-def fetch_patients(patient_id, smart):
-    if not os.path.exists(f"fhir_results/Patients/"):
-        os.makedirs(f"fhir_results/Patients/")
-
-    whole_path = f"fhir_results/Patients/{patient_id}_patient.json"
+def fetch_patients(patients_list, smart):
+    os.makedirs("fhir_results/Patients", exist_ok=True)
     protocol = PROTOCOL
-    while True:
-        try:
-            response = smart.server.post_as_form(
-                url=f"{smart.server.base_uri}/Patient/_search",
-                formdata={"_id": patient_id})
-            bundle = response.json()
-            break
-        except Exception as exc:
-            logging.error(f"Generated an exception: {exc} but continue trying.\n")
-            time.sleep(3)
-            smart = connect_to_server(user=USER_NAME, pw=USER_PASSWORD, protocol=protocol)
 
-    res_count = 0
-    file = None
-    try:
-        for entries in fetch_bundle_for_code(smart, bundle, protocol):
-            if entries:
-                for patient in entries:
-                    resource = patient.get("resource", {})
-                    if resource and file is None:
-                        file = open(whole_path, "w")
-                        json.dump(patient, file, separators=(",", ":"))
-                        file.write("\n")
-                        res_count += 1
-    finally:
-        if file is not None:
-            file.close()
-    return res_count
+    for patient_id in patients_list:
+        patient_id = patient_id.split("/")[-1]
+        whole_path = f"fhir_results/Patients/{patient_id}_patient.json"
 
+        while True:
+            try:
+                patient = smart.server.request_json(f"Patient/{patient_id}")
+                break
+            except Exception as exc:
+                logging.error(f"Generated an exception: {exc} but continue trying.\n")
+                time.sleep(3)
+                smart = connect_to_server(user=USER_NAME, pw=USER_PASSWORD, protocol=protocol)
+
+        if patient:
+            with open(whole_path, "w") as file:
+                json.dump(patient, file, separators=(",", ":"))
+                file.write("\n")
 
 def execute_thread_for_fetching(code_set, source, patient_list, code_type, function_to_run):
     """

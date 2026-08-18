@@ -47,7 +47,7 @@ def main():
         enc_list = [encounter['encounter'] for encounters_list in input_file.values() for encounter in encounters_list if 'encounter' in encounter]
 
     ####Patients#####
-    execute_thread_for_fetching(None, Patient, patients, None, fetch_patients)
+    fetch_patients(patients, smart)
 
     ####Conditions####
     code_list = read_input_code_file(ICD_CODE_FILE)
