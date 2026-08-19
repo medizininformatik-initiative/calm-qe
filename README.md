@@ -27,19 +27,19 @@ Before running the scripts, ensure that FHIR server configurations are added in 
 You should update the following fields including a _**.env**_ file:
 
 ```env
-USER_NAME=user1
-USER_PASSWORD=pass123
-SERVER_NAME=server.fhir.diz.uni.de/fhir
-PROTOCOL=https
+USER_NAME=YOUR_USERNAME
+USER_PASSWORD=YOUR_PASSWORD
+SERVER_NAME=YOUR_SERVER_NAME/fhir
+PROTOCOL=YOUR_PROTOCOL_TYPE
 ```
 An example environment file (`.env.example`) is included in the repository.
 
 
 Or for instance by adding credentials directly in these fields:
 ```python
-USER_NAME = os.getenv("USER_NAME", "user1")
-USER_PASSWORD = os.getenv("USER_PASSWORD", "pass123")
-SERVER_NAME = os.getenv("SERVER_NAME", "server.fhir.diz.uni.de/fhir")
+USER_NAME = os.getenv("USER_NAME", "YOUR_USERNAME")
+USER_PASSWORD = os.getenv("USER_PASSWORD", "YOUR_PASSWORD")
+SERVER_NAME = os.getenv("SERVER_NAME", "YOUR_SERVER_NAME/fhir")
 PROTOCOL = os.getenv("PROTOCOL", "https")
 ```
 ## Creation of Cohort Patients List and Extraction of the Resources from Cohort Patients
@@ -74,7 +74,7 @@ python .\data_analysis\Graphs.py
 Once compiling the first part of the script, `CohortPatientsAdditionalFilters.py`, generates a summary of participants by extracting interested attributes from encounters.
 
 This section of the script filters patients from `asthma_copd_codes.json` by:
-- age intervals [0-5], [6-11], [12-18], [18-24], and [25, ∞). 
+- age intervals [0-5], [6-11], [12-17], [18-24], and [25, ∞). 
 - patients admitted in intensive care.
 
 In addition, the script:

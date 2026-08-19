@@ -33,7 +33,7 @@ def main():
     # Filter by patients' age  min_age: minimal age in years, max_age: maximal age in years Example: [0-2], [3-5], etc.
     age_interval = {
         'min_age': [0, 6, 12, 18, 25],
-        'max_age': [5, 11, 18, 24, 120]
+        'max_age': [5, 11, 17, 24, 120]
     }
     for min_age, max_age in zip(age_interval['min_age'], age_interval['max_age']):
         filter_patients_by_age_interval(smart, encounters_filepath, min_age=min_age, max_age=max_age, enabled=True)
