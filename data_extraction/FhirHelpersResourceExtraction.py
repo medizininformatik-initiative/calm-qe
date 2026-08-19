@@ -4,16 +4,13 @@ from collections import defaultdict
 import json
 import time
 from concurrent.futures import ThreadPoolExecutor, as_completed
-
 from fhirclient.models.condition import Condition
 from fhirclient.models.medication import Medication
 from fhirclient.models.medicationadministration import MedicationAdministration
 from fhirclient.models.medicationrequest import MedicationRequest
 from fhirclient.models.medicationstatement import MedicationStatement
 from fhirclient.models.list import List as MedicationList
-from fhirclient.models.patient import Patient
 from fhirclient.server import FHIRNotFoundException
-
 from Constants import (USER_NAME, USER_PASSWORD, ICD_SYSTEM_NAME, LOINC_SYSTEM_NAME, OPS_SYSTEM_NAME, MAX_WORKERS,
                        ATC_SYSTEM_NAME, ASTHMA_COPD_CODES_FILE, PROTOCOL)
 from FhirHelpersUtils import connect_to_server, fetch_bundle_for_code, parse_fhir_datetime
@@ -176,7 +173,6 @@ def conditions(patient, code_list, source, smart):
 def medications(patient, code_list, source, smart):
     code_list_str = ','.join([ATC_SYSTEM_NAME + '|' + code for code in code_list])
     patient_id = patient.split("/")[-1]
-    protocol = PROTOCOL
 
     if source is MedicationAdministration:
         whole_path = "fhir_results/Medications/Administration/" + patient_id + "_patient_medicationAdministration.json"
@@ -190,30 +186,57 @@ def medications(patient, code_list, source, smart):
     while True:
         try:
             if source == MedicationList:
-                bundle = smart.server.request_json(
-                    source.where(struct={'_count': '1000', 'subject': patient, 'code': 'E230'}).construct())
+                statement_ref = patient   #  Attention: Here "patient" is not a patient id, but a statement id !!
+                bundle = smart.server.request_json(source.where(
+                    struct={'_count': '1000', 'item':statement_ref, 'code': 'E230'}).construct())
             else:
                 bundle = smart.server.request_json(source.where(
                     struct={'_count': '1000', 'patient': patient, 'medication.code': code_list_str}).construct())
             break
+        except FHIRNotFoundException:
+            logging.warning(f"Exception.In {source}, resource {patient} missing or deleted. Skipping...")
+            break
         except Exception as exc:
             logging.error(f"Generated an exception: {exc} but continue trying.\n")
-            smart = connect_to_server(user=USER_NAME, pw=USER_PASSWORD, protocol= PROTOCOL)
+            smart = connect_to_server(user=USER_NAME, pw=USER_PASSWORD, protocol=PROTOCOL)
             time.sleep(3)
     count = 0
     file = None
     try:
-        for entries in fetch_bundle_for_code(smart, bundle, protocol):
-            for medicationProfile in entries:
+        for entries in fetch_bundle_for_code(smart, bundle, PROTOCOL):
+            for medication_profile in entries:
                 if file is None:
                     file = open(whole_path, "w")
-                json.dump(medicationProfile, file, separators=(",", ":"))
+                json.dump(medication_profile, file, separators=(",", ":"))
                 file.write("\n")
                 count += 1
     finally:
         if file is not None:
             file.close()
     return count
+
+def _aux_statement_ref(directory):
+    if os.path.exists(directory) and len(os.listdir(directory)) > 0:
+        med_statements_ref = set()
+
+        for file_name in os.listdir(directory):
+            file_path = os.path.join(directory, file_name)
+            with open(file_path, "r") as f:
+                for line in f:
+                    try:
+                        entry = json.loads(line)
+                        if 'resource' in entry and 'id' in entry['resource']:
+                            statement_ref = f"MedicationStatement/{entry['resource']['id']}"
+                            med_statements_ref.add(statement_ref)
+                    except json.JSONDecodeError as e:
+                        print(f"Error decoding line in file {file_name}: {e}")
+
+        med_statements_list = list(med_statements_ref)
+        logging.info(f"A total of {len(med_statements_ref)} statements as reference were enlisted.")
+        return med_statements_list
+    else:
+        logging.warning(f"No medication statements were found in '{directory}'.")
+        return None
 
 def procedures(patient, code_set, smart):
     patient_id = patient.split("/")[-1]
@@ -323,7 +346,7 @@ def execute_thread_for_fetching(code_set, source, patient_list, code_type, funct
     processed = 0
     total_patients = len(patient_list)
     with ThreadPoolExecutor(max_workers=MAX_WORKERS) as executor:
-        if not code_set and code_type is None:
+        if code_set is None and code_type is None:
             future_to_code = {executor.submit(function_to_run, patient, smart): patient for patient in
                               patient_list}
         else:

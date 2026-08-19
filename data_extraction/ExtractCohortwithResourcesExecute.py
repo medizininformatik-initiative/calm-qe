@@ -1,9 +1,7 @@
 import json
 import logging
 from pathlib import Path
-
 from FhirHelpersUtils import connect_to_server
-
 from fhirclient.models.condition import Condition
 from fhirclient.models.medicationadministration import MedicationAdministration
 from fhirclient.models.medicationrequest import MedicationRequest
@@ -11,13 +9,12 @@ from fhirclient.models.medicationstatement import MedicationStatement
 from fhirclient.models.list import List as MedicationList
 from fhirclient.models.observation import Observation
 from fhirclient.models.procedure import Procedure
-from fhirclient.models.patient import Patient
-
+from fhirclient.models.encounter import Encounter
 from Constants import USER_NAME, USER_PASSWORD, ICD_CODE_FILE, LOINC_CODE_FILE, ATC_CODE_FILE,OPS_CODE_FILE, PROTOCOL
 from FhirHelpersResourceExtraction import (execute_thread_for_fetching, observations, conditions, medications, procedures,
                                            observation_frequencies, conditions_frequencies, medication_frequencies,
                                            procedure_frequencies, read_input_code_file, patients_with_asthma_copd,
-                                           fetch_patients, encounters)
+                                           fetch_patients, encounters, _aux_statement_ref)
 
 logging.basicConfig(level=logging.INFO, format='%(levelname)s - %(message)s')
 
@@ -54,7 +51,7 @@ def main():
     execute_thread_for_fetching(code_list, Condition, patients, "ICD", conditions)
 
     ####Encounters####
-    execute_thread_for_fetching(None, Patient, enc_list, None, encounters)
+    execute_thread_for_fetching(None, Encounter, enc_list, None, encounters)
 
     ####Observations####
     code_list = read_input_code_file(LOINC_CODE_FILE)
@@ -74,6 +71,10 @@ def main():
 
     for profile in medication_profiles.values():
         code_list = read_input_code_file(ATC_CODE_FILE)
+        if MedicationList == profile:
+            statement_list = _aux_statement_ref(DIR_RESULTS.parent.absolute()/"fhir_results/Medications/Statement")
+            if statement_list is not None:
+                execute_thread_for_fetching(code_list, profile, statement_list, "ATC", medications)
         execute_thread_for_fetching(code_list, profile, patients, "ATC", medications)
 
     """ Post processing: Analysis """
