@@ -12,6 +12,7 @@ from fhirclient.models.medicationrequest import MedicationRequest
 from fhirclient.models.medicationstatement import MedicationStatement
 from fhirclient.models.list import List as MedicationList
 from fhirclient.models.patient import Patient
+from fhirclient.server import FHIRNotFoundException
 
 from Constants import (USER_NAME, USER_PASSWORD, ICD_SYSTEM_NAME, LOINC_SYSTEM_NAME, OPS_SYSTEM_NAME, MAX_WORKERS,
                        ATC_SYSTEM_NAME, ASTHMA_COPD_CODES_FILE, PROTOCOL)
@@ -287,25 +288,31 @@ def encounters(encounter, smart):
 
 def fetch_patients(patients_list, smart):
     os.makedirs("fhir_results/Patients", exist_ok=True)
+    whole_path = f"fhir_results/Patients/patients.jsonl"
     protocol = PROTOCOL
 
-    for patient_id in patients_list:
-        patient_id = patient_id.split("/")[-1]
-        whole_path = f"fhir_results/Patients/{patient_id}_patient.json"
+    with open(whole_path, "a") as file:
+        for patient_id in patients_list:
+            patient_id = patient_id.split("/")[-1]
 
-        while True:
-            try:
-                patient = smart.server.request_json(f"Patient/{patient_id}")
-                break
-            except Exception as exc:
-                logging.error(f"Generated an exception: {exc} but continue trying.\n")
-                time.sleep(3)
-                smart = connect_to_server(user=USER_NAME, pw=USER_PASSWORD, protocol=protocol)
+            while True:
+                try:
+                    patient = smart.server.request_json(f"Patient/{patient_id}")
+                    break
+                except FHIRNotFoundException:
+                    logging.warning(f"Patient/{patient_id} not found, skipping.")
+                    patient = None
+                    break
+                except Exception as exc:
+                    logging.error(f"Generated an exception: {exc} but continue trying.\n")
+                    time.sleep(3)
+                    smart = connect_to_server(user=USER_NAME, pw=USER_PASSWORD, protocol=protocol)
 
-        if patient:
-            with open(whole_path, "w") as file:
+            if patient:
                 json.dump(patient, file, separators=(",", ":"))
                 file.write("\n")
+                logging.info(f"Patient resource for patient ID: {patient_id} extracted.")
+
 
 def execute_thread_for_fetching(code_set, source, patient_list, code_type, function_to_run):
     """
