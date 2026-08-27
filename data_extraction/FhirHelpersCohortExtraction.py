@@ -87,7 +87,7 @@ def filter_patients_by_age_interval(smart, input_filepath, min_age, max_age, ena
     for patient_ref, encounter_attribs in patient_encounters.items():
         total_processed += 1
         patient_id = patient_ref.split("/")[-1]
-        logging.info(f"Processing patient {patient_id}...")
+        logging.info(f"Processing patient {patient_id} by age interval {min_age} to {max_age}...")
 
         birth_date = None
         while True:
@@ -111,7 +111,7 @@ def filter_patients_by_age_interval(smart, input_filepath, min_age, max_age, ena
                     logging.warning(f"Exception {status}. Patient {patient_id} missing or deleted. Skipping..")
                     birth_date = None
                     break
-                logging.error(f"Error fetching patient {patient_id}: {exc}, but continue to trying...")
+                logging.error(f"Error fetching patient {patient_id}, status {status}: {exc}, but continue to trying...")
                 smart = connect_to_server(user=USER_NAME, pw=USER_PASSWORD)
                 time.sleep(1)
 

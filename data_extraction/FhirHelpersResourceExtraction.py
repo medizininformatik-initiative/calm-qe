@@ -173,6 +173,7 @@ def conditions(patient, code_list, source, smart):
 def medications(patient, code_list, source, smart):
     code_list_str = ','.join([ATC_SYSTEM_NAME + '|' + code for code in code_list])
     patient_id = patient.split("/")[-1]
+    discharge_code_system = 'http://ihe-d.de/CodeSystems/FallkontextBeiDokumentenerstellung|E230'
 
     if source is MedicationAdministration:
         whole_path = "fhir_results/Medications/Administration/" + patient_id + "_patient_medicationAdministration.json"
@@ -181,20 +182,20 @@ def medications(patient, code_list, source, smart):
     elif source is MedicationStatement:
         whole_path = "fhir_results/Medications/Statement/" + patient_id + "_patient_medicationStatement.json"
     elif source is MedicationList:
-        whole_path = "fhir_results/Medications/List/" + patient_id + "_patient_medicationList.json"
-
+        statement_id = patient_id
+        whole_path = "fhir_results/Medications/List/" + statement_id + "_statementRef_medicationList.json"
     while True:
         try:
             if source == MedicationList:
                 statement_ref = patient   #  Attention: Here "patient" is not a patient id, but a statement id !!
                 bundle = smart.server.request_json(source.where(
-                    struct={'_count': '1000', 'item':statement_ref, 'code': 'E230'}).construct())
+                    struct={'_count': '1000', 'item':statement_ref, 'code': discharge_code_system}).construct())
             else:
                 bundle = smart.server.request_json(source.where(
                     struct={'_count': '1000', 'patient': patient, 'medication.code': code_list_str}).construct())
             break
         except FHIRNotFoundException:
-            logging.warning(f"Exception.In {source}, resource {patient} missing or deleted. Skipping...")
+            logging.warning(f"Exception. In {source}, resource {patient} missing or deleted. Skipping...")
             break
         except Exception as exc:
             logging.error(f"Generated an exception: {exc} but continue trying.\n")
@@ -215,25 +216,30 @@ def medications(patient, code_list, source, smart):
             file.close()
     return count
 
-def _aux_statement_ref(directory):
+def aux_extract_statement_refs(directory):
     if os.path.exists(directory) and len(os.listdir(directory)) > 0:
         med_statements_ref = set()
+        medications_ref = set()
 
         for file_name in os.listdir(directory):
-            file_path = os.path.join(directory, file_name)
-            with open(file_path, "r") as f:
-                for line in f:
-                    try:
-                        entry = json.loads(line)
-                        if 'resource' in entry and 'id' in entry['resource']:
-                            statement_ref = f"MedicationStatement/{entry['resource']['id']}"
-                            med_statements_ref.add(statement_ref)
-                    except json.JSONDecodeError as e:
-                        print(f"Error decoding line in file {file_name}: {e}")
+            if file_name.endswith(".json"): # todo: remove
+                file_path = os.path.join(directory, file_name)
+                with open(file_path, "r") as f:
+                    for line in f:
+                        try:
+                            entry = json.loads(line)
+                            if 'resource' in entry and 'id' in entry['resource']:
+                                statement_ref = f"MedicationStatement/{entry['resource']['id']}"
+                                med_statements_ref.add(statement_ref)
+                            if 'medicationReference' in entry['resource']:
+                                medication_ref = entry['resource'].get('medicationReference').get('reference')
+                                medications_ref.add(medication_ref)
+                        except json.JSONDecodeError as e:
+                            print(f"Error decoding line in file {file_name}: {e}")
 
         med_statements_list = list(med_statements_ref)
         logging.info(f"A total of {len(med_statements_ref)} statements as reference were enlisted.")
-        return med_statements_list
+        return med_statements_list, medications_ref
     else:
         logging.warning(f"No medication statements were found in '{directory}'.")
         return None
@@ -508,6 +514,42 @@ def medication_frequencies(code_file):
                 "details_count": [],
             }})
 
+        if 'List' in folder_path:
+            statement_ref_from_list = set()
+
+            for file in os.listdir(folder_path):
+                if file.endswith(".json") and "statementRef" in file:
+                    reference_id = file.split("_statementRef")[0]
+
+                    with open(os.path.join(folder_path, file), encoding="utf-8") as f:
+                        bundle = json.load(f)
+
+                    # step 1: extract medicationStatement from List & verification of its existence in List bundle
+                    if find_medication_statement_ref(bundle, reference_id):
+                        statement_ref_from_list.add(f"MedicationStatement/{reference_id}")
+
+            # step 2:  extract medicationStatement_id, and medication_ref from medicationStatement
+            statement_id, medication_ref = aux_extract_statement_refs("fhir_results/Medications/Statement/")
+            statement_and_medication_ref = dict(zip(statement_id, medication_ref))
+
+            # step 3: find the statement_ref that matches statement_ref_from_list, then return medication_ref
+            for statement_from_list in statement_ref_from_list:
+                if statement_from_list in statement_and_medication_ref:
+                    try:
+                        code_name = fetch_atc_codes(statement_and_medication_ref[statement_from_list], code_list, smart)
+                    except Exception as exc:
+                        logging.error(f"Generated an exception: {exc} but continue trying.\n")
+                        smart = connect_to_server(user=USER_NAME, pw=USER_PASSWORD, protocol=protocol)
+                        time.sleep(3)
+
+                    if 'List' not in medication_type_and_med_reference:
+                        medication_type_and_med_reference['List'] = {}
+                    medication_type_and_med_reference['List'][code_name] = (
+                            medication_type_and_med_reference['List'].get(code_name, 0) + 1)
+                else:
+                    logging.info(f"{statement_from_list} from List has no coincidence with medication statement within this file.")
+            # step 4: todo: include in gather metadata
+
         # Gathering, counting and fetching ID-references for "Medication".
         for filename in os.listdir(folder_path):
             if filename.endswith(".json"):
@@ -549,3 +591,13 @@ def medication_frequencies(code_file):
             gather_metadata("medicationStatements_counts", resource_structure)
         elif "List" in folder_path:
             gather_metadata("medicationList_counts", resource_structure)
+
+def find_medication_statement_ref(bundle, reference_id):
+    passed_validation = True
+    resource = bundle.get("resource")
+    if 'List' in resource.get("resourceType"):
+        for item in resource.get("entry", []):
+            med_statement_ref = item.get("item", {}).get("reference")
+            if reference_id in med_statement_ref:
+                return passed_validation
+    return None

@@ -14,7 +14,7 @@ from Constants import USER_NAME, USER_PASSWORD, ICD_CODE_FILE, LOINC_CODE_FILE, 
 from FhirHelpersResourceExtraction import (execute_thread_for_fetching, observations, conditions, medications, procedures,
                                            observation_frequencies, conditions_frequencies, medication_frequencies,
                                            procedure_frequencies, read_input_code_file, patients_with_asthma_copd,
-                                           fetch_patients, encounters, _aux_statement_ref)
+                                           fetch_patients, encounters, aux_extract_statement_refs)
 
 logging.basicConfig(level=logging.INFO, format='%(levelname)s - %(message)s')
 
@@ -72,9 +72,9 @@ def main():
     for profile in medication_profiles.values():
         code_list = read_input_code_file(ATC_CODE_FILE)
         if MedicationList == profile:
-            statement_list = _aux_statement_ref(DIR_RESULTS.parent.absolute()/"fhir_results/Medications/Statement")
-            if statement_list is not None:
-                execute_thread_for_fetching(code_list, profile, statement_list, "ATC", medications)
+            statements_ref, medications_ref = aux_extract_statement_refs("fhir_results/Medications/Statement")
+            if statements_ref is not None:
+                execute_thread_for_fetching(code_list, profile, statements_ref, "ATC", medications)
         execute_thread_for_fetching(code_list, profile, patients, "ATC", medications)
 
     """ Post processing: Analysis """
