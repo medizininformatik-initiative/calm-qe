@@ -546,34 +546,32 @@ def medication_frequencies(code_file):
                         medication_type_and_med_reference['List'] = {}
                     medication_type_and_med_reference['List'][code_name] = (
                             medication_type_and_med_reference['List'].get(code_name, 0) + 1)
-                else:
-                    logging.info(f"{statement_from_list} from List has no coincidence with medication statement within this file.")
-            # step 4: todo: include in gather metadata
 
-        # Gathering, counting and fetching ID-references for "Medication".
-        for filename in os.listdir(folder_path):
-            if filename.endswith(".json"):
-                file_path = os.path.join(folder_path, filename)
-                with (open(file_path, 'r') as json_file):
-                    for line in json_file:
-                        medicationProfile = json.loads(line)
-                        if 'resource' in medicationProfile:
-                            resource_type = medicationProfile['resource']['resourceType']
-                            resource_ref = medicationProfile['resource']['medicationReference']['reference']
+        else:
+            # Gathering, counting and fetching ID-references for "Medication".
+            for filename in os.listdir(folder_path):
+                if filename.endswith(".json"):
+                    file_path = os.path.join(folder_path, filename)
+                    with (open(file_path, 'r') as json_file):
+                        for line in json_file:
+                            medicationProfile = json.loads(line)
+                            if 'resource' in medicationProfile:
+                                resource_type = medicationProfile['resource']['resourceType']
+                                resource_ref = medicationProfile['resource']['medicationReference']['reference']
 
-                            try:
-                                code_name = fetch_atc_codes(resource_ref, code_list, smart)
-                            except Exception as exc:
-                                logging.error(f"Generated an exception: {exc} but continue trying.\n")
-                                smart = connect_to_server(user=USER_NAME, pw=USER_PASSWORD, protocol= protocol)
-                                time.sleep(3)
+                                try:
+                                    code_name = fetch_atc_codes(resource_ref, code_list, smart)
+                                except Exception as exc:
+                                    logging.error(f"Generated an exception: {exc} but continue trying.\n")
+                                    smart = connect_to_server(user=USER_NAME, pw=USER_PASSWORD, protocol= protocol)
+                                    time.sleep(3)
 
-                            if resource_type not in medication_type_and_med_reference:
-                                medication_type_and_med_reference[resource_type] = {}
-                            medication_type_and_med_reference[resource_type][code_name] = (
-                                    medication_type_and_med_reference[resource_type].get(code_name, 0) + 1)
-                        else:
-                            logging.info(f"{filename}  has no 'resource' statement within this file.")
+                                if resource_type not in medication_type_and_med_reference:
+                                    medication_type_and_med_reference[resource_type] = {}
+                                medication_type_and_med_reference[resource_type][code_name] = (
+                                        medication_type_and_med_reference[resource_type].get(code_name, 0) + 1)
+                            else:
+                                logging.info(f"{filename}  has no 'resource' statement within this file.")
 
         # Estimates TOTAL counts per medication resource and structures data as outcomes
         for resource_type, num_references in medication_type_and_med_reference.items():
