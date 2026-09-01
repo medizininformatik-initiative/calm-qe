@@ -2223,6 +2223,402 @@
         {
             "code": "98083-9",
             "description": "Specific airway resistance mean by Plethysmograph body box post bronchodilation"
+        },
+        {
+            "code": "98088-8",
+            "description": "Vital capacity/predicted VC Respiratory system by Spirometry"
+        },
+        {
+            "code": "19865-5",
+            "description": "Vital capacity [Volume] Respiratory system Predicted"
+        },
+        {
+            "code": "19861-4",
+            "description": "Total lung capacity Predicted"
+        },
+        {
+            "code": "19860-6",
+            "description": "Total lung capacity by Chest xray.calculated"
+        },
+        {
+            "code": "89085-5",
+            "description": "Total lung capacity measured/predicted by Plethysmograph body box"
+        },
+        {
+            "code": "98082-1",
+            "description": "Specific airway resistance mean by Plethysmograph body box --pre bronchodilation"
+        },
+        {
+            "code": "91982-9",
+            "description": "Specific airway resistance measured/predicted by Plethysmograph body box"
+        },
+        {
+            "code": "98084-7",
+            "description": "Specific effective resistance.airway mean Calculated"
+        },
+        {
+            "code": "98086-2",
+            "description": "Specific effective resistance.airway mean Calculated --post bronchodilation"
+        },
+        {
+            "code": "98085-4",
+            "description": "Specific effective resistance.airway mean Calculated --pre bronchodilation"
+        },
+        {
+            "code": "98087-0",
+            "description": "Specific effective resistance.airway/Predicted mean"
+        },
+        {
+            "code": "20145-9",
+            "description": "Residual volume Predicted"
+        },
+        {
+            "code": "94125-2",
+            "description": "Residual volume/Predicted by Plethysmograph body box"
+        },
+        {
+            "code": "19924-0",
+            "description": "Expiratory reserve"
+        },
+        {
+            "code": "19923-2",
+            "description": "Expiratory reserve Predicted"
+        },
+        {
+            "code": "100759-0",
+            "description": "Inspiratory reserve [Volume] Respiratory system by Spirometry"
+        },
+        {
+            "code": "19921-6",
+            "description": "Expiratory reserve by Helium rebreathing"
+        },
+        {
+            "code": "19922-4",
+            "description": "Expiratory reserve by Helium single breath"
+        },
+        {
+            "code": "20084-0",
+            "description": "Airway resistance mean"
+        },
+        {
+            "code": "75947-2",
+            "description": "Airway resistance --during expiration"
+        },
+        {
+            "code": "20085-7",
+            "description": "Airway resistance mean Calculated"
+        },
+        {
+            "code": "75948-0",
+            "description": "Airway resistance --during inspiration"
+        },
+        {
+            "code": "20083-2",
+            "description": "Airway resistance mean by Plethysmograph body box"
+        },
+        {
+            "code": "91981-1",
+            "description": "Airway resistance measured/predicted by Plethysmograph body box"
+        },
+        {
+            "code": "69977-7",
+            "description": "Maximum expiratory gas flow/Predicted maximum expiratory gas flow Respiratory system airway --pre bronchodilation"
+        },
+        {
+            "code": "69978-5",
+            "description": "Maximum expiratory gas flow/Predicted maximum expiratory gas flow Respiratory system airway --post bronchodilation"
+        },
+        {
+            "code": "69974-4",
+            "description": "Maximum expiratory gas flow Respiratory system airway Predicted"
+        },
+        {
+            "code": "60793-7",
+            "description": "Maximum expiratory gas flow Respiratory system airway --on ventilator"
+        },
+        {
+            "code": "19938-0",
+            "description": "Maximum expiratory gas flow Respiratory system airway --post therapy"
+        },
+        {
+            "code": "71794-2",
+            "description": "Maximum expiratory gas flow Respiratory system airway --pre therapy"
+        },
+        {
+            "code": "71795-9",
+            "description": "Maximum expiratory gas flow Respiratory system airway by Peak flow meter --pre therapy"
+        },
+        {
+            "code": "19937-2",
+            "description": "Maximum expiratory gas flow Respiratory system airway by Peak flow meter --post therapy"
+        },
+        {
+            "code": "83368-1",
+            "description": "Personal best peak expiratory gas flow Respiratory system airway"
+        },
+        {
+            "code": "65821-1",
+            "description": "Gas flow FEV 25%"
+        },
+        {
+            "code": "65822-9",
+            "description": "Gas flow FEV 50%"
+        },
+        {
+            "code": "65823-7",
+            "description": "Gas flow FEV 75%"
+        },
+        {
+            "code": "65824-5",
+            "description": "Gas flow FEV 90%"
+        },
+        {
+            "code": "69972-8",
+            "description": "FEF 25-75% --pre bronchodilation"
+        },
+        {
+            "code": "69973-6",
+            "description": "FEF 25-75% --post bronchodilation"
+        },
+        {
+            "code": "69971-0",
+            "description": "FEF 25-75% Predicted"
+        },
+        {
+            "code": "19927-3",
+            "description": "Gas flow FEV 25%-75%"
+        },
+        {
+            "code": "19945-5",
+            "description": "Gas flow FEV 25%-75% airway"
+        },
+        {
+            "code": "98203-3",
+            "description": "Diffusion capacity/Alveolar volume/predicted"
+        },
+        {
+            "code": "19915-8",
+            "description": "Diffusion capacity/Alveolar volume Predicted"
+        },
+        {
+            "code": "19914-1",
+            "description": "Diffusion capacity/Alveolar volume by Single breath.carbon monoxide+Helium"
+        },
+        {
+            "code": "19854-9",
+            "description": "Inspiratory capacity bs/Inspiratory capacity pre-operative"
+        },
+        {
+            "code": "19853-1",
+            "description": "Inspiratory capacity bs/Inspiratory capacity pre-operative by Spirometry"
+        },
+        {
+            "code": "19848-1",
+            "description": "Inspiratory capacity"
+        },
+        {
+            "code": "19851-5",
+            "description": "Inspiratory capacity Predicted"
+        },
+        {
+            "code": "19856-4",
+            "description": "Inspiratory capacity measured/predicted"
+        },
+        {
+            "code": "19849-9",
+            "description": "Inspiratory capacity by Helium rebreathing"
+        },
+        {
+            "code": "19855-6",
+            "description": "Inspiratory capacity measured/predicted by Spirometry"
+        },
+        {
+            "code": "19850-7",
+            "description": "Inspiratory capacity by Helium single breath"
+        },
+        {
+            "code": "98090-4",
+            "description": "Inspiratory capacity by Spirometry --post bronchodilation"
+        },
+        {
+            "code": "98089-6",
+            "description": "Inspiratory capacity by Spirometry --pre bronchodilation"
+        },
+        {
+            "code": "19872-1",
+            "description": "FVC measured/predicted"
+        },
+        {
+            "code": "19873-9",
+            "description": "FVC post bronchodilation measured/predicted"
+        },
+        {
+            "code": "19871-3",
+            "description": "FVC pre bronchodilation measured/predicted"
+        },
+        {
+            "code": "69982-7",
+            "description": "FVC percent change Respiratory system"
+        },
+        {
+            "code": "19869-7",
+            "description": "Forced vital capacity [Volume] Respiratory system Predicted"
+        },
+        {
+            "code": "19843-2",
+            "description": "Functional residual capacity"
+        },
+        {
+            "code": "19847-3",
+            "description": "Functional residual capacity Predicted"
+        },
+        {
+            "code": "81456-6",
+            "description": "Functional residual capacity --pre bronchodilation"
+        },
+        {
+            "code": "81457-4",
+            "description": "Functional residual capacity --post bronchodilation"
+        },
+        {
+            "code": "19844-0",
+            "description": "Functional residual capacity by Helium rebreathing"
+        },
+        {
+            "code": "19846-5",
+            "description": "Functional residual capacity by Plethysmograph body box"
+        },
+        {
+            "code": "19845-7",
+            "description": "20153-3"
+        },
+        {
+            "code": "19925-7",
+            "description": "FEV1/FVC Predicted"
+        },
+        {
+            "code": "69984-3",
+            "description": "FEV1/FVC percent change"
+        },
+        {
+            "code": "20142-6",
+            "description": "FEV"
+        },
+        {
+            "code": "20148-3",
+            "description": "FEV.5"
+        },
+        {
+            "code": "20147-5",
+            "description": "FEV.5 Predicted"
+        },
+        {
+            "code": "41233-8",
+            "description": "FEV3 Predicted"
+        },
+        {
+            "code": "65655-3",
+            "description": "FEV6"
+        },
+        {
+            "code": "65656-1",
+            "description": "FEV6 Predicted"
+        },
+        {
+            "code": "20149-1",
+            "description": "FEV1 Predicted"
+        },
+        {
+            "code": "20152-5",
+            "description": "FEV1 measured/predicted"
+        },
+        {
+            "code": "69983-5",
+            "description": "FEV1 percent change"
+        },
+        {
+            "code": "20136-8",
+            "description": "FEV 25%-75% pre bronchodilation measured/predicted"
+        },
+        {
+            "code": "20135-0",
+            "description": "FEV 25%-75% post bronchodilation measured/predicted"
+        },
+        {
+            "code": "20137-6",
+            "description": "FEV 25%-75% measured/predicted"
+        },
+        {
+            "code": "20153-3",
+            "description": "FEV1/FEV total"
+        },
+		{
+            "code": "52486-8",
+            "description": "FEV2/FEV total"
+        },
+		{
+            "code": "41234-6",
+            "description": "FEV3/FEV total"
+        },
+        {
+            "code": "20154-1",
+            "description": "FEV1 Predicted --post bronchodilation"
+        },
+        {
+            "code": "20156-6",
+            "description": "FEV1 Predicted --pre bronchodilation"
+        },
+        {
+            "code": "43254-2",
+            "description": "FEV1 --Pre exercise"
+        },
+        {
+            "code": "65658-7",
+            "description": "FEV1/FEV6 Predicted"
+        },
+        {
+            "code": "43263-3",
+            "description": "FEV1 --10 minutes post exercise"
+        },
+        {
+            "code": "43262-5",
+            "description": "FEV1 --15 minutes post exercise"
+        },
+        {
+            "code": "43261-7",
+            "description": "FEV1 --5 minutes post exercise"
+        },
+        {
+            "code": "19913-3",
+            "description": "Diffusion capacity.carbon monoxide adjusted for hemoglobin"
+        },
+        {
+            "code": "19917-4",
+            "description": "Diffusion capacity adjusted to body conditions by Single breath.carbon monoxide+Helium"
+        },
+        {
+            "code": "19918-2",
+            "description": "Diffusion capacity adjusted to body conditions"
+        },
+        {
+            "code": "19910-9",
+            "description": "Diffusion capacity.carbon monoxide Predicted"
+        },
+        {
+            "code": "98130-8",
+            "description": "Diffusion capacity.carbon monoxide/Predicted"
+        },
+        {
+            "code": "98091-2",
+            "description": "Diffusion capacity.carbon monoxide --pre bronchodilation"
+        },
+        {
+            "code": "98092-0",
+            "description": "Diffusion capacity.carbon monoxide --post bronchodilation"
+        },
+        {
+            "code": "69578-3",
+            "description": "Diffusion capacity.carbon monoxide/Alveolar volume adjusted for hemoglobin"
         }
     ]
 }

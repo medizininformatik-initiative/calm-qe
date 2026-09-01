@@ -1904,6 +1904,10 @@
 		{
 			"code": "Z91.0",
 			"description": "Allergie, ausgenommen Allergie gegenüber Arzneimitteln, Drogen oder biologisch aktiven Substanzen, in der Eigenanamnese"
+		},
+		{
+			"code": "Z01.5",
+			"description": "Diagnostische Haut- und Sensibilierungstestung"
 		}
 	]
 }
