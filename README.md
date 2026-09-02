@@ -45,7 +45,7 @@ PROTOCOL = os.getenv("PROTOCOL", "https")
 ## Creation of Cohort Patients List and Extraction of the Resources from Cohort Patients
 This script identifies patients diagnosed with "Asthma" or "COPD".
 
- `ExtractCohortwithResourcesExecute.py` reads from the input_files folder `asthma_copd_codes.json` automatically. This JSON file includes all the ICD-10 codes available related to "Asthma" and "COPD". Modifications to this code list are possible based on unique needs when required.
+ `Execute.py` reads from the input_files folder `asthma_copd_codes.json` automatically. This JSON file includes all the ICD-10 codes available related to "Asthma" and "COPD". Modifications to this code list are possible based on unique needs when required.
 The usage of this file is determined in `Constants.py`. 
 
 The script outputs all the patients' IDs and corresponding diagnoses in `patients_diagnosed_asthma_copd.json`.
@@ -58,12 +58,12 @@ After compiling the script, a `metadata.json` is generated as part of the outcom
 
 ### Usage:
 ```bash
-python .\data_extraction\ExtractResourcesForCohortExecute.py
+python .\data_extraction\Execute.py
 ```
 
 ## Generating visual charts
 
-After successfully compiling `ExtractCohortwithResourcesExecute.py`, use the generated resources to visualize a descriptive overview from the generated data using: 
+After successfully compiling `Execute.py`, use the generated resources to visualize a descriptive overview from the generated data using: 
 ### Usage:
 ```bash
 python .\data_analysis\Graphs.py
