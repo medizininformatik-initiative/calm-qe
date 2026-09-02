@@ -16,8 +16,8 @@ from fhirclient.models.patient import Patient
 from fhirclient.server import FHIRNotFoundException
 
 from Constants import USER_NAME, USER_PASSWORD, ICD_SYSTEM_NAME, ASTHMA_COPD_CODES_FILE
-from FhirHelpersUtils import fetch_bundle_for_code, connect_to_server
-from FhirHelpersUtils import parse_fhir_datetime, compute_los
+from Utils import fetch_bundle_for_code, connect_to_server
+from Utils import parse_fhir_datetime, compute_los
 from Metadata import gather_metadata
 
 basis_filename = "patients_diagnosed_asthma_copd"

@@ -40,7 +40,34 @@ def create_bar_graph(bar_type, keys, values, title, xlabel, ylabel, add_exact_co
     save_path = os.path.join('graphs', filename)
     plt.savefig(save_path, format='png')
 
-meta_data = load_json("fhir_results/metadata.json")
+
+def plot_observation_values_histograms(observations_value_histograms):
+
+    for code in observations_value_histograms:
+        histogram = observations_value_histograms.get(code)
+
+        edges = histogram["bin_edges"]
+        n = histogram["n"]
+
+        # Left edge of each bin
+        x = edges[:-1]
+
+        # Width of each bin
+        widths = [edges[i + 1] - edges[i] for i in range(len(edges) - 1)]
+
+        plt.figure(figsize=(10, 6))
+        plt.bar(x, histogram["counts"], width=widths, align="edge", edgecolor="black")
+        plt.xlabel("Observation value")
+        plt.ylabel("Count")
+        plt.title(f"LOINC {code} (n={n})")
+        plt.tight_layout()
+        histograms_folder = os.path.join("graphs", "histograms")
+        os.makedirs(histograms_folder, exist_ok=True)
+        save_path = os.path.join(histograms_folder, f"{code}_histogram.png")
+        plt.savefig(save_path)
+        plt.close()
+
+meta_data = load_json("/fhir_results/metadata.json")
 
 #Add other type of medication resources if you have other sources...
 data_overview = {
@@ -145,4 +172,5 @@ create_bar_graph('vertical', observations_groups_sums.keys(), observations_group
 if medications_exist:
     create_bar_graph('vertical', medications_counts.keys(), medications_counts.values(), 'MedicationAdministrations', 'Medications', 'Total Count', False, "medicationAdministrations.png")
 
-
+# Observation values histograms
+plot_observation_values_histograms(meta_data['observations_value_histograms'])

@@ -2,7 +2,7 @@ import logging
 from pathlib import Path
 
 from Constants import USER_NAME, USER_PASSWORD
-from FhirHelpersUtils import connect_to_server
+from Utils import connect_to_server
 from FhirHelpersCohortExtraction import extract_additional_attributes_from_encounters, filter_icu_patients_admission, \
     calculate_los_inpatients, extract_last_three_encounter, get_demographics_patients, filter_patients_by_age_interval
 
@@ -20,7 +20,6 @@ the "fhir_results" folder.
 
 DIR_RESULTS = Path('additional_results')
 DIR_RESULTS.mkdir(exist_ok=True)
-
 
 def main():
     # Connect to FHIR Server

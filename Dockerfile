@@ -6,6 +6,6 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
 
-CMD python data_extraction/ExtractCohortwithResourcesExecute.py && \
+CMD python data_extraction/Execute.py && \
     python data_extraction/CohortPatientsAdditionalFilters.py && \
     python data_analysis/Graphs.py

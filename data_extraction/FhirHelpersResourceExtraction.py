@@ -1,9 +1,12 @@
+import bisect
 import os
 import logging
 from collections import defaultdict
 import json
 import time
 from concurrent.futures import ThreadPoolExecutor, as_completed
+
+import numpy as np
 from fhirclient.models.condition import Condition
 from fhirclient.models.medication import Medication
 from fhirclient.models.medicationadministration import MedicationAdministration
@@ -13,7 +16,7 @@ from fhirclient.models.list import List as MedicationList
 from fhirclient.server import FHIRNotFoundException
 from Constants import (USER_NAME, USER_PASSWORD, ICD_SYSTEM_NAME, LOINC_SYSTEM_NAME, OPS_SYSTEM_NAME, MAX_WORKERS,
                        ATC_SYSTEM_NAME, ASTHMA_COPD_CODES_FILE, PROTOCOL)
-from FhirHelpersUtils import connect_to_server, fetch_bundle_for_code, parse_fhir_datetime
+from Utils import connect_to_server, fetch_bundle_for_code, parse_fhir_datetime
 from Metadata import gather_metadata
 
 
@@ -26,18 +29,15 @@ def read_input_code_file(filename):
         lines = json.load(fp)
 
         if 'loinc_codes' in filename:
-            if not os.path.exists(f"fhir_results/Observations/"):
-                os.makedirs(f"fhir_results/Observations/")
+            os.makedirs(f"fhir_results/Observations/", exist_ok=True)
             code_list = [item['code'] for item in lines['codes']]
 
         elif 'icd_codes' in filename:
-            if not os.path.exists(f"fhir_results/Conditions/"):
-                os.makedirs(f"fhir_results/Conditions/")
+            os.makedirs("fhir_results/Conditions", exist_ok=True)
             code_list = [code for item in lines['codes'] for code in item['code']]
 
         elif 'ops_codes' in filename:
-            if not os.path.exists(f"fhir_results/Procedures/"):
-                os.makedirs(f"fhir_results/Procedures/")
+            os.makedirs("fhir_results/Procedures", exist_ok=True)
             code_list = [item['code'] for item in lines['codes']]
 
         elif 'atc_codes' in filename:
@@ -150,7 +150,6 @@ def conditions(patient, code_list, source, smart):
                 try:
                     response = smart.server.post_as_form(url=f"{smart.server.base_uri}/Condition/_search", formdata={'_count': '1000', 'subject': patient, 'code': sub_code_list_str})
                     bundle = response.json()
-
                     break
                 except Exception as exc:
                     logging.error(f"Generated an exception: {exc} but continue trying.\n")
@@ -247,7 +246,7 @@ def aux_extract_statement_refs(directory):
 def procedures(patient, code_set, smart):
     patient_id = patient.split("/")[-1]
     whole_path = f"fhir_results/Procedures/{patient_id}_patient_procedures.json"
-    logging.info(f"Fetching patient encounters...{patient_id}")
+    logging.info(f"Fetching patient procedures...{patient_id}")
     protocol = PROTOCOL
     while True:
         try:
@@ -269,58 +268,50 @@ def procedures(patient, code_set, smart):
                 resource = procedure.get("resource", {})
                 codings = resource.get("code", {}).get("coding", [])
                 for coding in codings:
-                    if OPS_SYSTEM_NAME == coding['system'] and coding['code'] in code_set:
+                    if coding.get("system") == OPS_SYSTEM_NAME and coding.get("code") in code_set:
                         if file is None:
                             file = open(whole_path, "w")
-                        json.dump(procedure, file, separators=(",", ":"))
+                        json.dump(resource, file, separators=(",", ":"))
                         file.write("\n")
                         count += 1
+                        break
     finally:
         if file is not None:
             file.close()
     return count
 
-def encounters(encounter, smart):
-    if not os.path.exists(f"fhir_results/Encounters/"):
-        os.makedirs(f"fhir_results/Encounters/")
-
-    whole_path = f"fhir_results/Encounters/{encounter}_encounter.json"
+def encounters(encounter_ids, smart):
     protocol = PROTOCOL
-    while True:
-        try:
-            response = smart.server.post_as_form(
-                url=f"{smart.server.base_uri}/Encounter/_search",
-                formdata={"_id": encounter})
-            bundle = response.json()
-            break
-        except Exception as exc:
-            logging.error(f"Generated an exception: {exc} but continue trying.\n")
-            time.sleep(3)
-            smart = connect_to_server(user=USER_NAME, pw=USER_PASSWORD, protocol=protocol)
+    os.makedirs("fhir_results/Encounters", exist_ok=True)
+    output_file = "fhir_results/Encounters/encounters.jsonl"
+    total = len(encounter_ids)
+    with open(output_file, "w") as file:
+        for count, encounter in enumerate(encounter_ids, start=1):
+            logging.info(f"Processing Encounter {count}/{total}")
+            while True:
+                try:
+                    response = smart.server.post_as_form(
+                        url=f"{smart.server.base_uri}/Encounter/_search", formdata={"_id": encounter})
+                    bundle = response.json()
+                    break
+                except Exception as exc:
+                    logging.error(f"Generated an exception: {exc} but continue trying.\n")
+                    time.sleep(3)
+                    smart = connect_to_server(user=USER_NAME, pw=USER_PASSWORD, protocol=protocol)
 
-    res_count = 0
-    file = None
-    try:
-        for entries in fetch_bundle_for_code(smart, bundle, protocol):
-            if entries:
-                for encounter in entries:
-                    resource = encounter.get("resource", {})
-                    if resource and file is None:
-                        file = open(whole_path, "w")
-                        json.dump(encounter, file, separators=(",", ":"))
-                        file.write("\n")
-                        res_count += 1
-    finally:
-        if file is not None:
-            file.close()
-    return res_count
+            entries = bundle.get("entry", [])
+            if not entries or not entries[0].get("resource"):
+                continue
+
+            resource = entries[0]["resource"]
+            file.write(json.dumps(resource, separators=(",", ":")) + "\n")
 
 def fetch_patients(patients_list, smart):
     os.makedirs("fhir_results/Patients", exist_ok=True)
     whole_path = f"fhir_results/Patients/patients.jsonl"
     protocol = PROTOCOL
 
-    with open(whole_path, "a") as file:
+    with open(whole_path, "w") as file:
         for patient_id in patients_list:
             patient_id = patient_id.split("/")[-1]
 
@@ -343,89 +334,49 @@ def fetch_patients(patients_list, smart):
                 logging.info(f"Patient resource for patient ID: {patient_id} extracted.")
 
 
-def execute_thread_for_fetching(code_set, source, patient_list, code_type, function_to_run):
-    """
-    Threads for running fetch queries parallel.
-    """
-    protocol = PROTOCOL
-    smart = connect_to_server(user=USER_NAME, pw=USER_PASSWORD, protocol= protocol)
-    processed = 0
-    total_patients = len(patient_list)
-    with ThreadPoolExecutor(max_workers=MAX_WORKERS) as executor:
-        if code_set is None and code_type is None:
-            future_to_code = {executor.submit(function_to_run, patient, smart): patient for patient in
-                              patient_list}
-        else:
-            future_to_code = {executor.submit(function_to_run, patient, code_set, source, smart): patient for patient in
-                              patient_list}
-        patient_counter = 0
-        for future in as_completed(future_to_code):
-            patient = future_to_code[future]
-            processed += 1
-            try:
-                count = future.result()
-                if count > 0:
-                    patient_counter += 1
-                logging.info(f"[{processed}/{total_patients}] {patient} with {count} {code_type} entries processed")
-            except Exception as exc:
-                logging.error(f"[{processed}/{total_patients}] [{code_type}] {patient} generated an exception: {exc}")
-
-    ###META DATA COLLECTION###
-    '''
-    patient_count_with_observations: Number of cohort patients that has at least one observation
-    patient_count_with_medications: Number of cohort patients that has at least one medication
-    conditions_counts: Frequency of each ICD code 
-    observations_counts:Frequency of each LOINC code 
-    medication_counts: Frequency of each ATC code 
-    procedures_counts: Frequency of each OPS code 
-    '''
-
-    if code_type == "LOINC":
-        gather_metadata("patient_count_with_observations", patient_counter)
-    elif code_type == "ATC":
-        if source is MedicationAdministration:
-            gather_metadata("patient_count_with_medicationAdministrations", patient_counter)
-        elif source is MedicationRequest:
-            gather_metadata("patient_count_with_medicationRequests", patient_counter)
-        elif source is MedicationStatement:
-            gather_metadata("patient_count_with_medicationStatements", patient_counter)
-        elif source is MedicationList:
-            gather_metadata("patient_count_with_medicationList", patient_counter)
-    elif code_type == "OPS":
-        gather_metadata("patient_count_with_procedures", patient_counter)
-    else:
-        pass
-    logging.info("---------------End of Code------------------------")
-
-
-def observation_frequencies(code_file):
+def observation_frequencies_and_distributions(code_file):
     folder_path = "fhir_results/Observations"
     observations_counts = defaultdict(lambda: defaultdict(int))
-    code_list = read_input_code_file(code_file)
-
+    code_set = set(read_input_code_file(code_file))
+    values_by_code = defaultdict(list)
+    counter = 0
     for filename in os.listdir(folder_path):
         if filename.endswith(".json"):
             file_path = os.path.join(folder_path, filename)
             with open(file_path, 'r') as json_file:
+                counter += 1
+                print("Processing " + str(counter) + "\n")
                 for line in json_file:
                     observation = json.loads(line)
                     resource = observation.get("resource", {})
                     codings = resource.get("code", {}).get("coding", [])
-                    effective_datetime = resource.get("effectiveDateTime", {})
+
+                    matched_codes = {c['code'] for c in codings if c.get('system') == LOINC_SYSTEM_NAME and c['code'] in code_set}
+                    if not matched_codes:
+                        continue
+                    value_quantity = resource.get("valueQuantity")
+                    if value_quantity is not None:
+                        value = value_quantity.get("value")
+                        if value is not None:
+                            for code in matched_codes:
+                                values_by_code[code].append(value)
+
+                    # Counts by year
+                    effective_datetime = resource.get("effectiveDateTime")
+
                     if effective_datetime:
                         try:
-                            date = parse_fhir_datetime(effective_datetime)
-                            year = date.date().year
+                            year = parse_fhir_datetime(effective_datetime).year
                         except ValueError:
-                            logging.warning("Invalid year format, skipping...")
+                            logging.warning( "Invalid effectiveDateTime format: %s", effective_datetime)
                             continue
 
-                        for coding in codings:
-                            if LOINC_SYSTEM_NAME == coding['system'] and coding['code'] in code_list:
-                                observations_counts[year][coding['code']] += 1
+                        for code in matched_codes:
+                            observations_counts[year][code] += 1
 
-    # Gather metadata
-    gather_metadata("observations_counts", dict(sorted(observations_counts.items())))
+    observations_value_histograms = build_histogram_entries_for_observations(values_by_code)
+    gather_metadata( "observations_value_histograms", observations_value_histograms)
+    gather_metadata( "observations_counts", dict(sorted(observations_counts.items())))
 
 
 def conditions_frequencies(code_file):
@@ -465,8 +416,7 @@ def procedure_frequencies(code_file):
             file_path = os.path.join(folder_path, filename)
             with open(file_path, 'r') as json_file:
                 for line in json_file:
-                    procedure = json.loads(line)
-                    resource = procedure.get("resource", {})
+                    resource = json.loads(line)
                     codings = resource.get("code", {}).get("coding", [])
                     performed_date = resource.get("performedDateTime", {})
                     if performed_date:
@@ -477,7 +427,7 @@ def procedure_frequencies(code_file):
                             logging.warning("Invalid year format, skipping...")
                             continue
                         for coding in codings:
-                            if OPS_SYSTEM_NAME == coding['system'] and coding['code'] in code_list:
+                            if OPS_SYSTEM_NAME == coding.get("system") and coding.get("code")  in code_list:
                                 procedure_counts[year][coding['code']] += 1
     # Gather metadata
     gather_metadata("procedures_counts", dict(sorted(procedure_counts.items())))
@@ -599,3 +549,38 @@ def find_medication_statement_ref(bundle, reference_id):
             if reference_id in med_statement_ref:
                 return passed_validation
     return None
+
+def find_num_bins(n, min_bins=5, max_bins=20):
+    return max(min_bins, min(max_bins, int(np.sqrt(n))))
+
+def build_histogram_entries_for_observations(values_by_code):
+    # Build histograms
+    observations_value_histograms = {}
+    for code, values in values_by_code.items():
+        n = len(values)
+
+        if n == 0:
+            continue
+
+        lo = min(values)
+        hi = max(values)
+
+        if lo == hi:
+            hi = lo + 1.0
+
+        num_bins = find_num_bins(n)
+        step = (hi - lo) / num_bins
+        edges = [lo + i * step for i in range(num_bins + 1)]
+        counts = [0] * num_bins
+
+        for value in values:
+            bin_index = bisect.bisect_right(edges, value) - 1
+            bin_index = max(0, min(bin_index, num_bins - 1))
+            counts[bin_index] += 1
+
+        observations_value_histograms[code] = {
+            "n": n,
+            "bin_edges": [round(edge, 4) for edge in edges],
+            "counts": counts,
+        }
+    return observations_value_histograms
