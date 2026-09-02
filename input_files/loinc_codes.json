@@ -137,6 +137,10 @@
             "description": "Common wasp recombinant (rVes v) 1 IgE Ab [Units/volume] in Serum"
         },
         {
+            "code": "13176-3",
+            "description": "Wasp venom IgE Ab [Units/volume] in Serum"
+        },
+        {
             "code": "21603-6",
             "description": "Wheat dust IgE Ab [Units/volume] in Serum"
         },
@@ -1813,6 +1817,10 @@
             "description": "Casts [#/volume] in Urine by Automated count"
         },
         {
+            "code": "78741-6",
+            "description": "Pathologic casts [#/volume] in Urine by Automated count"
+        },
+        {
             "code": "51478-6",
             "description": "Mucus [#/volume] in Urine by Automated count"
         },
@@ -2619,6 +2627,10 @@
         {
             "code": "69578-3",
             "description": "Diffusion capacity.carbon monoxide/Alveolar volume adjusted for hemoglobin"
+        },
+        {
+            "code": "60948-7",
+            "description": "Peak inspiratory flow. Respiratory system airway"
         }
     ]
 }
