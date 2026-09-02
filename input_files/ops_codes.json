@@ -467,6 +467,10 @@
     {
         "code":"8-852.6e",
         "description":"Anwendung eines RA-PA-ECMO-Modul bei Rechtsherz-Unterstützung: Dauer der Behandlung 1.152 oder mehr Stunden"
+    },
+    {
+        "code":"5-339.x",
+        "description":"Implantation von Bestrahlungsmarkern an der Lunge. Sonstiges"
     }
   ]
 }
