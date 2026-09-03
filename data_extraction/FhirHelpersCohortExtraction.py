@@ -337,10 +337,12 @@ def get_demographics_patients(smart, input_filepath, enabled=True):
     if not enabled:
         return None
 
+    base_path = Path(input_filepath)
     subdirectory = input_filepath.parent/'csv'
     subdirectory.mkdir(parents=True, exist_ok=True)
 
     patient_identifiers, patients_demographics = [], []
+    non_found_patients = set()
 
     with open(input_filepath, "r") as file:
         patients = json.load(file)
@@ -378,14 +380,22 @@ def get_demographics_patients(smart, input_filepath, enabled=True):
                 status = getattr(getattr(exc, "response", None), "status_code", None)
                 if 410 or 404 in status:
                     logging.warning(f"Exception {status}. Patient {patient_id} missing or deleted. Skipping..")
+                    non_found_patients.add(f"Patient/{patient_id}")
                     break
                 logging.error(f"Generated an exception: {exc} but continue to trying. \n")
                 smart = connect_to_server(user=USER_NAME, pw=USER_PASSWORD)
                 time.sleep(3)
 
+    output_filepath = base_path.parent / "missing_patients.json"
+    with open(output_filepath, "w", encoding="utf-8") as file:
+        json.dump(list(non_found_patients), file, indent=4, ensure_ascii=False)
+    logging.info(f"Saving non-found {len(non_found_patients)} patients as .json {output_filepath}")
+    gather_metadata("missing_asthma_and_copd_patients", len(non_found_patients))
+
     patients_demographics_df = pd.DataFrame(patients_demographics)
     patients_demographics_df.to_csv(os.path.join(subdirectory, "demographics.csv"), index=False, sep=";")
     logging.info(f"Saving extracted demographics as .csv file in {subdirectory}")
+    return None
 
 
 def extract_additional_attributes_from_encounters(smart, input_filepath):

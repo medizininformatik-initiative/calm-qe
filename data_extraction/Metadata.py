@@ -31,7 +31,8 @@ def gather_metadata(source, count):
             "medicationAdministrations_counts": defaultdict(int),
             "medicationRequests_counts": defaultdict(int),
             "medicationStatements_counts": defaultdict(int),
-            "medicationList_counts": defaultdict(int)
+            "medicationList_counts": defaultdict(int),
+            "missing_asthma_and_copd_patients": 0
         }
 
     metadata["execution_date"] = datetime.now().strftime("%Y-%m-%d")
