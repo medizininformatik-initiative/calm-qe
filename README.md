@@ -102,10 +102,18 @@ Instead of setting up and running the scripts manually, you can run them in a co
 Please refer to the [Set up](#set-up) section for instructions on how to create and configure the `.env` file.
 
 ### Build the Docker image
+Update the following fields in the _**.env**_ file with your own credentials:
+   ```dotenv
+   USER_NAME=YOUR_USERNAME
+   USER_PASSWORD=YOUR_PASSWORD
+   SERVER_NAME=YOUR_SERVER_NAME
+   PROTOCOL=YOUR_PROTOCOL_TYPE
+   ```
+Build the image:
 ```bash
 docker build -t fhir-cohort-resources-extraction .
 ```
-### Run the container
+Run the container
 ```bash
 docker run --rm \
            --env-file .env \
@@ -119,7 +127,7 @@ docker run --rm \
 ### Alternative: using docker compose
 
 To avoid plain-text credentials, 
-1. Create a `.env`, in the main project's path, and store your credentials: 
+1. Update the `.env`, file in the main project's path, and store your credentials: 
 
    ```dotenv
    USER_NAME=YOUR_USERNAME
