@@ -22,8 +22,7 @@ Install all the required packages:
 pip install -r requirements.txt
 ```
 ### 2. Configure FHIR Server Connection
-
-Before running the scripts, ensure that FHIR server configurations are added in `data_extraction/Constants.py` file. 
+Before running the scripts, ensure that FHIR server configurations are added via `.env` file. 
 You should update the following fields including a _**.env**_ file:
 
 ```env
