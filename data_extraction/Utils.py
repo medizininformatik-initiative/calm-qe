@@ -4,7 +4,6 @@ import logging
 from fhirclient.models.medicationadministration import MedicationAdministration
 from fhirclient.models.medicationrequest import MedicationRequest
 from fhirclient.models.medicationstatement import MedicationStatement
-from fhirclient.models.list import List as MedicationList
 from requests.auth import HTTPBasicAuth
 from urllib.parse import quote, urlsplit, urlunsplit
 from concurrent.futures import ThreadPoolExecutor, as_completed
@@ -132,8 +131,6 @@ def execute_thread_for_fetching(code_set, source, item_list, code_type, function
             gather_metadata("patient_count_with_medicationRequests", patient_counter)
         elif source is MedicationStatement:
             gather_metadata("patient_count_with_medicationStatements", patient_counter)
-        elif source is MedicationList:
-            gather_metadata("patient_count_with_medicationList", patient_counter)
     elif code_type == "OPS":
         gather_metadata("patient_count_with_procedures", patient_counter)
     else:

@@ -15,4 +15,5 @@ ICD_SYSTEM_NAME = 'http://fhir.de/CodeSystem/bfarm/icd-10-gm'
 LOINC_SYSTEM_NAME = 'http://loinc.org'
 ATC_SYSTEM_NAME = "http://fhir.de/CodeSystem/bfarm/atc"
 OPS_SYSTEM_NAME = "http://fhir.de/CodeSystem/bfarm/ops"
+DISCHARGE_CODE_CONTEXT_URL = "http://ihe-d.de/CodeSystems/FallkontextBeiDokumentenerstellung|E230"
 MAX_WORKERS = min(6, (os.cpu_count() or 1) * 5)

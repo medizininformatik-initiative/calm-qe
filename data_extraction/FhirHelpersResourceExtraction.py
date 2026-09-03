@@ -15,7 +15,7 @@ from fhirclient.models.medicationstatement import MedicationStatement
 from fhirclient.models.list import List as MedicationList
 from fhirclient.server import FHIRNotFoundException
 from Constants import (USER_NAME, USER_PASSWORD, ICD_SYSTEM_NAME, LOINC_SYSTEM_NAME, OPS_SYSTEM_NAME, MAX_WORKERS,
-                       ATC_SYSTEM_NAME, ASTHMA_COPD_CODES_FILE, PROTOCOL)
+                       ATC_SYSTEM_NAME, ASTHMA_COPD_CODES_FILE, PROTOCOL, DISCHARGE_CODE_CONTEXT_URL)
 from Utils import connect_to_server, fetch_bundle_for_code, parse_fhir_datetime
 from Metadata import gather_metadata
 
@@ -172,7 +172,6 @@ def conditions(patient, code_list, source, smart):
 def medications(patient, code_list, source, smart):
     code_list_str = ','.join([ATC_SYSTEM_NAME + '|' + code for code in code_list])
     patient_id = patient.split("/")[-1]
-    discharge_code_system = 'http://ihe-d.de/CodeSystems/FallkontextBeiDokumentenerstellung|E230'
 
     if source is MedicationAdministration:
         whole_path = "fhir_results/Medications/Administration/" + patient_id + "_patient_medicationAdministration.json"
@@ -188,7 +187,7 @@ def medications(patient, code_list, source, smart):
             if source == MedicationList:
                 statement_ref = patient   #  Attention: Here "patient" is not a patient id, but a statement id !!
                 bundle = smart.server.request_json(source.where(
-                    struct={'_count': '1000', 'item':statement_ref, 'code': discharge_code_system}).construct())
+                    struct={'_count': '1000', 'item':statement_ref, 'code': DISCHARGE_CODE_CONTEXT_URL}).construct())
             else:
                 bundle = smart.server.request_json(source.where(
                     struct={'_count': '1000', 'patient': patient, 'medication.code': code_list_str}).construct())
@@ -465,17 +464,22 @@ def medication_frequencies(code_file):
 
         if 'List' in folder_path:
             statement_ref_from_list = set()
+            patient_ref_from_list = set()
 
             for file in os.listdir(folder_path):
                 if file.endswith(".json") and "statementRef" in file:
                     reference_id = file.split("_statementRef")[0]
-
-                    with open(os.path.join(folder_path, file), encoding="utf-8") as f:
-                        bundle = json.load(f)
-
-                    # step 1: extract medicationStatement from List & verification of its existence in List bundle
+                    try:
+                        with open(os.path.join(folder_path, file), encoding="utf-8") as f:
+                            bundle = json.load(f)
+                    except Exception as exc:
+                        logging.error(f"Error in file:{file} generated exception:", exc, "skipping...")
+                        continue
+                    # step 1: extract patient ref, medicationStatement from List & verification of its existence in List bundle
                     if find_medication_statement_ref(bundle, reference_id):
                         statement_ref_from_list.add(f"MedicationStatement/{reference_id}")
+                        patient_ref = find_patient_ref_in_med_list(bundle)
+                        patient_ref_from_list.add(patient_ref)
 
             # step 2:  extract medicationStatement_id, and medication_ref from medicationStatement
             statement_id, medication_ref = aux_extract_statement_refs("fhir_results/Medications/Statement/")
@@ -495,6 +499,8 @@ def medication_frequencies(code_file):
                         medication_type_and_med_reference['List'] = {}
                     medication_type_and_med_reference['List'][code_name] = (
                             medication_type_and_med_reference['List'].get(code_name, 0) + 1)
+            # Get patients count from List
+            gather_metadata("patient_count_with_medicationList", len(patient_ref_from_list))
 
         else:
             # Gathering, counting and fetching ID-references for "Medication".
@@ -547,6 +553,13 @@ def find_medication_statement_ref(bundle, reference_id):
             med_statement_ref = item.get("item", {}).get("reference")
             if reference_id in med_statement_ref:
                 return passed_validation
+    return None
+
+def find_patient_ref_in_med_list(bundle):
+    resource = bundle.get("resource")
+    if 'List' in resource.get("resourceType"):
+        subject = resource.get("subject", {}).get("reference")
+        return subject if subject else None
     return None
 
 def find_num_bins(n, min_bins=5, max_bins=20):
