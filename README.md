@@ -33,14 +33,6 @@ PROTOCOL=YOUR_PROTOCOL_TYPE
 ```
 An example environment file (`.env.example`) is included in the repository.
 
-
-Or for instance by adding credentials directly in these fields:
-```python
-USER_NAME = os.getenv("USER_NAME", "YOUR_USERNAME")
-USER_PASSWORD = os.getenv("USER_PASSWORD", "YOUR_PASSWORD")
-SERVER_NAME = os.getenv("SERVER_NAME", "YOUR_SERVER_NAME/fhir")
-PROTOCOL = os.getenv("PROTOCOL", "https")
-```
 ## Creation of Cohort Patients List and Extraction of the Resources from Cohort Patients
 This script identifies patients diagnosed with "Asthma" or "COPD".
 
