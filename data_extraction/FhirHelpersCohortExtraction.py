@@ -537,7 +537,7 @@ def simple_flattening(patients_attr_map, path):
         new_order = cols[:position_targeted] + to_move + cols[position_targeted:-last_columns]
         df = df[new_order]
 
-        df.to_csv(f"{subdirectory}/{basis_filename}_extended_encounters.csv", sep=";", index=False)
-        logging.info(f"Exported {len(df)} patients to {basis_filename}.csv")
+        df.to_csv(f"{subdirectory}/main_cohort.csv", sep=";", index=False)
+        logging.info(f"Exported {len(df)} patients to main_cohort.csv")
     else:
         logging.warning("No rows to export to CSV")
