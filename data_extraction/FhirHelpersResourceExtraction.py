@@ -221,7 +221,7 @@ def aux_extract_statement_refs(directory):
         medications_ref = set()
 
         for file_name in os.listdir(directory):
-            if file_name.endswith(".json"): # todo: remove
+            if file_name.endswith(".json"):
                 file_path = os.path.join(directory, file_name)
                 with open(file_path, "r") as f:
                     for line in f:
@@ -243,10 +243,9 @@ def aux_extract_statement_refs(directory):
         logging.warning(f"No medication statements were found in '{directory}'.")
         return None
 
-def procedures(patient, code_set, smart):
+def procedures(patient, code_set, source, smart):
     patient_id = patient.split("/")[-1]
     whole_path = f"fhir_results/Procedures/{patient_id}_patient_procedures.json"
-    logging.info(f"Fetching patient procedures...{patient_id}")
     protocol = PROTOCOL
     while True:
         try:
@@ -427,7 +426,7 @@ def procedure_frequencies(code_file):
                             logging.warning("Invalid year format, skipping...")
                             continue
                         for coding in codings:
-                            if OPS_SYSTEM_NAME == coding.get("system") and coding.get("code")  in code_list:
+                            if OPS_SYSTEM_NAME == coding.get("system") and coding.get("code") in code_list:
                                 procedure_counts[year][coding['code']] += 1
     # Gather metadata
     gather_metadata("procedures_counts", dict(sorted(procedure_counts.items())))
