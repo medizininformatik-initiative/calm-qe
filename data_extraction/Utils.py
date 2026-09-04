@@ -4,7 +4,6 @@ import logging
 from fhirclient.models.medicationadministration import MedicationAdministration
 from fhirclient.models.medicationrequest import MedicationRequest
 from fhirclient.models.medicationstatement import MedicationStatement
-from requests.auth import HTTPBasicAuth
 from urllib.parse import quote, urlsplit, urlunsplit
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
@@ -13,7 +12,6 @@ import urllib3
 from fhirclient import client
 from Constants import USER_NAME, USER_PASSWORD, SERVER_NAME, PROTOCOL, MAX_WORKERS
 from datetime import datetime, timezone
-from fhirclient.models.bundle import Bundle
 
 from Metadata import gather_metadata
 

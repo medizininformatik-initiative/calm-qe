@@ -13,8 +13,8 @@ from Constants import USER_NAME, USER_PASSWORD, ICD_CODE_FILE, LOINC_CODE_FILE, 
 from FhirHelpersResourceExtraction import (observations, conditions, medications,
                                            procedures, conditions_frequencies, medication_frequencies,
                                            procedure_frequencies, read_input_code_file, patients_with_asthma_copd,
-                                           fetch_patients, encounters, aux_extract_statement_refs,
-                                           observation_frequencies_and_distributions)
+                                           fetch_patients, encounters,
+                                           observation_frequencies_and_distributions, build_statement_medication_map)
 
 logging.basicConfig(level=logging.INFO, format='%(levelname)s - %(message)s')
 
@@ -37,7 +37,6 @@ def main():
 
     #Get the patients with "ANY TYPE OF DIAGNOSED" Asthma or COPD.
     diagnosis_path = patients_with_asthma_copd(smart, DIR_RESULTS)
-
     #Input is the patient list in a text file from Cohort Data Extraction part
     with open(diagnosis_path, "r") as file:
         input_file = json.load(file)
@@ -63,20 +62,22 @@ def main():
     execute_thread_for_fetching(set(code_list), Procedure, patients, "OPS", procedures)
 
     ##Medications####
-    medication_profiles = {
-        'MedicationAdministration': MedicationAdministration,
-        'MedicationRequest': MedicationRequest,
-        'MedicationStatement': MedicationStatement,
-        'List': MedicationList
-    }
+    medication_profiles = [
+        MedicationAdministration,
+        MedicationRequest,
+        MedicationStatement,  #Note: Needs to run before MedicationList
+        MedicationList
+    ]
 
-    for profile in medication_profiles.values():
-        code_list = read_input_code_file(ATC_CODE_FILE)
+    code_list = read_input_code_file(ATC_CODE_FILE)
+    for profile in medication_profiles:
         if MedicationList == profile:
-            statements_ref, medications_ref = aux_extract_statement_refs("fhir_results/Medications/Statement")
-            if statements_ref is not None:
+            statement_medication_map = build_statement_medication_map("fhir_results/Medications/Statement")
+            statements_ref = list(statement_medication_map.keys())
+            if statements_ref:
                 execute_thread_for_fetching(code_list, profile, statements_ref, "ATC", medications)
-        execute_thread_for_fetching(code_list, profile, patients, "ATC", medications)
+        else:
+            execute_thread_for_fetching(code_list, profile, patients, "ATC", medications)
 
     ###Post processing: Analysis###
     conditions_frequencies(ICD_CODE_FILE)
