@@ -1,2636 +1,3289 @@
 {
     "codes": [
         {
-            "code": "83102-4",
-            "description": "IgE [Units/volume] in Serum or Plasma by Immunoassay"
-        },
-        {
-            "code": "19113-0",
-            "description": "IgE [Units/volume] in Serum or Plasma"
-        },
-        {
-            "code": "2462-0",
-            "description": "IgE [Mass/volume] in Serum"
-        },
-        {
-            "code": "30187-9",
-            "description": "Food Allergen Mix 5 (Peanut+Cow milk+Egg white+Cod+Soybean+Wheat) IgE Ab [Units/volume] in Serum by Multidisk"
-        },
-        {
-            "code": "23801-4",
-            "description": "Food Allergen Mix 5 (Peanut+Cow milk+Egg white+Cod+Soybean+Wheat) IgE Ab [Presence] in Serum by Multidisk"
+            "code": "6095-4",
+            "description": "American house dust mite IgE Ab [Units/volume] in Serum",
+            "category": "Allergiediagnostik"
         },
         {
             "code": "26954-8",
-            "description": "Aspergillus fumigatus IgG Ab [Mass/volume] in Serum"
-        },
-        {
-            "code": "6206-7",
-            "description": "Peanut IgE Ab [Units/volume] in Serum"
-        },
-        {
-            "code": "6136-6",
-            "description": "Hazelnut IgE Ab [Units/volume] in Serum"
-        },
-        {
-            "code": "6095-4",
-            "description": "American house dust mite IgE Ab [Units/volume] in Serum"
-        },
-        {
-            "code": "58752-7",
-            "description": "Wheat recombinant (rTri a) 19 IgE Ab [Units/volume] in Serum"
-        },
-        {
-            "code": "30984-9",
-            "description": "Silver Birch recombinant (rBet v) 1 IgE Ab [Units/volume] in Serum"
-        },
-        {
-            "code": "7258-7",
-            "description": "Cow milk IgE Ab [Units/volume] in Serum"
-        },
-        {
-            "code": "6106-9",
-            "description": "Egg white IgE Ab [Units/volume] in Serum"
-        },
-        {
-            "code": "63457-6",
-            "description": "European house dust mite recombinant (rDer p) 2 IgE Ab [Units/volume] in Serum"
-        },
-        {
-            "code": "63456-8",
-            "description": "European house dust mite native (nDer p) 1 IgE Ab [Units/volume] in Serum"
-        },
-        {
-            "code": "15284-3",
-            "description": "Grey Alder IgE Ab [Units/volume] in Serum"
-        },
-        {
-            "code": "96278-7",
-            "description": "Dermatophagoides pteronyssinus recombinant (rDer p) 23 IgE Ab [Units/volume] in Serum"
-        },
-        {
-            "code": "30993-0",
-            "description": "Aspergillus fumigatus recombinant (rAsp f) 6 IgE Ab [Units/volume] in Serum"
+            "description": "Aspergillus fumigatus IgG Ab [Mass/volume] in Serum",
+            "category": "Allergiediagnostik"
         },
         {
             "code": "30992-2",
-            "description": "Aspergillus fumigatus recombinant (rAsp f) 4 IgE Ab [Units/volume] in Serum"
+            "description": "Aspergillus fumigatus recombinant (rAsp f) 4 IgE Ab [Units/volume] in Serum",
+            "category": "Allergiediagnostik"
         },
         {
-            "code": "58754-3",
-            "description": "Olive pollen native (nOle e) 1 IgE Ab [Units/volume] in Serum"
+            "code": "30993-0",
+            "description": "Aspergillus fumigatus recombinant (rAsp f) 6 IgE Ab [Units/volume] in Serum",
+            "category": "Allergiediagnostik"
         },
         {
             "code": "58984-6",
-            "description": "Bromelin MUXF3 IgE Ab [Units/volume] in Serum"
-        },
-        {
-            "code": "78384-5",
-            "description": "Cat dander native (nFel d) 1 IgE Ab [Units/volume] in Serum"
-        },
-        {
-            "code": "30994-8",
-            "description": "Timothy recombinant (rPhl p) 1 IgE Ab [Units/volume] in Serum"
-        },
-        {
-            "code": "58778-2",
-            "description": "Peanut recombinant (rAra h) 2 IgE Ab [Units/volume] in Serum"
-        },
-        {
-            "code": "6085-5",
-            "description": "Common Ragweed IgE Ab [Units/volume] in Serum"
-        },
-        {
-            "code": "58773-3",
-            "description": "Dog recombinant (rCan f) 1 IgE Ab [Units/volume] in Serum"
-        },
-        {
-            "code": "58772-5",
-            "description": "Dog recombinant (rCan f) 2 IgE Ab [Units/volume] in Serum"
-        },
-        {
-            "code": "6126-7",
-            "description": "Glycyphagus domesticus IgE Ab [Units/volume] in Serum"
-        },
-        {
-            "code": "63458-4",
-            "description": "Mugwort native (nArt v) 1 IgE Ab [Units/volume] in Serum"
-        },
-        {
-            "code": "6248-9",
-            "description": "Soybean IgE Ab [Units/volume] in Serum"
-        },
-        {
-            "code": "65782-5",
-            "description": "Common ragweed native (nAmb a) 1 IgE Ab [Units/volume] in Serum"
-        },
-        {
-            "code": "6740-5",
-            "description": "Yellow Jacket IgE Ab [Units/volume] in Serum"
-        },
-        {
-            "code": "60240-9",
-            "description": "Common wasp recombinant (rVes v) 5 IgE Ab [Units/volume] in Serum"
-        },
-        {
-            "code": "66714-7",
-            "description": "Common wasp recombinant (rVes v) 1 IgE Ab [Units/volume] in Serum"
-        },
-        {
-            "code": "13176-3",
-            "description": "Wasp venom IgE Ab [Units/volume] in Serum"
-        },
-        {
-            "code": "21603-6",
-            "description": "Wheat dust IgE Ab [Units/volume] in Serum"
-        },
-        {
-            "code": "58779-0",
-            "description": "Peanut recombinant (rAra h) 1 IgE Ab [Units/volume] in Serum"
-        },
-        {
-            "code": "63477-4",
-            "description": "Peanut recombinant (rAra h) 8 IgE Ab [Units/volume] in Serum"
-        },
-        {
-            "code": "59391-3",
-            "description": "Peach recombinant (rPru p) 3 IgE Ab [Units/volume] in Serum"
-        },
-        {
-            "code": "58777-4",
-            "description": "Peanut recombinant (rAra h) 3 IgE Ab [Units/volume] in Serum"
-        },
-        {
-            "code": "60421-5",
-            "description": "Honey bee phospholipase A2 recombinant (rApi m) 1 IgE Ab [Units/volume] in Serum"
-        },
-        {
-            "code": "64965-7",
-            "description": "Peanut recombinant (rAra h) 9 IgE Ab [Units/volume] in Serum"
-        },
-        {
-            "code": "79167-3",
-            "description": "Honey bee recombinant (rApi m) 2 IgE Ab [Units/volume] in Serum"
-        },
-        {
-            "code": "94275-5",
-            "description": "Honey bee acid phosphatase recombinant (rApi m) 3 IgE Ab [Units/volume] in Serum"
-        },
-        {
-            "code": "6844-5",
-            "description": "Honey bee IgE Ab [Units/volume] in Serum"
-        },
-        {
-            "code": "94276-3",
-            "description": "Honey bee dipeptidyl peptidase recombinant (rApi m) 5 IgE Ab [Units/volume] in Serum"
-        },
-        {
-            "code": "82613-1",
-            "description": "Honey bee recombinant (rApi m) 10 IgE Ab [Units/volume] in Serum"
-        },
-        {
-            "code": "6082-2",
-            "description": "Codfish IgE Ab [Units/volume] in Serum"
-        },
-        {
-            "code": "81788-2",
-            "description": "Hazelnut recombinant (rCor a) 14 IgE Ab [Units/volume] in Serum"
-        },
-        {
-            "code": "90880-6",
-            "description": "Peanut recombinant (rAra h) 6 IgE Ab [Units/volume] in Serum"
-        },
-        {
-            "code": "69421-6",
-            "description": "Hazelnut recombinant (rCor a) 1 IgE Ab [Units/volume] in Serum"
-        },
-        {
-            "code": "58753-5",
-            "description": "Hazelnut recombinant (rCor a) 8 IgE Ab [Units/volume] in Serum"
-        },
-        {
-            "code": "64966-5",
-            "description": "Wheat recombinant (rTri a) 14 IgE Ab [Units/volume] in Serum"
-        },
-        {
-            "code": "7492-2",
-            "description": "Multiple inhalant allergen IgE Ab [Units/volume] in Serum"
-        },
-        {
-            "code": "57036-6",
-            "description": "Phadiatop inhalant allergen IgE Ab [Units/volume] in Serum"
-        },
-        {
-            "code": "6096-2",
-            "description": "European house dust mite IgE Ab [Units/volume] in Serum"
-        },
-        {
-            "code": "81772-6",
-            "description": "European house dust mite IgG Ab [Mass/volume] in Serum"
+            "description": "Bromelin MUXF3 IgE Ab [Units/volume] in Serum",
+            "category": "Allergiediagnostik"
         },
         {
             "code": "6833-8",
-            "description": "Cat dander IgE Ab [Units/volume] in Serum"
+            "description": "Cat dander IgE Ab [Units/volume] in Serum",
+            "category": "Allergiediagnostik"
         },
         {
-            "code": "6098-8",
-            "description": "Dog dander IgE Ab [Units/volume] in Serum"
-        },
-        {
-            "code": "6265-3",
-            "description": "Timothy IgE Ab [Units/volume] in Serum"
-        },
-        {
-            "code": "6236-4",
-            "description": "Cultivated Rye IgE Ab [Units/volume] in Serum"
-        },
-        {
-            "code": "7674-5",
-            "description": "Rye IgE Ab [Units/volume] in Serum"
+            "code": "78384-5",
+            "description": "Cat dander native (nFel d) 1 IgE Ab [Units/volume] in Serum",
+            "category": "Allergiediagnostik"
         },
         {
             "code": "6075-6",
-            "description": "Cladosporium herbarum IgE Ab [Units/volume] in Serum"
+            "description": "Cladosporium herbarum IgE Ab [Units/volume] in Serum",
+            "category": "Allergiediagnostik"
         },
         {
-            "code": "15283-5",
-            "description": "Silver Birch IgE Ab [Units/volume] in Serum"
+            "code": "6082-2",
+            "description": "Codfish IgE Ab [Units/volume] in Serum",
+            "category": "Allergiediagnostik"
+        },
+        {
+            "code": "6085-5",
+            "description": "Common Ragweed IgE Ab [Units/volume] in Serum",
+            "category": "Allergiediagnostik"
+        },
+        {
+            "code": "65782-5",
+            "description": "Common ragweed native (nAmb a) 1 IgE Ab [Units/volume] in Serum",
+            "category": "Allergiediagnostik"
+        },
+        {
+            "code": "66714-7",
+            "description": "Common wasp recombinant (rVes v) 1 IgE Ab [Units/volume] in Serum",
+            "category": "Allergiediagnostik"
+        },
+        {
+            "code": "60240-9",
+            "description": "Common wasp recombinant (rVes v) 5 IgE Ab [Units/volume] in Serum",
+            "category": "Allergiediagnostik"
+        },
+        {
+            "code": "7258-7",
+            "description": "Cow milk IgE Ab [Units/volume] in Serum",
+            "category": "Allergiediagnostik"
+        },
+        {
+            "code": "6236-4",
+            "description": "Cultivated Rye IgE Ab [Units/volume] in Serum",
+            "category": "Allergiediagnostik"
+        },
+        {
+            "code": "96278-7",
+            "description": "Dermatophagoides pteronyssinus recombinant (rDer p) 23 IgE Ab [Units/volume] in Serum",
+            "category": "Allergiediagnostik"
+        },
+        {
+            "code": "6098-8",
+            "description": "Dog dander IgE Ab [Units/volume] in Serum",
+            "category": "Allergiediagnostik"
+        },
+        {
+            "code": "58773-3",
+            "description": "Dog recombinant (rCan f) 1 IgE Ab [Units/volume] in Serum",
+            "category": "Allergiediagnostik"
+        },
+        {
+            "code": "58772-5",
+            "description": "Dog recombinant (rCan f) 2 IgE Ab [Units/volume] in Serum",
+            "category": "Allergiediagnostik"
+        },
+        {
+            "code": "6106-9",
+            "description": "Egg white IgE Ab [Units/volume] in Serum",
+            "category": "Allergiediagnostik"
+        },
+        {
+            "code": "6096-2",
+            "description": "European house dust mite IgE Ab [Units/volume] in Serum",
+            "category": "Allergiediagnostik"
+        },
+        {
+            "code": "81772-6",
+            "description": "European house dust mite IgG Ab [Mass/volume] in Serum",
+            "category": "Allergiediagnostik"
+        },
+        {
+            "code": "63456-8",
+            "description": "European house dust mite native (nDer p) 1 IgE Ab [Units/volume] in Serum",
+            "category": "Allergiediagnostik"
+        },
+        {
+            "code": "63457-6",
+            "description": "European house dust mite recombinant (rDer p) 2 IgE Ab [Units/volume] in Serum",
+            "category": "Allergiediagnostik"
+        },
+        {
+            "code": "23801-4",
+            "description": "Food Allergen Mix 5 (Peanut+Cow milk+Egg white+Cod+Soybean+Wheat) IgE Ab [Presence] in Serum by Multidisk",
+            "category": "Allergiediagnostik"
+        },
+        {
+            "code": "30187-9",
+            "description": "Food Allergen Mix 5 (Peanut+Cow milk+Egg white+Cod+Soybean+Wheat) IgE Ab [Units/volume] in Serum by Multidisk",
+            "category": "Allergiediagnostik"
+        },
+        {
+            "code": "6126-7",
+            "description": "Glycyphagus domesticus IgE Ab [Units/volume] in Serum",
+            "category": "Allergiediagnostik"
+        },
+        {
+            "code": "15284-3",
+            "description": "Grey Alder IgE Ab [Units/volume] in Serum",
+            "category": "Allergiediagnostik"
+        },
+        {
+            "code": "6136-6",
+            "description": "Hazelnut IgE Ab [Units/volume] in Serum",
+            "category": "Allergiediagnostik"
+        },
+        {
+            "code": "69421-6",
+            "description": "Hazelnut recombinant (rCor a) 1 IgE Ab [Units/volume] in Serum",
+            "category": "Allergiediagnostik"
+        },
+        {
+            "code": "81788-2",
+            "description": "Hazelnut recombinant (rCor a) 14 IgE Ab [Units/volume] in Serum",
+            "category": "Allergiediagnostik"
+        },
+        {
+            "code": "58753-5",
+            "description": "Hazelnut recombinant (rCor a) 8 IgE Ab [Units/volume] in Serum",
+            "category": "Allergiediagnostik"
+        },
+        {
+            "code": "94275-5",
+            "description": "Honey bee acid phosphatase recombinant (rApi m) 3 IgE Ab [Units/volume] in Serum",
+            "category": "Allergiediagnostik"
+        },
+        {
+            "code": "94276-3",
+            "description": "Honey bee dipeptidyl peptidase recombinant (rApi m) 5 IgE Ab [Units/volume] in Serum",
+            "category": "Allergiediagnostik"
+        },
+        {
+            "code": "6844-5",
+            "description": "Honey bee IgE Ab [Units/volume] in Serum",
+            "category": "Allergiediagnostik"
+        },
+        {
+            "code": "60421-5",
+            "description": "Honey bee phospholipase A2 recombinant (rApi m) 1 IgE Ab [Units/volume] in Serum",
+            "category": "Allergiediagnostik"
+        },
+        {
+            "code": "82613-1",
+            "description": "Honey bee recombinant (rApi m) 10 IgE Ab [Units/volume] in Serum",
+            "category": "Allergiediagnostik"
+        },
+        {
+            "code": "79167-3",
+            "description": "Honey bee recombinant (rApi m) 2 IgE Ab [Units/volume] in Serum",
+            "category": "Allergiediagnostik"
+        },
+        {
+            "code": "2462-0",
+            "description": "IgE [Mass/volume] in Serum",
+            "category": "Allergiediagnostik"
+        },
+        {
+            "code": "19113-0",
+            "description": "IgE [Units/volume] in Serum or Plasma",
+            "category": "Allergiediagnostik"
+        },
+        {
+            "code": "83102-4",
+            "description": "IgE [Units/volume] in Serum or Plasma by Immunoassay",
+            "category": "Allergiediagnostik"
         },
         {
             "code": "6183-8",
-            "description": "Mugwort IgE Ab [Units/volume] in Serum"
+            "description": "Mugwort IgE Ab [Units/volume] in Serum",
+            "category": "Allergiediagnostik"
         },
         {
-            "code": "5048-4",
-            "description": "Nuclear Ab [Titer] in Serum by Immunofluorescence"
+            "code": "63458-4",
+            "description": "Mugwort native (nArt v) 1 IgE Ab [Units/volume] in Serum",
+            "category": "Allergiediagnostik"
         },
         {
-            "code": "14278-6",
-            "description": "Neutrophil cytoplasmic Ab.perinuclear [Titer] in Serum by Immunofluorescence"
+            "code": "7492-2",
+            "description": "Multiple inhalant allergen IgE Ab [Units/volume] in Serum",
+            "category": "Allergiediagnostik"
         },
         {
-            "code": "30539-1",
-            "description": "Neutrophil cytoplasmic Ab.perinuclear [Presence] in Serum"
+            "code": "58754-3",
+            "description": "Olive pollen native (nOle e) 1 IgE Ab [Units/volume] in Serum",
+            "category": "Allergiediagnostik"
         },
         {
-            "code": "17357-5",
-            "description": "Neutrophil cytoplasmic Ab.perinuclear [Presence] in Serum by Immunofluorescence"
+            "code": "59391-3",
+            "description": "Peach recombinant (rPru p) 3 IgE Ab [Units/volume] in Serum",
+            "category": "Allergiediagnostik"
         },
         {
-            "code": "14277-8",
-            "description": "Neutrophil cytoplasmic Ab.classic [Titer] in Serum by Immunofluorescence"
+            "code": "6206-7",
+            "description": "Peanut IgE Ab [Units/volume] in Serum",
+            "category": "Allergiediagnostik"
         },
         {
-            "code": "15205-8",
-            "description": "Rheumatoid factor [Units/volume] in Serum by Nephelometry"
+            "code": "58779-0",
+            "description": "Peanut recombinant (rAra h) 1 IgE Ab [Units/volume] in Serum",
+            "category": "Allergiediagnostik"
         },
         {
-            "code": "11573-3",
-            "description": "Rheumatoid factor IgM [Units/volume] in Serum"
+            "code": "58778-2",
+            "description": "Peanut recombinant (rAra h) 2 IgE Ab [Units/volume] in Serum",
+            "category": "Allergiediagnostik"
         },
         {
-            "code": "11572-5",
-            "description": "Rheumatoid factor [Units/volume] in Serum or Plasma"
+            "code": "58777-4",
+            "description": "Peanut recombinant (rAra h) 3 IgE Ab [Units/volume] in Serum",
+            "category": "Allergiediagnostik"
         },
         {
-            "code": "33577-8",
-            "description": "Rheumatoid factor IgM [Titer] in Serum by Nephelometry"
+            "code": "90880-6",
+            "description": "Peanut recombinant (rAra h) 6 IgE Ab [Units/volume] in Serum",
+            "category": "Allergiediagnostik"
         },
         {
-            "code": "32218-0",
-            "description": "Cyclic citrullinated peptide Ab [Units/volume] in Serum by Immunoassay"
+            "code": "63477-4",
+            "description": "Peanut recombinant (rAra h) 8 IgE Ab [Units/volume] in Serum",
+            "category": "Allergiediagnostik"
+        },
+        {
+            "code": "64965-7",
+            "description": "Peanut recombinant (rAra h) 9 IgE Ab [Units/volume] in Serum",
+            "category": "Allergiediagnostik"
+        },
+        {
+            "code": "57036-6",
+            "description": "Phadiatop inhalant allergen IgE Ab [Units/volume] in Serum",
+            "category": "Allergiediagnostik"
+        },
+        {
+            "code": "7674-5",
+            "description": "Rye IgE Ab [Units/volume] in Serum",
+            "category": "Allergiediagnostik"
+        },
+        {
+            "code": "15283-5",
+            "description": "Silver Birch IgE Ab [Units/volume] in Serum",
+            "category": "Allergiediagnostik"
+        },
+        {
+            "code": "30984-9",
+            "description": "Silver Birch recombinant (rBet v) 1 IgE Ab [Units/volume] in Serum",
+            "category": "Allergiediagnostik"
+        },
+        {
+            "code": "6248-9",
+            "description": "Soybean IgE Ab [Units/volume] in Serum",
+            "category": "Allergiediagnostik"
+        },
+        {
+            "code": "6265-3",
+            "description": "Timothy IgE Ab [Units/volume] in Serum",
+            "category": "Allergiediagnostik"
+        },
+        {
+            "code": "30994-8",
+            "description": "Timothy recombinant (rPhl p) 1 IgE Ab [Units/volume] in Serum",
+            "category": "Allergiediagnostik"
+        },
+        {
+            "code": "13176-3",
+            "description": "Wasp venom IgE Ab [Units/volume] in Serum",
+            "category": "Allergiediagnostik"
+        },
+        {
+            "code": "21603-6",
+            "description": "Wheat dust IgE Ab [Units/volume] in Serum",
+            "category": "Allergiediagnostik"
+        },
+        {
+            "code": "64966-5",
+            "description": "Wheat recombinant (rTri a) 14 IgE Ab [Units/volume] in Serum",
+            "category": "Allergiediagnostik"
+        },
+        {
+            "code": "58752-7",
+            "description": "Wheat recombinant (rTri a) 19 IgE Ab [Units/volume] in Serum",
+            "category": "Allergiediagnostik"
+        },
+        {
+            "code": "6740-5",
+            "description": "Yellow Jacket IgE Ab [Units/volume] in Serum",
+            "category": "Allergiediagnostik"
         },
         {
             "code": "53027-9",
-            "description": "Cyclic citrullinated peptide Ab [Units/volume] in Serum"
+            "description": "Cyclic citrullinated peptide Ab [Units/volume] in Serum",
+            "category": "Autoimmundiagnostik"
+        },
+        {
+            "code": "32218-0",
+            "description": "Cyclic citrullinated peptide Ab [Units/volume] in Serum by Immunoassay",
+            "category": "Autoimmundiagnostik"
         },
         {
             "code": "33935-8",
-            "description": "Cyclic citrullinated peptide IgG Ab [Units/volume] in Serum or Plasma"
+            "description": "Cyclic citrullinated peptide IgG Ab [Units/volume] in Serum or Plasma",
+            "category": "Autoimmundiagnostik"
         },
         {
             "code": "5130-0",
-            "description": "DNA double strand Ab [Units/volume] in Serum"
+            "description": "DNA double strand Ab [Units/volume] in Serum",
+            "category": "Autoimmundiagnostik"
         },
         {
             "code": "32677-7",
-            "description": "DNA double strand Ab [Units/volume] in Serum by Immunoassay"
+            "description": "DNA double strand Ab [Units/volume] in Serum by Immunoassay",
+            "category": "Autoimmundiagnostik"
         },
         {
             "code": "42200-6",
-            "description": "DNA double strand Ab [Units/volume] in Serum by Radioimmunoassay (RIA)"
-        },
-        {
-            "code": "34416-8",
-            "description": "Nucleosome Ab [Units/volume] in Serum by Immunoassay"
-        },
-        {
-            "code": "53014-7",
-            "description": "Nucleosome Ab [Units/volume] in Serum"
-        },
-        {
-            "code": "89506-0",
-            "description": "Nucleosome Ab [Presence] in Serum by Line blot"
-        },
-        {
-            "code": "59026-5",
-            "description": "U1 small nuclear ribonucleoprotein 70kD Ab [Units/volume] in Serum"
-        },
-        {
-            "code": "27416-7",
-            "description": "SCL-70 extractable nuclear Ab [Units/volume] in Serum"
-        },
-        {
-            "code": "31562-2",
-            "description": "PM-SCL extractable nuclear Ab [Units/volume] in Serum"
-        },
-        {
-            "code": "43119-7",
-            "description": "Extractable nuclear Ab panel - Serum"
-        },
-        {
-            "code": "53022-0",
-            "description": "U1 small nuclear ribonucleoprotein Ab [Presence] in Serum"
-        },
-        {
-            "code": "89501-1",
-            "description": "Smith extractable nuclear Ab+Ribonucleoprotein extractable nuclear Ab [Presence] in Serum by Line blot"
-        },
-        {
-            "code": "43182-5",
-            "description": "Smith extractable nuclear Ab [Units/volume] in Serum by Immunoassay"
-        },
-        {
-            "code": "5351-2",
-            "description": "Sjogrens syndrome-A extractable nuclear Ab [Presence] in Serum by Immunoassay"
-        },
-        {
-            "code": "8093-7",
-            "description": "Sjogrens syndrome-A extractable nuclear Ab [Presence] in Serum"
-        },
-        {
-            "code": "53016-2",
-            "description": "Sjogrens syndrome-A extractable nuclear 52kD Ab [Presence] in Serum"
-        },
-        {
-            "code": "53018-8",
-            "description": "Sjogrens syndrome-A extractable nuclear 60kD Ab [Presence] in Serum"
-        },
-        {
-            "code": "56724-8",
-            "description": "Sjogrens syndrome-A extractable nuclear Ab [Presence] in Serum by Immunoblot"
-        },
-        {
-            "code": "45142-7",
-            "description": "Sjogrens syndrome-B extractable nuclear Ab [Units/volume] in Serum by Immunoassay"
-        },
-        {
-            "code": "5348-8",
-            "description": "SCL-70 extractable nuclear Ab [Presence] in Serum by Immunoassay"
-        },
-        {
-            "code": "8092-9",
-            "description": "SCL-70 extractable nuclear Ab [Presence] in Serum"
-        },
-        {
-            "code": "56693-5",
-            "description": "SCL-70 extractable nuclear Ab [Presence] in Serum by Immunoblot"
-        },
-        {
-            "code": "5234-0",
-            "description": "Jo-1 extractable nuclear Ab [Presence] in Serum by Immunoassay"
-        },
-        {
-            "code": "8076-2",
-            "description": "Jo-1 extractable nuclear Ab [Presence] in Serum"
-        },
-        {
-            "code": "56731-3",
-            "description": "Jo-1 extractable nuclear Ab [Presence] in Serum by Immunoblot"
-        },
-        {
-            "code": "82918-4",
-            "description": "Jo-1 extractable nuclear IgG Ab [Presence] in Serum by Line blot"
-        },
-        {
-            "code": "29643-4",
-            "description": "Myeloperoxidase Ab [Presence] in Serum by Immunoassay"
-        },
-        {
-            "code": "17316-1",
-            "description": "Myeloperoxidase Ab [Presence] in Serum"
-        },
-        {
-            "code": "46266-3",
-            "description": "Myeloperoxidase Ab [Units/volume] in Serum by Immunoassay"
-        },
-        {
-            "code": "63310-7",
-            "description": "Proteinase 3 Ab [Presence] in Serum by Immunoassay"
-        },
-        {
-            "code": "46267-1",
-            "description": "Proteinase 3 Ab [Units/volume] in Serum by Immunoassay"
-        },
-        {
-            "code": "46128-5",
-            "description": "Tissue transglutaminase IgA Ab [Units/volume] in Serum by Immunoassay"
-        },
-        {
-            "code": "31017-7",
-            "description": "Tissue transglutaminase IgA Ab [Units/volume] in Serum"
+            "description": "DNA double strand Ab [Units/volume] in Serum by Radioimmunoassay (RIA)",
+            "category": "Autoimmundiagnostik"
         },
         {
             "code": "10863-9",
-            "description": "Endomysium IgA Ab [Titer] in Serum"
+            "description": "Endomysium IgA Ab [Titer] in Serum",
+            "category": "Autoimmundiagnostik"
+        },
+        {
+            "code": "43119-7",
+            "description": "Extractable nuclear Ab panel - Serum",
+            "category": "Autoimmundiagnostik"
         },
         {
             "code": "2458-8",
-            "description": "IgA [Mass/volume] in Serum or Plasma"
+            "description": "IgA [Mass/volume] in Serum or Plasma",
+            "category": "Autoimmundiagnostik"
         },
         {
-            "code": "718-7",
-            "description": "Hemoglobin [Mass/volume] in Blood"
+            "code": "8076-2",
+            "description": "Jo-1 extractable nuclear Ab [Presence] in Serum",
+            "category": "Autoimmundiagnostik"
         },
         {
-            "code": "30313-1",
-            "description": "Hemoglobin [Mass/volume] in Arterial blood"
+            "code": "5234-0",
+            "description": "Jo-1 extractable nuclear Ab [Presence] in Serum by Immunoassay",
+            "category": "Autoimmundiagnostik"
         },
         {
-            "code": "30350-3",
-            "description": "Hemoglobin [Mass/volume] in Venous blood"
+            "code": "56731-3",
+            "description": "Jo-1 extractable nuclear Ab [Presence] in Serum by Immunoblot",
+            "category": "Autoimmundiagnostik"
         },
         {
-            "code": "30352-9",
-            "description": "Hemoglobin [Mass/volume] in Capillary blood"
+            "code": "82918-4",
+            "description": "Jo-1 extractable nuclear IgG Ab [Presence] in Serum by Line blot",
+            "category": "Autoimmundiagnostik"
         },
         {
-            "code": "30351-1",
-            "description": "Hemoglobin [Mass/volume] in Mixed venous blood"
+            "code": "17316-1",
+            "description": "Myeloperoxidase Ab [Presence] in Serum",
+            "category": "Autoimmundiagnostik"
         },
         {
-            "code": "11556-8",
-            "description": "Oxygen [Partial pressure] in Blood"
+            "code": "29643-4",
+            "description": "Myeloperoxidase Ab [Presence] in Serum by Immunoassay",
+            "category": "Autoimmundiagnostik"
         },
         {
-            "code": "2703-7",
-            "description": "Oxygen [Partial pressure] in Arterial blood"
+            "code": "46266-3",
+            "description": "Myeloperoxidase Ab [Units/volume] in Serum by Immunoassay",
+            "category": "Autoimmundiagnostik"
         },
         {
-            "code": "2705-2",
-            "description": "Oxygen [Partial pressure] in Venous blood"
+            "code": "14277-8",
+            "description": "Neutrophil cytoplasmic Ab.classic [Titer] in Serum by Immunofluorescence",
+            "category": "Autoimmundiagnostik"
         },
         {
-            "code": "2704-5",
-            "description": "Oxygen [Partial pressure] in Capillary blood"
+            "code": "30539-1",
+            "description": "Neutrophil cytoplasmic Ab.perinuclear [Presence] in Serum",
+            "category": "Autoimmundiagnostik"
         },
         {
-            "code": "19211-2",
-            "description": "Oxygen [Partial pressure] in Mixed venous blood"
+            "code": "17357-5",
+            "description": "Neutrophil cytoplasmic Ab.perinuclear [Presence] in Serum by Immunofluorescence",
+            "category": "Autoimmundiagnostik"
         },
         {
-            "code": "20564-1",
-            "description": "Oxygen saturation in Blood"
+            "code": "14278-6",
+            "description": "Neutrophil cytoplasmic Ab.perinuclear [Titer] in Serum by Immunofluorescence",
+            "category": "Autoimmundiagnostik"
         },
         {
-            "code": "2708-6",
-            "description": "Oxygen saturation in Arterial blood"
+            "code": "5048-4",
+            "description": "Nuclear Ab [Titer] in Serum by Immunofluorescence",
+            "category": "Autoimmundiagnostik"
         },
         {
-            "code": "2711-0",
-            "description": "Oxygen saturation in Venous blood"
+            "code": "89506-0",
+            "description": "Nucleosome Ab [Presence] in Serum by Line blot",
+            "category": "Autoimmundiagnostik"
         },
         {
-            "code": "2709-4",
-            "description": "Oxygen saturation in Capillary blood"
+            "code": "53014-7",
+            "description": "Nucleosome Ab [Units/volume] in Serum",
+            "category": "Autoimmundiagnostik"
         },
         {
-            "code": "19224-5",
-            "description": "Oxygen saturation in Mixed venous blood"
+            "code": "34416-8",
+            "description": "Nucleosome Ab [Units/volume] in Serum by Immunoassay",
+            "category": "Autoimmundiagnostik"
         },
         {
-            "code": "19235-1",
-            "description": "Base excess standard in Arterial blood by calculation"
+            "code": "31562-2",
+            "description": "PM-SCL extractable nuclear Ab [Units/volume] in Serum",
+            "category": "Autoimmundiagnostik"
         },
         {
-            "code": "19237-7",
-            "description": "Base excess standard in Venous blood by calculation"
+            "code": "63310-7",
+            "description": "Proteinase 3 Ab [Presence] in Serum by Immunoassay",
+            "category": "Autoimmundiagnostik"
         },
         {
-            "code": "19236-9",
-            "description": "Base excess standard in Capillary blood by calculation"
+            "code": "46267-1",
+            "description": "Proteinase 3 Ab [Units/volume] in Serum by Immunoassay",
+            "category": "Autoimmundiagnostik"
         },
         {
-            "code": "19238-5",
-            "description": "Base excess standard in Mixed venous blood by calculation"
+            "code": "15205-8",
+            "description": "Rheumatoid factor [Units/volume] in Serum by Nephelometry",
+            "category": "Autoimmundiagnostik"
         },
         {
-            "code": "49701-6",
-            "description": "pH of Blood adjusted to patient's actual temperature"
+            "code": "11572-5",
+            "description": "Rheumatoid factor [Units/volume] in Serum or Plasma",
+            "category": "Autoimmundiagnostik"
         },
         {
-            "code": "33254-4",
-            "description": "pH of Arterial blood adjusted to patient's actual temperature"
+            "code": "33577-8",
+            "description": "Rheumatoid factor IgM [Titer] in Serum by Nephelometry",
+            "category": "Autoimmundiagnostik"
         },
         {
-            "code": "39486-6",
-            "description": "pH of Venous blood adjusted to patient's actual temperature"
+            "code": "11573-3",
+            "description": "Rheumatoid factor IgM [Units/volume] in Serum",
+            "category": "Autoimmundiagnostik"
         },
         {
-            "code": "39485-8",
-            "description": "pH of Capillary blood adjusted to patient's actual temperature"
+            "code": "8092-9",
+            "description": "SCL-70 extractable nuclear Ab [Presence] in Serum",
+            "category": "Autoimmundiagnostik"
         },
         {
-            "code": "50980-2",
-            "description": "pH of Mixed venous blood adjusted to patient's actual temperature"
+            "code": "5348-8",
+            "description": "SCL-70 extractable nuclear Ab [Presence] in Serum by Immunoassay",
+            "category": "Autoimmundiagnostik"
         },
         {
-            "code": "11558-4",
-            "description": "pH of Blood"
+            "code": "56693-5",
+            "description": "SCL-70 extractable nuclear Ab [Presence] in Serum by Immunoblot",
+            "category": "Autoimmundiagnostik"
         },
         {
-            "code": "2744-1",
-            "description": "pH of Arterial blood"
+            "code": "27416-7",
+            "description": "SCL-70 extractable nuclear Ab [Units/volume] in Serum",
+            "category": "Autoimmundiagnostik"
         },
         {
-            "code": "2746-6",
-            "description": "pH of Venous blood"
+            "code": "53016-2",
+            "description": "Sjogrens syndrome-A extractable nuclear 52kD Ab [Presence] in Serum",
+            "category": "Autoimmundiagnostik"
         },
         {
-            "code": "2745-8",
-            "description": "pH of Capillary blood"
+            "code": "53018-8",
+            "description": "Sjogrens syndrome-A extractable nuclear 60kD Ab [Presence] in Serum",
+            "category": "Autoimmundiagnostik"
         },
         {
-            "code": "34705-4",
-            "description": "Carbon dioxide [Partial pressure] adjusted to patient's actual temperature in Blood"
+            "code": "8093-7",
+            "description": "Sjogrens syndrome-A extractable nuclear Ab [Presence] in Serum",
+            "category": "Autoimmundiagnostik"
         },
         {
-            "code": "32771-8",
-            "description": "Carbon dioxide [Partial pressure] adjusted to patient's actual temperature in Arterial blood"
+            "code": "5351-2",
+            "description": "Sjogrens syndrome-A extractable nuclear Ab [Presence] in Serum by Immunoassay",
+            "category": "Autoimmundiagnostik"
         },
         {
-            "code": "40619-9",
-            "description": "Carbon dioxide [Partial pressure] adjusted to patient's actual temperature in Venous blood"
+            "code": "56724-8",
+            "description": "Sjogrens syndrome-A extractable nuclear Ab [Presence] in Serum by Immunoblot",
+            "category": "Autoimmundiagnostik"
         },
         {
-            "code": "40620-7",
-            "description": "Carbon dioxide [Partial pressure] adjusted to patient's actual temperature in Capillary blood"
+            "code": "45142-7",
+            "description": "Sjogrens syndrome-B extractable nuclear Ab [Units/volume] in Serum by Immunoassay",
+            "category": "Autoimmundiagnostik"
         },
         {
-            "code": "50981-0",
-            "description": "Carbon dioxide [Partial pressure] adjusted to patient's actual temperature in Mixed venous blood"
+            "code": "43182-5",
+            "description": "Smith extractable nuclear Ab [Units/volume] in Serum by Immunoassay",
+            "category": "Autoimmundiagnostik"
         },
         {
-            "code": "11557-6",
-            "description": "Carbon dioxide [Partial pressure] in Blood"
+            "code": "89501-1",
+            "description": "Smith extractable nuclear Ab+Ribonucleoprotein extractable nuclear Ab [Presence] in Serum by Line blot",
+            "category": "Autoimmundiagnostik"
         },
         {
-            "code": "2021-4",
-            "description": "Carbon dioxide [Partial pressure] in Venous blood"
+            "code": "31017-7",
+            "description": "Tissue transglutaminase IgA Ab [Units/volume] in Serum",
+            "category": "Autoimmundiagnostik"
         },
         {
-            "code": "2019-8",
-            "description": "Carbon dioxide [Partial pressure] in Arterial blood"
+            "code": "46128-5",
+            "description": "Tissue transglutaminase IgA Ab [Units/volume] in Serum by Immunoassay",
+            "category": "Autoimmundiagnostik"
         },
         {
-            "code": "2020-6",
-            "description": "Carbon dioxide [Partial pressure] in Capillary blood"
+            "code": "59026-5",
+            "description": "U1 small nuclear ribonucleoprotein 70kD Ab [Units/volume] in Serum",
+            "category": "Autoimmundiagnostik"
         },
         {
-            "code": "2614-6",
-            "description": "Methemoglobin/Hemoglobin.total in Blood"
-        },
-        {
-            "code": "2615-3",
-            "description": "Methemoglobin/Hemoglobin.total in Arterial blood"
-        },
-        {
-            "code": "2617-9",
-            "description": "Methemoglobin/Hemoglobin.total in Venous blood"
-        },
-        {
-            "code": "2616-1",
-            "description": "Methemoglobin/Hemoglobin.total in Capillary blood"
-        },
-        {
-            "code": "41607-3",
-            "description": "Methemoglobin/Hemoglobin.total in Mixed venous blood"
-        },
-        {
-            "code": "19230-2",
-            "description": "Bicarbonate [Moles/volume] standard in Arterial blood"
-        },
-        {
-            "code": "19232-8",
-            "description": "Bicarbonate [Moles/volume] standard in Venous blood"
-        },
-        {
-            "code": "19231-0",
-            "description": "Bicarbonate [Moles/volume] standard in Capillary blood"
-        },
-        {
-            "code": "19233-6",
-            "description": "Bicarbonate [Moles/volume] standard in Mixed venous blood"
-        },
-        {
-            "code": "1960-4",
-            "description": "Bicarbonate [Moles/volume] in Arterial blood"
-        },
-        {
-            "code": "1963-8",
-            "description": "Bicarbonate [Moles/volume] in Serum or Plasma"
-        },
-        {
-            "code": "11555-0",
-            "description": "Base excess in Blood by calculation"
+            "code": "53022-0",
+            "description": "U1 small nuclear ribonucleoprotein Ab [Presence] in Serum",
+            "category": "Autoimmundiagnostik"
         },
         {
             "code": "1925-7",
-            "description": "Base excess in Arterial blood by calculation"
+            "description": "Base excess in Arterial blood by calculation",
+            "category": "Blutgasanalyse"
         },
         {
-            "code": "1927-3",
-            "description": "Base excess in Venous blood by calculation"
+            "code": "11555-0",
+            "description": "Base excess in Blood by calculation",
+            "category": "Blutgasanalyse"
         },
         {
             "code": "1926-5",
-            "description": "Base excess in Capillary blood by calculation"
+            "description": "Base excess in Capillary blood by calculation",
+            "category": "Blutgasanalyse"
         },
         {
             "code": "19234-4",
-            "description": "Base excess in Mixed venous blood by calculation"
+            "description": "Base excess in Mixed venous blood by calculation",
+            "category": "Blutgasanalyse"
         },
         {
-            "code": "20563-3",
-            "description": "Carboxyhemoglobin/Hemoglobin.total in Blood"
+            "code": "1927-3",
+            "description": "Base excess in Venous blood by calculation",
+            "category": "Blutgasanalyse"
         },
         {
-            "code": "2030-5",
-            "description": "Carboxyhemoglobin/Hemoglobin.total in Arterial blood"
+            "code": "19235-1",
+            "description": "Base excess standard in Arterial blood by calculation",
+            "category": "Blutgasanalyse"
         },
         {
-            "code": "2032-1",
-            "description": "Carboxyhemoglobin/Hemoglobin.total in Venous blood"
+            "code": "19236-9",
+            "description": "Base excess standard in Capillary blood by calculation",
+            "category": "Blutgasanalyse"
         },
         {
-            "code": "2031-3",
-            "description": "Carboxyhemoglobin/Hemoglobin.total in Capillary blood"
+            "code": "19238-5",
+            "description": "Base excess standard in Mixed venous blood by calculation",
+            "category": "Blutgasanalyse"
         },
         {
-            "code": "41648-7",
-            "description": "Carboxyhemoglobin/Hemoglobin.total in Mixed venous blood"
+            "code": "19237-7",
+            "description": "Base excess standard in Venous blood by calculation",
+            "category": "Blutgasanalyse"
         },
         {
-            "code": "32693-4",
-            "description": "Lactate [Moles/volume] in Blood"
+            "code": "1960-4",
+            "description": "Bicarbonate [Moles/volume] in Arterial blood",
+            "category": "Blutgasanalyse"
         },
         {
-            "code": "2518-9",
-            "description": "Lactate [Moles/volume] in Arterial blood"
+            "code": "1963-8",
+            "description": "Bicarbonate [Moles/volume] in Serum or Plasma",
+            "category": "Blutgasanalyse"
         },
         {
-            "code": "2519-7",
-            "description": "Lactate [Moles/volume] in Venous blood"
+            "code": "19230-2",
+            "description": "Bicarbonate [Moles/volume] standard in Arterial blood",
+            "category": "Blutgasanalyse"
         },
         {
-            "code": "19239-3",
-            "description": "Lactate [Moles/volume] in Capillary blood"
+            "code": "19231-0",
+            "description": "Bicarbonate [Moles/volume] standard in Capillary blood",
+            "category": "Blutgasanalyse"
         },
         {
-            "code": "19240-1",
-            "description": "Lactate [Moles/volume] in Mixed venous blood"
+            "code": "19233-6",
+            "description": "Bicarbonate [Moles/volume] standard in Mixed venous blood",
+            "category": "Blutgasanalyse"
         },
         {
-            "code": "2524-7",
-            "description": "Lactate [Moles/volume] in Serum or Plasma"
-        },
-        {
-            "code": "6298-4",
-            "description": "Potassium [Moles/volume] in Blood"
-        },
-        {
-            "code": "32713-0",
-            "description": "Potassium [Moles/volume] in Arterial blood"
-        },
-        {
-            "code": "39789-3",
-            "description": "Potassium [Moles/volume] in Venous blood"
-        },
-        {
-            "code": "39790-1",
-            "description": "Potassium [Moles/volume] in Capillary blood"
-        },
-        {
-            "code": "41656-0",
-            "description": "Potassium [Moles/volume] in Mixed venous blood"
-        },
-        {
-            "code": "2947-0",
-            "description": "Sodium [Moles/volume] in Blood"
-        },
-        {
-            "code": "32717-1",
-            "description": "Sodium [Moles/volume] in Arterial blood"
-        },
-        {
-            "code": "39791-9",
-            "description": "Sodium [Moles/volume] in Venous blood"
-        },
-        {
-            "code": "39792-7",
-            "description": "Sodium [Moles/volume] in Capillary blood"
-        },
-        {
-            "code": "41657-8",
-            "description": "Sodium [Moles/volume] in Mixed venous blood"
-        },
-        {
-            "code": "1994-3",
-            "description": "Calcium.ionized [Moles/volume] in Blood"
-        },
-        {
-            "code": "34581-9",
-            "description": "Calcium.ionized [Moles/volume] in Arterial blood"
-        },
-        {
-            "code": "41644-6",
-            "description": "Calcium.ionized [Moles/volume] in Capillary blood"
-        },
-        {
-            "code": "41645-3",
-            "description": "Calcium.ionized [Moles/volume] in Venous blood"
-        },
-        {
-            "code": "41646-1",
-            "description": "Calcium.ionized [Moles/volume] in Mixed venous blood"
-        },
-        {
-            "code": "1995-0",
-            "description": "Calcium.ionized [Moles/volume] in Serum or Plasma"
-        },
-        {
-            "code": "2339-0",
-            "description": "Glucose [Mass/volume] in Blood"
-        },
-        {
-            "code": "41651-1",
-            "description": "Glucose [Mass/volume] in Arterial blood"
-        },
-        {
-            "code": "41652-9",
-            "description": "Glucose [Mass/volume] in Venous blood"
-        },
-        {
-            "code": "32016-8",
-            "description": "Glucose [Mass/volume] in Capillary blood"
-        },
-        {
-            "code": "104655-6",
-            "description": "Glucose [Mass/volume] in Mixed venous blood"
-        },
-        {
-            "code": "65343-6",
-            "description": "Oxygen [Partial pressure] saturation adjusted to 0.5 in Blood"
-        },
-        {
-            "code": "19214-6",
-            "description": "Oxygen [Partial pressure] saturation adjusted to 0.5 in Arterial blood"
-        },
-        {
-            "code": "19216-1",
-            "description": "Oxygen [Partial pressure] saturation adjusted to 0.5 in Venous blood"
-        },
-        {
-            "code": "19215-3",
-            "description": "Oxygen [Partial pressure] saturation adjusted to 0.5 in Capillary blood"
-        },
-        {
-            "code": "19217-9",
-            "description": "Oxygen [Partial pressure] saturation adjusted to 0.5 in Mixed venous blood"
-        },
-        {
-            "code": "2069-3",
-            "description": "Chloride [Moles/volume] in Blood"
-        },
-        {
-            "code": "41650-3",
-            "description": "Chloride [Moles/volume] in Arterial blood"
-        },
-        {
-            "code": "41649-5",
-            "description": "Chloride [Moles/volume] in Venous blood"
-        },
-        {
-            "code": "51590-8",
-            "description": "Chloride [Moles/volume] in Capillary blood"
-        },
-        {
-            "code": "100745-9",
-            "description": "Chloride [Moles/volume] in Mixed venous blood"
-        },
-        {
-            "code": "2075-0",
-            "description": "Chloride [Moles/volume] in Serum or Plasma"
-        },
-        {
-            "code": "20570-8",
-            "description": "Hematocrit [Volume Fraction] of Blood by calculation"
-        },
-        {
-            "code": "32354-3",
-            "description": "Hematocrit [Volume Fraction] of Arterial blood by calculation"
-        },
-        {
-            "code": "41654-5",
-            "description": "Hematocrit [Volume Fraction] of Venous blood by calculation"
-        },
-        {
-            "code": "42908-4",
-            "description": "Hematocrit [Volume Fraction] of Capillary blood by calculation"
-        },
-        {
-            "code": "41655-2",
-            "description": "Hematocrit [Volume Fraction] of Mixed venous blood by calculation"
-        },
-        {
-            "code": "19254-2",
-            "description": "Oxygen [Partial pressure] adjusted to patient's actual temperature in Blood"
-        },
-        {
-            "code": "19255-9",
-            "description": "Oxygen [Partial pressure] adjusted to patient's actual temperature in Arterial blood"
-        },
-        {
-            "code": "19258-3",
-            "description": "Oxygen [Partial pressure] adjusted to patient's actual temperature in Venous blood"
-        },
-        {
-            "code": "19256-7",
-            "description": "Oxygen [Partial pressure] adjusted to patient's actual temperature in Capillary blood"
-        },
-        {
-            "code": "19257-5",
-            "description": "Oxygen [Partial pressure] adjusted to patient's actual temperature in Mixed venous blood"
-        },
-        {
-            "code": "2713-6",
-            "description": "Oxygen saturation Calculated from oxygen partial pressure in Blood"
-        },
-        {
-            "code": "51733-4",
-            "description": "Oxygen saturation Calculated from oxygen partial pressure in Arterial blood"
-        },
-        {
-            "code": "51731-8",
-            "description": "Oxygen saturation Calculated from oxygen partial pressure in Venous blood"
-        },
-        {
-            "code": "51732-6",
-            "description": "Oxygen saturation Calculated from oxygen partial pressure in Capillary blood"
-        },
-        {
-            "code": "74105-8",
-            "description": "Oxygen saturation Calculated from oxygen partial pressure in Mixed venous blood"
-        },
-        {
-            "code": "54363-7",
-            "description": "Bilirubin.total [Moles/volume] in Blood"
-        },
-        {
-            "code": "89872-6",
-            "description": "Bilirubin.total [Moles/volume] in Arterial blood"
-        },
-        {
-            "code": "97770-2",
-            "description": "Bilirubin.total [Moles/volume] in Capillary blood"
-        },
-        {
-            "code": "89871-8",
-            "description": "Bilirubin.total [Moles/volume] in Venous blood"
+            "code": "19232-8",
+            "description": "Bicarbonate [Moles/volume] standard in Venous blood",
+            "category": "Blutgasanalyse"
         },
         {
             "code": "59827-6",
-            "description": "Bilirubin.total [Mass/volume] in Arterial blood"
+            "description": "Bilirubin.total [Mass/volume] in Arterial blood",
+            "category": "Blutgasanalyse"
         },
         {
             "code": "1975-2",
-            "description": "Bilirubin.total [Mass/volume] in Serum or Plasma"
+            "description": "Bilirubin.total [Mass/volume] in Serum or Plasma",
+            "category": "Blutgasanalyse"
         },
         {
-            "code": "34487-9",
-            "description": "Influenza virus A RNA [Presence] in Specimen by NAA with probe detection"
+            "code": "89872-6",
+            "description": "Bilirubin.total [Moles/volume] in Arterial blood",
+            "category": "Blutgasanalyse"
         },
         {
-            "code": "60525-3",
-            "description": "Parechovirus RNA [Presence] in Specimen by NAA with probe detection"
+            "code": "54363-7",
+            "description": "Bilirubin.total [Moles/volume] in Blood",
+            "category": "Blutgasanalyse"
         },
         {
-            "code": "40988-8",
-            "description": "Respiratory syncytial virus RNA [Presence] in Specimen by NAA with probe detection"
+            "code": "97770-2",
+            "description": "Bilirubin.total [Moles/volume] in Capillary blood",
+            "category": "Blutgasanalyse"
         },
         {
-            "code": "76089-2",
-            "description": "Respiratory syncytial virus RNA [Presence] in Nasopharynx by NAA with probe detection"
+            "code": "89871-8",
+            "description": "Bilirubin.total [Moles/volume] in Venous blood",
+            "category": "Blutgasanalyse"
         },
         {
-            "code": "62424-7",
-            "description": "Human bocavirus DNA [Presence] in Specimen by NAA with probe detection"
+            "code": "34581-9",
+            "description": "Calcium.ionized [Moles/volume] in Arterial blood",
+            "category": "Blutgasanalyse"
         },
         {
-            "code": "40982-1",
-            "description": "Influenza virus B RNA [Presence] in Specimen by NAA with probe detection"
+            "code": "1994-3",
+            "description": "Calcium.ionized [Moles/volume] in Blood",
+            "category": "Blutgasanalyse"
         },
         {
-            "code": "101421-6",
-            "description": "Human coronavirus NL63 RNA [Presence] in Respiratory system specimen by NAA with probe detection"
+            "code": "41644-6",
+            "description": "Calcium.ionized [Moles/volume] in Capillary blood",
+            "category": "Blutgasanalyse"
         },
         {
-            "code": "101422-4",
-            "description": "Human coronavirus OC43 RNA [Presence] in Respiratory system specimen by NAA with probe detection"
+            "code": "41646-1",
+            "description": "Calcium.ionized [Moles/volume] in Mixed venous blood",
+            "category": "Blutgasanalyse"
         },
         {
-            "code": "7993-9",
-            "description": "Rhinovirus RNA [Presence] in Specimen by NAA with probe detection"
+            "code": "1995-0",
+            "description": "Calcium.ionized [Moles/volume] in Serum or Plasma",
+            "category": "Blutgasanalyse"
         },
         {
-            "code": "29591-5",
-            "description": "Enterovirus RNA [Presence] in Specimen by NAA with probe detection"
+            "code": "41645-3",
+            "description": "Calcium.ionized [Moles/volume] in Venous blood",
+            "category": "Blutgasanalyse"
         },
         {
-            "code": "55465-9",
-            "description": "Influenza virus A H1 2009 pandemic RNA [Presence] in Specimen by NAA with probe detection"
+            "code": "32771-8",
+            "description": "Carbon dioxide [Partial pressure] adjusted to patient's actual temperature in Arterial blood",
+            "category": "Blutgasanalyse"
         },
         {
-            "code": "49521-8",
-            "description": "Influenza virus A H1 RNA [Presence] in Specimen by NAA with probe detection"
+            "code": "34705-4",
+            "description": "Carbon dioxide [Partial pressure] adjusted to patient's actual temperature in Blood",
+            "category": "Blutgasanalyse"
         },
         {
-            "code": "101419-0",
-            "description": "Human coronavirus 229E RNA [Presence] in Respiratory system specimen by NAA with probe detection"
+            "code": "40620-7",
+            "description": "Carbon dioxide [Partial pressure] adjusted to patient's actual temperature in Capillary blood",
+            "category": "Blutgasanalyse"
         },
         {
-            "code": "31924-4",
-            "description": "Parainfluenza virus 1 Ag [Presence] in Specimen"
+            "code": "50981-0",
+            "description": "Carbon dioxide [Partial pressure] adjusted to patient's actual temperature in Mixed venous blood",
+            "category": "Blutgasanalyse"
         },
         {
-            "code": "29909-9",
-            "description": "Parainfluenza virus 2 RNA [Presence] in Specimen by NAA with probe detection"
+            "code": "40619-9",
+            "description": "Carbon dioxide [Partial pressure] adjusted to patient's actual temperature in Venous blood",
+            "category": "Blutgasanalyse"
         },
         {
-            "code": "29910-7",
-            "description": "Parainfluenza virus 3 RNA [Presence] in Specimen by NAA with probe detection"
+            "code": "2019-8",
+            "description": "Carbon dioxide [Partial pressure] in Arterial blood",
+            "category": "Blutgasanalyse"
         },
         {
-            "code": "39528-5",
-            "description": "Adenovirus DNA [Presence] in Specimen by NAA with probe detection"
+            "code": "11557-6",
+            "description": "Carbon dioxide [Partial pressure] in Blood",
+            "category": "Blutgasanalyse"
         },
         {
-            "code": "88539-2",
-            "description": "Adenovirus DNA [Presence] in Stool by NAA with probe detection"
+            "code": "2020-6",
+            "description": "Carbon dioxide [Partial pressure] in Capillary blood",
+            "category": "Blutgasanalyse"
         },
         {
-            "code": "101420-8",
-            "description": "Human coronavirus HKU1 RNA [Presence] in Respiratory system specimen by NAA with probe detection"
+            "code": "2021-4",
+            "description": "Carbon dioxide [Partial pressure] in Venous blood",
+            "category": "Blutgasanalyse"
         },
         {
-            "code": "38917-1",
-            "description": "Human metapneumovirus RNA [Presence] in Specimen by NAA with probe detection"
+            "code": "2030-5",
+            "description": "Carboxyhemoglobin/Hemoglobin.total in Arterial blood",
+            "category": "Blutgasanalyse"
         },
         {
-            "code": "29257-3",
-            "description": "Mycoplasma pneumoniae DNA [Presence] in Specimen by NAA with probe detection"
+            "code": "20563-3",
+            "description": "Carboxyhemoglobin/Hemoglobin.total in Blood",
+            "category": "Blutgasanalyse"
         },
         {
-            "code": "92126-2",
-            "description": "Mycoplasma pneumoniae DNA [Presence] in Respiratory system specimen by NAA with probe detection"
+            "code": "2031-3",
+            "description": "Carboxyhemoglobin/Hemoglobin.total in Capillary blood",
+            "category": "Blutgasanalyse"
         },
         {
-            "code": "2951-2",
-            "description": "Sodium [Moles/volume] in Serum or Plasma"
+            "code": "41648-7",
+            "description": "Carboxyhemoglobin/Hemoglobin.total in Mixed venous blood",
+            "category": "Blutgasanalyse"
         },
         {
-            "code": "2823-3",
-            "description": "Potassium [Moles/volume] in Serum or Plasma"
+            "code": "2032-1",
+            "description": "Carboxyhemoglobin/Hemoglobin.total in Venous blood",
+            "category": "Blutgasanalyse"
         },
         {
-            "code": "2000-8",
-            "description": "Calcium [Moles/volume] in Serum or Plasma"
+            "code": "41650-3",
+            "description": "Chloride [Moles/volume] in Arterial blood",
+            "category": "Blutgasanalyse"
         },
         {
-            "code": "2601-3",
-            "description": "Magnesium [Moles/volume] in Serum or Plasma"
+            "code": "2069-3",
+            "description": "Chloride [Moles/volume] in Blood",
+            "category": "Blutgasanalyse"
         },
         {
-            "code": "1920-8",
-            "description": "Aspartate aminotransferase [Enzymatic activity/volume] in Serum or Plasma"
+            "code": "51590-8",
+            "description": "Chloride [Moles/volume] in Capillary blood",
+            "category": "Blutgasanalyse"
         },
         {
-            "code": "1742-6",
-            "description": "Alanine aminotransferase [Enzymatic activity/volume] in Serum or Plasma"
+            "code": "100745-9",
+            "description": "Chloride [Moles/volume] in Mixed venous blood",
+            "category": "Blutgasanalyse"
         },
         {
-            "code": "2324-2",
-            "description": "Gamma glutamyl transferase [Enzymatic activity/volume] in Serum or Plasma"
+            "code": "2075-0",
+            "description": "Chloride [Moles/volume] in Serum or Plasma",
+            "category": "Blutgasanalyse"
         },
         {
-            "code": "1968-7",
-            "description": "Bilirubin.direct [Mass/volume] in Serum or Plasma"
+            "code": "41649-5",
+            "description": "Chloride [Moles/volume] in Venous blood",
+            "category": "Blutgasanalyse"
         },
         {
-            "code": "2160-0",
-            "description": "Creatinine [Mass/volume] in Serum or Plasma"
+            "code": "41651-1",
+            "description": "Glucose [Mass/volume] in Arterial blood",
+            "category": "Blutgasanalyse"
         },
         {
-            "code": "20977-5",
-            "description": "Urea [Mass/volume] in Blood"
+            "code": "2339-0",
+            "description": "Glucose [Mass/volume] in Blood",
+            "category": "Blutgasanalyse"
         },
         {
-            "code": "3091-6",
-            "description": "Urea [Mass/volume] in Serum or Plasma"
+            "code": "32016-8",
+            "description": "Glucose [Mass/volume] in Capillary blood",
+            "category": "Blutgasanalyse"
         },
         {
-            "code": "72926-9",
-            "description": "Urea [Moles/volume] in Venous blood"
+            "code": "104655-6",
+            "description": "Glucose [Mass/volume] in Mixed venous blood",
+            "category": "Blutgasanalyse"
         },
         {
-            "code": "72927-7",
-            "description": "Urea [Moles/volume] in Arterial blood"
+            "code": "41652-9",
+            "description": "Glucose [Mass/volume] in Venous blood",
+            "category": "Blutgasanalyse"
         },
         {
-            "code": "3094-0",
-            "description": "Urea nitrogen [Mass/volume] in Serum or Plasma"
+            "code": "32354-3",
+            "description": "Hematocrit [Volume Fraction] of Arterial blood by calculation",
+            "category": "Blutgasanalyse"
         },
         {
-            "code": "33914-3",
-            "description": "Glomerular filtration rate [Volume Rate/Area] in Serum or Plasma by Creatinine-based formula (MDRD)/1.73 sq M"
+            "code": "20570-8",
+            "description": "Hematocrit [Volume Fraction] of Blood by calculation",
+            "category": "Blutgasanalyse"
         },
         {
-            "code": "69405-9",
-            "description": "Glomerular filtration rate [Volume Rate/Area] in Serum, Plasma or Blood by based on 1.73 sq M"
+            "code": "42908-4",
+            "description": "Hematocrit [Volume Fraction] of Capillary blood by calculation",
+            "category": "Blutgasanalyse"
         },
         {
-            "code": "62238-1",
-            "description": "Glomerular filtration rate [Volume Rate/Area] in Serum, Plasma or Blood by Creatinine-based formula (CKD-EPI)/1.73 sq M"
+            "code": "41655-2",
+            "description": "Hematocrit [Volume Fraction] of Mixed venous blood by calculation",
+            "category": "Blutgasanalyse"
         },
         {
-            "code": "14879-1",
-            "description": "Phosphate [Moles/volume] in Serum or Plasma"
+            "code": "41654-5",
+            "description": "Hematocrit [Volume Fraction] of Venous blood by calculation",
+            "category": "Blutgasanalyse"
         },
         {
-            "code": "2777-1",
-            "description": "Phosphate [Mass/volume] in Serum or Plasma"
+            "code": "30313-1",
+            "description": "Hemoglobin [Mass/volume] in Arterial blood",
+            "category": "Blutgasanalyse"
         },
         {
-            "code": "1988-5",
-            "description": "C reactive protein [Mass/volume] in Serum or Plasma"
+            "code": "718-7",
+            "description": "Hemoglobin [Mass/volume] in Blood",
+            "category": "Blutgasanalyse"
         },
         {
-            "code": "30522-7",
-            "description": "C reactive protein [Mass/volume] in Serum or Plasma by High sensitivity method"
+            "code": "30352-9",
+            "description": "Hemoglobin [Mass/volume] in Capillary blood",
+            "category": "Blutgasanalyse"
         },
         {
-            "code": "75241-0",
-            "description": "Procalcitonin [Mass/volume] in Serum or Plasma by Immunoassay"
+            "code": "30351-1",
+            "description": "Hemoglobin [Mass/volume] in Mixed venous blood",
+            "category": "Blutgasanalyse"
         },
         {
-            "code": "33959-8",
-            "description": "Procalcitonin [Mass/volume] in Serum or Plasma"
+            "code": "30350-3",
+            "description": "Hemoglobin [Mass/volume] in Venous blood",
+            "category": "Blutgasanalyse"
         },
         {
-            "code": "3016-3",
-            "description": "Thyrotropin [Units/volume] in Serum or Plasma"
+            "code": "2518-9",
+            "description": "Lactate [Moles/volume] in Arterial blood",
+            "category": "Blutgasanalyse"
         },
         {
-            "code": "11580-8",
-            "description": "Thyrotropin [Units/volume] in Serum or Plasma by Detection limit <= 0.005 mIU/L"
+            "code": "32693-4",
+            "description": "Lactate [Moles/volume] in Blood",
+            "category": "Blutgasanalyse"
         },
         {
-            "code": "83126-3",
-            "description": "Triiodothyronine (T3) Free [Moles/volume] in Serum or Plasma by Immunoassay"
+            "code": "19239-3",
+            "description": "Lactate [Moles/volume] in Capillary blood",
+            "category": "Blutgasanalyse"
         },
         {
-            "code": "14928-6",
-            "description": "Triiodothyronine (T3) Free [Moles/volume] in Serum or Plasma"
+            "code": "19240-1",
+            "description": "Lactate [Moles/volume] in Mixed venous blood",
+            "category": "Blutgasanalyse"
         },
         {
-            "code": "3051-0",
-            "description": "Triiodothyronine (T3) Free [Mass/volume] in Serum or Plasma"
+            "code": "2524-7",
+            "description": "Lactate [Moles/volume] in Serum or Plasma",
+            "category": "Blutgasanalyse"
         },
         {
-            "code": "83127-1",
-            "description": "Triiodothyronine (T3) Free [Mass/volume] in Serum or Plasma by Immunoassay"
+            "code": "2519-7",
+            "description": "Lactate [Moles/volume] in Venous blood",
+            "category": "Blutgasanalyse"
         },
         {
-            "code": "83121-4",
-            "description": "Thyroxine (T4) free [Moles/volume] in Serum or Plasma by Immunoassay"
+            "code": "2615-3",
+            "description": "Methemoglobin/Hemoglobin.total in Arterial blood",
+            "category": "Blutgasanalyse"
         },
         {
-            "code": "14920-3",
-            "description": "Thyroxine (T4) free [Moles/volume] in Serum or Plasma"
+            "code": "2614-6",
+            "description": "Methemoglobin/Hemoglobin.total in Blood",
+            "category": "Blutgasanalyse"
         },
         {
-            "code": "3024-7",
-            "description": "Thyroxine (T4) free [Mass/volume] in Serum or Plasma"
+            "code": "2616-1",
+            "description": "Methemoglobin/Hemoglobin.total in Capillary blood",
+            "category": "Blutgasanalyse"
         },
         {
-            "code": "83122-2",
-            "description": "Thyroxine (T4) free [Mass/volume] in Serum or Plasma by Immunoassay"
+            "code": "41607-3",
+            "description": "Methemoglobin/Hemoglobin.total in Mixed venous blood",
+            "category": "Blutgasanalyse"
         },
         {
-            "code": "66120-7",
-            "description": "Thyroid Pathology biopsy report"
+            "code": "2617-9",
+            "description": "Methemoglobin/Hemoglobin.total in Venous blood",
+            "category": "Blutgasanalyse"
         },
         {
-            "code": "2885-2",
-            "description": "Protein [Mass/volume] in Serum or Plasma"
+            "code": "19255-9",
+            "description": "Oxygen [Partial pressure] adjusted to patient's actual temperature in Arterial blood",
+            "category": "Blutgasanalyse"
         },
         {
-            "code": "14804-9",
-            "description": "Lactate dehydrogenase [Enzymatic activity/volume] in Serum or Plasma by Lactate to pyruvate reaction"
+            "code": "19254-2",
+            "description": "Oxygen [Partial pressure] adjusted to patient's actual temperature in Blood",
+            "category": "Blutgasanalyse"
         },
         {
-            "code": "2532-0",
-            "description": "Lactate dehydrogenase [Enzymatic activity/volume] in Serum or Plasma"
+            "code": "19256-7",
+            "description": "Oxygen [Partial pressure] adjusted to patient's actual temperature in Capillary blood",
+            "category": "Blutgasanalyse"
         },
         {
-            "code": "6768-6",
-            "description": "Alkaline phosphatase [Enzymatic activity/volume] in Serum or Plasma"
+            "code": "19257-5",
+            "description": "Oxygen [Partial pressure] adjusted to patient's actual temperature in Mixed venous blood",
+            "category": "Blutgasanalyse"
         },
         {
-            "code": "2157-6",
-            "description": "Creatine kinase [Enzymatic activity/volume] in Serum or Plasma"
+            "code": "19258-3",
+            "description": "Oxygen [Partial pressure] adjusted to patient's actual temperature in Venous blood",
+            "category": "Blutgasanalyse"
         },
         {
-            "code": "32673-6",
-            "description": "Creatine kinase.MB [Enzymatic activity/volume] in Serum or Plasma"
+            "code": "2703-7",
+            "description": "Oxygen [Partial pressure] in Arterial blood",
+            "category": "Blutgasanalyse"
         },
         {
-            "code": "20569-0",
-            "description": "Creatine kinase.MB/Creatine kinase.total in Serum or Plasma"
+            "code": "11556-8",
+            "description": "Oxygen [Partial pressure] in Blood",
+            "category": "Blutgasanalyse"
         },
         {
-            "code": "3040-3",
-            "description": "Lipase [Enzymatic activity/volume] in Serum or Plasma"
+            "code": "2704-5",
+            "description": "Oxygen [Partial pressure] in Capillary blood",
+            "category": "Blutgasanalyse"
         },
         {
-            "code": "3084-1",
-            "description": "Urate [Mass/volume] in Serum or Plasma"
+            "code": "19211-2",
+            "description": "Oxygen [Partial pressure] in Mixed venous blood",
+            "category": "Blutgasanalyse"
         },
         {
-            "code": "1751-7",
-            "description": "Albumin [Mass/volume] in Serum or Plasma"
+            "code": "2705-2",
+            "description": "Oxygen [Partial pressure] in Venous blood",
+            "category": "Blutgasanalyse"
         },
         {
-            "code": "1805-1",
-            "description": "Amylase.pancreatic [Enzymatic activity/volume] in Serum or Plasma"
+            "code": "19214-6",
+            "description": "Oxygen [Partial pressure] saturation adjusted to 0.5 in Arterial blood",
+            "category": "Blutgasanalyse"
         },
         {
-            "code": "1798-8",
-            "description": "Amylase [Enzymatic activity/volume] in Serum or Plasma"
+            "code": "65343-6",
+            "description": "Oxygen [Partial pressure] saturation adjusted to 0.5 in Blood",
+            "category": "Blutgasanalyse"
         },
         {
-            "code": "2098-2",
-            "description": "Cholinesterase [Enzymatic activity/volume] in Serum or Plasma"
+            "code": "19215-3",
+            "description": "Oxygen [Partial pressure] saturation adjusted to 0.5 in Capillary blood",
+            "category": "Blutgasanalyse"
         },
         {
-            "code": "2639-3",
-            "description": "Myoglobin [Mass/volume] in Serum or Plasma"
+            "code": "19217-9",
+            "description": "Oxygen [Partial pressure] saturation adjusted to 0.5 in Mixed venous blood",
+            "category": "Blutgasanalyse"
         },
         {
-            "code": "18182-6",
-            "description": "Osmolality of Serum or Plasma by calculated by sum of electrolytes"
+            "code": "19216-1",
+            "description": "Oxygen [Partial pressure] saturation adjusted to 0.5 in Venous blood",
+            "category": "Blutgasanalyse"
         },
         {
-            "code": "2692-2",
-            "description": "Osmolality of Serum or Plasma"
+            "code": "51733-4",
+            "description": "Oxygen saturation Calculated from oxygen partial pressure in Arterial blood",
+            "category": "Blutgasanalyse"
         },
         {
-            "code": "20567-4",
-            "description": "Ferritin [Mass/volume] in Serum or Plasma by Immunoassay"
+            "code": "2713-6",
+            "description": "Oxygen saturation Calculated from oxygen partial pressure in Blood",
+            "category": "Blutgasanalyse"
         },
         {
-            "code": "2276-4",
-            "description": "Ferritin [Mass/volume] in Serum or Plasma"
+            "code": "51732-6",
+            "description": "Oxygen saturation Calculated from oxygen partial pressure in Capillary blood",
+            "category": "Blutgasanalyse"
         },
         {
-            "code": "14798-3",
-            "description": "Iron [Moles/volume] in Serum or Plasma"
+            "code": "74105-8",
+            "description": "Oxygen saturation Calculated from oxygen partial pressure in Mixed venous blood",
+            "category": "Blutgasanalyse"
         },
         {
-            "code": "2498-4",
-            "description": "Iron [Mass/volume] in Serum or Plasma"
+            "code": "51731-8",
+            "description": "Oxygen saturation Calculated from oxygen partial pressure in Venous blood",
+            "category": "Blutgasanalyse"
         },
         {
-            "code": "3034-6",
-            "description": "Transferrin [Mass/volume] in Serum or Plasma"
+            "code": "2708-6",
+            "description": "Oxygen saturation in Arterial blood",
+            "category": "Blutgasanalyse"
         },
         {
-            "code": "2502-3",
-            "description": "Iron saturation [Mass Fraction] in Serum or Plasma"
+            "code": "20564-1",
+            "description": "Oxygen saturation in Blood",
+            "category": "Blutgasanalyse"
         },
         {
-            "code": "13452-8",
-            "description": "Iron/Transferrin [Mass Ratio] in Serum or Plasma"
+            "code": "2709-4",
+            "description": "Oxygen saturation in Capillary blood",
+            "category": "Blutgasanalyse"
         },
         {
-            "code": "2345-7",
-            "description": "Glucose [Mass/volume] in Serum or Plasma"
+            "code": "19224-5",
+            "description": "Oxygen saturation in Mixed venous blood",
+            "category": "Blutgasanalyse"
         },
         {
-            "code": "2571-8",
-            "description": "Triglyceride [Mass/volume] in Serum or Plasma"
+            "code": "2711-0",
+            "description": "Oxygen saturation in Venous blood",
+            "category": "Blutgasanalyse"
         },
         {
-            "code": "2093-3",
-            "description": "Cholesterol [Mass/volume] in Serum or Plasma"
+            "code": "2744-1",
+            "description": "pH of Arterial blood",
+            "category": "Blutgasanalyse"
         },
         {
-            "code": "2089-1",
-            "description": "Cholesterol in LDL [Mass/volume] in Serum or Plasma"
+            "code": "33254-4",
+            "description": "pH of Arterial blood adjusted to patient's actual temperature",
+            "category": "Blutgasanalyse"
         },
         {
-            "code": "2085-9",
-            "description": "Cholesterol in HDL [Mass/volume] in Serum or Plasma"
+            "code": "11558-4",
+            "description": "pH of Blood",
+            "category": "Blutgasanalyse"
         },
         {
-            "code": "43396-1",
-            "description": "Cholesterol non HDL [Mass/volume] in Serum or Plasma"
+            "code": "49701-6",
+            "description": "pH of Blood adjusted to patient's actual temperature",
+            "category": "Blutgasanalyse"
         },
         {
-            "code": "17856-6",
-            "description": "Hemoglobin A1c/Hemoglobin.total in Blood by HPLC"
+            "code": "2745-8",
+            "description": "pH of Capillary blood",
+            "category": "Blutgasanalyse"
         },
         {
-            "code": "4548-4",
-            "description": "Hemoglobin A1c/Hemoglobin.total in Blood"
+            "code": "39485-8",
+            "description": "pH of Capillary blood adjusted to patient's actual temperature",
+            "category": "Blutgasanalyse"
         },
         {
-            "code": "71875-9",
-            "description": "Hemoglobin A1c/Hemoglobin.total [Pure mass fraction] in Blood"
+            "code": "50980-2",
+            "description": "pH of Mixed venous blood adjusted to patient's actual temperature",
+            "category": "Blutgasanalyse"
         },
         {
-            "code": "89579-7",
-            "description": "Troponin I.cardiac [Mass/volume] in Serum or Plasma by High sensitivity method"
+            "code": "2746-6",
+            "description": "pH of Venous blood",
+            "category": "Blutgasanalyse"
         },
         {
-            "code": "6598-7",
-            "description": "Troponin T.cardiac [Mass/volume] in Serum or Plasma"
+            "code": "39486-6",
+            "description": "pH of Venous blood adjusted to patient's actual temperature",
+            "category": "Blutgasanalyse"
         },
         {
-            "code": "48425-3",
-            "description": "Troponin T.cardiac [Mass/volume] in Blood"
+            "code": "32713-0",
+            "description": "Potassium [Moles/volume] in Arterial blood",
+            "category": "Blutgasanalyse"
         },
         {
-            "code": "10839-9",
-            "description": "Troponin I.cardiac [Mass/volume] in Serum or Plasma"
+            "code": "6298-4",
+            "description": "Potassium [Moles/volume] in Blood",
+            "category": "Blutgasanalyse"
         },
         {
-            "code": "30934-4",
-            "description": "Natriuretic peptide B [Mass/volume] in Serum or Plasma"
+            "code": "39790-1",
+            "description": "Potassium [Moles/volume] in Capillary blood",
+            "category": "Blutgasanalyse"
         },
         {
-            "code": "33762-6",
-            "description": "Natriuretic peptide.B prohormone N-Terminal [Mass/volume] in Serum or Plasma"
+            "code": "41656-0",
+            "description": "Potassium [Moles/volume] in Mixed venous blood",
+            "category": "Blutgasanalyse"
         },
         {
-            "code": "71425-3",
-            "description": "Natriuretic peptide.B prohormone N-Terminal [Mass/volume] in Blood by Immunoassay"
+            "code": "39789-3",
+            "description": "Potassium [Moles/volume] in Venous blood",
+            "category": "Blutgasanalyse"
         },
         {
-            "code": "42637-9",
-            "description": "Natriuretic peptide B [Mass/volume] in Blood"
+            "code": "32717-1",
+            "description": "Sodium [Moles/volume] in Arterial blood",
+            "category": "Blutgasanalyse"
         },
         {
-            "code": "83107-3",
-            "description": "Natriuretic peptide.B prohormone N-Terminal [Mass/volume] in Serum or Plasma by Immunoassay"
+            "code": "2947-0",
+            "description": "Sodium [Moles/volume] in Blood",
+            "category": "Blutgasanalyse"
         },
         {
-            "code": "26464-8",
-            "description": "Leukocytes [#/volume] in Blood"
+            "code": "39792-7",
+            "description": "Sodium [Moles/volume] in Capillary blood",
+            "category": "Blutgasanalyse"
         },
         {
-            "code": "6690-2",
-            "description": "Leukocytes [#/volume] in Blood by Automated count"
+            "code": "41657-8",
+            "description": "Sodium [Moles/volume] in Mixed venous blood",
+            "category": "Blutgasanalyse"
         },
         {
-            "code": "804-5",
-            "description": "Leukocytes [#/volume] in Blood by Manual count"
-        },
-        {
-            "code": "26453-1",
-            "description": "Erythrocytes [#/volume] in Blood"
-        },
-        {
-            "code": "789-8",
-            "description": "Erythrocytes [#/volume] in Blood by Automated count"
-        },
-        {
-            "code": "790-6",
-            "description": "Erythrocytes [#/volume] in Blood by Manual count"
-        },
-        {
-            "code": "4544-3",
-            "description": "Hematocrit [Volume Fraction] of Blood by Automated count"
-        },
-        {
-            "code": "30428-7",
-            "description": "MCV [Entitic mean volume] in Red Blood Cells"
-        },
-        {
-            "code": "787-2",
-            "description": "MCV [Entitic mean volume] in Red Blood Cells by Automated count"
-        },
-        {
-            "code": "28539-5",
-            "description": "MCH [Entitic mass]"
-        },
-        {
-            "code": "785-6",
-            "description": "MCH [Entitic mass] by Automated count"
-        },
-        {
-            "code": "28540-3",
-            "description": "MCHC [Entitic Mass/volume] in Red Blood Cells"
-        },
-        {
-            "code": "786-4",
-            "description": "MCHC [Entitic Mass/volume] in Red Blood Cells by Automated count"
-        },
-        {
-            "code": "26515-7",
-            "description": "Platelets [#/volume] in Blood"
-        },
-        {
-            "code": "777-3",
-            "description": "Platelets [#/volume] in Blood by Automated count"
-        },
-        {
-            "code": "28542-9",
-            "description": "Platelet [Entitic mean volume] in Blood"
-        },
-        {
-            "code": "32623-1",
-            "description": "Platelet [Entitic mean volume] in Blood by Automated count"
-        },
-        {
-            "code": "32207-3",
-            "description": "Platelet distribution width [Entitic volume] in Blood by Automated count"
-        },
-        {
-            "code": "30384-2",
-            "description": "Deprecated Erythrocyte distribution width [Entitic volume]"
-        },
-        {
-            "code": "21000-5",
-            "description": "Erythrocyte distribution width [Entitic volume] by Automated count"
-        },
-        {
-            "code": "788-0",
-            "description": "Erythrocyte [DistWidth] in Blood by Automated count"
-        },
-        {
-            "code": "26511-6",
-            "description": "Neutrophils/Leukocytes in Blood"
-        },
-        {
-            "code": "770-8",
-            "description": "Neutrophils/Leukocytes in Blood by Automated count"
-        },
-        {
-            "code": "23761-0",
-            "description": "Neutrophils/Leukocytes in Blood by Manual count"
-        },
-        {
-            "code": "26499-4",
-            "description": "Neutrophils [#/volume] in Blood"
-        },
-        {
-            "code": "751-8",
-            "description": "Neutrophils [#/volume] in Blood by Automated count"
-        },
-        {
-            "code": "753-4",
-            "description": "Neutrophils [#/volume] in Blood by Manual count"
-        },
-        {
-            "code": "26478-8",
-            "description": "Lymphocytes/Leukocytes in Blood"
-        },
-        {
-            "code": "736-9",
-            "description": "Lymphocytes/Leukocytes in Blood by Automated count"
-        },
-        {
-            "code": "737-7",
-            "description": "Lymphocytes/Leukocytes in Blood by Manual count"
-        },
-        {
-            "code": "26474-7",
-            "description": "Lymphocytes [#/volume] in Blood"
-        },
-        {
-            "code": "731-0",
-            "description": "Lymphocytes [#/volume] in Blood by Automated count"
-        },
-        {
-            "code": "732-8",
-            "description": "Lymphocytes [#/volume] in Blood by Manual count"
-        },
-        {
-            "code": "26485-3",
-            "description": "Monocytes/Leukocytes in Blood"
-        },
-        {
-            "code": "5905-5",
-            "description": "Monocytes/Leukocytes in Blood by Automated count"
-        },
-        {
-            "code": "744-3",
-            "description": "Monocytes/Leukocytes in Blood by Manual count"
-        },
-        {
-            "code": "26484-6",
-            "description": "Monocytes [#/volume] in Blood"
-        },
-        {
-            "code": "742-7",
-            "description": "Monocytes [#/volume] in Blood by Automated count"
-        },
-        {
-            "code": "743-5",
-            "description": "Monocytes [#/volume] in Blood by Manual count"
-        },
-        {
-            "code": "26450-7",
-            "description": "Eosinophils/Leukocytes in Blood"
-        },
-        {
-            "code": "713-8",
-            "description": "Eosinophils/Leukocytes in Blood by Automated count"
-        },
-        {
-            "code": "714-6",
-            "description": "Eosinophils/Leukocytes in Blood by Manual count"
-        },
-        {
-            "code": "26449-9",
-            "description": "Eosinophils [#/volume] in Blood"
-        },
-        {
-            "code": "711-2",
-            "description": "Eosinophils [#/volume] in Blood by Automated count"
-        },
-        {
-            "code": "712-0",
-            "description": "Eosinophils [#/volume] in Blood by Manual count"
-        },
-        {
-            "code": "30180-4",
-            "description": "Basophils/Leukocytes in Blood"
-        },
-        {
-            "code": "706-2",
-            "description": "Basophils/Leukocytes in Blood by Automated count"
-        },
-        {
-            "code": "707-0",
-            "description": "Basophils/Leukocytes in Blood by Manual count"
-        },
-        {
-            "code": "26444-0",
-            "description": "Basophils [#/volume] in Blood"
-        },
-        {
-            "code": "704-7",
-            "description": "Basophils [#/volume] in Blood by Automated count"
-        },
-        {
-            "code": "705-4",
-            "description": "Basophils [#/volume] in Blood by Manual count"
-        },
-        {
-            "code": "38518-7",
-            "description": "Immature granulocytes/Leukocytes in Blood"
-        },
-        {
-            "code": "71695-1",
-            "description": "Immature granulocytes/Leukocytes in Blood by Automated count"
-        },
-        {
-            "code": "51584-1",
-            "description": "Immature granulocytes [#/volume] in Blood"
-        },
-        {
-            "code": "53115-2",
-            "description": "Immature granulocytes [#/volume] in Blood by Automated count"
+            "code": "39791-9",
+            "description": "Sodium [Moles/volume] in Venous blood",
+            "category": "Blutgasanalyse"
         },
         {
             "code": "26508-2",
-            "description": "Band form neutrophils/Leukocytes in Blood"
-        },
-        {
-            "code": "764-1",
-            "description": "Band form neutrophils/Leukocytes in Blood by Manual count"
+            "description": "Band form neutrophils/Leukocytes in Blood",
+            "category": "Hämatologie"
         },
         {
             "code": "35332-6",
-            "description": "Band form neutrophils/Leukocytes in Blood by Automated count"
+            "description": "Band form neutrophils/Leukocytes in Blood by Automated count",
+            "category": "Hämatologie"
         },
         {
-            "code": "26505-8",
-            "description": "Segmented neutrophils/Leukocytes in Blood"
+            "code": "764-1",
+            "description": "Band form neutrophils/Leukocytes in Blood by Manual count",
+            "category": "Hämatologie"
         },
         {
-            "code": "32200-8",
-            "description": "Segmented neutrophils/Leukocytes in Blood by Automated count"
+            "code": "26444-0",
+            "description": "Basophils [#/volume] in Blood",
+            "category": "Hämatologie"
         },
         {
-            "code": "769-0",
-            "description": "Segmented neutrophils/Leukocytes in Blood by Manual count"
+            "code": "704-7",
+            "description": "Basophils [#/volume] in Blood by Automated count",
+            "category": "Hämatologie"
         },
         {
-            "code": "30451-9",
-            "description": "Segmented neutrophils [#/volume] in Blood"
+            "code": "705-4",
+            "description": "Basophils [#/volume] in Blood by Manual count",
+            "category": "Hämatologie"
         },
         {
-            "code": "768-2",
-            "description": "Segmented neutrophils [#/volume] in Blood by Manual count"
+            "code": "30180-4",
+            "description": "Basophils/Leukocytes in Blood",
+            "category": "Hämatologie"
         },
         {
-            "code": "19048-8",
-            "description": "Nucleated erythrocytes/Leukocytes [Ratio] in Blood"
+            "code": "706-2",
+            "description": "Basophils/Leukocytes in Blood by Automated count",
+            "category": "Hämatologie"
         },
         {
-            "code": "33990-3",
-            "description": "Normoblasts/Leukocytes in Blood"
+            "code": "707-0",
+            "description": "Basophils/Leukocytes in Blood by Manual count",
+            "category": "Hämatologie"
         },
         {
-            "code": "30392-5",
-            "description": "Nucleated erythrocytes [#/volume] in Blood"
+            "code": "30384-2",
+            "description": "Deprecated Erythrocyte distribution width [Entitic volume]",
+            "category": "Hämatologie"
         },
         {
-            "code": "772-4",
-            "description": "Nucleated erythrocytes [#/volume] in Blood by Manual count"
+            "code": "21000-5",
+            "description": "Deprecated Erythrocyte distribution width [Entitic volume] by Automated count",
+            "category": "Hämatologie"
         },
         {
-            "code": "771-6",
-            "description": "Nucleated erythrocytes [#/volume] in Blood by Automated count"
+            "code": "26449-9",
+            "description": "Eosinophils [#/volume] in Blood",
+            "category": "Hämatologie"
+        },
+        {
+            "code": "711-2",
+            "description": "Eosinophils [#/volume] in Blood by Automated count",
+            "category": "Hämatologie"
+        },
+        {
+            "code": "712-0",
+            "description": "Eosinophils [#/volume] in Blood by Manual count",
+            "category": "Hämatologie"
+        },
+        {
+            "code": "26450-7",
+            "description": "Eosinophils/Leukocytes in Blood",
+            "category": "Hämatologie"
+        },
+        {
+            "code": "713-8",
+            "description": "Eosinophils/Leukocytes in Blood by Automated count",
+            "category": "Hämatologie"
+        },
+        {
+            "code": "714-6",
+            "description": "Eosinophils/Leukocytes in Blood by Manual count",
+            "category": "Hämatologie"
+        },
+        {
+            "code": "788-0",
+            "description": "Erythrocyte [DistWidth] in Blood by Automated count",
+            "category": "Hämatologie"
+        },
+        {
+            "code": "26453-1",
+            "description": "Erythrocytes [#/volume] in Blood",
+            "category": "Hämatologie"
+        },
+        {
+            "code": "789-8",
+            "description": "Erythrocytes [#/volume] in Blood by Automated count",
+            "category": "Hämatologie"
+        },
+        {
+            "code": "790-6",
+            "description": "Erythrocytes [#/volume] in Blood by Manual count",
+            "category": "Hämatologie"
+        },
+        {
+            "code": "4544-3",
+            "description": "Hematocrit [Volume Fraction] of Blood by Automated count",
+            "category": "Hämatologie"
+        },
+        {
+            "code": "51584-1",
+            "description": "Immature granulocytes [#/volume] in Blood",
+            "category": "Hämatologie"
+        },
+        {
+            "code": "53115-2",
+            "description": "Immature granulocytes [#/volume] in Blood by Automated count",
+            "category": "Hämatologie"
+        },
+        {
+            "code": "38518-7",
+            "description": "Immature granulocytes/Leukocytes in Blood",
+            "category": "Hämatologie"
+        },
+        {
+            "code": "71695-1",
+            "description": "Immature granulocytes/Leukocytes in Blood by Automated count",
+            "category": "Hämatologie"
+        },
+        {
+            "code": "26464-8",
+            "description": "Leukocytes [#/volume] in Blood",
+            "category": "Hämatologie"
+        },
+        {
+            "code": "6690-2",
+            "description": "Leukocytes [#/volume] in Blood by Automated count",
+            "category": "Hämatologie"
+        },
+        {
+            "code": "804-5",
+            "description": "Leukocytes [#/volume] in Blood by Manual count",
+            "category": "Hämatologie"
+        },
+        {
+            "code": "26474-7",
+            "description": "Lymphocytes [#/volume] in Blood",
+            "category": "Hämatologie"
+        },
+        {
+            "code": "731-0",
+            "description": "Lymphocytes [#/volume] in Blood by Automated count",
+            "category": "Hämatologie"
+        },
+        {
+            "code": "732-8",
+            "description": "Lymphocytes [#/volume] in Blood by Manual count",
+            "category": "Hämatologie"
+        },
+        {
+            "code": "26478-8",
+            "description": "Lymphocytes/Leukocytes in Blood",
+            "category": "Hämatologie"
+        },
+        {
+            "code": "736-9",
+            "description": "Lymphocytes/Leukocytes in Blood by Automated count",
+            "category": "Hämatologie"
+        },
+        {
+            "code": "737-7",
+            "description": "Lymphocytes/Leukocytes in Blood by Manual count",
+            "category": "Hämatologie"
+        },
+        {
+            "code": "28539-5",
+            "description": "MCH [Entitic mass]",
+            "category": "Hämatologie"
+        },
+        {
+            "code": "785-6",
+            "description": "MCH [Entitic mass] by Automated count",
+            "category": "Hämatologie"
+        },
+        {
+            "code": "28540-3",
+            "description": "MCHC [Entitic Mass/volume] in Red Blood Cells",
+            "category": "Hämatologie"
+        },
+        {
+            "code": "786-4",
+            "description": "MCHC [Entitic Mass/volume] in Red Blood Cells by Automated count",
+            "category": "Hämatologie"
+        },
+        {
+            "code": "30428-7",
+            "description": "MCV [Entitic mean volume] in Red Blood Cells",
+            "category": "Hämatologie"
+        },
+        {
+            "code": "787-2",
+            "description": "MCV [Entitic mean volume] in Red Blood Cells by Automated count",
+            "category": "Hämatologie"
+        },
+        {
+            "code": "26484-6",
+            "description": "Monocytes [#/volume] in Blood",
+            "category": "Hämatologie"
+        },
+        {
+            "code": "742-7",
+            "description": "Monocytes [#/volume] in Blood by Automated count",
+            "category": "Hämatologie"
+        },
+        {
+            "code": "743-5",
+            "description": "Monocytes [#/volume] in Blood by Manual count",
+            "category": "Hämatologie"
+        },
+        {
+            "code": "26485-3",
+            "description": "Monocytes/Leukocytes in Blood",
+            "category": "Hämatologie"
+        },
+        {
+            "code": "5905-5",
+            "description": "Monocytes/Leukocytes in Blood by Automated count",
+            "category": "Hämatologie"
+        },
+        {
+            "code": "744-3",
+            "description": "Monocytes/Leukocytes in Blood by Manual count",
+            "category": "Hämatologie"
+        },
+        {
+            "code": "26499-4",
+            "description": "Neutrophils [#/volume] in Blood",
+            "category": "Hämatologie"
+        },
+        {
+            "code": "751-8",
+            "description": "Neutrophils [#/volume] in Blood by Automated count",
+            "category": "Hämatologie"
+        },
+        {
+            "code": "753-4",
+            "description": "Neutrophils [#/volume] in Blood by Manual count",
+            "category": "Hämatologie"
+        },
+        {
+            "code": "26511-6",
+            "description": "Neutrophils/Leukocytes in Blood",
+            "category": "Hämatologie"
+        },
+        {
+            "code": "770-8",
+            "description": "Neutrophils/Leukocytes in Blood by Automated count",
+            "category": "Hämatologie"
+        },
+        {
+            "code": "23761-0",
+            "description": "Neutrophils/Leukocytes in Blood by Manual count",
+            "category": "Hämatologie"
         },
         {
             "code": "715-3",
-            "description": "Normoblasts [#/volume] in Blood"
+            "description": "Normoblasts [#/volume] in Blood",
+            "category": "Hämatologie"
         },
         {
-            "code": "5894-1",
-            "description": "Prothrombin time (PT) actual/Normal"
+            "code": "33990-3",
+            "description": "Normoblasts/Leukocytes in Blood",
+            "category": "Hämatologie"
         },
         {
-            "code": "3289-6",
-            "description": "Prothrombin activity actual/normal in Platelet poor plasma by Coagulation assay"
+            "code": "30392-5",
+            "description": "Nucleated erythrocytes [#/volume] in Blood",
+            "category": "Hämatologie"
         },
         {
-            "code": "48664-7",
-            "description": "Fibrinogen [Mass/volume] in Platelet poor plasma by Coagulation.derived"
+            "code": "771-6",
+            "description": "Nucleated erythrocytes [#/volume] in Blood by Automated count",
+            "category": "Hämatologie"
         },
         {
-            "code": "3255-7",
-            "description": "Fibrinogen [Mass/volume] in Platelet poor plasma by Coagulation assay"
+            "code": "772-4",
+            "description": "Nucleated erythrocytes [#/volume] in Blood by Manual count",
+            "category": "Hämatologie"
         },
         {
-            "code": "38875-1",
-            "description": "INR in Platelet poor plasma or blood by Coagulation assay"
+            "code": "19048-8",
+            "description": "Nucleated erythrocytes/Leukocytes [Ratio] in Blood",
+            "category": "Hämatologie"
         },
         {
-            "code": "34714-6",
-            "description": "INR in Blood by Coagulation assay"
+            "code": "28542-9",
+            "description": "Platelet [Entitic mean volume] in Blood",
+            "category": "Hämatologie"
         },
         {
-            "code": "6301-6",
-            "description": "INR in Platelet poor plasma by Coagulation assay"
+            "code": "32623-1",
+            "description": "Platelet [Entitic mean volume] in Blood by Automated count",
+            "category": "Hämatologie"
+        },
+        {
+            "code": "32207-3",
+            "description": "Platelet distribution width [Entitic volume] in Blood by Automated count",
+            "category": "Hämatologie"
+        },
+        {
+            "code": "26515-7",
+            "description": "Platelets [#/volume] in Blood",
+            "category": "Hämatologie"
+        },
+        {
+            "code": "777-3",
+            "description": "Platelets [#/volume] in Blood by Automated count",
+            "category": "Hämatologie"
+        },
+        {
+            "code": "30451-9",
+            "description": "Segmented neutrophils [#/volume] in Blood",
+            "category": "Hämatologie"
+        },
+        {
+            "code": "768-2",
+            "description": "Segmented neutrophils [#/volume] in Blood by Manual count",
+            "category": "Hämatologie"
+        },
+        {
+            "code": "26505-8",
+            "description": "Segmented neutrophils/Leukocytes in Blood",
+            "category": "Hämatologie"
+        },
+        {
+            "code": "32200-8",
+            "description": "Segmented neutrophils/Leukocytes in Blood by Automated count",
+            "category": "Hämatologie"
+        },
+        {
+            "code": "769-0",
+            "description": "Segmented neutrophils/Leukocytes in Blood by Manual count",
+            "category": "Hämatologie"
         },
         {
             "code": "14979-9",
-            "description": "aPTT in Platelet poor plasma by Coagulation assay"
-        },
-        {
-            "code": "3243-3",
-            "description": "Thrombin time"
+            "description": "aPTT in Platelet poor plasma by Coagulation assay",
+            "category": "Hämostaseologie"
         },
         {
             "code": "48065-7",
-            "description": "Fibrin D-dimer FEU [Mass/volume] in Platelet poor plasma"
+            "description": "Fibrin D-dimer FEU [Mass/volume] in Platelet poor plasma",
+            "category": "Hämostaseologie"
+        },
+        {
+            "code": "3255-7",
+            "description": "Fibrinogen [Mass/volume] in Platelet poor plasma by Coagulation assay",
+            "category": "Hämostaseologie"
+        },
+        {
+            "code": "48664-7",
+            "description": "Fibrinogen [Mass/volume] in Platelet poor plasma by Coagulation.derived",
+            "category": "Hämostaseologie"
+        },
+        {
+            "code": "34714-6",
+            "description": "INR in Blood by Coagulation assay",
+            "category": "Hämostaseologie"
+        },
+        {
+            "code": "6301-6",
+            "description": "INR in Platelet poor plasma by Coagulation assay",
+            "category": "Hämostaseologie"
+        },
+        {
+            "code": "38875-1",
+            "description": "INR in Platelet poor plasma or blood by Coagulation assay",
+            "category": "Hämostaseologie"
         },
         {
             "code": "32684-3",
-            "description": "LMW Heparin [Units/volume] in Platelet poor plasma"
+            "description": "LMW Heparin [Units/volume] in Platelet poor plasma",
+            "category": "Hämostaseologie"
         },
         {
             "code": "3271-4",
-            "description": "LMW Heparin [Units/volume] in Platelet poor plasma by Chromogenic method"
+            "description": "LMW Heparin [Units/volume] in Platelet poor plasma by Chromogenic method",
+            "category": "Hämostaseologie"
         },
         {
-            "code": "50562-8",
-            "description": "Specific gravity of Urine by Refractometry automated"
+            "code": "3289-6",
+            "description": "Prothrombin activity actual/normal in Platelet poor plasma by Coagulation assay",
+            "category": "Hämostaseologie"
         },
         {
-            "code": "5811-5",
-            "description": "Specific gravity of Urine by Test strip"
+            "code": "5894-1",
+            "description": "Prothrombin time (PT) actual/Normal",
+            "category": "Hämostaseologie"
         },
         {
-            "code": "2965-2",
-            "description": "Specific gravity of Urine"
+            "code": "3243-3",
+            "description": "Thrombin time",
+            "category": "Hämostaseologie"
         },
         {
-            "code": "53326-5",
-            "description": "Specific gravity of Urine by Automated test strip"
+            "code": "1742-6",
+            "description": "Alanine aminotransferase [Enzymatic activity/volume] in Serum or Plasma",
+            "category": "Klinische Chemie"
         },
         {
-            "code": "5803-2",
-            "description": "pH of Urine by Test strip"
+            "code": "1751-7",
+            "description": "Albumin [Mass/volume] in Serum or Plasma",
+            "category": "Klinische Chemie"
         },
         {
-            "code": "13658-0",
-            "description": "Urobilinogen [Presence] in Urine"
+            "code": "6768-6",
+            "description": "Alkaline phosphatase [Enzymatic activity/volume] in Serum or Plasma",
+            "category": "Klinische Chemie"
         },
         {
-            "code": "5818-0",
-            "description": "Urobilinogen [Presence] in Urine by Test strip"
+            "code": "1798-8",
+            "description": "Amylase [Enzymatic activity/volume] in Serum or Plasma",
+            "category": "Klinische Chemie"
         },
         {
-            "code": "50563-6",
-            "description": "Urobilinogen [Mass/volume] in Urine by Automated test strip"
+            "code": "1805-1",
+            "description": "Amylase.pancreatic [Enzymatic activity/volume] in Serum or Plasma",
+            "category": "Klinische Chemie"
         },
         {
-            "code": "2514-8",
-            "description": "Ketones [Presence] in Urine by Test strip"
+            "code": "1920-8",
+            "description": "Aspartate aminotransferase [Enzymatic activity/volume] in Serum or Plasma",
+            "category": "Klinische Chemie"
         },
         {
-            "code": "50557-8",
-            "description": "Ketones [Mass/volume] in Urine by Automated test strip"
+            "code": "1968-7",
+            "description": "Bilirubin.direct [Mass/volume] in Serum or Plasma",
+            "category": "Klinische Chemie"
         },
         {
-            "code": "20454-5",
-            "description": "Protein [Presence] in Urine by Test strip"
+            "code": "1988-5",
+            "description": "C reactive protein [Mass/volume] in Serum or Plasma",
+            "category": "Klinische Chemie"
         },
         {
-            "code": "25428-4",
-            "description": "Glucose [Presence] in Urine by Test strip"
+            "code": "30522-7",
+            "description": "C reactive protein [Mass/volume] in Serum or Plasma by High sensitivity method",
+            "category": "Klinische Chemie"
         },
         {
-            "code": "53328-1",
-            "description": "Glucose [Mass/volume] in Urine by Automated test strip"
+            "code": "2000-8",
+            "description": "Calcium [Moles/volume] in Serum or Plasma",
+            "category": "Klinische Chemie"
         },
         {
-            "code": "5799-2",
-            "description": "Leukocyte esterase [Presence] in Urine by Test strip"
+            "code": "2093-3",
+            "description": "Cholesterol [Mass/volume] in Serum or Plasma",
+            "category": "Klinische Chemie"
         },
         {
-            "code": "33052-2",
-            "description": "Leukocytes [Presence] in Urine"
+            "code": "2085-9",
+            "description": "Cholesterol in HDL [Mass/volume] in Serum or Plasma",
+            "category": "Klinische Chemie"
         },
         {
-            "code": "46702-7",
-            "description": "Leukocytes [#/area] in Urine sediment by Automated count"
+            "code": "2089-1",
+            "description": "Cholesterol in LDL [Mass/volume] in Serum or Plasma",
+            "category": "Klinische Chemie"
         },
         {
-            "code": "5802-4",
-            "description": "Nitrite [Presence] in Urine by Test strip"
+            "code": "43396-1",
+            "description": "Cholesterol non HDL [Mass/volume] in Serum or Plasma",
+            "category": "Klinische Chemie"
         },
         {
-            "code": "50558-6",
-            "description": "Nitrite [Presence] in Urine by Automated test strip"
+            "code": "2098-2",
+            "description": "Cholinesterase [Enzymatic activity/volume] in Serum or Plasma",
+            "category": "Klinische Chemie"
         },
         {
-            "code": "5794-3",
-            "description": "Hemoglobin [Presence] in Urine by Test strip"
+            "code": "2157-6",
+            "description": "Creatine kinase [Enzymatic activity/volume] in Serum or Plasma",
+            "category": "Klinische Chemie"
         },
         {
-            "code": "726-0",
-            "description": "Hemoglobin [Mass/volume] in Urine"
+            "code": "32673-6",
+            "description": "Creatine kinase.MB [Enzymatic activity/volume] in Serum or Plasma",
+            "category": "Klinische Chemie"
         },
         {
-            "code": "725-2",
-            "description": "Hemoglobin [Presence] in Urine"
+            "code": "20569-0",
+            "description": "Creatine kinase.MB/Creatine kinase.total in Serum or Plasma",
+            "category": "Klinische Chemie"
         },
         {
-            "code": "5770-3",
-            "description": "Bilirubin.total [Presence] in Urine by Test strip"
+            "code": "2160-0",
+            "description": "Creatinine [Mass/volume] in Serum or Plasma",
+            "category": "Klinische Chemie"
         },
         {
-            "code": "50551-1",
-            "description": "Bilirubin.total [Presence] in Urine by Automated test strip"
+            "code": "2276-4",
+            "description": "Ferritin [Mass/volume] in Serum or Plasma",
+            "category": "Klinische Chemie"
         },
         {
-            "code": "30405-5",
-            "description": "Leukocytes [#/volume] in Urine"
+            "code": "20567-4",
+            "description": "Ferritin [Mass/volume] in Serum or Plasma by Immunoassay",
+            "category": "Klinische Chemie"
         },
         {
-            "code": "51487-7",
-            "description": "Leukocytes [#/volume] in Urine by Automated count"
+            "code": "2324-2",
+            "description": "Gamma glutamyl transferase [Enzymatic activity/volume] in Serum or Plasma",
+            "category": "Klinische Chemie"
         },
         {
-            "code": "24122-4",
-            "description": "Leukocytes [#/volume] in Urine by Manual count"
+            "code": "33914-3",
+            "description": "Glomerular filtration rate [Volume Rate/Area] in Serum or Plasma by Creatinine-based formula (MDRD)/1.73 sq M",
+            "category": "Klinische Chemie"
         },
         {
-            "code": "105907-0",
-            "description": "Bacteria [#/volume] in Urine"
+            "code": "69405-9",
+            "description": "Glomerular filtration rate [Volume Rate/Area] in Serum, Plasma or Blood by based on 1.73 sq M",
+            "category": "Klinische Chemie"
         },
         {
-            "code": "51480-2",
-            "description": "Bacteria [#/volume] in Urine by Automated count"
+            "code": "62238-1",
+            "description": "Glomerular filtration rate [Volume Rate/Area] in Serum, Plasma or Blood by Creatinine-based formula (CKD-EPI)/1.73 sq M",
+            "category": "Klinische Chemie"
         },
         {
-            "code": "25145-4",
-            "description": "Bacteria [Presence] in Urine sediment by Light microscopy"
+            "code": "2345-7",
+            "description": "Glucose [Mass/volume] in Serum or Plasma",
+            "category": "Klinische Chemie"
         },
         {
-            "code": "33218-9",
-            "description": "Bacteria [#/area] in Urine sediment by Automated count"
+            "code": "71875-9",
+            "description": "Hemoglobin A1c/Hemoglobin.total [Pure mass fraction] in Blood",
+            "category": "Klinische Chemie"
         },
         {
-            "code": "30383-4",
-            "description": "Epithelial cells [#/volume] in Urine"
+            "code": "4548-4",
+            "description": "Hemoglobin A1c/Hemoglobin.total in Blood",
+            "category": "Klinische Chemie"
         },
         {
-            "code": "33342-7",
-            "description": "Epithelial cells [#/area] in Urine sediment by Automated count"
+            "code": "17856-6",
+            "description": "Hemoglobin A1c/Hemoglobin.total in Blood by HPLC",
+            "category": "Klinische Chemie"
         },
         {
-            "code": "30391-7",
-            "description": "Erythrocytes [#/volume] in Urine"
+            "code": "2498-4",
+            "description": "Iron [Mass/volume] in Serum or Plasma",
+            "category": "Klinische Chemie"
         },
         {
-            "code": "798-9",
-            "description": "Erythrocytes [#/volume] in Urine by Automated count"
+            "code": "14798-3",
+            "description": "Iron [Moles/volume] in Serum or Plasma",
+            "category": "Klinische Chemie"
         },
         {
-            "code": "87926-2",
-            "description": "Epithelial cells [#/volume] in Urine by Automated"
+            "code": "2502-3",
+            "description": "Iron saturation [Mass Fraction] in Serum or Plasma",
+            "category": "Klinische Chemie"
         },
         {
-            "code": "24123-2",
-            "description": "Epithelial cells [#/volume] in Urine by Manual count"
+            "code": "13452-8",
+            "description": "Iron/Transferrin [Mass Ratio] in Serum or Plasma",
+            "category": "Klinische Chemie"
         },
         {
-            "code": "53978-3",
-            "description": "Epithelial cells.non-squamous [Presence] in Urine sediment by Light microscopy"
+            "code": "2532-0",
+            "description": "Lactate dehydrogenase [Enzymatic activity/volume] in Serum or Plasma",
+            "category": "Klinische Chemie"
         },
         {
-            "code": "53294-5",
-            "description": "Epithelial cells.non-squamous [#/area] in Urine sediment by Automated count"
+            "code": "14804-9",
+            "description": "Lactate dehydrogenase [Enzymatic activity/volume] in Serum or Plasma by Lactate to pyruvate reaction",
+            "category": "Klinische Chemie"
         },
         {
-            "code": "13654-9",
-            "description": "Epithelial cells.squamous [#/volume] in Urine sediment"
+            "code": "3040-3",
+            "description": "Lipase [Enzymatic activity/volume] in Serum or Plasma",
+            "category": "Klinische Chemie"
         },
         {
-            "code": "53287-9",
-            "description": "Epithelial casts [#/volume] in Urine by Computer assisted method"
+            "code": "2601-3",
+            "description": "Magnesium [Moles/volume] in Serum or Plasma",
+            "category": "Klinische Chemie"
         },
         {
-            "code": "53291-1",
-            "description": "Epithelial casts [#/area] in Urine by Computer assisted method"
+            "code": "2639-3",
+            "description": "Myoglobin [Mass/volume] in Serum or Plasma",
+            "category": "Klinische Chemie"
         },
         {
-            "code": "51481-0",
-            "description": "Yeast [#/volume] in Urine by Automated count"
+            "code": "42637-9",
+            "description": "Natriuretic peptide B [Mass/volume] in Blood",
+            "category": "Klinische Chemie"
         },
         {
-            "code": "5822-2",
-            "description": "Yeast [#/area] in Urine sediment by Microscopy high power field"
+            "code": "30934-4",
+            "description": "Natriuretic peptide B [Mass/volume] in Serum or Plasma",
+            "category": "Klinische Chemie"
         },
         {
-            "code": "41215-5",
-            "description": "Yeast [#/area] in Urine sediment by Microscopy low power field"
+            "code": "71425-3",
+            "description": "Natriuretic peptide.B prohormone N-Terminal [Mass/volume] in Blood by Immunoassay",
+            "category": "Klinische Chemie"
         },
         {
-            "code": "32356-8",
-            "description": "Yeast [Presence] in Urine sediment by Light microscopy"
+            "code": "33762-6",
+            "description": "Natriuretic peptide.B prohormone N-Terminal [Mass/volume] in Serum or Plasma",
+            "category": "Klinische Chemie"
         },
         {
-            "code": "87831-4",
-            "description": "Yeast [Presence] in Urine"
+            "code": "83107-3",
+            "description": "Natriuretic peptide.B prohormone N-Terminal [Mass/volume] in Serum or Plasma by Immunoassay",
+            "category": "Klinische Chemie"
         },
         {
-            "code": "51483-6",
-            "description": "Casts [#/volume] in Urine by Automated count"
+            "code": "2692-2",
+            "description": "Osmolality of Serum or Plasma",
+            "category": "Klinische Chemie"
         },
         {
-            "code": "78741-6",
-            "description": "Pathologic casts [#/volume] in Urine by Automated count"
+            "code": "18182-6",
+            "description": "Osmolality of Serum or Plasma by calculated by sum of electrolytes",
+            "category": "Klinische Chemie"
         },
         {
-            "code": "51478-6",
-            "description": "Mucus [#/volume] in Urine by Automated count"
+            "code": "2777-1",
+            "description": "Phosphate [Mass/volume] in Serum or Plasma",
+            "category": "Klinische Chemie"
         },
         {
-            "code": "53321-6",
-            "description": "Mucus [Presence] in Urine by Automated"
+            "code": "14879-1",
+            "description": "Phosphate [Moles/volume] in Serum or Plasma",
+            "category": "Klinische Chemie"
         },
         {
-            "code": "20624-3",
-            "description": "Creatinine [Mass/volume] in 24 hour Urine"
+            "code": "2823-3",
+            "description": "Potassium [Moles/volume] in Serum or Plasma",
+            "category": "Klinische Chemie"
         },
         {
-            "code": "21482-5",
-            "description": "Protein [Mass/volume] in 24 hour Urine"
+            "code": "33959-8",
+            "description": "Procalcitonin [Mass/volume] in Serum or Plasma",
+            "category": "Klinische Chemie"
         },
         {
-            "code": "32209-9",
-            "description": "Protein [Presence] in 24 hour Urine by Test strip"
+            "code": "75241-0",
+            "description": "Procalcitonin [Mass/volume] in Serum or Plasma by Immunoassay",
+            "category": "Klinische Chemie"
         },
         {
-            "code": "21525-1",
-            "description": "Sodium [Moles/volume] in 24 hour Urine"
+            "code": "2885-2",
+            "description": "Protein [Mass/volume] in Serum or Plasma",
+            "category": "Klinische Chemie"
         },
         {
-            "code": "21476-7",
-            "description": "Potassium [Moles/volume] in 24 hour Urine"
+            "code": "2951-2",
+            "description": "Sodium [Moles/volume] in Serum or Plasma",
+            "category": "Klinische Chemie"
         },
         {
-            "code": "63481-6",
-            "description": "Urea [Mass/volume] in 24 hour Urine"
+            "code": "66120-7",
+            "description": "Thyroid Pathology biopsy report",
+            "category": "Klinische Chemie"
         },
         {
-            "code": "48999-7",
-            "description": "Urea [Mass/time] in 24 hour Urine"
+            "code": "3016-3",
+            "description": "Thyrotropin [Units/volume] in Serum or Plasma",
+            "category": "Klinische Chemie"
         },
         {
-            "code": "3095-7",
-            "description": "Urea nitrogen [Mass/volume] in Urine"
+            "code": "11580-8",
+            "description": "Thyrotropin [Units/volume] in Serum or Plasma by Detection limit <= 0.005 mIU/L",
+            "category": "Klinische Chemie"
         },
         {
-            "code": "12967-6",
-            "description": "Urea nitrogen [Mass/volume] in 24 hour Urine"
+            "code": "3024-7",
+            "description": "Thyroxine (T4) free [Mass/volume] in Serum or Plasma",
+            "category": "Klinische Chemie"
         },
         {
-            "code": "25973-9",
-            "description": "Phosphate [Moles/volume] in 24 hour Urine"
+            "code": "83122-2",
+            "description": "Thyroxine (T4) free [Mass/volume] in Serum or Plasma by Immunoassay",
+            "category": "Klinische Chemie"
         },
         {
-            "code": "13539-2",
-            "description": "Phosphate [Moles/volume] in Urine"
+            "code": "14920-3",
+            "description": "Thyroxine (T4) free [Moles/volume] in Serum or Plasma",
+            "category": "Klinische Chemie"
         },
         {
-            "code": "35263-3",
-            "description": "Phosphate [Mass or Moles] in 24 hour Urine"
+            "code": "83121-4",
+            "description": "Thyroxine (T4) free [Moles/volume] in Serum or Plasma by Immunoassay",
+            "category": "Klinische Chemie"
         },
         {
-            "code": "2778-9",
-            "description": "Phosphate [Mass/volume] in Urine"
+            "code": "3034-6",
+            "description": "Transferrin [Mass/volume] in Serum or Plasma",
+            "category": "Klinische Chemie"
         },
         {
-            "code": "46723-3",
-            "description": "Alpha-1-Microglobulin [Mass/volume] in Urine"
+            "code": "2571-8",
+            "description": "Triglyceride [Mass/volume] in Serum or Plasma",
+            "category": "Klinische Chemie"
         },
         {
-            "code": "21305-8",
-            "description": "Glucose [Mass/volume] in 24 hour Urine"
+            "code": "3051-0",
+            "description": "Triiodothyronine (T3) Free [Mass/volume] in Serum or Plasma",
+            "category": "Klinische Chemie"
         },
         {
-            "code": "2350-7",
-            "description": "Glucose [Mass/volume] in Urine"
+            "code": "83127-1",
+            "description": "Triiodothyronine (T3) Free [Mass/volume] in Serum or Plasma by Immunoassay",
+            "category": "Klinische Chemie"
         },
         {
-            "code": "5792-7",
-            "description": "Glucose [Mass/volume] in Urine by Test strip"
+            "code": "14928-6",
+            "description": "Triiodothyronine (T3) Free [Moles/volume] in Serum or Plasma",
+            "category": "Klinische Chemie"
         },
         {
-            "code": "1755-8",
-            "description": "Albumin [Mass/time] in 24 hour Urine"
+            "code": "83126-3",
+            "description": "Triiodothyronine (T3) Free [Moles/volume] in Serum or Plasma by Immunoassay",
+            "category": "Klinische Chemie"
         },
         {
-            "code": "30003-8",
-            "description": "Microalbumin [Mass/volume] in 24 hour Urine"
+            "code": "10839-9",
+            "description": "Troponin I.cardiac [Mass/volume] in Serum or Plasma",
+            "category": "Klinische Chemie"
         },
         {
-            "code": "61196-2",
-            "description": "Albumin [Mass/volume] in Urine from Fetus"
+            "code": "89579-7",
+            "description": "Troponin I.cardiac [Mass/volume] in Serum or Plasma by High sensitivity method",
+            "category": "Klinische Chemie"
         },
         {
-            "code": "21059-1",
-            "description": "Albumin [Mass/volume] in 24 hour Urine"
+            "code": "48425-3",
+            "description": "Troponin T.cardiac [Mass/volume] in Blood",
+            "category": "Klinische Chemie"
         },
         {
-            "code": "9192-6",
-            "description": "Urine output 24 hour"
+            "code": "6598-7",
+            "description": "Troponin T.cardiac [Mass/volume] in Serum or Plasma",
+            "category": "Klinische Chemie"
         },
         {
-            "code": "11279-7",
-            "description": "Urine sediment comments by Light microscopy Narrative"
+            "code": "3084-1",
+            "description": "Urate [Mass/volume] in Serum or Plasma",
+            "category": "Klinische Chemie"
         },
         {
-            "code": "24356-8",
-            "description": "Urinalysis complete panel - Urine"
+            "code": "20977-5",
+            "description": "Urea [Mass/volume] in Blood",
+            "category": "Klinische Chemie"
         },
         {
-            "code": "28009-9",
-            "description": "Volume of Urine"
+            "code": "3091-6",
+            "description": "Urea [Mass/volume] in Serum or Plasma",
+            "category": "Klinische Chemie"
         },
         {
-            "code": "19153-6",
-            "description": "Volume in Urine collected for unspecified duration"
+            "code": "72927-7",
+            "description": "Urea [Moles/volume] in Arterial blood",
+            "category": "Klinische Chemie"
         },
         {
-            "code": "47083-1",
-            "description": "IgG [Mass/volume] in 24 hour Urine"
+            "code": "72926-9",
+            "description": "Urea [Moles/volume] in Venous blood",
+            "category": "Klinische Chemie"
         },
         {
-            "code": "33415-1",
-            "description": "IgG [Mass/volume] in Urine"
-        },
-        {
-            "code": "6781-9",
-            "description": "IgG [Mass/volume] in Urine by Immunoassay"
-        },
-        {
-            "code": "21194-6",
-            "description": "Chloride [Moles/volume] in 24 hour Urine"
-        },
-        {
-            "code": "2078-4",
-            "description": "Chloride [Moles/volume] in Urine"
-        },
-        {
-            "code": "21587-1",
-            "description": "Urate [Mass/volume] in 24 hour Urine"
-        },
-        {
-            "code": "3086-6",
-            "description": "Urate [Mass/volume] in Urine"
-        },
-        {
-            "code": "3088-2",
-            "description": "Urate renal clearance in 24 hour Urine and Serum or Plasma"
-        },
-        {
-            "code": "25362-5",
-            "description": "Calcium [Moles/volume] in 24 hour Urine"
-        },
-        {
-            "code": "2004-0",
-            "description": "Calcium [Moles/volume] in Urine"
-        },
-        {
-            "code": "25954-9",
-            "description": "Magnesium [Moles/volume] in 24 hour Urine"
-        },
-        {
-            "code": "2598-1",
-            "description": "Magnesium [Moles/volume] in Urine"
-        },
-        {
-            "code": "13980-8",
-            "description": "Albumin/Protein.total in Serum or Plasma by Electrophoresis"
-        },
-        {
-            "code": "13978-2",
-            "description": "Alpha 1 globulin/Protein.total in Serum or Plasma by Electrophoresis"
-        },
-        {
-            "code": "13981-6",
-            "description": "Alpha 2 globulin/Protein.total in Serum or Plasma by Electrophoresis"
-        },
-        {
-            "code": "13982-4",
-            "description": "Beta globulin/Protein.total in Serum or Plasma by Electrophoresis"
-        },
-        {
-            "code": "13983-2",
-            "description": "Gamma globulin/Protein.total in Serum or Plasma by Electrophoresis"
-        },
-        {
-            "code": "4049-3",
-            "description": "Theophylline [Mass/volume] in Serum or Plasma"
-        },
-        {
-            "code": "19852-3",
-            "description": "Inspiratory capacity by Spirometry"
-        },
-        {
-            "code": "19857-2",
-            "description": "Total lung capacity by Helium rebreathing"
-        },
-        {
-            "code": "19858-0",
-            "description": "Total lung capacity by Helium single breath"
-        },
-        {
-            "code": "19859-8",
-            "description": "Total lung capacity by Plethysmograph body box"
-        },
-        {
-            "code": "19862-2",
-            "description": "Total lung capacity"
-        },
-        {
-            "code": "19863-0",
-            "description": "Vital capacity [Volume] Respiratory system by Helium rebreathing"
-        },
-        {
-            "code": "19864-8",
-            "description": "Vital capacity [Volume] Respiratory system by Helium single breath"
-        },
-        {
-            "code": "19866-3",
-            "description": "Vital capacity [Volume] Respiratory system by Spirometry"
-        },
-        {
-            "code": "19867-1",
-            "description": "Vital capacity [Volume] Respiratory system"
-        },
-        {
-            "code": "19868-9",
-            "description": "Forced vital capacity [Volume] Respiratory system by Spirometry"
-        },
-        {
-            "code": "19870-5",
-            "description": "Forced vital capacity [Volume] Respiratory system"
-        },
-        {
-            "code": "19874-7",
-            "description": "Forced vital capacity [Volume] Respiratory system by Spirometry post bronchodilation"
-        },
-        {
-            "code": "19875-4",
-            "description": "Forced vital capacity [Volume] Respiratory system post bronchodilation"
-        },
-        {
-            "code": "19876-2",
-            "description": "Forced vital capacity [Volume] Respiratory system by Spirometry pre bronchodilation"
-        },
-        {
-            "code": "19877-0",
-            "description": "Forced vital capacity [Volume] Respiratory system pre bronchodilation"
-        },
-        {
-            "code": "19911-7",
-            "description": "Diffusion capacity.carbon monoxide"
-        },
-        {
-            "code": "19912-5",
-            "description": "Diffusion capacity.carbon monoxide adjusted for hemoglobin by Helium single breath"
-        },
-        {
-            "code": "19916-6",
-            "description": "Diffusion capacity/Alveolar volume"
-        },
-        {
-            "code": "19926-5",
-            "description": "FEV1/FVC"
-        },
-        {
-            "code": "19935-6",
-            "description": "Maximum expiratory gas flow Respiratory system airway by Peak flow meter"
-        },
-        {
-            "code": "20143-4",
-            "description": "Residual volume by Helium rebreathing"
-        },
-        {
-            "code": "20144-2",
-            "description": "Residual volume by Helium single breath"
-        },
-        {
-            "code": "20146-7",
-            "description": "Residual volume"
-        },
-        {
-            "code": "20150-9",
-            "description": "FEV1"
-        },
-        {
-            "code": "20155-8",
-            "description": "FEV1 post bronchodilation"
-        },
-        {
-            "code": "20157-4",
-            "description": "FEV1 pre bronchodilation"
-        },
-        {
-            "code": "33452-4",
-            "description": "Maximum expiratory gas flow Respiratory system airway"
-        },
-        {
-            "code": "43252-6",
-            "description": "Residual volume/Total capacity Predicted"
-        },
-        {
-            "code": "43253-4",
-            "description": "FEV1 pre dose methacholine"
-        },
-        {
-            "code": "43255-9",
-            "description": "FEV1 post dose methacholine"
-        },
-        {
-            "code": "43256-7",
-            "description": "FEV1 post 25 mg/mL methacholine"
-        },
-        {
-            "code": "43257-5",
-            "description": "FEV1 post 2.5 mg/mL methacholine"
-        },
-        {
-            "code": "43258-3",
-            "description": "FEV1 post 10 mg/mL methacholine"
-        },
-        {
-            "code": "43259-1",
-            "description": "FEV1 post 0.25 mg/mL methacholine"
-        },
-        {
-            "code": "43260-9",
-            "description": "FEV1 post 0.025 mg/mL methacholine"
-        },
-        {
-            "code": "69970-2",
-            "description": "FEV1/FVC post bronchodilation"
-        },
-        {
-            "code": "69975-1",
-            "description": "Maximum expiratory gas flow Respiratory system airway pre bronchodilation"
-        },
-        {
-            "code": "69976-9",
-            "description": "Maximum expiratory gas flow Respiratory system airway post bronchodilation"
+            "code": "3094-0",
+            "description": "Urea nitrogen [Mass/volume] in Serum or Plasma",
+            "category": "Klinische Chemie"
         },
         {
             "code": "75946-4",
-            "description": "Airway resistance"
-        },
-        {
-            "code": "81440-0",
-            "description": "Vital capacity [Volume] Respiratory system pre bronchodilation"
-        },
-        {
-            "code": "81441-8",
-            "description": "Vital capacity [Volume] Respiratory system post bronchodilation"
-        },
-        {
-            "code": "81442-6",
-            "description": "Airway resistance post bronchodilation"
-        },
-        {
-            "code": "81443-4",
-            "description": "Airway resistance pre bronchodilation"
-        },
-        {
-            "code": "81450-9",
-            "description": "Total lung capacity pre bronchodilation"
-        },
-        {
-            "code": "81451-7",
-            "description": "Total lung capacity post bronchodilation"
-        },
-        {
-            "code": "81452-5",
-            "description": "Residual volume pre bronchodilation"
-        },
-        {
-            "code": "81453-3",
-            "description": "Residual volume post bronchodilation"
-        },
-        {
-            "code": "81454-1",
-            "description": "Residual volume/Total capacity pre bronchodilation"
-        },
-        {
-            "code": "81455-8",
-            "description": "Residual volume/Total capacity post bronchodilation"
-        },
-        {
-            "code": "82615-6",
-            "description": "Vital capacity [Volume] Respiratory system by Spirometry pre bronchodilation"
-        },
-        {
-            "code": "82616-4",
-            "description": "Vital capacity [Volume] Respiratory system by Spirometry post bronchodilation"
-        },
-        {
-            "code": "82617-2",
-            "description": "Total lung capacity by Helium rebreathing pre bronchodilation"
-        },
-        {
-            "code": "82618-0",
-            "description": "Total lung capacity by Helium rebreathing post bronchodilation"
-        },
-        {
-            "code": "82619-8",
-            "description": "Diffusion capacity/Alveolar volume pre bronchodilation"
-        },
-        {
-            "code": "82620-6",
-            "description": "Diffusion capacity/Alveolar volume post bronchodilation"
-        },
-        {
-            "code": "91980-3",
-            "description": "Specific airway resistance by Plethysmograph body box"
-        },
-        {
-            "code": "98083-9",
-            "description": "Specific airway resistance mean by Plethysmograph body box post bronchodilation"
-        },
-        {
-            "code": "98088-8",
-            "description": "Vital capacity/predicted VC Respiratory system by Spirometry"
-        },
-        {
-            "code": "19865-5",
-            "description": "Vital capacity [Volume] Respiratory system Predicted"
-        },
-        {
-            "code": "19861-4",
-            "description": "Total lung capacity Predicted"
-        },
-        {
-            "code": "19860-6",
-            "description": "Total lung capacity by Chest xray.calculated"
-        },
-        {
-            "code": "89085-5",
-            "description": "Total lung capacity measured/predicted by Plethysmograph body box"
-        },
-        {
-            "code": "98082-1",
-            "description": "Specific airway resistance mean by Plethysmograph body box --pre bronchodilation"
-        },
-        {
-            "code": "91982-9",
-            "description": "Specific airway resistance measured/predicted by Plethysmograph body box"
-        },
-        {
-            "code": "98084-7",
-            "description": "Specific effective resistance.airway mean Calculated"
-        },
-        {
-            "code": "98086-2",
-            "description": "Specific effective resistance.airway mean Calculated --post bronchodilation"
-        },
-        {
-            "code": "98085-4",
-            "description": "Specific effective resistance.airway mean Calculated --pre bronchodilation"
-        },
-        {
-            "code": "98087-0",
-            "description": "Specific effective resistance.airway/Predicted mean"
-        },
-        {
-            "code": "20145-9",
-            "description": "Residual volume Predicted"
-        },
-        {
-            "code": "94125-2",
-            "description": "Residual volume/Predicted by Plethysmograph body box"
-        },
-        {
-            "code": "19924-0",
-            "description": "Expiratory reserve"
-        },
-        {
-            "code": "19923-2",
-            "description": "Expiratory reserve Predicted"
-        },
-        {
-            "code": "100759-0",
-            "description": "Inspiratory reserve [Volume] Respiratory system by Spirometry"
-        },
-        {
-            "code": "19921-6",
-            "description": "Expiratory reserve by Helium rebreathing"
-        },
-        {
-            "code": "19922-4",
-            "description": "Expiratory reserve by Helium single breath"
-        },
-        {
-            "code": "20084-0",
-            "description": "Airway resistance mean"
+            "description": "Airway resistance",
+            "category": "Lungenfunktion"
         },
         {
             "code": "75947-2",
-            "description": "Airway resistance --during expiration"
-        },
-        {
-            "code": "20085-7",
-            "description": "Airway resistance mean Calculated"
+            "description": "Airway resistance --during expiration",
+            "category": "Lungenfunktion"
         },
         {
             "code": "75948-0",
-            "description": "Airway resistance --during inspiration"
+            "description": "Airway resistance --during inspiration",
+            "category": "Lungenfunktion"
+        },
+        {
+            "code": "81442-6",
+            "description": "Airway resistance --post bronchodilation",
+            "category": "Lungenfunktion"
+        },
+        {
+            "code": "81443-4",
+            "description": "Airway resistance --pre bronchodilation",
+            "category": "Lungenfunktion"
+        },
+        {
+            "code": "20084-0",
+            "description": "Airway resistance mean",
+            "category": "Lungenfunktion"
         },
         {
             "code": "20083-2",
-            "description": "Airway resistance mean by Plethysmograph body box"
+            "description": "Airway resistance mean by Plethysmograph body box",
+            "category": "Lungenfunktion"
+        },
+        {
+            "code": "20085-7",
+            "description": "Airway resistance mean Calculated",
+            "category": "Lungenfunktion"
         },
         {
             "code": "91981-1",
-            "description": "Airway resistance measured/predicted by Plethysmograph body box"
-        },
-        {
-            "code": "69977-7",
-            "description": "Maximum expiratory gas flow/Predicted maximum expiratory gas flow Respiratory system airway --pre bronchodilation"
-        },
-        {
-            "code": "69978-5",
-            "description": "Maximum expiratory gas flow/Predicted maximum expiratory gas flow Respiratory system airway --post bronchodilation"
-        },
-        {
-            "code": "69974-4",
-            "description": "Maximum expiratory gas flow Respiratory system airway Predicted"
-        },
-        {
-            "code": "60793-7",
-            "description": "Maximum expiratory gas flow Respiratory system airway --on ventilator"
-        },
-        {
-            "code": "19938-0",
-            "description": "Maximum expiratory gas flow Respiratory system airway --post therapy"
-        },
-        {
-            "code": "71794-2",
-            "description": "Maximum expiratory gas flow Respiratory system airway --pre therapy"
-        },
-        {
-            "code": "71795-9",
-            "description": "Maximum expiratory gas flow Respiratory system airway by Peak flow meter --pre therapy"
-        },
-        {
-            "code": "19937-2",
-            "description": "Maximum expiratory gas flow Respiratory system airway by Peak flow meter --post therapy"
-        },
-        {
-            "code": "83368-1",
-            "description": "Personal best peak expiratory gas flow Respiratory system airway"
-        },
-        {
-            "code": "65821-1",
-            "description": "Gas flow FEV 25%"
-        },
-        {
-            "code": "65822-9",
-            "description": "Gas flow FEV 50%"
-        },
-        {
-            "code": "65823-7",
-            "description": "Gas flow FEV 75%"
-        },
-        {
-            "code": "65824-5",
-            "description": "Gas flow FEV 90%"
-        },
-        {
-            "code": "69972-8",
-            "description": "FEF 25-75% --pre bronchodilation"
-        },
-        {
-            "code": "69973-6",
-            "description": "FEF 25-75% --post bronchodilation"
-        },
-        {
-            "code": "69971-0",
-            "description": "FEF 25-75% Predicted"
-        },
-        {
-            "code": "19927-3",
-            "description": "Gas flow FEV 25%-75%"
-        },
-        {
-            "code": "19945-5",
-            "description": "Gas flow FEV 25%-75% airway"
-        },
-        {
-            "code": "98203-3",
-            "description": "Diffusion capacity/Alveolar volume/predicted"
-        },
-        {
-            "code": "19915-8",
-            "description": "Diffusion capacity/Alveolar volume Predicted"
-        },
-        {
-            "code": "19914-1",
-            "description": "Diffusion capacity/Alveolar volume by Single breath.carbon monoxide+Helium"
-        },
-        {
-            "code": "19854-9",
-            "description": "Inspiratory capacity bs/Inspiratory capacity pre-operative"
-        },
-        {
-            "code": "19853-1",
-            "description": "Inspiratory capacity bs/Inspiratory capacity pre-operative by Spirometry"
-        },
-        {
-            "code": "19848-1",
-            "description": "Inspiratory capacity"
-        },
-        {
-            "code": "19851-5",
-            "description": "Inspiratory capacity Predicted"
-        },
-        {
-            "code": "19856-4",
-            "description": "Inspiratory capacity measured/predicted"
-        },
-        {
-            "code": "19849-9",
-            "description": "Inspiratory capacity by Helium rebreathing"
-        },
-        {
-            "code": "19855-6",
-            "description": "Inspiratory capacity measured/predicted by Spirometry"
-        },
-        {
-            "code": "19850-7",
-            "description": "Inspiratory capacity by Helium single breath"
-        },
-        {
-            "code": "98090-4",
-            "description": "Inspiratory capacity by Spirometry --post bronchodilation"
-        },
-        {
-            "code": "98089-6",
-            "description": "Inspiratory capacity by Spirometry --pre bronchodilation"
-        },
-        {
-            "code": "19872-1",
-            "description": "FVC measured/predicted"
-        },
-        {
-            "code": "19873-9",
-            "description": "FVC post bronchodilation measured/predicted"
-        },
-        {
-            "code": "19871-3",
-            "description": "FVC pre bronchodilation measured/predicted"
-        },
-        {
-            "code": "69982-7",
-            "description": "FVC percent change Respiratory system"
-        },
-        {
-            "code": "19869-7",
-            "description": "Forced vital capacity [Volume] Respiratory system Predicted"
-        },
-        {
-            "code": "19843-2",
-            "description": "Functional residual capacity"
-        },
-        {
-            "code": "19847-3",
-            "description": "Functional residual capacity Predicted"
-        },
-        {
-            "code": "81456-6",
-            "description": "Functional residual capacity --pre bronchodilation"
-        },
-        {
-            "code": "81457-4",
-            "description": "Functional residual capacity --post bronchodilation"
-        },
-        {
-            "code": "19844-0",
-            "description": "Functional residual capacity by Helium rebreathing"
-        },
-        {
-            "code": "19846-5",
-            "description": "Functional residual capacity by Plethysmograph body box"
-        },
-        {
-            "code": "19845-7",
-            "description": "20153-3"
-        },
-        {
-            "code": "19925-7",
-            "description": "FEV1/FVC Predicted"
-        },
-        {
-            "code": "69984-3",
-            "description": "FEV1/FVC percent change"
-        },
-        {
-            "code": "20142-6",
-            "description": "FEV"
-        },
-        {
-            "code": "20148-3",
-            "description": "FEV.5"
-        },
-        {
-            "code": "20147-5",
-            "description": "FEV.5 Predicted"
-        },
-        {
-            "code": "41233-8",
-            "description": "FEV3 Predicted"
-        },
-        {
-            "code": "65655-3",
-            "description": "FEV6"
-        },
-        {
-            "code": "65656-1",
-            "description": "FEV6 Predicted"
-        },
-        {
-            "code": "20149-1",
-            "description": "FEV1 Predicted"
-        },
-        {
-            "code": "20152-5",
-            "description": "FEV1 measured/predicted"
-        },
-        {
-            "code": "69983-5",
-            "description": "FEV1 percent change"
-        },
-        {
-            "code": "20136-8",
-            "description": "FEV 25%-75% pre bronchodilation measured/predicted"
-        },
-        {
-            "code": "20135-0",
-            "description": "FEV 25%-75% post bronchodilation measured/predicted"
-        },
-        {
-            "code": "20137-6",
-            "description": "FEV 25%-75% measured/predicted"
-        },
-        {
-            "code": "20153-3",
-            "description": "FEV1/FEV total"
-        },
-		{
-            "code": "52486-8",
-            "description": "FEV2/FEV total"
-        },
-		{
-            "code": "41234-6",
-            "description": "FEV3/FEV total"
-        },
-        {
-            "code": "20154-1",
-            "description": "FEV1 Predicted --post bronchodilation"
-        },
-        {
-            "code": "20156-6",
-            "description": "FEV1 Predicted --pre bronchodilation"
-        },
-        {
-            "code": "43254-2",
-            "description": "FEV1 --Pre exercise"
-        },
-        {
-            "code": "65658-7",
-            "description": "FEV1/FEV6 Predicted"
-        },
-        {
-            "code": "43263-3",
-            "description": "FEV1 --10 minutes post exercise"
-        },
-        {
-            "code": "43262-5",
-            "description": "FEV1 --15 minutes post exercise"
-        },
-        {
-            "code": "43261-7",
-            "description": "FEV1 --5 minutes post exercise"
-        },
-        {
-            "code": "19913-3",
-            "description": "Diffusion capacity.carbon monoxide adjusted for hemoglobin"
-        },
-        {
-            "code": "19917-4",
-            "description": "Diffusion capacity adjusted to body conditions by Single breath.carbon monoxide+Helium"
+            "description": "Airway resistance measured/predicted by Plethysmograph body box",
+            "category": "Lungenfunktion"
         },
         {
             "code": "19918-2",
-            "description": "Diffusion capacity adjusted to body conditions"
+            "description": "Diffusion capacity adjusted to body conditions",
+            "category": "Lungenfunktion"
         },
         {
-            "code": "19910-9",
-            "description": "Diffusion capacity.carbon monoxide Predicted"
+            "code": "19917-4",
+            "description": "Diffusion capacity adjusted to body conditions by Single breath.carbon monoxide+Helium",
+            "category": "Lungenfunktion"
         },
         {
-            "code": "98130-8",
-            "description": "Diffusion capacity.carbon monoxide/Predicted"
-        },
-        {
-            "code": "98091-2",
-            "description": "Diffusion capacity.carbon monoxide --pre bronchodilation"
+            "code": "19911-7",
+            "description": "Diffusion capacity.carbon monoxide",
+            "category": "Lungenfunktion"
         },
         {
             "code": "98092-0",
-            "description": "Diffusion capacity.carbon monoxide --post bronchodilation"
+            "description": "Diffusion capacity.carbon monoxide --post bronchodilation",
+            "category": "Lungenfunktion"
+        },
+        {
+            "code": "98091-2",
+            "description": "Diffusion capacity.carbon monoxide --pre bronchodilation",
+            "category": "Lungenfunktion"
+        },
+        {
+            "code": "19913-3",
+            "description": "Diffusion capacity.carbon monoxide adjusted for hemoglobin",
+            "category": "Lungenfunktion"
+        },
+        {
+            "code": "19912-5",
+            "description": "Diffusion capacity.carbon monoxide adjusted for hemoglobin by Helium single breath",
+            "category": "Lungenfunktion"
+        },
+        {
+            "code": "19910-9",
+            "description": "Diffusion capacity.carbon monoxide Predicted",
+            "category": "Lungenfunktion"
         },
         {
             "code": "69578-3",
-            "description": "Diffusion capacity.carbon monoxide/Alveolar volume adjusted for hemoglobin"
+            "description": "Diffusion capacity.carbon monoxide/Alveolar volume adjusted for hemoglobin",
+            "category": "Lungenfunktion"
         },
         {
-            "code": "60948-7",
-            "description": "Peak inspiratory flow. Respiratory system airway"
+            "code": "98130-8",
+            "description": "Diffusion capacity.carbon monoxide/Predicted",
+            "category": "Lungenfunktion"
+        },
+        {
+            "code": "19916-6",
+            "description": "Diffusion capacity/Alveolar volume",
+            "category": "Lungenfunktion"
+        },
+        {
+            "code": "82620-6",
+            "description": "Diffusion capacity/Alveolar volume --post bronchodilation",
+            "category": "Lungenfunktion"
+        },
+        {
+            "code": "82619-8",
+            "description": "Diffusion capacity/Alveolar volume --pre bronchodilation",
+            "category": "Lungenfunktion"
+        },
+        {
+            "code": "19914-1",
+            "description": "Diffusion capacity/Alveolar volume by Single breath.carbon monoxide+Helium",
+            "category": "Lungenfunktion"
+        },
+        {
+            "code": "19915-8",
+            "description": "Diffusion capacity/Alveolar volume Predicted",
+            "category": "Lungenfunktion"
+        },
+        {
+            "code": "98203-3",
+            "description": "Diffusion capacity/Alveolar volume/predicted",
+            "category": "Lungenfunktion"
+        },
+        {
+            "code": "19924-0",
+            "description": "Expiratory reserve",
+            "category": "Lungenfunktion"
+        },
+        {
+            "code": "19921-6",
+            "description": "Expiratory reserve by Helium rebreathing",
+            "category": "Lungenfunktion"
+        },
+        {
+            "code": "19922-4",
+            "description": "Expiratory reserve by Helium single breath",
+            "category": "Lungenfunktion"
+        },
+        {
+            "code": "19923-2",
+            "description": "Expiratory reserve Predicted",
+            "category": "Lungenfunktion"
+        },
+        {
+            "code": "69973-6",
+            "description": "FEF 25-75% --post bronchodilation",
+            "category": "Lungenfunktion"
+        },
+        {
+            "code": "69972-8",
+            "description": "FEF 25-75% --pre bronchodilation",
+            "category": "Lungenfunktion"
+        },
+        {
+            "code": "69971-0",
+            "description": "FEF 25-75% Predicted",
+            "category": "Lungenfunktion"
+        },
+        {
+            "code": "20142-6",
+            "description": "FEV",
+            "category": "Lungenfunktion"
+        },
+        {
+            "code": "20137-6",
+            "description": "FEV 25%-75% measured/predicted",
+            "category": "Lungenfunktion"
+        },
+        {
+            "code": "20135-0",
+            "description": "FEV 25%-75% post bronchodilation measured/predicted",
+            "category": "Lungenfunktion"
+        },
+        {
+            "code": "20136-8",
+            "description": "FEV 25%-75% pre bronchodilation measured/predicted",
+            "category": "Lungenfunktion"
+        },
+        {
+            "code": "20148-3",
+            "description": "FEV.5",
+            "category": "Lungenfunktion"
+        },
+        {
+            "code": "20147-5",
+            "description": "FEV.5 Predicted",
+            "category": "Lungenfunktion"
+        },
+        {
+            "code": "20150-9",
+            "description": "FEV1",
+            "category": "Lungenfunktion"
+        },
+        {
+            "code": "43263-3",
+            "description": "FEV1 --10 minutes post exercise",
+            "category": "Lungenfunktion"
+        },
+        {
+            "code": "43262-5",
+            "description": "FEV1 --15 minutes post exercise",
+            "category": "Lungenfunktion"
+        },
+        {
+            "code": "43261-7",
+            "description": "FEV1 --5 minutes post exercise",
+            "category": "Lungenfunktion"
+        },
+        {
+            "code": "43260-9",
+            "description": "FEV1 --post 0.025 mg/mL methacholine",
+            "category": "Lungenfunktion"
+        },
+        {
+            "code": "43259-1",
+            "description": "FEV1 --post 0.25 mg/mL methacholine",
+            "category": "Lungenfunktion"
+        },
+        {
+            "code": "43258-3",
+            "description": "FEV1 --post 10 mg/mL methacholine",
+            "category": "Lungenfunktion"
+        },
+        {
+            "code": "43257-5",
+            "description": "FEV1 --post 2.5 mg/mL methacholine",
+            "category": "Lungenfunktion"
+        },
+        {
+            "code": "43256-7",
+            "description": "FEV1 --post 25 mg/mL methacholine",
+            "category": "Lungenfunktion"
+        },
+        {
+            "code": "20155-8",
+            "description": "FEV1 --post bronchodilation",
+            "category": "Lungenfunktion"
+        },
+        {
+            "code": "43255-9",
+            "description": "FEV1 --post dose methacholine",
+            "category": "Lungenfunktion"
+        },
+        {
+            "code": "20157-4",
+            "description": "FEV1 --pre bronchodilation",
+            "category": "Lungenfunktion"
+        },
+        {
+            "code": "43253-4",
+            "description": "FEV1 --pre dose methacholine",
+            "category": "Lungenfunktion"
+        },
+        {
+            "code": "43254-2",
+            "description": "FEV1 --Pre excercise",
+            "category": "Lungenfunktion"
+        },
+        {
+            "code": "20152-5",
+            "description": "FEV1 measured/predicted",
+            "category": "Lungenfunktion"
+        },
+        {
+            "code": "69983-5",
+            "description": "FEV1 percent change",
+            "category": "Lungenfunktion"
+        },
+        {
+            "code": "20149-1",
+            "description": "FEV1 Predicted",
+            "category": "Lungenfunktion"
+        },
+        {
+            "code": "20154-1",
+            "description": "FEV1 Predicted --post bronchodilation",
+            "category": "Lungenfunktion"
+        },
+        {
+            "code": "20156-6",
+            "description": "FEV1 Predicted --pre bronchodilation",
+            "category": "Lungenfunktion"
+        },
+        {
+            "code": "20153-3",
+            "description": "FEV1/FEV total",
+            "category": "Lungenfunktion"
+        },
+        {
+            "code": "65658-7",
+            "description": "FEV1/FEV6 Predicted",
+            "category": "Lungenfunktion"
+        },
+        {
+            "code": "19926-5",
+            "description": "FEV1/FVC",
+            "category": "Lungenfunktion"
+        },
+        {
+            "code": "69970-2",
+            "description": "FEV1/FVC --post bronchodilation",
+            "category": "Lungenfunktion"
+        },
+        {
+            "code": "69984-3",
+            "description": "FEV1/FVC percent change",
+            "category": "Lungenfunktion"
+        },
+        {
+            "code": "19925-7",
+            "description": "FEV1/FVC Predicted",
+            "category": "Lungenfunktion"
+        },
+        {
+            "code": "52486-8",
+            "description": "FEV2/FEV total",
+            "category": "Lungenfunktion"
+        },
+        {
+            "code": "41233-8",
+            "description": "FEV3 Predicted",
+            "category": "Lungenfunktion"
+        },
+        {
+            "code": "41234-6",
+            "description": "FEV3/FEV total",
+            "category": "Lungenfunktion"
+        },
+        {
+            "code": "65655-3",
+            "description": "FEV6",
+            "category": "Lungenfunktion"
+        },
+        {
+            "code": "65656-1",
+            "description": "FEV6 Predicted",
+            "category": "Lungenfunktion"
+        },
+        {
+            "code": "19870-5",
+            "description": "Forced vital capacity [Volume] Respiratory system",
+            "category": "Lungenfunktion"
+        },
+        {
+            "code": "19875-4",
+            "description": "Forced vital capacity [Volume] Respiratory system --post bronchodilation",
+            "category": "Lungenfunktion"
+        },
+        {
+            "code": "19877-0",
+            "description": "Forced vital capacity [Volume] Respiratory system --pre bronchodilation",
+            "category": "Lungenfunktion"
+        },
+        {
+            "code": "19868-9",
+            "description": "Forced vital capacity [Volume] Respiratory system by Spirometry",
+            "category": "Lungenfunktion"
+        },
+        {
+            "code": "19874-7",
+            "description": "Forced vital capacity [Volume] Respiratory system by Spirometry --post bronchodilation",
+            "category": "Lungenfunktion"
+        },
+        {
+            "code": "19876-2",
+            "description": "Forced vital capacity [Volume] Respiratory system by Spirometry --pre bronchodilation",
+            "category": "Lungenfunktion"
+        },
+        {
+            "code": "19869-7",
+            "description": "Forced vital capacity [Volume] Respiratory system Predicted",
+            "category": "Lungenfunktion"
+        },
+        {
+            "code": "19843-2",
+            "description": "Functional residual capacity",
+            "category": "Lungenfunktion"
+        },
+        {
+            "code": "81457-4",
+            "description": "Functional residual capacity --post bronchodilation",
+            "category": "Lungenfunktion"
+        },
+        {
+            "code": "81456-6",
+            "description": "Functional residual capacity --pre bronchodilation",
+            "category": "Lungenfunktion"
+        },
+        {
+            "code": "19844-0",
+            "description": "Functional residual capacity by Helium rebreathing",
+            "category": "Lungenfunktion"
+        },
+        {
+            "code": "19845-7",
+            "description": "Functional residual capacity by Helium single breath",
+            "category": "Lungenfunktion"
+        },
+        {
+            "code": "19846-5",
+            "description": "Functional residual capacity by Plethysmograph body box",
+            "category": "Lungenfunktion"
+        },
+        {
+            "code": "19847-3",
+            "description": "Functional residual capacity Predicted",
+            "category": "Lungenfunktion"
+        },
+        {
+            "code": "19872-1",
+            "description": "FVC measured/predicted",
+            "category": "Lungenfunktion"
+        },
+        {
+            "code": "69982-7",
+            "description": "FVC percent change Respiratory system",
+            "category": "Lungenfunktion"
+        },
+        {
+            "code": "19873-9",
+            "description": "FVC post bronchodilation measured/predicted",
+            "category": "Lungenfunktion"
+        },
+        {
+            "code": "19871-3",
+            "description": "FVC pre bronchodilation measured/predicted",
+            "category": "Lungenfunktion"
+        },
+        {
+            "code": "65821-1",
+            "description": "Gas flow FEV 25%",
+            "category": "Lungenfunktion"
+        },
+        {
+            "code": "19927-3",
+            "description": "Gas flow FEV 25%-75%",
+            "category": "Lungenfunktion"
+        },
+        {
+            "code": "19945-5",
+            "description": "Gas flow FEV 25%-75% airway",
+            "category": "Lungenfunktion"
+        },
+        {
+            "code": "65822-9",
+            "description": "Gas flow FEV 50%",
+            "category": "Lungenfunktion"
+        },
+        {
+            "code": "65823-7",
+            "description": "Gas flow FEV 75%",
+            "category": "Lungenfunktion"
+        },
+        {
+            "code": "65824-5",
+            "description": "Gas flow FEV 90%",
+            "category": "Lungenfunktion"
+        },
+        {
+            "code": "19848-1",
+            "description": "Inspiratory capacity",
+            "category": "Lungenfunktion"
+        },
+        {
+            "code": "19854-9",
+            "description": "Inspiratory capacity bs/Inspiratory capacity pre-operative",
+            "category": "Lungenfunktion"
+        },
+        {
+            "code": "19853-1",
+            "description": "Inspiratory capacity bs/Inspiratory capacity pre-operative by Spirometry",
+            "category": "Lungenfunktion"
+        },
+        {
+            "code": "19849-9",
+            "description": "Inspiratory capacity by Helium rebreathing",
+            "category": "Lungenfunktion"
+        },
+        {
+            "code": "19850-7",
+            "description": "Inspiratory capacity by Helium single breath",
+            "category": "Lungenfunktion"
+        },
+        {
+            "code": "19852-3",
+            "description": "Inspiratory capacity by Spirometry",
+            "category": "Lungenfunktion"
+        },
+        {
+            "code": "98090-4",
+            "description": "Inspiratory capacity by Spirometry --post bronchodilation",
+            "category": "Lungenfunktion"
+        },
+        {
+            "code": "98089-6",
+            "description": "Inspiratory capacity by Spirometry --pre bronchodilation",
+            "category": "Lungenfunktion"
+        },
+        {
+            "code": "19856-4",
+            "description": "Inspiratory capacity measured/predicted",
+            "category": "Lungenfunktion"
+        },
+        {
+            "code": "19855-6",
+            "description": "Inspiratory capacity measured/predicted by Spirometry",
+            "category": "Lungenfunktion"
+        },
+        {
+            "code": "19851-5",
+            "description": "Inspiratory capacity Predicted",
+            "category": "Lungenfunktion"
+        },
+        {
+            "code": "100759-0",
+            "description": "Inspiratory reserve [Volume] Respiratory system by Spirometry",
+            "category": "Lungenfunktion"
+        },
+        {
+            "code": "33452-4",
+            "description": "Maximum expiratory gas flow Respiratory system airway",
+            "category": "Lungenfunktion"
+        },
+        {
+            "code": "60793-7",
+            "description": "Maximum expiratory gas flow Respiratory system airway --on ventilator",
+            "category": "Lungenfunktion"
+        },
+        {
+            "code": "69976-9",
+            "description": "Maximum expiratory gas flow Respiratory system airway --post bronchodilation",
+            "category": "Lungenfunktion"
+        },
+        {
+            "code": "19938-0",
+            "description": "Maximum expiratory gas flow Respiratory system airway --post therapy",
+            "category": "Lungenfunktion"
+        },
+        {
+            "code": "69975-1",
+            "description": "Maximum expiratory gas flow Respiratory system airway --pre bronchodilation",
+            "category": "Lungenfunktion"
+        },
+        {
+            "code": "71794-2",
+            "description": "Maximum expiratory gas flow Respiratory system airway --pre therapy",
+            "category": "Lungenfunktion"
+        },
+        {
+            "code": "19935-6",
+            "description": "Maximum expiratory gas flow Respiratory system airway by Peak flow meter",
+            "category": "Lungenfunktion"
+        },
+        {
+            "code": "19937-2",
+            "description": "Maximum expiratory gas flow Respiratory system airway by Peak flow meter --post therapy",
+            "category": "Lungenfunktion"
+        },
+        {
+            "code": "71795-9",
+            "description": "Maximum expiratory gas flow Respiratory system airway by Peak flow meter --pre therapy",
+            "category": "Lungenfunktion"
+        },
+        {
+            "code": "69974-4",
+            "description": "Maximum expiratory gas flow Respiratory system airway Predicted",
+            "category": "Lungenfunktion"
+        },
+        {
+            "code": "69978-5",
+            "description": "Maximum expiratory gas flow/Predicted maximum expiratory gas flow Respiratory system airway --post bronchodilation",
+            "category": "Lungenfunktion"
+        },
+        {
+            "code": "69977-7",
+            "description": "Maximum expiratory gas flow/Predicted maximum expiratory gas flow Respiratory system airway --pre bronchodilation",
+            "category": "Lungenfunktion"
+        },
+        {
+            "code": "83368-1",
+            "description": "Personal best peak expiratory gas flow Respiratory system airway",
+            "category": "Lungenfunktion"
+        },
+        {
+            "code": "20146-7",
+            "description": "Residual volume",
+            "category": "Lungenfunktion"
+        },
+        {
+            "code": "81453-3",
+            "description": "Residual volume --post bronchodilation",
+            "category": "Lungenfunktion"
+        },
+        {
+            "code": "81452-5",
+            "description": "Residual volume --pre bronchodilation",
+            "category": "Lungenfunktion"
+        },
+        {
+            "code": "20143-4",
+            "description": "Residual volume by Helium rebreathing",
+            "category": "Lungenfunktion"
+        },
+        {
+            "code": "20144-2",
+            "description": "Residual volume by Helium single breath",
+            "category": "Lungenfunktion"
+        },
+        {
+            "code": "20145-9",
+            "description": "Residual volume Predicted",
+            "category": "Lungenfunktion"
+        },
+        {
+            "code": "94125-2",
+            "description": "Residual volume/Predicted by Plethysmograph body box",
+            "category": "Lungenfunktion"
+        },
+        {
+            "code": "81455-8",
+            "description": "Residual volume/Total capacity --post bronchodilation",
+            "category": "Lungenfunktion"
+        },
+        {
+            "code": "81454-1",
+            "description": "Residual volume/Total capacity --pre bronchodilation",
+            "category": "Lungenfunktion"
+        },
+        {
+            "code": "43252-6",
+            "description": "Residual volume/Total capacity Predicted",
+            "category": "Lungenfunktion"
+        },
+        {
+            "code": "91980-3",
+            "description": "Specific airway resistance by Plethysmograph body box",
+            "category": "Lungenfunktion"
+        },
+        {
+            "code": "98083-9",
+            "description": "Specific airway resistance mean by Plethysmograph body box --post bronchodilation",
+            "category": "Lungenfunktion"
+        },
+        {
+            "code": "98082-1",
+            "description": "Specific airway resistance mean by Plethysmograph body box --pre bronchodilation",
+            "category": "Lungenfunktion"
+        },
+        {
+            "code": "91982-9",
+            "description": "Specific airway resistance measured/predicted by Plethysmograph body box",
+            "category": "Lungenfunktion"
+        },
+        {
+            "code": "98084-7",
+            "description": "Specific effective resistance.airway mean Calculated",
+            "category": "Lungenfunktion"
+        },
+        {
+            "code": "98086-2",
+            "description": "Specific effective resistance.airway mean Calculated --post bronchodilation",
+            "category": "Lungenfunktion"
+        },
+        {
+            "code": "98085-4",
+            "description": "Specific effective resistance.airway mean Calculated --pre bronchodilation",
+            "category": "Lungenfunktion"
+        },
+        {
+            "code": "98087-0",
+            "description": "Specific effective resistance.airway/Predicted mean",
+            "category": "Lungenfunktion"
+        },
+        {
+            "code": "19862-2",
+            "description": "Total lung capacity",
+            "category": "Lungenfunktion"
+        },
+        {
+            "code": "81451-7",
+            "description": "Total lung capacity --post bronchodilation",
+            "category": "Lungenfunktion"
+        },
+        {
+            "code": "81450-9",
+            "description": "Total lung capacity --pre bronchodilation",
+            "category": "Lungenfunktion"
+        },
+        {
+            "code": "19860-6",
+            "description": "Total lung capacity by Chest xray.calculated",
+            "category": "Lungenfunktion"
+        },
+        {
+            "code": "19857-2",
+            "description": "Total lung capacity by Helium rebreathing",
+            "category": "Lungenfunktion"
+        },
+        {
+            "code": "82618-0",
+            "description": "Total lung capacity by Helium rebreathing --post bronchodilation",
+            "category": "Lungenfunktion"
+        },
+        {
+            "code": "82617-2",
+            "description": "Total lung capacity by Helium rebreathing --pre bronchodilation",
+            "category": "Lungenfunktion"
+        },
+        {
+            "code": "19858-0",
+            "description": "Total lung capacity by Helium single breath",
+            "category": "Lungenfunktion"
+        },
+        {
+            "code": "19859-8",
+            "description": "Total lung capacity by Plethysmograph body box",
+            "category": "Lungenfunktion"
+        },
+        {
+            "code": "89085-5",
+            "description": "Total lung capacity measured/predicted by Plethysmograph body box",
+            "category": "Lungenfunktion"
+        },
+        {
+            "code": "19861-4",
+            "description": "Total lung capacity Predicted",
+            "category": "Lungenfunktion"
+        },
+        {
+            "code": "19867-1",
+            "description": "Vital capacity [Volume] Respiratory system",
+            "category": "Lungenfunktion"
+        },
+        {
+            "code": "81441-8",
+            "description": "Vital capacity [Volume] Respiratory system --post bronchodilation",
+            "category": "Lungenfunktion"
+        },
+        {
+            "code": "81440-0",
+            "description": "Vital capacity [Volume] Respiratory system --pre bronchodilation",
+            "category": "Lungenfunktion"
+        },
+        {
+            "code": "19863-0",
+            "description": "Vital capacity [Volume] Respiratory system by Helium rebreathing",
+            "category": "Lungenfunktion"
+        },
+        {
+            "code": "19864-8",
+            "description": "Vital capacity [Volume] Respiratory system by Helium single breath",
+            "category": "Lungenfunktion"
+        },
+        {
+            "code": "19866-3",
+            "description": "Vital capacity [Volume] Respiratory system by Spirometry",
+            "category": "Lungenfunktion"
+        },
+        {
+            "code": "82616-4",
+            "description": "Vital capacity [Volume] Respiratory system by Spirometry --post bronchodilation",
+            "category": "Lungenfunktion"
+        },
+        {
+            "code": "82615-6",
+            "description": "Vital capacity [Volume] Respiratory system by Spirometry --pre bronchodilation",
+            "category": "Lungenfunktion"
+        },
+        {
+            "code": "19865-5",
+            "description": "Vital capacity [Volume] Respiratory system Predicted",
+            "category": "Lungenfunktion"
+        },
+        {
+            "code": "98088-8",
+            "description": "Vital capacity/predicted VC Respiratory system by Spirometry",
+            "category": "Lungenfunktion"
+        },
+        {
+            "code": "92126-2",
+            "description": "Mycoplasma pneumoniae DNA [Presence] in Respiratory system specimen by NAA with probe detection",
+            "category": "Mikrobiologie"
+        },
+        {
+            "code": "29257-3",
+            "description": "Mycoplasma pneumoniae DNA [Presence] in Specimen by NAA with probe detection",
+            "category": "Mikrobiologie"
+        },
+        {
+            "code": "13980-8",
+            "description": "Albumin/Protein.total in Serum or Plasma by Electrophoresis",
+            "category": "Serumelektrophorese"
+        },
+        {
+            "code": "13978-2",
+            "description": "Alpha 1 globulin/Protein.total in Serum or Plasma by Electrophoresis",
+            "category": "Serumelektrophorese"
+        },
+        {
+            "code": "13981-6",
+            "description": "Alpha 2 globulin/Protein.total in Serum or Plasma by Electrophoresis",
+            "category": "Serumelektrophorese"
+        },
+        {
+            "code": "13982-4",
+            "description": "Beta globulin/Protein.total in Serum or Plasma by Electrophoresis",
+            "category": "Serumelektrophorese"
+        },
+        {
+            "code": "13983-2",
+            "description": "Gamma globulin/Protein.total in Serum or Plasma by Electrophoresis",
+            "category": "Serumelektrophorese"
+        },
+        {
+            "code": "4049-3",
+            "description": "Theophylline [Mass/volume] in Serum or Plasma",
+            "category": "Tdm"
+        },
+        {
+            "code": "1755-8",
+            "description": "Albumin [Mass/time] in 24 hour Urine",
+            "category": "Urindiagnostik"
+        },
+        {
+            "code": "21059-1",
+            "description": "Albumin [Mass/volume] in 24 hour Urine",
+            "category": "Urindiagnostik"
+        },
+        {
+            "code": "61196-2",
+            "description": "Albumin [Mass/volume] in Urine from Fetus",
+            "category": "Urindiagnostik"
+        },
+        {
+            "code": "46723-3",
+            "description": "Alpha-1-Microglobulin [Mass/volume] in Urine",
+            "category": "Urindiagnostik"
+        },
+        {
+            "code": "33218-9",
+            "description": "Bacteria [#/area] in Urine sediment by Automated count",
+            "category": "Urindiagnostik"
+        },
+        {
+            "code": "105907-0",
+            "description": "Bacteria [#/volume] in Urine",
+            "category": "Urindiagnostik"
+        },
+        {
+            "code": "51480-2",
+            "description": "Bacteria [#/volume] in Urine by Automated count",
+            "category": "Urindiagnostik"
+        },
+        {
+            "code": "25145-4",
+            "description": "Bacteria [Presence] in Urine sediment by Light microscopy",
+            "category": "Urindiagnostik"
+        },
+        {
+            "code": "50551-1",
+            "description": "Bilirubin.total [Presence] in Urine by Automated test strip",
+            "category": "Urindiagnostik"
+        },
+        {
+            "code": "5770-3",
+            "description": "Bilirubin.total [Presence] in Urine by Test strip",
+            "category": "Urindiagnostik"
+        },
+        {
+            "code": "25362-5",
+            "description": "Calcium [Moles/volume] in 24 hour Urine",
+            "category": "Urindiagnostik"
+        },
+        {
+            "code": "2004-0",
+            "description": "Calcium [Moles/volume] in Urine",
+            "category": "Urindiagnostik"
+        },
+        {
+            "code": "51483-6",
+            "description": "Casts [#/volume] in Urine by Automated count",
+            "category": "Urindiagnostik"
+        },
+        {
+            "code": "21194-6",
+            "description": "Chloride [Moles/volume] in 24 hour Urine",
+            "category": "Urindiagnostik"
+        },
+        {
+            "code": "2078-4",
+            "description": "Chloride [Moles/volume] in Urine",
+            "category": "Urindiagnostik"
+        },
+        {
+            "code": "20624-3",
+            "description": "Creatinine [Mass/volume] in 24 hour Urine",
+            "category": "Urindiagnostik"
+        },
+        {
+            "code": "53291-1",
+            "description": "Epithelial casts [#/area] in Urine by Computer assisted method",
+            "category": "Urindiagnostik"
+        },
+        {
+            "code": "53287-9",
+            "description": "Epithelial casts [#/volume] in Urine by Computer assisted method",
+            "category": "Urindiagnostik"
+        },
+        {
+            "code": "33342-7",
+            "description": "Epithelial cells [#/area] in Urine sediment by Automated count",
+            "category": "Urindiagnostik"
+        },
+        {
+            "code": "30383-4",
+            "description": "Epithelial cells [#/volume] in Urine",
+            "category": "Urindiagnostik"
+        },
+        {
+            "code": "87926-2",
+            "description": "Epithelial cells [#/volume] in Urine by Automated",
+            "category": "Urindiagnostik"
+        },
+        {
+            "code": "24123-2",
+            "description": "Epithelial cells [#/volume] in Urine by Manual count",
+            "category": "Urindiagnostik"
+        },
+        {
+            "code": "53294-5",
+            "description": "Epithelial cells.non-squamous [#/area] in Urine sediment by Automated count",
+            "category": "Urindiagnostik"
+        },
+        {
+            "code": "53978-3",
+            "description": "Epithelial cells.non-squamous [Presence] in Urine sediment by Light microscopy",
+            "category": "Urindiagnostik"
+        },
+        {
+            "code": "13654-9",
+            "description": "Epithelial cells.squamous [#/volume] in Urine sediment",
+            "category": "Urindiagnostik"
+        },
+        {
+            "code": "30391-7",
+            "description": "Erythrocytes [#/volume] in Urine",
+            "category": "Urindiagnostik"
+        },
+        {
+            "code": "798-9",
+            "description": "Erythrocytes [#/volume] in Urine by Automated count",
+            "category": "Urindiagnostik"
+        },
+        {
+            "code": "21305-8",
+            "description": "Glucose [Mass/volume] in 24 hour Urine",
+            "category": "Urindiagnostik"
+        },
+        {
+            "code": "2350-7",
+            "description": "Glucose [Mass/volume] in Urine",
+            "category": "Urindiagnostik"
+        },
+        {
+            "code": "53328-1",
+            "description": "Glucose [Mass/volume] in Urine by Automated test strip",
+            "category": "Urindiagnostik"
+        },
+        {
+            "code": "5792-7",
+            "description": "Glucose [Mass/volume] in Urine by Test strip",
+            "category": "Urindiagnostik"
+        },
+        {
+            "code": "25428-4",
+            "description": "Glucose [Presence] in Urine by Test strip",
+            "category": "Urindiagnostik"
+        },
+        {
+            "code": "726-0",
+            "description": "Hemoglobin [Mass/volume] in Urine",
+            "category": "Urindiagnostik"
+        },
+        {
+            "code": "725-2",
+            "description": "Hemoglobin [Presence] in Urine",
+            "category": "Urindiagnostik"
+        },
+        {
+            "code": "5794-3",
+            "description": "Hemoglobin [Presence] in Urine by Test strip",
+            "category": "Urindiagnostik"
+        },
+        {
+            "code": "47083-1",
+            "description": "IgG [Mass/volume] in 24 hour Urine",
+            "category": "Urindiagnostik"
+        },
+        {
+            "code": "33415-1",
+            "description": "IgG [Mass/volume] in Urine",
+            "category": "Urindiagnostik"
+        },
+        {
+            "code": "6781-9",
+            "description": "IgG [Mass/volume] in Urine by Immunoassay",
+            "category": "Urindiagnostik"
+        },
+        {
+            "code": "50557-8",
+            "description": "Ketones [Mass/volume] in Urine by Automated test strip",
+            "category": "Urindiagnostik"
+        },
+        {
+            "code": "2514-8",
+            "description": "Ketones [Presence] in Urine by Test strip",
+            "category": "Urindiagnostik"
+        },
+        {
+            "code": "5799-2",
+            "description": "Leukocyte esterase [Presence] in Urine by Test strip",
+            "category": "Urindiagnostik"
+        },
+        {
+            "code": "46702-7",
+            "description": "Leukocytes [#/area] in Urine sediment by Automated count",
+            "category": "Urindiagnostik"
+        },
+        {
+            "code": "30405-5",
+            "description": "Leukocytes [#/volume] in Urine",
+            "category": "Urindiagnostik"
+        },
+        {
+            "code": "51487-7",
+            "description": "Leukocytes [#/volume] in Urine by Automated count",
+            "category": "Urindiagnostik"
+        },
+        {
+            "code": "24122-4",
+            "description": "Leukocytes [#/volume] in Urine by Manual count",
+            "category": "Urindiagnostik"
+        },
+        {
+            "code": "33052-2",
+            "description": "Leukocytes [Presence] in Urine",
+            "category": "Urindiagnostik"
+        },
+        {
+            "code": "25954-9",
+            "description": "Magnesium [Moles/volume] in 24 hour Urine",
+            "category": "Urindiagnostik"
+        },
+        {
+            "code": "2598-1",
+            "description": "Magnesium [Moles/volume] in Urine",
+            "category": "Urindiagnostik"
+        },
+        {
+            "code": "30003-8",
+            "description": "Microalbumin [Mass/volume] in 24 hour Urine",
+            "category": "Urindiagnostik"
+        },
+        {
+            "code": "51478-6",
+            "description": "Mucus [#/volume] in Urine by Automated count",
+            "category": "Urindiagnostik"
+        },
+        {
+            "code": "53321-6",
+            "description": "Mucus [Presence] in Urine by Automated",
+            "category": "Urindiagnostik"
+        },
+        {
+            "code": "50558-6",
+            "description": "Nitrite [Presence] in Urine by Automated test strip",
+            "category": "Urindiagnostik"
+        },
+        {
+            "code": "5802-4",
+            "description": "Nitrite [Presence] in Urine by Test strip",
+            "category": "Urindiagnostik"
+        },
+        {
+            "code": "78741-6",
+            "description": "Pathologic casts [#/volume] in Urine by Automated count",
+            "category": "Urindiagnostik"
+        },
+        {
+            "code": "5803-2",
+            "description": "pH of Urine by Test strip",
+            "category": "Urindiagnostik"
+        },
+        {
+            "code": "35263-3",
+            "description": "Phosphate [Mass or Moles] in 24 hour Urine",
+            "category": "Urindiagnostik"
+        },
+        {
+            "code": "2778-9",
+            "description": "Phosphate [Mass/volume] in Urine",
+            "category": "Urindiagnostik"
+        },
+        {
+            "code": "25973-9",
+            "description": "Phosphate [Moles/volume] in 24 hour Urine",
+            "category": "Urindiagnostik"
+        },
+        {
+            "code": "13539-2",
+            "description": "Phosphate [Moles/volume] in Urine",
+            "category": "Urindiagnostik"
+        },
+        {
+            "code": "21476-7",
+            "description": "Potassium [Moles/volume] in 24 hour Urine",
+            "category": "Urindiagnostik"
+        },
+        {
+            "code": "21482-5",
+            "description": "Protein [Mass/volume] in 24 hour Urine",
+            "category": "Urindiagnostik"
+        },
+        {
+            "code": "32209-9",
+            "description": "Protein [Presence] in 24 hour Urine by Test strip",
+            "category": "Urindiagnostik"
+        },
+        {
+            "code": "20454-5",
+            "description": "Protein [Presence] in Urine by Test strip",
+            "category": "Urindiagnostik"
+        },
+        {
+            "code": "21525-1",
+            "description": "Sodium [Moles/volume] in 24 hour Urine",
+            "category": "Urindiagnostik"
+        },
+        {
+            "code": "2965-2",
+            "description": "Specific gravity of Urine",
+            "category": "Urindiagnostik"
+        },
+        {
+            "code": "53326-5",
+            "description": "Specific gravity of Urine by Automated test strip",
+            "category": "Urindiagnostik"
+        },
+        {
+            "code": "50562-8",
+            "description": "Specific gravity of Urine by Refractometry automated",
+            "category": "Urindiagnostik"
+        },
+        {
+            "code": "5811-5",
+            "description": "Specific gravity of Urine by Test strip",
+            "category": "Urindiagnostik"
+        },
+        {
+            "code": "21587-1",
+            "description": "Urate [Mass/volume] in 24 hour Urine",
+            "category": "Urindiagnostik"
+        },
+        {
+            "code": "3086-6",
+            "description": "Urate [Mass/volume] in Urine",
+            "category": "Urindiagnostik"
+        },
+        {
+            "code": "3088-2",
+            "description": "Urate renal clearance in 24 hour Urine and Serum or Plasma",
+            "category": "Urindiagnostik"
+        },
+        {
+            "code": "48999-7",
+            "description": "Urea [Mass/time] in 24 hour Urine",
+            "category": "Urindiagnostik"
+        },
+        {
+            "code": "63481-6",
+            "description": "Urea [Mass/volume] in 24 hour Urine",
+            "category": "Urindiagnostik"
+        },
+        {
+            "code": "12967-6",
+            "description": "Urea nitrogen [Mass/volume] in 24 hour Urine",
+            "category": "Urindiagnostik"
+        },
+        {
+            "code": "3095-7",
+            "description": "Urea nitrogen [Mass/volume] in Urine",
+            "category": "Urindiagnostik"
+        },
+        {
+            "code": "24356-8",
+            "description": "Urinalysis complete panel - Urine",
+            "category": "Urindiagnostik"
+        },
+        {
+            "code": "9192-6",
+            "description": "Urine output 24 hour",
+            "category": "Urindiagnostik"
+        },
+        {
+            "code": "11279-7",
+            "description": "Urine sediment comments by Light microscopy Narrative",
+            "category": "Urindiagnostik"
+        },
+        {
+            "code": "50563-6",
+            "description": "Urobilinogen [Mass/volume] in Urine by Automated test strip",
+            "category": "Urindiagnostik"
+        },
+        {
+            "code": "13658-0",
+            "description": "Urobilinogen [Presence] in Urine",
+            "category": "Urindiagnostik"
+        },
+        {
+            "code": "5818-0",
+            "description": "Urobilinogen [Presence] in Urine by Test strip",
+            "category": "Urindiagnostik"
+        },
+        {
+            "code": "19153-6",
+            "description": "Volume in Urine collected for unspecified duration",
+            "category": "Urindiagnostik"
+        },
+        {
+            "code": "28009-9",
+            "description": "Volume of Urine",
+            "category": "Urindiagnostik"
+        },
+        {
+            "code": "5822-2",
+            "description": "Yeast [#/area] in Urine sediment by Microscopy high power field",
+            "category": "Urindiagnostik"
+        },
+        {
+            "code": "41215-5",
+            "description": "Yeast [#/area] in Urine sediment by Microscopy low power field",
+            "category": "Urindiagnostik"
+        },
+        {
+            "code": "51481-0",
+            "description": "Yeast [#/volume] in Urine by Automated count",
+            "category": "Urindiagnostik"
+        },
+        {
+            "code": "87831-4",
+            "description": "Yeast [Presence] in Urine",
+            "category": "Urindiagnostik"
+        },
+        {
+            "code": "32356-8",
+            "description": "Yeast [Presence] in Urine sediment by Light microscopy",
+            "category": "Urindiagnostik"
+        },
+        {
+            "code": "39528-5",
+            "description": "Adenovirus DNA [Presence] in Specimen by NAA with probe detection",
+            "category": "Virologie"
+        },
+        {
+            "code": "88539-2",
+            "description": "Adenovirus DNA [Presence] in Stool by NAA with probe detection",
+            "category": "Virologie"
+        },
+        {
+            "code": "29591-5",
+            "description": "Enterovirus RNA [Presence] in Specimen by NAA with probe detection",
+            "category": "Virologie"
+        },
+        {
+            "code": "62424-7",
+            "description": "Human bocavirus DNA [Presence] in Specimen by NAA with probe detection",
+            "category": "Virologie"
+        },
+        {
+            "code": "101419-0",
+            "description": "Human coronavirus 229E RNA [Presence] in Respiratory system specimen by NAA with probe detection",
+            "category": "Virologie"
+        },
+        {
+            "code": "101420-8",
+            "description": "Human coronavirus HKU1 RNA [Presence] in Respiratory system specimen by NAA with probe detection",
+            "category": "Virologie"
+        },
+        {
+            "code": "101421-6",
+            "description": "Human coronavirus NL63 RNA [Presence] in Respiratory system specimen by NAA with probe detection",
+            "category": "Virologie"
+        },
+        {
+            "code": "101422-4",
+            "description": "Human coronavirus OC43 RNA [Presence] in Respiratory system specimen by NAA with probe detection",
+            "category": "Virologie"
+        },
+        {
+            "code": "38917-1",
+            "description": "Human metapneumovirus RNA [Presence] in Specimen by NAA with probe detection",
+            "category": "Virologie"
+        },
+        {
+            "code": "55465-9",
+            "description": "Influenza virus A H1 2009 pandemic RNA [Presence] in Specimen by NAA with probe detection",
+            "category": "Virologie"
+        },
+        {
+            "code": "49521-8",
+            "description": "Influenza virus A H1 RNA [Presence] in Specimen by NAA with probe detection",
+            "category": "Virologie"
+        },
+        {
+            "code": "34487-9",
+            "description": "Influenza virus A RNA [Presence] in Specimen by NAA with probe detection",
+            "category": "Virologie"
+        },
+        {
+            "code": "40982-1",
+            "description": "Influenza virus B RNA [Presence] in Specimen by NAA with probe detection",
+            "category": "Virologie"
+        },
+        {
+            "code": "31924-4",
+            "description": "Parainfluenza virus 1 Ag [Presence] in Specimen",
+            "category": "Virologie"
+        },
+        {
+            "code": "29909-9",
+            "description": "Parainfluenza virus 2 RNA [Presence] in Specimen by NAA with probe detection",
+            "category": "Virologie"
+        },
+        {
+            "code": "29910-7",
+            "description": "Parainfluenza virus 3 RNA [Presence] in Specimen by NAA with probe detection",
+            "category": "Virologie"
+        },
+        {
+            "code": "60525-3",
+            "description": "Parechovirus RNA [Presence] in Specimen by NAA with probe detection",
+            "category": "Virologie"
+        },
+        {
+            "code": "76089-2",
+            "description": "Respiratory syncytial virus RNA [Presence] in Nasopharynx by NAA with probe detection",
+            "category": "Virologie"
+        },
+        {
+            "code": "40988-8",
+            "description": "Respiratory syncytial virus RNA [Presence] in Specimen by NAA with probe detection",
+            "category": "Virologie"
+        },
+        {
+            "code": "7993-9",
+            "description": "Rhinovirus RNA [Presence] in Specimen by NAA with probe detection",
+            "category": "Virologie"
         }
     ]
 }

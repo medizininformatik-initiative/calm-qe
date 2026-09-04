@@ -276,7 +276,12 @@
             "category": "Allergiediagnostik"
         },
         {
-            "code": "d1IgE | d1IgG4",
+            "code": "d1IgE",
+            "description": "Dermatophagoides pteronyssinus, IgE geg.",
+            "category": "Allergiediagnostik"
+        },
+        {
+            "code": "d1IgG4",
             "description": "Dermatophagoides pteronyssinus, IgE geg.",
             "category": "Allergiediagnostik"
         },
