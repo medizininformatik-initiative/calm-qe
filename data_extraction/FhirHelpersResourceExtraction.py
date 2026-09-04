@@ -6,6 +6,7 @@ import json
 import time
 
 import numpy as np
+import requests
 from fhirclient.models.condition import Condition
 from fhirclient.models.medication import Medication
 from fhirclient.models.medicationadministration import MedicationAdministration
@@ -440,14 +441,24 @@ def procedure_frequencies(code_file):
 
 def fetch_atc_codes(resource_ref, code_list, smart):
     system = ATC_SYSTEM_NAME
-    source, medication_reference_id = resource_ref.split('/')
-    if source:
-        medication = Medication.read(medication_reference_id, smart.server)
-        if medication.code and medication.code.coding:
-            for coding in medication.code.coding:
-                if system == coding.system and coding.code in code_list:
-                    return coding.code
-    return None
+    try:
+        source, medication_reference_id = resource_ref.split('/')
+        if source:
+            medication = Medication.read(medication_reference_id, smart.server)
+
+            if medication.code and medication.code.coding:
+                for coding in medication.code.coding:
+                    if system == coding.system and coding.code in code_list:
+                        return coding.code
+            return None
+    except requests.exceptions.RequestException:
+        raise  # real connection problem: try reconnect
+    except FHIRNotFoundException:
+        logging.warning(f"Medication not found for reference {resource_ref!r}. Skipping.")
+        return None
+    except Exception as exc:
+        logging.error(f"Unexpected error resolving ATC code for {resource_ref!r}: {exc}")
+        return None
 
 def medication_frequencies(code_file):
     smart = connect_to_server(user=USER_NAME, pw=USER_PASSWORD, protocol=PROTOCOL)
