@@ -1,0 +1,1934 @@
+{
+    "codes": [
+        {
+            "code": "IGE",
+            "description": "IgE, gesamt",
+            "category": "Allergiediagnostik"
+        },
+        {
+            "code": "zIGES",
+            "description": "IgE, gesamt",
+            "category": "Allergiediagnostik"
+        },
+        {
+            "code": "zIGEV",
+            "description": "IgE, gesamt",
+            "category": "Allergiediagnostik"
+        },
+        {
+            "code": "zIGEAI",
+            "description": "IgE, gesamt",
+            "category": "Allergiediagnostik"
+        },
+        {
+            "code": "fx5IgE",
+            "description": "Nahrungsmittel-Screening, IgE geg.",
+            "category": "Allergiediagnostik"
+        },
+        {
+            "code": "m3IgG",
+            "description": "Aspergillus fumigatus, IgG geg.",
+            "category": "Allergiediagnostik"
+        },
+        {
+            "code": "f13IgE",
+            "description": "Erdnuss (Arachis hypogaea), IgE geg.",
+            "category": "Allergiediagnostik"
+        },
+        {
+            "code": "mx1IgE",
+            "description": "Schimmelpilzmischung 1 (m1, m2, m3, m6), IgE geg.",
+            "category": "Allergiediagnostik"
+        },
+        {
+            "code": "t4IgE",
+            "description": "Hasel (Corylus avellana), IgE geg.",
+            "category": "Allergiediagnostik"
+        },
+        {
+            "code": "d2IgE",
+            "description": "Dermatophagoides farinae, IgE geg.",
+            "category": "Allergiediagnostik"
+        },
+        {
+            "code": "f416IgE",
+            "description": "Weizen (Triticum aestivum) , rTria a 19, Omega-5 G",
+            "category": "Allergiediagnostik"
+        },
+        {
+            "code": "t215IgE",
+            "description": "Birke (Betula verrucosa), r Bet v1, IgE geg.",
+            "category": "Allergiediagnostik"
+        },
+        {
+            "code": "f2IgE",
+            "description": "Kuhmilch, IgE geg.",
+            "category": "Allergiediagnostik"
+        },
+        {
+            "code": "f1IgE",
+            "description": "Eiklar, IgE geg.",
+            "category": "Allergiediagnostik"
+        },
+        {
+            "code": "d203IgE",
+            "description": "Hausstaubmilbe (Dermat. pteronyssinus) nDer p2, Ig",
+            "category": "Allergiediagnostik"
+        },
+        {
+            "code": "d202IgE",
+            "description": "Hausstaubmilbe (Dermat. pteronyssinus) nDer p1, Ig",
+            "category": "Allergiediagnostik"
+        },
+        {
+            "code": "t2IgE",
+            "description": "Erle (Alnus incana), IgE geg.",
+            "category": "Allergiediagnostik"
+        },
+        {
+            "code": "d209IgE",
+            "description": "Milbenkomponente (rDer p23) IgE",
+            "category": "Allergiediagnostik"
+        },
+        {
+            "code": "m222IgE",
+            "description": "Aspergillus (Aspergillus fumigatus), rAsp f6, IgE",
+            "category": "Allergiediagnostik"
+        },
+        {
+            "code": "m221IgE",
+            "description": "Aspergillus (Aspergillus fumigatus), rAsp f4, IgE",
+            "category": "Allergiediagnostik"
+        },
+        {
+            "code": "t224IgE",
+            "description": "Esche/Olive (Olea europaea), rOle e1, IgE geg.",
+            "category": "Allergiediagnostik"
+        },
+        {
+            "code": "o214IgE",
+            "description": "CCD Kohlenhydrat-Determinante MUXF3, IgE geg.",
+            "category": "Allergiediagnostik"
+        },
+        {
+            "code": "e94IgE",
+            "description": "Katze (Felis domesticus) nFel d 1 , IgE geg.",
+            "category": "Allergiediagnostik"
+        },
+        {
+            "code": "g205IgE",
+            "description": "Lieschgras (Phleum pratense) rPhl p 1, IgE geg.",
+            "category": "Allergiediagnostik"
+        },
+        {
+            "code": "f423IgE",
+            "description": "Erdnuß (Arachis hypogaea) rAra h 2,IgE geg.",
+            "category": "Allergiediagnostik"
+        },
+        {
+            "code": "w1IgE",
+            "description": "Ambrosie beifußblättrige, IgE geg.",
+            "category": "Allergiediagnostik"
+        },
+        {
+            "code": "e101IgE",
+            "description": "Hund (Canis familiaris) rCan f1, IgE geg.",
+            "category": "Allergiediagnostik"
+        },
+        {
+            "code": "e102IgE",
+            "description": "Hund (Canis familiaris) rCan f2, IgE geg.",
+            "category": "Allergiediagnostik"
+        },
+        {
+            "code": "d73IgE",
+            "description": "Glycophagus domesticus, IgE geg.",
+            "category": "Allergiediagnostik"
+        },
+        {
+            "code": "w231IgE",
+            "description": "Beifuß (Artemisia vulgaris) nArt v1, IgE geg.",
+            "category": "Allergiediagnostik"
+        },
+        {
+            "code": "f14IgE",
+            "description": "Soja, IgE geg.",
+            "category": "Allergiediagnostik"
+        },
+        {
+            "code": "w230IgE",
+            "description": "Ambrosia (Ambrosia artemisiifolia) nAmb a1, IgE ge",
+            "category": "Allergiediagnostik"
+        },
+        {
+            "code": "i3IgE",
+            "description": "Wespengiftprotein, IgE geg.",
+            "category": "Allergiediagnostik"
+        },
+        {
+            "code": "i209IgE",
+            "description": "Wespe (Vespula vulgaris) rVes v5, IgE geg.",
+            "category": "Allergiediagnostik"
+        },
+        {
+            "code": "i211IgE",
+            "description": "Wespe (Vespula vulgaris) rVes v1, IgE geg.",
+            "category": "Allergiediagnostik"
+        },
+        {
+            "code": "f4IgE",
+            "description": "Weizenmehl, IgE geg.",
+            "category": "Allergiediagnostik"
+        },
+        {
+            "code": "f422IgE",
+            "description": "Erdnuß (Arachis hypogaea) rAra h 1,IgE geg.",
+            "category": "Allergiediagnostik"
+        },
+        {
+            "code": "f352IgE",
+            "description": "Erdnuß (Arachis hypogaea) rAra h 8, IgE geg.",
+            "category": "Allergiediagnostik"
+        },
+        {
+            "code": "f420IgE",
+            "description": "Pfirsich: LTP, rPru p 3, IgE geg.",
+            "category": "Allergiediagnostik"
+        },
+        {
+            "code": "f424IgE",
+            "description": "Erdnuß (Arachis hypogaea) rAra h 3,IgE geg.",
+            "category": "Allergiediagnostik"
+        },
+        {
+            "code": "i208IgE",
+            "description": "Biene (Apis mellifera) rApi m1, IgE geg.",
+            "category": "Allergiediagnostik"
+        },
+        {
+            "code": "f427IgE",
+            "description": "Erdnuß (Arachis hypogaea) rAra h 9, IgE geg.",
+            "category": "Allergiediagnostik"
+        },
+        {
+            "code": "i214IgE",
+            "description": "Biene (Apis mellifera) rApi m2, IgE geg.",
+            "category": "Allergiediagnostik"
+        },
+        {
+            "code": "i215IgE",
+            "description": "Biene (Apis mellifera) rApi m3, IgE geg.",
+            "category": "Allergiediagnostik"
+        },
+        {
+            "code": "i1IgE",
+            "description": "Honigbiene, IgE geg.",
+            "category": "Allergiediagnostik"
+        },
+        {
+            "code": "i216IgE",
+            "description": "Biene (Apis mellifera) rApi m5, IgE geg.",
+            "category": "Allergiediagnostik"
+        },
+        {
+            "code": "i217IgE",
+            "description": "Biene (Apis mellifera) rApi m10, IgE geg.",
+            "category": "Allergiediagnostik"
+        },
+        {
+            "code": "f3IgE",
+            "description": "Dorsch, IgE geg.",
+            "category": "Allergiediagnostik"
+        },
+        {
+            "code": "f439IgE",
+            "description": "Haselnuß (Corylus avellana) rCor a 14, IgE geg.",
+            "category": "Allergiediagnostik"
+        },
+        {
+            "code": "f17IgE",
+            "description": "Haselnuß, IgE geg.",
+            "category": "Allergiediagnostik"
+        },
+        {
+            "code": "f447IgE",
+            "description": "Erdnuß Komponente, rAra h 6, IgE geg.",
+            "category": "Allergiediagnostik"
+        },
+        {
+            "code": "f428IgE",
+            "description": "Haselnuß (Corylus avellana) rCor a 1 , IgE geg.",
+            "category": "Allergiediagnostik"
+        },
+        {
+            "code": "f425IgE",
+            "description": "Haselnuß (Corylus avellana) rCor a 8, IgE geg.",
+            "category": "Allergiediagnostik"
+        },
+        {
+            "code": "f433IgE",
+            "description": "Weizenkomponente rTri a 14, IgE geg.",
+            "category": "Allergiediagnostik"
+        },
+        {
+            "code": "sx1IgE",
+            "description": "Inhalationsallergene (Screening), IgE geg.",
+            "category": "Allergiediagnostik"
+        },
+        {
+            "code": "d1IgE | d1IgG4",
+            "description": "Dermatophagoides pteronyssinus, IgE geg.",
+            "category": "Allergiediagnostik"
+        },
+        {
+            "code": "zAAD1",
+            "description": "Dermatophagoides pteronyssinus, IgE geg.",
+            "category": "Allergiediagnostik"
+        },
+        {
+            "code": "e1IgE",
+            "description": "Katzenepithelien, IgE geg.",
+            "category": "Allergiediagnostik"
+        },
+        {
+            "code": "zAAE1",
+            "description": "Katzenepithelien, IgE geg.",
+            "category": "Allergiediagnostik"
+        },
+        {
+            "code": "e5IgE",
+            "description": "Hundeschuppen, IgE geg.",
+            "category": "Allergiediagnostik"
+        },
+        {
+            "code": "zAAE5",
+            "description": "Hundeschuppen, IgE geg.",
+            "category": "Allergiediagnostik"
+        },
+        {
+            "code": "g6IgE",
+            "description": "Lieschgras (Phleum pratense), IgE geg.",
+            "category": "Allergiediagnostik"
+        },
+        {
+            "code": "zAAG6",
+            "description": "Lieschgras (Phleum pratense), IgE geg.",
+            "category": "Allergiediagnostik"
+        },
+        {
+            "code": "g12IgE",
+            "description": "Roggen, IgE geg.",
+            "category": "Allergiediagnostik"
+        },
+        {
+            "code": "zAAG12",
+            "description": "Roggen, IgE geg.",
+            "category": "Allergiediagnostik"
+        },
+        {
+            "code": "m2IgE",
+            "description": "Cladosporium herbarum, IgE geg.",
+            "category": "Allergiediagnostik"
+        },
+        {
+            "code": "zAAM2",
+            "description": "Cladosporium herbarum, IgE geg.",
+            "category": "Allergiediagnostik"
+        },
+        {
+            "code": "t3IgE",
+            "description": "Birke (Betula verrucosa), IgE geg.",
+            "category": "Allergiediagnostik"
+        },
+        {
+            "code": "zAAT3",
+            "description": "Birke (Betula verrucosa), IgE geg.",
+            "category": "Allergiediagnostik"
+        },
+        {
+            "code": "w6IgE",
+            "description": "Beifuß (Artemisia vulgaris), IgE geg.",
+            "category": "Allergiediagnostik"
+        },
+        {
+            "code": "zAAW6",
+            "description": "Beifuß (Artemisia vulgaris), IgE geg.",
+            "category": "Allergiediagnostik"
+        },
+        {
+            "code": "AINF",
+            "description": "Befund Autoimmundiagnostik",
+            "category": "Autoimmundiagnostik"
+        },
+        {
+            "code": "BEAUTO",
+            "description": "Befund Autoimmundiagnostik",
+            "category": "Autoimmundiagnostik"
+        },
+        {
+            "code": "ANA",
+            "description": "ANA",
+            "category": "Autoimmundiagnostik"
+        },
+        {
+            "code": "zANAIFT",
+            "description": "ANA",
+            "category": "Autoimmundiagnostik"
+        },
+        {
+            "code": "zANAIFTE",
+            "description": "ANA",
+            "category": "Autoimmundiagnostik"
+        },
+        {
+            "code": "PANC",
+            "description": "pANCA",
+            "category": "Autoimmundiagnostik"
+        },
+        {
+            "code": "zANCAIFTE",
+            "description": "pANCA",
+            "category": "Autoimmundiagnostik"
+        },
+        {
+            "code": "zANCAIFT",
+            "description": "pANCA",
+            "category": "Autoimmundiagnostik"
+        },
+        {
+            "code": "CANC",
+            "description": "cANCA",
+            "category": "Autoimmundiagnostik"
+        },
+        {
+            "code": "RF",
+            "description": "Rheumafaktor",
+            "category": "Autoimmundiagnostik"
+        },
+        {
+            "code": "zRHFAC",
+            "description": "Rheumafaktor",
+            "category": "Autoimmundiagnostik"
+        },
+        {
+            "code": "CCP",
+            "description": "CCP, Ak gegen",
+            "category": "Autoimmundiagnostik"
+        },
+        {
+            "code": "zCCP",
+            "description": "CCP, Ak gegen",
+            "category": "Autoimmundiagnostik"
+        },
+        {
+            "code": "DNSEL",
+            "description": "ds DNS, Ak gegen",
+            "category": "Autoimmundiagnostik"
+        },
+        {
+            "code": "zDSDNANI",
+            "description": "ds DNS, Ak gegen",
+            "category": "Autoimmundiagnostik"
+        },
+        {
+            "code": "NUK",
+            "description": "Nukleosomen, Ak gegen",
+            "category": "Autoimmundiagnostik"
+        },
+        {
+            "code": "ENA",
+            "description": "Nukleäre Antikörper",
+            "category": "Autoimmundiagnostik"
+        },
+        {
+            "code": "RNP",
+            "description": "nRPN-Sm, Ak gegen",
+            "category": "Autoimmundiagnostik"
+        },
+        {
+            "code": "zU1RNP70",
+            "description": "nRPN-Sm, Ak gegen",
+            "category": "Autoimmundiagnostik"
+        },
+        {
+            "code": "zU1RNP",
+            "description": "nRPN-Sm, Ak gegen",
+            "category": "Autoimmundiagnostik"
+        },
+        {
+            "code": "SM",
+            "description": "SM, Ak gegen",
+            "category": "Autoimmundiagnostik"
+        },
+        {
+            "code": "zSMD",
+            "description": "SM, Ak gegen",
+            "category": "Autoimmundiagnostik"
+        },
+        {
+            "code": "SSA",
+            "description": "SS-A, Ak gegen",
+            "category": "Autoimmundiagnostik"
+        },
+        {
+            "code": "zSSA60P",
+            "description": "SS-A, Ak gegen",
+            "category": "Autoimmundiagnostik"
+        },
+        {
+            "code": "zSSA52P",
+            "description": "SS-A, Ak gegen",
+            "category": "Autoimmundiagnostik"
+        },
+        {
+            "code": "zSSA",
+            "description": "SS-A, Ak gegen",
+            "category": "Autoimmundiagnostik"
+        },
+        {
+            "code": "SSB",
+            "description": "SS-B, Ak gegen",
+            "category": "Autoimmundiagnostik"
+        },
+        {
+            "code": "zSSB",
+            "description": "SS-B, Ak gegen",
+            "category": "Autoimmundiagnostik"
+        },
+        {
+            "code": "SCL70",
+            "description": "Scl70, Ak gegen",
+            "category": "Autoimmundiagnostik"
+        },
+        {
+            "code": "zSCL70SD",
+            "description": "Scl70, Ak gegen",
+            "category": "Autoimmundiagnostik"
+        },
+        {
+            "code": "JO1",
+            "description": "Jo-1, Ak gegen",
+            "category": "Autoimmundiagnostik"
+        },
+        {
+            "code": "zJO1",
+            "description": "Jo-1, Ak gegen",
+            "category": "Autoimmundiagnostik"
+        },
+        {
+            "code": "MPO",
+            "description": "Myeloperoxydase, Ak gegen",
+            "category": "Autoimmundiagnostik"
+        },
+        {
+            "code": "zMPOS",
+            "description": "Myeloperoxydase, Ak gegen",
+            "category": "Autoimmundiagnostik"
+        },
+        {
+            "code": "PRO3",
+            "description": "Proteinase 3, Ak gegen",
+            "category": "Autoimmundiagnostik"
+        },
+        {
+            "code": "zHSPR3P",
+            "description": "Proteinase 3, Ak gegen",
+            "category": "Autoimmundiagnostik"
+        },
+        {
+            "code": "TTG",
+            "description": "Transglutaminase, IgA-AK gegen",
+            "category": "Autoimmundiagnostik"
+        },
+        {
+            "code": "zTRGL",
+            "description": "Transglutaminase, IgA-AK gegen",
+            "category": "Autoimmundiagnostik"
+        },
+        {
+            "code": "EMA",
+            "description": "Endomysium, IgA-Ak gegen",
+            "category": "Autoimmundiagnostik"
+        },
+        {
+            "code": "zENDOIFT",
+            "description": "Endomysium, IgA-Ak gegen",
+            "category": "Autoimmundiagnostik"
+        },
+        {
+            "code": "THB-POCT",
+            "description": "Gesamt-Hämoglobin-Konz.",
+            "category": "Blutgasanalyse"
+        },
+        {
+            "code": "zHBBGAK",
+            "description": "Gesamt-Hämoglobin-Konz.",
+            "category": "Blutgasanalyse"
+        },
+        {
+            "code": "PO2-POCT",
+            "description": "Sauerstoffpartialdruck im Blut",
+            "category": "Blutgasanalyse"
+        },
+        {
+            "code": "zPCO2K",
+            "description": "Sauerstoffpartialdruck im Blut",
+            "category": "Blutgasanalyse"
+        },
+        {
+            "code": "SO2-POCT",
+            "description": "Sauerstoffsättigung",
+            "category": "Blutgasanalyse"
+        },
+        {
+            "code": "SBE-POCT",
+            "description": "Standard-Basenüberschuss",
+            "category": "Blutgasanalyse"
+        },
+        {
+            "code": "PH(T)-POCT",
+            "description": "pH Blut bei Körpertemperatur (37°C)",
+            "category": "Blutgasanalyse"
+        },
+        {
+            "code": "zPHK",
+            "description": "pH Blut bei Körpertemperatur (37°C)",
+            "category": "Blutgasanalyse"
+        },
+        {
+            "code": "PCO2(T)-POCT",
+            "description": "CO2-Partialdruck Blut (37°C)",
+            "category": "Blutgasanalyse"
+        },
+        {
+            "code": "METHB-POCT",
+            "description": "Methämoglobin-Fraktion des Gesamthämoglobins",
+            "category": "Blutgasanalyse"
+        },
+        {
+            "code": "zFMHBBGAK",
+            "description": "Methämoglobin-Fraktion des Gesamthämoglobins",
+            "category": "Blutgasanalyse"
+        },
+        {
+            "code": "SBC-POCT",
+            "description": "Standard- Bicarbonat",
+            "category": "Blutgasanalyse"
+        },
+        {
+            "code": "zCHCO3BGAK",
+            "description": "Standard- Bicarbonat",
+            "category": "Blutgasanalyse"
+        },
+        {
+            "code": "ABE-POCT",
+            "description": "Aktueller Basenüberschuss",
+            "category": "Blutgasanalyse"
+        },
+        {
+            "code": "zCBASEBBGAK",
+            "description": "Aktueller Basenüberschuss",
+            "category": "Blutgasanalyse"
+        },
+        {
+            "code": "COHB-POCT",
+            "description": "Carboxyhämoglobin-Fraktion des Gesamthämoglobins",
+            "category": "Blutgasanalyse"
+        },
+        {
+            "code": "LAC-POCT",
+            "description": "Laktat-Konzentration",
+            "category": "Blutgasanalyse"
+        },
+        {
+            "code": "K+-POCT",
+            "description": "Kalium-Ionen-Konzentration",
+            "category": "Blutgasanalyse"
+        },
+        {
+            "code": "zKBGAK",
+            "description": "Kalium-Ionen-Konzentration",
+            "category": "Blutgasanalyse"
+        },
+        {
+            "code": "NA+-POCT",
+            "description": "Natirum-Ionen-Konzentration",
+            "category": "Blutgasanalyse"
+        },
+        {
+            "code": "zNABGAK",
+            "description": "Natirum-Ionen-Konzentration",
+            "category": "Blutgasanalyse"
+        },
+        {
+            "code": "CA++-POCT",
+            "description": "Calcium-Ionen-Konzentratioin",
+            "category": "Blutgasanalyse"
+        },
+        {
+            "code": "GLU-POCT",
+            "description": "Glukose-Konzentration",
+            "category": "Blutgasanalyse"
+        },
+        {
+            "code": "zGLUBGAK",
+            "description": "Glukose-Konzentration",
+            "category": "Blutgasanalyse"
+        },
+        {
+            "code": "P50(ACT)-POCT",
+            "description": "P50 (Sauerstoff-Partialdruck Blut bei Halbsättigung (50%))",
+            "category": "Blutgasanalyse"
+        },
+        {
+            "code": "CL--POCT",
+            "description": "Chlorid-Konzentration",
+            "category": "Blutgasanalyse"
+        },
+        {
+            "code": "HCT-POCT",
+            "description": "Hämatokrit",
+            "category": "Blutgasanalyse"
+        },
+        {
+            "code": "zHCTBGAK",
+            "description": "Hämatokrit",
+            "category": "Blutgasanalyse"
+        },
+        {
+            "code": "PO2(T)-POCT",
+            "description": "Sauerstoff-Partialdruck (37°C)",
+            "category": "Blutgasanalyse"
+        },
+        {
+            "code": "TO2-POCT",
+            "description": "Gesamt-Sauerstoff-Konzentration Blut",
+            "category": "Blutgasanalyse"
+        },
+        {
+            "code": "zSO2BGAK",
+            "description": "Gesamt-Sauerstoff-Konzentration Blut",
+            "category": "Blutgasanalyse"
+        },
+        {
+            "code": "TBIL-POCT",
+            "description": "Gesamtbilirubin-Konzentration in Plasma",
+            "category": "Blutgasanalyse"
+        },
+        {
+            "code": "IAFT",
+            "description": "Influenza A Virus",
+            "category": "Virologie"
+        },
+        {
+            "code": "vp4PlexYA07",
+            "description": "Influenza A Virus",
+            "category": "Virologie"
+        },
+        {
+            "code": "PVFT",
+            "description": "Parechovirus",
+            "category": "Virologie"
+        },
+        {
+            "code": "RSVFT",
+            "description": "Respiratory Syncytial Virus (RSV)",
+            "category": "Virologie"
+        },
+        {
+            "code": "vp4PlexYRS07",
+            "description": "Respiratory Syncytial Virus (RSV)",
+            "category": "Virologie"
+        },
+        {
+            "code": "BOCFT",
+            "description": "Bocavirus",
+            "category": "Virologie"
+        },
+        {
+            "code": "IBFT",
+            "description": "Influenza B Virus",
+            "category": "Virologie"
+        },
+        {
+            "code": "vp4PlexYB07",
+            "description": "Influenza B Virus",
+            "category": "Virologie"
+        },
+        {
+            "code": "COFT63",
+            "description": "Coronoavirus NL63",
+            "category": "Virologie"
+        },
+        {
+            "code": "COFT43",
+            "description": "Coronavirus OC43",
+            "category": "Virologie"
+        },
+        {
+            "code": "RHIFT",
+            "description": "Rhinovirus",
+            "category": "Virologie"
+        },
+        {
+            "code": "vpSRrh07",
+            "description": "Rhinovirus",
+            "category": "Virologie"
+        },
+        {
+            "code": "EVFT",
+            "description": "Enterovirus",
+            "category": "Virologie"
+        },
+        {
+            "code": "IH1FT",
+            "description": "Influenza H1N1 Virus",
+            "category": "Virologie"
+        },
+        {
+            "code": "COFT229",
+            "description": "Coronavirus 229E",
+            "category": "Virologie"
+        },
+        {
+            "code": "PIVT",
+            "description": "Parainfluenza Virus",
+            "category": "Virologie"
+        },
+        {
+            "code": "ADFT",
+            "description": "Adenovirus",
+            "category": "Virologie"
+        },
+        {
+            "code": "COFTHK",
+            "description": "Coronavirus HKU1",
+            "category": "Virologie"
+        },
+        {
+            "code": "HMPFT",
+            "description": "Humanes Metapneumovirus",
+            "category": "Virologie"
+        },
+        {
+            "code": "MPFT",
+            "description": "Mycoplasma pneumoniae",
+            "category": "Mikrobiologie"
+        },
+        {
+            "code": "zNA",
+            "description": "Natrium",
+            "category": "Klinische Chemie"
+        },
+        {
+            "code": "K",
+            "description": "Kalium",
+            "category": "Klinische Chemie"
+        },
+        {
+            "code": "zK",
+            "description": "Kalium",
+            "category": "Klinische Chemie"
+        },
+        {
+            "code": "CA",
+            "description": "Calcium",
+            "category": "Klinische Chemie"
+        },
+        {
+            "code": "zCA",
+            "description": "Calcium",
+            "category": "Klinische Chemie"
+        },
+        {
+            "code": "CL",
+            "description": "Chlorid",
+            "category": "Klinische Chemie"
+        },
+        {
+            "code": "zCL",
+            "description": "Chlorid",
+            "category": "Klinische Chemie"
+        },
+        {
+            "code": "MG",
+            "description": "Magnesium",
+            "category": "Klinische Chemie"
+        },
+        {
+            "code": "zMG",
+            "description": "Magnesium",
+            "category": "Klinische Chemie"
+        },
+        {
+            "code": "AST",
+            "description": "AST",
+            "category": "Klinische Chemie"
+        },
+        {
+            "code": "zGOT",
+            "description": "AST",
+            "category": "Klinische Chemie"
+        },
+        {
+            "code": "ALT",
+            "description": "ALT",
+            "category": "Klinische Chemie"
+        },
+        {
+            "code": "zGPT",
+            "description": "ALT",
+            "category": "Klinische Chemie"
+        },
+        {
+            "code": "GGT",
+            "description": "GGT",
+            "category": "Klinische Chemie"
+        },
+        {
+            "code": "zGGT",
+            "description": "GGT",
+            "category": "Klinische Chemie"
+        },
+        {
+            "code": "TBIL",
+            "description": "Bilirubin (gesamt)",
+            "category": "Klinische Chemie"
+        },
+        {
+            "code": "zBILI",
+            "description": "Bilirubin (gesamt)",
+            "category": "Klinische Chemie"
+        },
+        {
+            "code": "CBIL",
+            "description": "Bilirubin (direkt)",
+            "category": "Klinische Chemie"
+        },
+        {
+            "code": "zDBIL",
+            "description": "Bilirubin (direkt)",
+            "category": "Klinische Chemie"
+        },
+        {
+            "code": "KREA",
+            "description": "KREATININ",
+            "category": "Klinische Chemie"
+        },
+        {
+            "code": "zKREAE",
+            "description": "KREATININ",
+            "category": "Klinische Chemie"
+        },
+        {
+            "code": "zKREA",
+            "description": "KREATININ",
+            "category": "Klinische Chemie"
+        },
+        {
+            "code": "HAST",
+            "description": "HARNSTOFF",
+            "category": "Klinische Chemie"
+        },
+        {
+            "code": "zHSTN",
+            "description": "HARNSTOFF",
+            "category": "Klinische Chemie"
+        },
+        {
+            "code": "GFR",
+            "description": "GFR",
+            "category": "Klinische Chemie"
+        },
+        {
+            "code": "zGFRE",
+            "description": "GFR",
+            "category": "Klinische Chemie"
+        },
+        {
+            "code": "PHOS",
+            "description": "PHOSPHAT",
+            "category": "Klinische Chemie"
+        },
+        {
+            "code": "zPSI",
+            "description": "PHOSPHAT",
+            "category": "Klinische Chemie"
+        },
+        {
+            "code": "CRP",
+            "description": "CRP",
+            "category": "Klinische Chemie"
+        },
+        {
+            "code": "zCRP",
+            "description": "CRP",
+            "category": "Klinische Chemie"
+        },
+        {
+            "code": "PCT",
+            "description": "PROCALCITONIN",
+            "category": "Klinische Chemie"
+        },
+        {
+            "code": "zPCTCC",
+            "description": "PROCALCITONIN",
+            "category": "Klinische Chemie"
+        },
+        {
+            "code": "TSH",
+            "description": "TSH",
+            "category": "Klinische Chemie"
+        },
+        {
+            "code": "zTSH",
+            "description": "TSH",
+            "category": "Klinische Chemie"
+        },
+        {
+            "code": "FT3",
+            "description": "FT3",
+            "category": "Klinische Chemie"
+        },
+        {
+            "code": "zFT3",
+            "description": "FT3",
+            "category": "Klinische Chemie"
+        },
+        {
+            "code": "FT4",
+            "description": "FT4",
+            "category": "Klinische Chemie"
+        },
+        {
+            "code": "zFT4",
+            "description": "FT4",
+            "category": "Klinische Chemie"
+        },
+        {
+            "code": "BETYR",
+            "description": "BEURTEILUNG",
+            "category": "Klinische Chemie"
+        },
+        {
+            "code": "TP",
+            "description": "GESAMTPROTEIN",
+            "category": "Klinische Chemie"
+        },
+        {
+            "code": "zGE",
+            "description": "GESAMTPROTEIN",
+            "category": "Klinische Chemie"
+        },
+        {
+            "code": "LDH",
+            "description": "LDH",
+            "category": "Klinische Chemie"
+        },
+        {
+            "code": "zLDH",
+            "description": "LDH",
+            "category": "Klinische Chemie"
+        },
+        {
+            "code": "AP",
+            "description": "ALKALISCHE PHOSPHATASE",
+            "category": "Klinische Chemie"
+        },
+        {
+            "code": "zAP",
+            "description": "ALKALISCHE PHOSPHATASE",
+            "category": "Klinische Chemie"
+        },
+        {
+            "code": "CK",
+            "description": "KREATINKINASE",
+            "category": "Klinische Chemie"
+        },
+        {
+            "code": "zCK",
+            "description": "KREATINKINASE",
+            "category": "Klinische Chemie"
+        },
+        {
+            "code": "CKMB",
+            "description": "CK-MB",
+            "category": "Klinische Chemie"
+        },
+        {
+            "code": "zCKMB",
+            "description": "CK-MB",
+            "category": "Klinische Chemie"
+        },
+        {
+            "code": "CKP",
+            "description": "CKMB-PROZENT",
+            "category": "Klinische Chemie"
+        },
+        {
+            "code": "LIP",
+            "description": "LIPASE",
+            "category": "Klinische Chemie"
+        },
+        {
+            "code": "zLIP",
+            "description": "LIPASE",
+            "category": "Klinische Chemie"
+        },
+        {
+            "code": "HS",
+            "description": "HARNSÄURE",
+            "category": "Klinische Chemie"
+        },
+        {
+            "code": "zHS",
+            "description": "HARNSÄURE",
+            "category": "Klinische Chemie"
+        },
+        {
+            "code": "ALB",
+            "description": "ALBUMIN",
+            "category": "Klinische Chemie"
+        },
+        {
+            "code": "zALB",
+            "description": "ALBUMIN",
+            "category": "Klinische Chemie"
+        },
+        {
+            "code": "AMYL",
+            "description": "AMYLASE",
+            "category": "Klinische Chemie"
+        },
+        {
+            "code": "zAMYL",
+            "description": "AMYLASE",
+            "category": "Klinische Chemie"
+        },
+        {
+            "code": "PCHE",
+            "description": "PSEUDOCHOLINESTERASE",
+            "category": "Klinische Chemie"
+        },
+        {
+            "code": "zCHE",
+            "description": "PSEUDOCHOLINESTERASE",
+            "category": "Klinische Chemie"
+        },
+        {
+            "code": "MYOG",
+            "description": "MYOGLOBIN",
+            "category": "Klinische Chemie"
+        },
+        {
+            "code": "zMYOSAI",
+            "description": "MYOGLOBIN",
+            "category": "Klinische Chemie"
+        },
+        {
+            "code": "BOSM",
+            "description": "OSMOLALITÄT ",
+            "category": "Klinische Chemie"
+        },
+        {
+            "code": "zOSL",
+            "description": "OSMOLALITÄT ",
+            "category": "Klinische Chemie"
+        },
+        {
+            "code": "FER",
+            "description": "FERRITIN",
+            "category": "Klinische Chemie"
+        },
+        {
+            "code": "zFERRAI",
+            "description": "FERRITIN",
+            "category": "Klinische Chemie"
+        },
+        {
+            "code": "FE",
+            "description": "EISEN",
+            "category": "Klinische Chemie"
+        },
+        {
+            "code": "zFE",
+            "description": "EISEN",
+            "category": "Klinische Chemie"
+        },
+        {
+            "code": "TRAN",
+            "description": "TRANSFERRIN",
+            "category": "Klinische Chemie"
+        },
+        {
+            "code": "zTRANAC",
+            "description": "TRANSFERRIN",
+            "category": "Klinische Chemie"
+        },
+        {
+            "code": "TFSA",
+            "description": "TRANSFERRINSÄTTIGUNG",
+            "category": "Klinische Chemie"
+        },
+        {
+            "code": "zTRAS",
+            "description": "TRANSFERRINSÄTTIGUNG",
+            "category": "Klinische Chemie"
+        },
+        {
+            "code": "GLUC",
+            "description": "GLUCOSE",
+            "category": "Klinische Chemie"
+        },
+        {
+            "code": "zGLUS",
+            "description": "GLUCOSE",
+            "category": "Klinische Chemie"
+        },
+        {
+            "code": "TRI",
+            "description": "TROGLYCERIDE",
+            "category": "Klinische Chemie"
+        },
+        {
+            "code": "zTRIG",
+            "description": "TROGLYCERIDE",
+            "category": "Klinische Chemie"
+        },
+        {
+            "code": "CHOL",
+            "description": "CHOLESTERIN",
+            "category": "Klinische Chemie"
+        },
+        {
+            "code": "zCHOL",
+            "description": "CHOLESTERIN",
+            "category": "Klinische Chemie"
+        },
+        {
+            "code": "LDL",
+            "description": "LDL- CHOLESTERIN",
+            "category": "Klinische Chemie"
+        },
+        {
+            "code": "zLDL",
+            "description": "LDL- CHOLESTERIN",
+            "category": "Klinische Chemie"
+        },
+        {
+            "code": "HDL",
+            "description": "HDL- CHOLESTERIN",
+            "category": "Klinische Chemie"
+        },
+        {
+            "code": "zHDL",
+            "description": "HDL- CHOLESTERIN",
+            "category": "Klinische Chemie"
+        },
+        {
+            "code": "NHDLC",
+            "description": "NON-HDL-CHOLESTERIN",
+            "category": "Klinische Chemie"
+        },
+        {
+            "code": "HBA1",
+            "description": "HbA1c",
+            "category": "Klinische Chemie"
+        },
+        {
+            "code": "zHBA1C",
+            "description": "HbA1c",
+            "category": "Klinische Chemie"
+        },
+        {
+            "code": "HBA1c",
+            "description": "HbA1c",
+            "category": "Klinische Chemie"
+        },
+        {
+            "code": "GLUCOPO",
+            "description": "GLUCOSE-KONZENTRATION",
+            "category": "Klinische Chemie"
+        },
+        {
+            "code": "TNIhs",
+            "description": "hsTnI",
+            "category": "Klinische Chemie"
+        },
+        {
+            "code": "zTROPH",
+            "description": "hsTnI",
+            "category": "Klinische Chemie"
+        },
+        {
+            "code": "TNI+E",
+            "description": "TnI",
+            "category": "Klinische Chemie"
+        },
+        {
+            "code": "BNP",
+            "description": "BNP",
+            "category": "Klinische Chemie"
+        },
+        {
+            "code": "zBNPR",
+            "description": "BNP",
+            "category": "Klinische Chemie"
+        },
+        {
+            "code": "EPROBNP",
+            "description": "NT-proBNP",
+            "category": "Klinische Chemie"
+        },
+        {
+            "code": "zNTPROBNPAI",
+            "description": "NT-proBNP",
+            "category": "Klinische Chemie"
+        },
+        {
+            "code": "LEU",
+            "description": "Leukozyten",
+            "category": "Hämatologie"
+        },
+        {
+            "code": "zLEUA",
+            "description": "Leukozyten",
+            "category": "Hämatologie"
+        },
+        {
+            "code": "HB",
+            "description": "Hämoglobin",
+            "category": "Hämatologie"
+        },
+        {
+            "code": "zHB",
+            "description": "Hämoglobin",
+            "category": "Hämatologie"
+        },
+        {
+            "code": "ERY",
+            "description": "Erythrozyten",
+            "category": "Hämatologie"
+        },
+        {
+            "code": "zERYA",
+            "description": "Erythrozyten",
+            "category": "Hämatologie"
+        },
+        {
+            "code": "HK",
+            "description": "Hämatokrit",
+            "category": "Hämatologie"
+        },
+        {
+            "code": "zHK",
+            "description": "Hämatokrit",
+            "category": "Hämatologie"
+        },
+        {
+            "code": "MCV",
+            "description": "MCV",
+            "category": "Hämatologie"
+        },
+        {
+            "code": "zMCV",
+            "description": "MCV",
+            "category": "Hämatologie"
+        },
+        {
+            "code": "MCH",
+            "description": "MCH",
+            "category": "Hämatologie"
+        },
+        {
+            "code": "zMCH",
+            "description": "MCH",
+            "category": "Hämatologie"
+        },
+        {
+            "code": "MCHC",
+            "description": "MCHC",
+            "category": "Hämatologie"
+        },
+        {
+            "code": "zMCHC",
+            "description": "MCHC",
+            "category": "Hämatologie"
+        },
+        {
+            "code": "THRO",
+            "description": "THROMBOZYTEN",
+            "category": "Hämatologie"
+        },
+        {
+            "code": "zTHRA",
+            "description": "THROMBOZYTEN",
+            "category": "Hämatologie"
+        },
+        {
+            "code": "DIFFART",
+            "description": "DIFFERENTIALBLUTBILD",
+            "category": "Hämatologie"
+        },
+        {
+            "code": "GRIBBIND",
+            "description": "DIFFERENTIALBLUTBILD",
+            "category": "Hämatologie"
+        },
+        {
+            "code": "MPV",
+            "description": "MITTLERES THROMBOZYTENVOLUMEN",
+            "category": "Hämatologie"
+        },
+        {
+            "code": "PDW",
+            "description": "VERTEILUNGSBREITE THROMBOZYTEN",
+            "category": "Hämatologie"
+        },
+        {
+            "code": "RDWSD",
+            "description": "VERTEILUNGSBREITE ERYTHROZYTEN",
+            "category": "Hämatologie"
+        },
+        {
+            "code": "zEVBVK",
+            "description": "VERTEILUNGSBREITE ERYTHROZYTEN",
+            "category": "Hämatologie"
+        },
+        {
+            "code": "NEUTd",
+            "description": "NEUTROPHILE",
+            "category": "Hämatologie"
+        },
+        {
+            "code": "zNEU",
+            "description": "NEUTROPHILE",
+            "category": "Hämatologie"
+        },
+        {
+            "code": "NEUTad",
+            "description": "NEUTROPHILE (abs.)",
+            "category": "Hämatologie"
+        },
+        {
+            "code": "LYMPd",
+            "description": "LYMPHOZYTEN",
+            "category": "Hämatologie"
+        },
+        {
+            "code": "zLYMA",
+            "description": "LYMPHOZYTEN",
+            "category": "Hämatologie"
+        },
+        {
+            "code": "LYMPad",
+            "description": "LYMPHOZYTEN (abs.)",
+            "category": "Hämatologie"
+        },
+        {
+            "code": "MONOd",
+            "description": "MONOZYTEN",
+            "category": "Hämatologie"
+        },
+        {
+            "code": "zMONA",
+            "description": "MONOZYTEN",
+            "category": "Hämatologie"
+        },
+        {
+            "code": "MONOad",
+            "description": "MONOZYTEN (abs.)",
+            "category": "Hämatologie"
+        },
+        {
+            "code": "zMONOMA",
+            "description": "MONOZYTEN (abs.)",
+            "category": "Hämatologie"
+        },
+        {
+            "code": "EOSd",
+            "description": "EOSINOPHILE",
+            "category": "Hämatologie"
+        },
+        {
+            "code": "zEOSA",
+            "description": "EOSINOPHILE",
+            "category": "Hämatologie"
+        },
+        {
+            "code": "EOSad",
+            "description": "EOSINOPHILE (abs.)",
+            "category": "Hämatologie"
+        },
+        {
+            "code": "zEOMA",
+            "description": "EOSINOPHILE (abs.)",
+            "category": "Hämatologie"
+        },
+        {
+            "code": "BASOd",
+            "description": "BASOPHILE",
+            "category": "Hämatologie"
+        },
+        {
+            "code": "zBASA",
+            "description": "BASOPHILE",
+            "category": "Hämatologie"
+        },
+        {
+            "code": "BASOad",
+            "description": "BASOPHILE (abs.)",
+            "category": "Hämatologie"
+        },
+        {
+            "code": "IMGRd",
+            "description": "UNREIFE GRANOLOZYTEN",
+            "category": "Hämatologie"
+        },
+        {
+            "code": "zIG",
+            "description": "UNREIFE GRANOLOZYTEN",
+            "category": "Hämatologie"
+        },
+        {
+            "code": "IMGRad",
+            "description": "UNREIFE GRANOLOZYTEN (abs.)",
+            "category": "Hämatologie"
+        },
+        {
+            "code": "STAB",
+            "description": "STABKERNIGE",
+            "category": "Hämatologie"
+        },
+        {
+            "code": "zSTBM",
+            "description": "STABKERNIGE",
+            "category": "Hämatologie"
+        },
+        {
+            "code": "SEG",
+            "description": "SEGMENTKERNIGE",
+            "category": "Hämatologie"
+        },
+        {
+            "code": "zSEG",
+            "description": "SEGMENTKERNIGE",
+            "category": "Hämatologie"
+        },
+        {
+            "code": "SEGa",
+            "description": "SEGMENTKERNIGE (abs.)",
+            "category": "Hämatologie"
+        },
+        {
+            "code": "zSEGMA",
+            "description": "SEGMENTKERNIGE (abs.)",
+            "category": "Hämatologie"
+        },
+        {
+            "code": "NRBC",
+            "description": "NORMOBLASTEN",
+            "category": "Hämatologie"
+        },
+        {
+            "code": "zNORM",
+            "description": "NORMOBLASTEN",
+            "category": "Hämatologie"
+        },
+        {
+            "code": "NRBCa",
+            "description": "NORMOBLASTEN (abs.)",
+            "category": "Hämatologie"
+        },
+        {
+            "code": "zNBLMA",
+            "description": "NORMOBLASTEN (abs.)",
+            "category": "Hämatologie"
+        },
+        {
+            "code": "QUI",
+            "description": "QUICK",
+            "category": "Hämostaseologie"
+        },
+        {
+            "code": "zTPZCS",
+            "description": "QUICK",
+            "category": "Hämostaseologie"
+        },
+        {
+            "code": "FBR",
+            "description": "FIBRINOGEN",
+            "category": "Hämostaseologie"
+        },
+        {
+            "code": "INOR",
+            "description": "INR",
+            "category": "Hämostaseologie"
+        },
+        {
+            "code": "zINRCS",
+            "description": "INR",
+            "category": "Hämostaseologie"
+        },
+        {
+            "code": "APTT",
+            "description": "Aptt",
+            "category": "Hämostaseologie"
+        },
+        {
+            "code": "zPTTCS",
+            "description": "Aptt",
+            "category": "Hämostaseologie"
+        },
+        {
+            "code": "THZ",
+            "description": "THROMBINZEIT",
+            "category": "Hämostaseologie"
+        },
+        {
+            "code": "zTZCS",
+            "description": "THROMBINZEIT",
+            "category": "Hämostaseologie"
+        },
+        {
+            "code": "DD",
+            "description": "D-DIMERE",
+            "category": "Hämostaseologie"
+        },
+        {
+            "code": "zDDIMICS",
+            "description": "D-DIMERE",
+            "category": "Hämostaseologie"
+        },
+        {
+            "code": "FIBC",
+            "description": "FIBRINOGEN (CLAUSS)",
+            "category": "Hämostaseologie"
+        },
+        {
+            "code": "zFIBRCS",
+            "description": "FIBRINOGEN (CLAUSS)",
+            "category": "Hämostaseologie"
+        },
+        {
+            "code": "LMWH",
+            "description": "ANTI-XA-AKTIVITÄT (LMW-HEPARIN)",
+            "category": "Hämostaseologie"
+        },
+        {
+            "code": "zANXACS",
+            "description": "ANTI-XA-AKTIVITÄT (LMW-HEPARIN)",
+            "category": "Hämostaseologie"
+        },
+        {
+            "code": "zANXAOCS",
+            "description": "ANTI-XA-AKTIVITÄT (LMW-HEPARIN)",
+            "category": "Hämostaseologie"
+        },
+        {
+            "code": "zANXAACS",
+            "description": "ANTI-XA-AKTIVITÄT (LMW-HEPARIN)",
+            "category": "Hämostaseologie"
+        },
+        {
+            "code": "zANXAAPICS",
+            "description": "ANTI-XA-AKTIVITÄT (LMW-HEPARIN)",
+            "category": "Hämostaseologie"
+        },
+        {
+            "code": "zANXAARCS",
+            "description": "ANTI-XA-AKTIVITÄT (LMW-HEPARIN)",
+            "category": "Hämostaseologie"
+        },
+        {
+            "code": "zANXAEDOCS",
+            "description": "ANTI-XA-AKTIVITÄT (LMW-HEPARIN)",
+            "category": "Hämostaseologie"
+        },
+        {
+            "code": "Usg",
+            "description": "SPEZIFISCHES GEWCIHT",
+            "category": "Urindiagnostik"
+        },
+        {
+            "code": "zUSPEZGA",
+            "description": "SPEZIFISCHES GEWCIHT",
+            "category": "Urindiagnostik"
+        },
+        {
+            "code": "UPH",
+            "description": "pH",
+            "category": "Urindiagnostik"
+        },
+        {
+            "code": "zUPHA",
+            "description": "pH",
+            "category": "Urindiagnostik"
+        },
+        {
+            "code": "URO",
+            "description": "UROBILINOGEN",
+            "category": "Urindiagnostik"
+        },
+        {
+            "code": "zUBGA",
+            "description": "UROBILINOGEN",
+            "category": "Urindiagnostik"
+        },
+        {
+            "code": "UKET",
+            "description": "KETONE",
+            "category": "Urindiagnostik"
+        },
+        {
+            "code": "zUKETA",
+            "description": "KETONE",
+            "category": "Urindiagnostik"
+        },
+        {
+            "code": "UTP",
+            "description": "PROTEINE",
+            "category": "Urindiagnostik"
+        },
+        {
+            "code": "zUPROA",
+            "description": "PROTEINE",
+            "category": "Urindiagnostik"
+        },
+        {
+            "code": "ZU",
+            "description": "GLUKOSE IM URIN",
+            "category": "Urindiagnostik"
+        },
+        {
+            "code": "zUGLA",
+            "description": "GLUKOSE IM URIN",
+            "category": "Urindiagnostik"
+        },
+        {
+            "code": "ULEU",
+            "description": "LEUKOZYTEN",
+            "category": "Urindiagnostik"
+        },
+        {
+            "code": "zULEUA",
+            "description": "LEUKOZYTEN",
+            "category": "Urindiagnostik"
+        },
+        {
+            "code": "UNIT",
+            "description": "NITRIT",
+            "category": "Urindiagnostik"
+        },
+        {
+            "code": "zUNITA",
+            "description": "NITRIT",
+            "category": "Urindiagnostik"
+        },
+        {
+            "code": "UHB",
+            "description": "HÄMOGLOBIN / ERYTHROZYTEN",
+            "category": "Urindiagnostik"
+        },
+        {
+            "code": "zUERYA",
+            "description": "HÄMOGLOBIN / ERYTHROZYTEN",
+            "category": "Urindiagnostik"
+        },
+        {
+            "code": "UBIL",
+            "description": "BILIRUBIN",
+            "category": "Urindiagnostik"
+        },
+        {
+            "code": "zUBILA",
+            "description": "BILIRUBIN",
+            "category": "Urindiagnostik"
+        },
+        {
+            "code": "LEUKP",
+            "description": "LEUKOZYTEN",
+            "category": "Urindiagnostik"
+        },
+        {
+            "code": "BAKTP",
+            "description": "BAKTERIEN",
+            "category": "Urindiagnostik"
+        },
+        {
+            "code": "zBACTA",
+            "description": "BAKTERIEN",
+            "category": "Urindiagnostik"
+        },
+        {
+            "code": "EPZP",
+            "description": "EPITHELZELLEN",
+            "category": "Urindiagnostik"
+        },
+        {
+            "code": "UERYP",
+            "description": "ERYTHROZYTEN",
+            "category": "Urindiagnostik"
+        },
+        {
+            "code": "RUEPP",
+            "description": "RUNDEPITHELIEN",
+            "category": "Urindiagnostik"
+        },
+        {
+            "code": "ZYLP",
+            "description": "ZYLINDER GESAMT",
+            "category": "Urindiagnostik"
+        },
+        {
+            "code": "HEFEP",
+            "description": "HEFEN",
+            "category": "Urindiagnostik"
+        },
+        {
+            "code": "PZYLP",
+            "description": "PATHOL.ZYLINDER",
+            "category": "Urindiagnostik"
+        },
+        {
+            "code": "SCHLP",
+            "description": "SCHLEIM",
+            "category": "Urindiagnostik"
+        },
+        {
+            "code": "UKRE",
+            "description": "KREATININ URIN",
+            "category": "Urindiagnostik"
+        },
+        {
+            "code": "UPRO",
+            "description": "PROTEIN",
+            "category": "Urindiagnostik"
+        },
+        {
+            "code": "UNA",
+            "description": "NATRIUM-KONZENTRATION URIN",
+            "category": "Urindiagnostik"
+        },
+        {
+            "code": "UK",
+            "description": "KALIUM-KONZENTRATION-URIN",
+            "category": "Urindiagnostik"
+        },
+        {
+            "code": "UHST",
+            "description": "HARNSTOFF-KONZENTRATION",
+            "category": "Urindiagnostik"
+        },
+        {
+            "code": "UPHO",
+            "description": "PHOSPHAT-KONZENTRATION",
+            "category": "Urindiagnostik"
+        },
+        {
+            "code": "UA1M",
+            "description": "a1-MIKROGLOBULIN",
+            "category": "Urindiagnostik"
+        },
+        {
+            "code": "UGLU",
+            "description": "GLUCOSE-KONZENTRATION",
+            "category": "Urindiagnostik"
+        },
+        {
+            "code": "UALB",
+            "description": "ALBUMIN",
+            "category": "Urindiagnostik"
+        },
+        {
+            "code": "USAM",
+            "description": "HARNVOLUMEN",
+            "category": "Urindiagnostik"
+        },
+        {
+            "code": "UIGG",
+            "description": "IgG",
+            "category": "Urindiagnostik"
+        },
+        {
+            "code": "UCL",
+            "description": "CHLORID",
+            "category": "Urindiagnostik"
+        },
+        {
+            "code": "UHS",
+            "description": "HARNSÄURE",
+            "category": "Urindiagnostik"
+        },
+        {
+            "code": "UCA",
+            "description": "CALCIUM-KONZENTRATION",
+            "category": "Urindiagnostik"
+        },
+        {
+            "code": "UMG",
+            "description": "MAGNESIUM-KONZENTRATION",
+            "category": "Urindiagnostik"
+        },
+        {
+            "code": "ALBP",
+            "description": "ALBUMIN-BANDE",
+            "category": "Serumelektrophorese"
+        },
+        {
+            "code": "zEALBC",
+            "description": "ALBUMIN-BANDE",
+            "category": "Serumelektrophorese"
+        },
+        {
+            "code": "A1P",
+            "description": "ALPHA 1- BANDE",
+            "category": "Serumelektrophorese"
+        },
+        {
+            "code": "zEGL1C",
+            "description": "ALPHA 1- BANDE",
+            "category": "Serumelektrophorese"
+        },
+        {
+            "code": "A2P",
+            "description": "ALPHA 2- BANDE",
+            "category": "Serumelektrophorese"
+        },
+        {
+            "code": "zEGL2C",
+            "description": "ALPHA 2- BANDE",
+            "category": "Serumelektrophorese"
+        },
+        {
+            "code": "BETAP",
+            "description": "BETA-BANDE",
+            "category": "Serumelektrophorese"
+        },
+        {
+            "code": "zEBGLC",
+            "description": "BETA-BANDE",
+            "category": "Serumelektrophorese"
+        },
+        {
+            "code": "GP",
+            "description": "GAMMA-GLOBULIN-BANDE",
+            "category": "Serumelektrophorese"
+        },
+        {
+            "code": "zEGGLC",
+            "description": "GAMMA-GLOBULIN-BANDE",
+            "category": "Serumelektrophorese"
+        },
+        {
+            "code": "THEO",
+            "description": "THEOPHYLLIN",
+            "category": "Tdm"
+        },
+        {
+            "code": "zTHEOAC",
+            "description": "THEOPHYLLIN",
+            "category": "Tdm"
+        }
+    ]
+}
