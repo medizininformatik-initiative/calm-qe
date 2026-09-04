@@ -120,3 +120,17 @@ docker run --rm \
 
 
 
+
+
+## NOTE: Sending extracted resources to a specific project server
+After extracting the FHIR resources, the script data_transfer/sendServer.py (not Dockerized) can be used to upload the generated resources to another project FHIR server.
+Before running the script, configure the following variables:
+```
+FHIR_SERVER = "YOUR_TARGET_SERVER_NAME/fhir"
+USERNAME = "YOUR_FHIR_USER_NAME" 
+PASSWORD = "YOUR_FHIR_PASSWORD"
+BASE_FOLDER = Path("fhir_results") #Or the location of your fhir bundles
+```
+
+
+
