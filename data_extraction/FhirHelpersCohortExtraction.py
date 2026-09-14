@@ -15,7 +15,7 @@ from fhirclient.models.encounter import Encounter
 from fhirclient.models.patient import Patient
 from fhirclient.server import FHIRNotFoundException
 
-from Constants import USER_NAME, USER_PASSWORD, ICD_SYSTEM_NAME, ASTHMA_COPD_CODES_FILE
+from Constants import USER_NAME, USER_PASSWORD, ACT_ENCOUNTER_TYPE_URL
 from Utils import fetch_bundle_for_code, connect_to_server
 from Utils import parse_fhir_datetime, compute_los
 from Metadata import gather_metadata
@@ -30,7 +30,7 @@ def generate_output_filename(surfix_filename, directory):
     if basis_filename in target_file:
         return f"patients_{surfix_filename}.json"
     else:
-        logging.error(f"Input file '{target_file}' does not match expected naming pattern")
+        return f"{surfix_filename}.jsonl"
 
 
 def process_inpatient_encounter(resource):
@@ -164,7 +164,7 @@ def filter_patients_by_age_interval(smart, input_filepath, min_age, max_age, ena
         logging.warning(f"No count found for patients in interval [{min_age}, {max_age}] ")
 
 
-def filter_icu_patients_admission(smart, input_filepath, enabled=True):
+def filter_icu_patients_admission(input_filepath, enabled=True):
     """
         From the HauptDiagnosis (Main), filter type of admission, specially ICU patients.
         Reference: https://simplifier.net/guide/mii-ig-modul-fall-2025/
@@ -174,47 +174,55 @@ def filter_icu_patients_admission(smart, input_filepath, enabled=True):
         return None
 
     logging.info("\nFiltering ICU patients...")
-    main_patients_diagnosed = input_filepath
-    icu_patients = defaultdict(int)
-    if os.path.exists(main_patients_diagnosed):
-        with open(main_patients_diagnosed, "r") as file:
-            main_patients_conditions = json.load(file)
-            for patient_id, condition_ids in main_patients_conditions.items():
-                for condition_id in condition_ids:
-                    cid = condition_id['id'] if isinstance(condition_id, dict) else condition_id
-                    try:
-                        bundle = smart.server.request_json(
-                            Encounter.where({
-                                'subject': f'{patient_id}',
-                                'diagnosis.condition': f'Condition/{cid}',
-                                '_count': '1000'
-                            }).construct())
-                    except Exception as e:
-                        logging.error(f"Generated an exception for {patient_id} with condition/{condition_id}: {e}, but continue trying...")
-                        smart = connect_to_server(user=USER_NAME, pw=USER_PASSWORD)
-                        time.sleep(3)
+    extracted_encounters_filepath = input_filepath
+    icu_encounters = list()
+    unique_patient_ids = set()
+    mapped_icu_patients_and_encounters = defaultdict(set)
 
-                for entry in fetch_bundle_for_code(smart, bundle):
-                    for enc in entry:
-                        if "resource" in enc and "type" in enc['resource']:
-                            for type_entry in enc["resource"]["type"]:
-                                if "coding" not in type_entry:
-                                    continue
-                                for coding in type_entry["coding"]:
-                                    if "code" in coding and "intensiv" in coding["code"].lower():
-                                        logging.info(f"ICU encounter found for patient {patient_id}")
-                                        encounter_id = enc["resource"].get("id")
-                                        icu_patients.setdefault(patient_id, set()).add(encounter_id)
+    if os.path.exists(extracted_encounters_filepath):
+        with open(extracted_encounters_filepath, "r", encoding="utf-8") as file:
+            for line in file:
+                try:
+                    entry = json.loads(line)
+                    enc_type = entry.get("type", {})
 
-    icu_patients_json = {pid: list(enc_ids) for pid, enc_ids in icu_patients.items()}
+                    icu_coding = [
+                        coding for type_entry in enc_type
+                        if "coding" in type_entry
+                        for coding in type_entry.get("coding")
+                        if coding.get("system") == ACT_ENCOUNTER_TYPE_URL and 'intensiv' in coding.get("code").lower()
+                    ]
 
+                    if icu_coding:
+                        patient_id = entry.get("subject", {}).get("reference")
+                        encounter_id = f"Encounter/{entry.get('id')}"
+                        unique_patient_ids.add(patient_id)
+                        icu_encounters.append(entry)
+                        mapped_icu_patients_and_encounters[patient_id].add(encounter_id)
+
+                except Exception as e:
+                    logging.warning(e)
+
+    logging.info(f"Unique patients in ICU: {len(unique_patient_ids)} with {len(icu_encounters)} encounters found.")
+
+    # Filter bundles from encounters with those which have an ICU entrance.
     base_path = Path(input_filepath)
-    new_filename = generate_output_filename("filtered_by_icu_admission", input_filepath)
+    new_filename = generate_output_filename("encounters_with_icu_admission", input_filepath)
     output_filepath = base_path.with_name(new_filename)
+    with open(output_filepath, "w", encoding="utf-8") as out:
+        for enc_resource in icu_encounters:
+            json.dump(enc_resource, out)
+            out.write('\n')
+
+    # Export to additional results
+    icu_patients_json = {pid: list(enc_ids) for pid, enc_ids in mapped_icu_patients_and_encounters.items()}
+    base_path = Path("additional_results")
+    output_filepath = base_path / "patients_filtered_by_icu_admission.json"
     with open(output_filepath, "w", encoding="utf-8") as out:
         json.dump(icu_patients_json, out, indent=4)
 
-    gather_metadata("patient_count_in_intensive_care", len(icu_patients))
+    gather_metadata("patient_count_in_intensive_care", len(unique_patient_ids))
+    return None
 
 
 def calculate_los_inpatients(smart, input_filepath, enabled=True):
@@ -241,7 +249,7 @@ def calculate_los_inpatients(smart, input_filepath, enabled=True):
                         bundle = smart.server.request_json(
                             Encounter.where({
                                 'subject': f'{patient_id}',
-                                'diagnosis.condition': f'Condition/{cid}',
+                                'diagnosis': f'Condition/{cid}',
                                 '_count': '50'
                             }).construct())
                     except Exception as e:
@@ -267,6 +275,7 @@ def calculate_los_inpatients(smart, input_filepath, enabled=True):
         json.dump(inpatients, file, indent=4, ensure_ascii=False)
 
     logging.info(f"File successfully generated with {len(inpatients)} inpatients")
+    return None
 
 
 def extract_last_three_encounter(input_filepath, enabled=True):
@@ -326,6 +335,7 @@ def extract_last_three_encounter(input_filepath, enabled=True):
         json.dump(patients_last_3_encounters, file, indent=4, ensure_ascii=False)
 
     logging.info(f"File successfully generated for extracting last three encounters and admission dates for {len(patients_last_3_encounters)} main diagnosed patients")
+    return None
 
 
 def get_demographics_patients(smart, input_filepath, enabled=True):
