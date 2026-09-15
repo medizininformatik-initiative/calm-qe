@@ -173,7 +173,7 @@ def filter_icu_patients_admission(input_filepath, enabled=True):
     if not enabled:
         return None
 
-    logging.info("\nFiltering ICU patients...")
+    logging.info("Filtering ICU patients...")
     extracted_encounters_filepath = input_filepath
     icu_encounters = list()
     unique_patient_ids = set()
@@ -229,7 +229,7 @@ def filter_icu_patients_admission(input_filepath, enabled=True):
     return None
 
 
-def calculate_los_inpatients(smart, input_filepath, enabled=True):
+def calculate_los_inpatients(input_filepath, enabled=True):
     """
     Aufenthaltsdauer: calculate "Length of Staying", (LOS) from inpatients.
     Reference: https://simplifier.net/guide/mii-ig-modul-fall-2025/
@@ -238,7 +238,7 @@ def calculate_los_inpatients(smart, input_filepath, enabled=True):
     if not enabled:
         return None
 
-    logging.info("\nGathering inpatients...")
+    logging.info("Gathering inpatients...")
     extracted_encounters_filepath = input_filepath
     inpatients = defaultdict(list)
 
