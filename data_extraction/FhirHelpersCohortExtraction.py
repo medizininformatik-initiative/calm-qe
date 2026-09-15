@@ -368,7 +368,7 @@ def get_demographics_patients(smart, input_filepath, enabled=True):
 
                 if patient.gender is None:
                     logging.warning(f"Patient {patient_id} has no gender available.")
-                    continue
+                    break
                 gender = patient.gender
 
                 patients_demographics.append({
@@ -379,7 +379,7 @@ def get_demographics_patients(smart, input_filepath, enabled=True):
                 break
             except Exception as exc:
                 status = getattr(getattr(exc, "response", None), "status_code", None)
-                if 410 or 404 in status:
+                if status in {410, 404}:
                     logging.warning(f"Exception {status}. Patient {patient_id} missing or deleted. Skipping..")
                     non_found_patients.add(f"Patient/{patient_id}")
                     break
