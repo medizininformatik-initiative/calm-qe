@@ -181,7 +181,10 @@ def filter_icu_patients_admission(input_filepath, enabled=True):
 
     if os.path.exists(extracted_encounters_filepath):
         with open(extracted_encounters_filepath, "r", encoding="utf-8") as file:
-            for line in file:
+            for counter, line in enumerate(file, start=1):
+                line = line.strip()
+                if not line:
+                    continue
                 try:
                     entry = json.loads(line)
                     enc_type = entry.get("type", {})
@@ -201,7 +204,7 @@ def filter_icu_patients_admission(input_filepath, enabled=True):
                         mapped_icu_patients_and_encounters[patient_id].add(encounter_id)
 
                 except Exception as e:
-                    logging.warning(e)
+                    logging.error(f"Error processing ICU for line {counter}: {e}")
 
     logging.info(f"Unique patients in ICU: {len(unique_patient_ids)} with {len(icu_encounters)} encounters found.")
 
@@ -215,9 +218,10 @@ def filter_icu_patients_admission(input_filepath, enabled=True):
             out.write('\n')
 
     # Export to additional results
-    icu_patients_json = {pid: list(enc_ids) for pid, enc_ids in mapped_icu_patients_and_encounters.items()}
     base_path = Path("additional_results")
     output_filepath = base_path / "patients_filtered_by_icu_admission.json"
+    icu_patients_json = {pid: list(enc_ids) for pid, enc_ids in mapped_icu_patients_and_encounters.items()}
+
     with open(output_filepath, "w", encoding="utf-8") as out:
         json.dump(icu_patients_json, out, indent=4)
 
@@ -235,45 +239,32 @@ def calculate_los_inpatients(smart, input_filepath, enabled=True):
         return None
 
     logging.info("\nGathering inpatients...")
-    main_patients_diagnosed = input_filepath
-    inpatients = defaultdict()
+    extracted_encounters_filepath = input_filepath
+    inpatients = defaultdict(list)
 
-    if os.path.exists(main_patients_diagnosed):
-        with open(main_patients_diagnosed, "r") as file:
-            main_patients_conditions = json.load(file)
-            for patient_id, condition_ids in main_patients_conditions.items():
-                for condition_id in condition_ids:
-                    cid = condition_id['id'] if isinstance(condition_id, dict) else condition_id
-                    bundle = None
-                    try:
-                        bundle = smart.server.request_json(
-                            Encounter.where({
-                                'subject': f'{patient_id}',
-                                'diagnosis': f'Condition/{cid}',
-                                '_count': '50'
-                            }).construct())
-                    except Exception as e:
-                        logging.error(f" Generated an exception for {patient_id} with condition/{condition_id}: {e}, but continue trying...")
-                        smart = connect_to_server(user=USER_NAME, pw=USER_PASSWORD)
-                        time.sleep(3)
+    if os.path.exists(extracted_encounters_filepath):
+        with open(extracted_encounters_filepath, "r", encoding="utf-8") as file:
+            for counter, line in enumerate(file, start=1):
+                line = line.strip()
+                if not line:
+                    continue
 
-                    for entry in fetch_bundle_for_code(smart, bundle):
-                        for enc in entry:
-                            if "resource" in enc:
-                                if "type" in enc['resource']:
-                                    stay_entry = process_inpatient_encounter(enc['resource'])
-                                    if stay_entry:
-                                        if patient_id not in inpatients:
-                                            inpatients[patient_id] = []
-                                        inpatients[patient_id].append(stay_entry)
+                try:
+                    entry = json.loads(line)
+                    stay_entry = process_inpatient_encounter(entry)
+                    if stay_entry:
+                        patient_id = entry.get("subject", {}).get("reference")
+                        inpatients[patient_id].append(stay_entry)
 
-    base_path = Path(input_filepath)
+                except Exception as e:
+                    logging.error(f"Error processing LOS in line {counter}: {e}")
 
-    new_filename = generate_output_filename("length_of_stay", input_filepath)
-    output_filepath = base_path.with_name(new_filename)
+    base_path = Path("additional_results")
+    output_filepath = base_path / "patients_length_of_stay.json"
+    inpatients_json = dict(inpatients)
+
     with open(output_filepath, "w", encoding="utf-8") as file:
-        json.dump(inpatients, file, indent=4, ensure_ascii=False)
-
+        json.dump(inpatients_json, file, indent=4, ensure_ascii=False)
     logging.info(f"File successfully generated with {len(inpatients)} inpatients")
     return None
 

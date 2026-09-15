@@ -42,7 +42,7 @@ def main():
     filter_icu_patients_admission(FHIR_RESULTS/"encounters.jsonl", enabled=True)
 
     # Calculate length-of-stay ('LOS' or 'Aufenthaltsdauer') for inpatients.
-    calculate_los_inpatients(smart, diagnoses_filepath, enabled=True)
+    calculate_los_inpatients(smart, FHIR_RESULTS/"encounters.jsonl", enabled=True)
 
     # Extract last 3 encounter for each patient
     extract_last_three_encounter(encounters_filepath, enabled=True)
