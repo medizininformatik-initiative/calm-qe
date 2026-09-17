@@ -107,7 +107,7 @@ def filter_patients_by_age_interval(smart, input_filepath, min_age, max_age, ena
                 break
             except Exception as exc:
                 status = getattr(getattr(exc, "response", None), "status_code", None)
-                if 410 or 404 in status:
+                if status in {404, 410}:
                     logging.warning(f"Exception {status}. Patient {patient_id} missing or deleted. Skipping..")
                     birth_date = None
                     break
@@ -151,7 +151,8 @@ def filter_patients_by_age_interval(smart, input_filepath, min_age, max_age, ena
     label = f"{min_age}-{max_age}"
     interval_count = len(matched_patients)
     gather_metadata("patient_count_by_age_interval", {label: interval_count})
-    logging.info(f"Found {interval_count} patients in interval [{min_age}, {max_age}] out of {total_processed} processed.")
+    logging.info(
+        f"Found {interval_count} patients in interval [{min_age}, {max_age}] out of {total_processed} processed.")
 
     if interval_count > 0:
         base_path = Path(input_filepath)
@@ -325,78 +326,49 @@ def extract_last_three_encounter(input_filepath, enabled=True):
     with open(output_filepath, "w", encoding="utf-8") as file:
         json.dump(patients_last_3_encounters, file, indent=4, ensure_ascii=False)
 
-    logging.info(f"File successfully generated for extracting last three encounters and admission dates for {len(patients_last_3_encounters)} main diagnosed patients")
+    logging.info(
+        f"File successfully generated for extracting last three encounters and admission dates for {len(patients_last_3_encounters)} main diagnosed patients")
     return None
 
 
-def get_demographics_patients(smart, input_filepath, enabled=True):
-    '''
-    Obtains demographics from patients from selected patient IDs and export results in tabular form.
+def get_demographics_patients(patient_jsonl_path, enabled=True):
+    """
+    Extract demographics from downloaded Patient resources.
+    Missing gender and birthDate values are written as empty fields.
     Reference: https://www.medizininformatik-initiative.de/Kerndatensatz/
     KDS_Person_V2025/MIIIGModulPerson-TechnischeImplementierung-FHIR-Profile-PatientInPatient.html
-    '''
+    """
     if not enabled:
         return None
 
-    base_path = Path(input_filepath)
-    subdirectory = input_filepath.parent/'csv'
-    subdirectory.mkdir(parents=True, exist_ok=True)
+    patient_jsonl_path = Path(patient_jsonl_path)
+    output_directory = patient_jsonl_path.parent / "csv"
+    output_directory.mkdir(parents=True, exist_ok=True)
+    output_path = output_directory / "demographics.csv"
 
-    patient_identifiers, patients_demographics = [], []
-    non_found_patients = set()
+    demographics = []
 
-    with open(input_filepath, "r") as file:
-        patients = json.load(file)
-        for patient in patients.keys():
-            logging.info(f"Processing patient with ID: {patient[8:]}...")
-            patient_identifiers.append(patient[8:])
+    with patient_jsonl_path.open("r", encoding="utf-8") as input_file:
+        for line in input_file:
+            if not line.strip():
+                continue
 
-    for patient_id in patient_identifiers:
-        while True:
             try:
-                patient = Patient.read(patient_id, smart.server)
+                patient = json.loads(line)
+            except json.JSONDecodeError as e:
+                logging.warning("Invalid JSON as error: %s", e)
+                continue
 
-                if patient.birthDate is None:
-                    logging.warning(f"Patient {patient_id} has no birthdate available.")
-                    break
+            demographics.append({
+                "patient": patient.get("id"),
+                "gender": patient.get("gender"),
+                "birthdate": patient.get("birthDate"),
+            })
 
-                birth_iso = getattr(patient.birthDate, 'isostring', None) if patient.birthDate else None
-                if not birth_iso:
-                    logging.warning(f"Skipping patient {patient_id} - birth date has no attribute isostring.")
-                    break
-                birth_date = parse_fhir_datetime(birth_iso)
-
-                if patient.gender is None:
-                    logging.warning(f"Patient {patient_id} has no gender available.")
-                    break
-                gender = patient.gender
-
-                patients_demographics.append({
-                    "patient": patient_id,
-                    "gender": gender,
-                    "birthdate": birth_date.isoformat() if birth_date else None,
-                })
-                break
-            except Exception as exc:
-                status = getattr(getattr(exc, "response", None), "status_code", None)
-                if status in {410, 404}:
-                    logging.warning(f"Exception {status}. Patient {patient_id} missing or deleted. Skipping..")
-                    non_found_patients.add(f"Patient/{patient_id}")
-                    break
-                logging.error(f"Generated an exception: {exc} but continue to trying. \n")
-                smart = connect_to_server(user=USER_NAME, pw=USER_PASSWORD)
-                time.sleep(3)
-
-    output_filepath = base_path.parent / "missing_patients.json"
-    with open(output_filepath, "w", encoding="utf-8") as file:
-        json.dump(list(non_found_patients), file, indent=4, ensure_ascii=False)
-    logging.info(f"Saving non-found {len(non_found_patients)} patients as .json {output_filepath}")
-    gather_metadata("missing_asthma_and_copd_patients", len(non_found_patients))
-
-    patients_demographics_df = pd.DataFrame(patients_demographics)
-    patients_demographics_df.to_csv(os.path.join(subdirectory, "demographics.csv"), index=False, sep=";")
-    logging.info(f"Saving extracted demographics as .csv file in {subdirectory}")
-    return None
+    demographics_df = pd.DataFrame(demographics, columns=["patient", "gender", "birthdate"])
+    demographics_df.to_csv(output_path, index=False, sep=";")
+    logging.info("Saved demographics for %d patients to %s.", len(demographics), output_path)
+    return output_path
 
 
 def extract_additional_attributes_from_encounters(smart, input_filepath):
@@ -407,7 +379,7 @@ def extract_additional_attributes_from_encounters(smart, input_filepath):
     encounter_results = defaultdict(list)
     non_found_encounter_results = defaultdict(list)
     base_path = Path(input_filepath)
-
+ ###
     with open(input_filepath, "r") as file:
         patients = json.load(file)
         for patient in patients.keys():
@@ -415,7 +387,8 @@ def extract_additional_attributes_from_encounters(smart, input_filepath):
             duplicated_encounter = set()
             for attr_condition in attributes_conditions:
                 if 'encounter' not in attr_condition:
-                    logging.warning(f'Missing "encounter" in attr_condition for Condition/{attr_condition["id"]}. Skipping.')
+                    logging.warning(
+                        f'Missing "encounter" in attr_condition for Condition/{attr_condition["id"]}. Skipping.')
                     continue
                 encounter_id = attr_condition['encounter'] if isinstance(attr_condition, dict) else attr_condition
 
@@ -436,7 +409,8 @@ def extract_additional_attributes_from_encounters(smart, input_filepath):
                     except Exception as exc:
                         status = getattr(getattr(exc, "response", None), "status_code", None)
                         if status == 410:
-                            logging.warning(f"Exception {status}. Encounter {encounter_id} missing or deleted. Skipping")
+                            logging.warning(
+                                f"Exception {status}. Encounter {encounter_id} missing or deleted. Skipping")
                             non_found_encounter_results[patient].append(encounter_id)
                             enc = None
                             break
@@ -539,6 +513,6 @@ def simple_flattening(patients_attr_map, path):
         df = df[new_order]
 
         df.to_csv(f"{subdirectory}/main_cohort.csv", sep=";", index=False)
-        logging.info(f"Exported {len(df)} patients to main_cohort.csv")
+        logging.info(f"Exported patients to main_cohort.csv")
     else:
         logging.warning("No rows to export to CSV")

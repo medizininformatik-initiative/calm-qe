@@ -48,7 +48,7 @@ def main():
     extract_last_three_encounter(encounters_filepath, enabled=True)
 
     # Export patient's demographics
-    get_demographics_patients(smart, diagnoses_filepath, enabled=True)
+    get_demographics_patients(f"fhir_results/Patients/patients.jsonl", enabled=True)
 
 
 if __name__ == "__main__":
