@@ -326,8 +326,7 @@ def extract_last_three_encounter(input_filepath, enabled=True):
     with open(output_filepath, "w", encoding="utf-8") as file:
         json.dump(patients_last_3_encounters, file, indent=4, ensure_ascii=False)
 
-    logging.info(
-        f"File successfully generated for extracting last three encounters and admission dates for {len(patients_last_3_encounters)} main diagnosed patients")
+    logging.info(f"File successfully generated for extracting last three encounters and admission dates for {len(patients_last_3_encounters)} main diagnosed patients")
     return None
 
 
@@ -379,7 +378,7 @@ def extract_additional_attributes_from_encounters(smart, input_filepath):
     encounter_results = defaultdict(list)
     non_found_encounter_results = defaultdict(list)
     base_path = Path(input_filepath)
- ###
+
     with open(input_filepath, "r") as file:
         patients = json.load(file)
         for patient in patients.keys():
@@ -387,8 +386,7 @@ def extract_additional_attributes_from_encounters(smart, input_filepath):
             duplicated_encounter = set()
             for attr_condition in attributes_conditions:
                 if 'encounter' not in attr_condition:
-                    logging.warning(
-                        f'Missing "encounter" in attr_condition for Condition/{attr_condition["id"]}. Skipping.')
+                    logging.warning(f'Missing "encounter" in attr_condition for Condition/{attr_condition["id"]}. Skipping.')
                     continue
                 encounter_id = attr_condition['encounter'] if isinstance(attr_condition, dict) else attr_condition
 
