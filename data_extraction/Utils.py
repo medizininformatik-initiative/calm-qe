@@ -37,7 +37,7 @@ def connect_to_server(user, pw, protocol="https"):
         "api_base": f"{protocol}://{user}:{pw}@{SERVER_NAME}"}
 
     smart = client.FHIRClient(settings=settings)
-    smart.server.session.verify = False
+    smart.server.session.verify = True
     return smart
 
 def fetch_bundle_for_code(smart, bundle, protocol="https"):
