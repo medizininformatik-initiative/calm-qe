@@ -18,6 +18,7 @@ The results are saved as "metadata.json" in the "additional_results" folder, whi
 the "fhir_results" folder.
 """
 
+FHIR_RESULTS = Path('fhir_results')
 DIR_RESULTS = Path('additional_results')
 DIR_RESULTS.mkdir(exist_ok=True)
 
@@ -38,16 +39,16 @@ def main():
         filter_patients_by_age_interval(smart, encounters_filepath, min_age=min_age, max_age=max_age, enabled=True)
 
     # Filter patients per type of admission (Intensive-Care-Unit)
-    filter_icu_patients_admission(smart, diagnoses_filepath, enabled=True)
+    filter_icu_patients_admission(FHIR_RESULTS/"Encounters/encounters.jsonl", enabled=True)
 
     # Calculate length-of-stay ('LOS' or 'Aufenthaltsdauer') for inpatients.
-    calculate_los_inpatients(smart, diagnoses_filepath, enabled=True)
+    calculate_los_inpatients(FHIR_RESULTS/"Encounters/encounters.jsonl", enabled=True)
 
     # Extract last 3 encounter for each patient
     extract_last_three_encounter(encounters_filepath, enabled=True)
 
     # Export patient's demographics
-    get_demographics_patients(smart, diagnoses_filepath, enabled=True)
+    get_demographics_patients(FHIR_RESULTS/"Patients/patients.jsonl", enabled=True)
 
 
 if __name__ == "__main__":

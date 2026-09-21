@@ -4,6 +4,7 @@ import logging
 from collections import defaultdict
 import json
 import time
+from pathlib import Path
 
 import numpy as np
 import requests
@@ -311,21 +312,28 @@ def encounters(encounter_ids, smart):
 
 
 def fetch_patients(patients_list, smart):
+    """
+    Fetch FHIR Patient resources for all cohort patients.
+    Patient resources are written to a JSONL file
+    References for patients whose resources are unavailable are written to missing_patients.json.
+    """
     os.makedirs("fhir_results/Patients", exist_ok=True)
-    whole_path = f"fhir_results/Patients/patients.jsonl"
+    whole_path = "fhir_results/Patients/patients.jsonl"
+    missing_patients_path = Path('additional_results/missing_patients.json')
+    missing_patients = set()
     protocol = PROTOCOL
 
     with open(whole_path, "w") as file:
         for patient_id in patients_list:
             patient_id = patient_id.split("/")[-1]
-
+            patient = None
             while True:
                 try:
                     patient = smart.server.request_json(f"Patient/{patient_id}")
                     break
                 except FHIRNotFoundException:
                     logging.warning(f"Patient/{patient_id} not found, skipping.")
-                    patient = None
+                    missing_patients.add(f"Patient/{patient_id}")
                     break
                 except Exception as exc:
                     logging.error(f"Generated an exception: {exc} but continue trying.\n")
@@ -336,7 +344,9 @@ def fetch_patients(patients_list, smart):
                 json.dump(patient, file, separators=(",", ":"))
                 file.write("\n")
                 logging.info(f"Patient resource for patient ID: {patient_id} extracted.")
-
+    with missing_patients_path.open("w", encoding="utf-8") as f:
+        json.dump(list(missing_patients), f, indent=4, ensure_ascii=False)
+        logging.info(f"Saved missing patients ids in a file missing_patients.json")
 
 def observation_frequencies_and_distributions(code_file):
     folder_path = "fhir_results/Observations"

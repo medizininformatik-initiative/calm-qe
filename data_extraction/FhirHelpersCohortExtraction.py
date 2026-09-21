@@ -15,7 +15,7 @@ from fhirclient.models.encounter import Encounter
 from fhirclient.models.patient import Patient
 from fhirclient.server import FHIRNotFoundException
 
-from Constants import USER_NAME, USER_PASSWORD, ICD_SYSTEM_NAME, ASTHMA_COPD_CODES_FILE
+from Constants import USER_NAME, USER_PASSWORD, ACT_ENCOUNTER_TYPE_URL
 from Utils import fetch_bundle_for_code, connect_to_server
 from Utils import parse_fhir_datetime, compute_los
 from Metadata import gather_metadata
@@ -30,7 +30,7 @@ def generate_output_filename(surfix_filename, directory):
     if basis_filename in target_file:
         return f"patients_{surfix_filename}.json"
     else:
-        logging.error(f"Input file '{target_file}' does not match expected naming pattern")
+        return f"{surfix_filename}.jsonl"
 
 
 def process_inpatient_encounter(resource):
@@ -107,7 +107,7 @@ def filter_patients_by_age_interval(smart, input_filepath, min_age, max_age, ena
                 break
             except Exception as exc:
                 status = getattr(getattr(exc, "response", None), "status_code", None)
-                if 410 or 404 in status:
+                if status in {404, 410}:
                     logging.warning(f"Exception {status}. Patient {patient_id} missing or deleted. Skipping..")
                     birth_date = None
                     break
@@ -151,7 +151,8 @@ def filter_patients_by_age_interval(smart, input_filepath, min_age, max_age, ena
     label = f"{min_age}-{max_age}"
     interval_count = len(matched_patients)
     gather_metadata("patient_count_by_age_interval", {label: interval_count})
-    logging.info(f"Found {interval_count} patients in interval [{min_age}, {max_age}] out of {total_processed} processed.")
+    logging.info(
+        f"Found {interval_count} patients in interval [{min_age}, {max_age}] out of {total_processed} processed.")
 
     if interval_count > 0:
         base_path = Path(input_filepath)
@@ -164,7 +165,7 @@ def filter_patients_by_age_interval(smart, input_filepath, min_age, max_age, ena
         logging.warning(f"No count found for patients in interval [{min_age}, {max_age}] ")
 
 
-def filter_icu_patients_admission(smart, input_filepath, enabled=True):
+def filter_icu_patients_admission(input_filepath, enabled=True):
     """
         From the HauptDiagnosis (Main), filter type of admission, specially ICU patients.
         Reference: https://simplifier.net/guide/mii-ig-modul-fall-2025/
@@ -173,51 +174,63 @@ def filter_icu_patients_admission(smart, input_filepath, enabled=True):
     if not enabled:
         return None
 
-    logging.info("\nFiltering ICU patients...")
-    main_patients_diagnosed = input_filepath
-    icu_patients = defaultdict(int)
-    if os.path.exists(main_patients_diagnosed):
-        with open(main_patients_diagnosed, "r") as file:
-            main_patients_conditions = json.load(file)
-            for patient_id, condition_ids in main_patients_conditions.items():
-                for condition_id in condition_ids:
-                    cid = condition_id['id'] if isinstance(condition_id, dict) else condition_id
-                    try:
-                        bundle = smart.server.request_json(
-                            Encounter.where({
-                                'subject': f'{patient_id}',
-                                'diagnosis.condition': f'Condition/{cid}',
-                                '_count': '1000'
-                            }).construct())
-                    except Exception as e:
-                        logging.error(f"Generated an exception for {patient_id} with condition/{condition_id}: {e}, but continue trying...")
-                        smart = connect_to_server(user=USER_NAME, pw=USER_PASSWORD)
-                        time.sleep(3)
+    logging.info("Filtering ICU patients...")
+    extracted_encounters_filepath = input_filepath
+    icu_encounters = list()
+    unique_patient_ids = set()
+    mapped_icu_patients_and_encounters = defaultdict(set)
 
-                for entry in fetch_bundle_for_code(smart, bundle):
-                    for enc in entry:
-                        if "resource" in enc and "type" in enc['resource']:
-                            for type_entry in enc["resource"]["type"]:
-                                if "coding" not in type_entry:
-                                    continue
-                                for coding in type_entry["coding"]:
-                                    if "code" in coding and "intensiv" in coding["code"].lower():
-                                        logging.info(f"ICU encounter found for patient {patient_id}")
-                                        encounter_id = enc["resource"].get("id")
-                                        icu_patients.setdefault(patient_id, set()).add(encounter_id)
+    if os.path.exists(extracted_encounters_filepath):
+        with open(extracted_encounters_filepath, "r", encoding="utf-8") as file:
+            for counter, line in enumerate(file, start=1):
+                line = line.strip()
+                if not line:
+                    continue
+                try:
+                    entry = json.loads(line)
+                    enc_type = entry.get("type", {})
 
-    icu_patients_json = {pid: list(enc_ids) for pid, enc_ids in icu_patients.items()}
+                    icu_coding = [
+                        coding for type_entry in enc_type
+                        if "coding" in type_entry
+                        for coding in type_entry.get("coding")
+                        if coding.get("system") == ACT_ENCOUNTER_TYPE_URL and 'intensiv' in coding.get("code").lower()
+                    ]
 
+                    if icu_coding:
+                        patient_id = entry.get("subject", {}).get("reference")
+                        encounter_id = f"Encounter/{entry.get('id')}"
+                        unique_patient_ids.add(patient_id)
+                        icu_encounters.append(entry)
+                        mapped_icu_patients_and_encounters[patient_id].add(encounter_id)
+
+                except Exception as e:
+                    logging.error(f"Error processing ICU for line {counter}: {e}")
+
+    logging.info(f"Unique patients in ICU: {len(unique_patient_ids)} with {len(icu_encounters)} encounters found.")
+
+    # Filter bundles from encounters with those which have an ICU entrance.
     base_path = Path(input_filepath)
-    new_filename = generate_output_filename("filtered_by_icu_admission", input_filepath)
+    new_filename = generate_output_filename("encounters_with_icu_admission", input_filepath)
     output_filepath = base_path.with_name(new_filename)
+    with open(output_filepath, "w", encoding="utf-8") as out:
+        for enc_resource in icu_encounters:
+            json.dump(enc_resource, out)
+            out.write('\n')
+
+    # Export to additional results
+    base_path = Path("additional_results")
+    output_filepath = base_path / "patients_filtered_by_icu_admission.json"
+    icu_patients_json = {pid: list(enc_ids) for pid, enc_ids in mapped_icu_patients_and_encounters.items()}
+
     with open(output_filepath, "w", encoding="utf-8") as out:
         json.dump(icu_patients_json, out, indent=4)
 
-    gather_metadata("patient_count_in_intensive_care", len(icu_patients))
+    gather_metadata("patient_count_in_intensive_care", len(unique_patient_ids))
+    return None
 
 
-def calculate_los_inpatients(smart, input_filepath, enabled=True):
+def calculate_los_inpatients(input_filepath, enabled=True):
     """
     Aufenthaltsdauer: calculate "Length of Staying", (LOS) from inpatients.
     Reference: https://simplifier.net/guide/mii-ig-modul-fall-2025/
@@ -226,47 +239,37 @@ def calculate_los_inpatients(smart, input_filepath, enabled=True):
     if not enabled:
         return None
 
-    logging.info("\nGathering inpatients...")
-    main_patients_diagnosed = input_filepath
-    inpatients = defaultdict()
+    logging.info("Gathering inpatients...")
+    extracted_encounters_filepath = input_filepath
+    inpatients = defaultdict(list)
 
-    if os.path.exists(main_patients_diagnosed):
-        with open(main_patients_diagnosed, "r") as file:
-            main_patients_conditions = json.load(file)
-            for patient_id, condition_ids in main_patients_conditions.items():
-                for condition_id in condition_ids:
-                    cid = condition_id['id'] if isinstance(condition_id, dict) else condition_id
-                    bundle = None
-                    try:
-                        bundle = smart.server.request_json(
-                            Encounter.where({
-                                'subject': f'{patient_id}',
-                                'diagnosis.condition': f'Condition/{cid}',
-                                '_count': '50'
-                            }).construct())
-                    except Exception as e:
-                        logging.error(f" Generated an exception for {patient_id} with condition/{condition_id}: {e}, but continue trying...")
-                        smart = connect_to_server(user=USER_NAME, pw=USER_PASSWORD)
-                        time.sleep(3)
+    if not os.path.exists(extracted_encounters_filepath):
+        raise FileNotFoundError(f"File {extracted_encounters_filepath} not found.")
 
-                    for entry in fetch_bundle_for_code(smart, bundle):
-                        for enc in entry:
-                            if "resource" in enc:
-                                if "type" in enc['resource']:
-                                    stay_entry = process_inpatient_encounter(enc['resource'])
-                                    if stay_entry:
-                                        if patient_id not in inpatients:
-                                            inpatients[patient_id] = []
-                                        inpatients[patient_id].append(stay_entry)
+    with open(extracted_encounters_filepath, "r", encoding="utf-8") as file:
+        for counter, line in enumerate(file, start=1):
+            line = line.strip()
+            if not line:
+                continue
 
-    base_path = Path(input_filepath)
+            try:
+                entry = json.loads(line)
+                stay_entry = process_inpatient_encounter(entry)
+                if stay_entry:
+                    patient_id = entry.get("subject", {}).get("reference")
+                    inpatients[patient_id].append(stay_entry)
 
-    new_filename = generate_output_filename("length_of_stay", input_filepath)
-    output_filepath = base_path.with_name(new_filename)
+            except Exception as e:
+                logging.error(f"Error processing LOS in line {counter}: {e}")
+
+    base_path = Path("additional_results")
+    output_filepath = base_path / "patients_length_of_stay.json"
+    inpatients_json = dict(inpatients)
+
     with open(output_filepath, "w", encoding="utf-8") as file:
-        json.dump(inpatients, file, indent=4, ensure_ascii=False)
-
+        json.dump(inpatients_json, file, indent=4, ensure_ascii=False)
     logging.info(f"File successfully generated with {len(inpatients)} inpatients")
+    return None
 
 
 def extract_last_three_encounter(input_filepath, enabled=True):
@@ -326,76 +329,47 @@ def extract_last_three_encounter(input_filepath, enabled=True):
         json.dump(patients_last_3_encounters, file, indent=4, ensure_ascii=False)
 
     logging.info(f"File successfully generated for extracting last three encounters and admission dates for {len(patients_last_3_encounters)} main diagnosed patients")
+    return None
 
 
-def get_demographics_patients(smart, input_filepath, enabled=True):
-    '''
-    Obtains demographics from patients from selected patient IDs and export results in tabular form.
+def get_demographics_patients(patient_jsonl_path, enabled=True):
+    """
+    Extract demographics from downloaded Patient resources.
+    Missing gender and birthDate values are written as empty fields.
     Reference: https://www.medizininformatik-initiative.de/Kerndatensatz/
     KDS_Person_V2025/MIIIGModulPerson-TechnischeImplementierung-FHIR-Profile-PatientInPatient.html
-    '''
+    """
     if not enabled:
         return None
 
-    base_path = Path(input_filepath)
-    subdirectory = input_filepath.parent/'csv'
-    subdirectory.mkdir(parents=True, exist_ok=True)
+    patient_jsonl_path = Path(patient_jsonl_path)
+    output_directory = patient_jsonl_path.parent / "csv"
+    output_directory.mkdir(parents=True, exist_ok=True)
+    output_path = output_directory / "demographics.csv"
 
-    patient_identifiers, patients_demographics = [], []
-    non_found_patients = set()
+    demographics = []
 
-    with open(input_filepath, "r") as file:
-        patients = json.load(file)
-        for patient in patients.keys():
-            logging.info(f"Processing patient with ID: {patient[8:]}...")
-            patient_identifiers.append(patient[8:])
+    with patient_jsonl_path.open("r", encoding="utf-8") as input_file:
+        for line in input_file:
+            if not line.strip():
+                continue
 
-    for patient_id in patient_identifiers:
-        while True:
             try:
-                patient = Patient.read(patient_id, smart.server)
+                patient = json.loads(line)
+            except json.JSONDecodeError as e:
+                logging.warning("Invalid JSON as error: %s", e)
+                continue
 
-                if patient.birthDate is None:
-                    logging.warning(f"Patient {patient_id} has no birthdate available.")
-                    break
+            demographics.append({
+                "patient": patient.get("id"),
+                "gender": patient.get("gender"),
+                "birthdate": patient.get("birthDate"),
+            })
 
-                birth_iso = getattr(patient.birthDate, 'isostring', None) if patient.birthDate else None
-                if not birth_iso:
-                    logging.warning(f"Skipping patient {patient_id} - birth date has no attribute isostring.")
-                    break
-                birth_date = parse_fhir_datetime(birth_iso)
-
-                if patient.gender is None:
-                    logging.warning(f"Patient {patient_id} has no gender available.")
-                    continue
-                gender = patient.gender
-
-                patients_demographics.append({
-                    "patient": patient_id,
-                    "gender": gender,
-                    "birthdate": birth_date.isoformat() if birth_date else None,
-                })
-                break
-            except Exception as exc:
-                status = getattr(getattr(exc, "response", None), "status_code", None)
-                if 410 or 404 in status:
-                    logging.warning(f"Exception {status}. Patient {patient_id} missing or deleted. Skipping..")
-                    non_found_patients.add(f"Patient/{patient_id}")
-                    break
-                logging.error(f"Generated an exception: {exc} but continue to trying. \n")
-                smart = connect_to_server(user=USER_NAME, pw=USER_PASSWORD)
-                time.sleep(3)
-
-    output_filepath = base_path.parent / "missing_patients.json"
-    with open(output_filepath, "w", encoding="utf-8") as file:
-        json.dump(list(non_found_patients), file, indent=4, ensure_ascii=False)
-    logging.info(f"Saving non-found {len(non_found_patients)} patients as .json {output_filepath}")
-    gather_metadata("missing_asthma_and_copd_patients", len(non_found_patients))
-
-    patients_demographics_df = pd.DataFrame(patients_demographics)
-    patients_demographics_df.to_csv(os.path.join(subdirectory, "demographics.csv"), index=False, sep=";")
-    logging.info(f"Saving extracted demographics as .csv file in {subdirectory}")
-    return None
+    demographics_df = pd.DataFrame(demographics, columns=["patient", "gender", "birthdate"])
+    demographics_df.to_csv(output_path, index=False, sep=";")
+    logging.info("Saved demographics for %d patients to %s.", len(demographics), output_path)
+    return output_path
 
 
 def extract_additional_attributes_from_encounters(smart, input_filepath):
@@ -435,7 +409,8 @@ def extract_additional_attributes_from_encounters(smart, input_filepath):
                     except Exception as exc:
                         status = getattr(getattr(exc, "response", None), "status_code", None)
                         if status == 410:
-                            logging.warning(f"Exception {status}. Encounter {encounter_id} missing or deleted. Skipping")
+                            logging.warning(
+                                f"Exception {status}. Encounter {encounter_id} missing or deleted. Skipping")
                             non_found_encounter_results[patient].append(encounter_id)
                             enc = None
                             break
@@ -538,6 +513,6 @@ def simple_flattening(patients_attr_map, path):
         df = df[new_order]
 
         df.to_csv(f"{subdirectory}/main_cohort.csv", sep=";", index=False)
-        logging.info(f"Exported {len(df)} patients to main_cohort.csv")
+        logging.info(f"Exported patients to main_cohort.csv")
     else:
         logging.warning("No rows to export to CSV")
