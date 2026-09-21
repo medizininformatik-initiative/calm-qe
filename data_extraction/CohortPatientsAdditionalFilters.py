@@ -39,16 +39,16 @@ def main():
         filter_patients_by_age_interval(smart, encounters_filepath, min_age=min_age, max_age=max_age, enabled=True)
 
     # Filter patients per type of admission (Intensive-Care-Unit)
-    filter_icu_patients_admission(FHIR_RESULTS/"encounters.jsonl", enabled=True)
+    filter_icu_patients_admission(FHIR_RESULTS/"Encounters/encounters.jsonl", enabled=True)
 
     # Calculate length-of-stay ('LOS' or 'Aufenthaltsdauer') for inpatients.
-    calculate_los_inpatients(FHIR_RESULTS/"encounters.jsonl", enabled=True)
+    calculate_los_inpatients(FHIR_RESULTS/"Encounters/encounters.jsonl", enabled=True)
 
     # Extract last 3 encounter for each patient
     extract_last_three_encounter(encounters_filepath, enabled=True)
 
     # Export patient's demographics
-    get_demographics_patients(f"fhir_results/Patients/patients.jsonl", enabled=True)
+    get_demographics_patients(FHIR_RESULTS/"Patients/patients.jsonl", enabled=True)
 
 
 if __name__ == "__main__":

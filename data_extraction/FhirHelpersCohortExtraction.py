@@ -243,22 +243,24 @@ def calculate_los_inpatients(input_filepath, enabled=True):
     extracted_encounters_filepath = input_filepath
     inpatients = defaultdict(list)
 
-    if os.path.exists(extracted_encounters_filepath):
-        with open(extracted_encounters_filepath, "r", encoding="utf-8") as file:
-            for counter, line in enumerate(file, start=1):
-                line = line.strip()
-                if not line:
-                    continue
+    if not os.path.exists(extracted_encounters_filepath):
+        raise FileNotFoundError(f"File {extracted_encounters_filepath} not found.")
 
-                try:
-                    entry = json.loads(line)
-                    stay_entry = process_inpatient_encounter(entry)
-                    if stay_entry:
-                        patient_id = entry.get("subject", {}).get("reference")
-                        inpatients[patient_id].append(stay_entry)
+    with open(extracted_encounters_filepath, "r", encoding="utf-8") as file:
+        for counter, line in enumerate(file, start=1):
+            line = line.strip()
+            if not line:
+                continue
 
-                except Exception as e:
-                    logging.error(f"Error processing LOS in line {counter}: {e}")
+            try:
+                entry = json.loads(line)
+                stay_entry = process_inpatient_encounter(entry)
+                if stay_entry:
+                    patient_id = entry.get("subject", {}).get("reference")
+                    inpatients[patient_id].append(stay_entry)
+
+            except Exception as e:
+                logging.error(f"Error processing LOS in line {counter}: {e}")
 
     base_path = Path("additional_results")
     output_filepath = base_path / "patients_length_of_stay.json"
