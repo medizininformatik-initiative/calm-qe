@@ -1,9 +1,10 @@
 import json
 import logging
 import os
-import numpy as np
+import sys
 from collections import defaultdict
 from pathlib import Path
+import numpy as np
 from distinctipy import get_colors
 from data_extraction.Constants import ICD_CODE_FILE, LOINC_CODE_FILE
 import matplotlib
@@ -11,7 +12,10 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
 PROJECT_ROOT_DIR = Path(__file__).resolve().parent.parent
-METADATA_DIR = PROJECT_ROOT_DIR / "fhir_results" / "metadata.json"
+if str(PROJECT_ROOT_DIR) not in sys.path:
+    sys.path.insert(0, str(PROJECT_ROOT_DIR))
+
+METADATA_DIR = PROJECT_ROOT_DIR / "data_extraction" / "fhir_results" / "metadata.json"
 
 def load_json(filepath):
     """Loads json file"""
