@@ -120,18 +120,30 @@ docker run --rm \
    docker-compose up -d
    ```
 
+# Flattening FHIR Data into Tabular Format
 
-## Configure a FHIR server
-### NOTE: Sending extracted resources to a specific project server
-After extracting the FHIR resources, the script `data_transfer/sendServer.py` (not Dockerized) can be used to upload the generated resources to another project FHIR server.
-Before running the script, configure the following variables:
+This section describes how to convert the extracted FHIR resources from the generated subfolder `/fhir_results`
+into a tabular format (CSV) for further analysis. We use a tool from the MII [CALM_QE_AP1](https://github.com/medizininformatik-initiative/CALM_QE_AP1.git) repository 
+for this purpose.
+
+**Key Considerations:**
+* This step assumes you have already extracted the FHIR resources into JSON files located in the `/fhir_results` directory.
+* The **CALM_QE_AP1** repository provides the specific instructions for converting the JSON files into CSV format.
+
+## Initial step: (Optional) Upload FHIR Resources to a FHIR Server
+Before flattening, you might want to upload the extracted JSON resources to create a project-specific FHIR server.
+The script `data_transfer/sendServer.py` (not Dockerized) facilitates this.
+
+Before running the script, configure the following variables for configuring a new server:
 ```
 FHIR_SERVER = "YOUR_TARGET_SERVER_NAME/fhir"
 USERNAME = "YOUR_FHIR_USER_NAME" 
 PASSWORD = "YOUR_FHIR_PASSWORD"
 BASE_FOLDER = Path("fhir_results") #Or the location of your fhir bundles
 ```
-
-## Flattening data 
-To convert FHIR bundles into a tabular format (.csv), we leverage the tools and methods provided by the Medical Informatics Initiative [CALM_QE_AP1](https://github.com/medizininformatik-initiative/CALM_QE_AP1.git) project. This process utilizes the extracted resources from our project to create structured, easily analyzable data tables suitable for further analysis.
-
+After configuring the variables, execute the script:
+```bash
+python data_transfer/sendServer.py
+```
+## Step 2: Flattening the Data using CALM_QE_AP1
+After loading the extracted resources, utilize the new local FHIR server and follow the documentation from the [CALM_QE_AP1](https://github.com/medizininformatik-initiative/CALM_QE_AP1.git) repository.
