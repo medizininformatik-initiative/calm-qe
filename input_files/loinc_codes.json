@@ -3284,6 +3284,16 @@
             "code": "7993-9",
             "description": "Rhinovirus RNA [Presence] in Specimen by NAA with probe detection",
             "category": "Virologie"
+        },
+        {
+            "code": "29463-7",
+            "description": "Body weight",
+            "category": "Anthropometrie"
+        },
+        {
+            "code": "8302-2",
+            "description": "Body weight",
+            "category": "Anthropometrie"
         }
     ]
 }
