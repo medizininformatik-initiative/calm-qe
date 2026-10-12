@@ -185,3 +185,7 @@ graphs/
 .env
 .env.*
 !.env.example.idea/
+
+# Certificates
+certs/*
+!certs/.gitkeep

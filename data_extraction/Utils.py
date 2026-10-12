@@ -10,7 +10,7 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 import pytz
 import urllib3
 from fhirclient import client
-from Constants import USER_NAME, USER_PASSWORD, SERVER_NAME, PROTOCOL, MAX_WORKERS
+from Constants import USER_NAME, USER_PASSWORD, SERVER_NAME, PROTOCOL, MAX_WORKERS, FHIR_SSL_VERIFY
 from datetime import datetime, timezone
 
 from Metadata import gather_metadata
@@ -37,7 +37,7 @@ def connect_to_server(user, pw, protocol="https"):
         "api_base": f"{protocol}://{user}:{pw}@{SERVER_NAME}"}
 
     smart = client.FHIRClient(settings=settings)
-    smart.server.session.verify = True
+    smart.server.session.verify = FHIR_SSL_VERIFY
     return smart
 
 def fetch_bundle_for_code(smart, bundle, protocol="https"):

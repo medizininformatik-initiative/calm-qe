@@ -32,6 +32,7 @@ USER_NAME=YOUR_USERNAME
 USER_PASSWORD=YOUR_PASSWORD
 SERVER_NAME=YOUR_SERVER_NAME/fhir
 PROTOCOL=YOUR_PROTOCOL_TYPE
+FHIR_SSL_VERIFY=true
 ```
 An example environment file (`.env.example`) is included in the repository.
 
