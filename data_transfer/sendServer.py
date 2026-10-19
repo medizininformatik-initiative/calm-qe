@@ -18,7 +18,7 @@ BASE_FOLDER: Folder containing the extracted FHIR resource files
 FHIR_SERVER = "YOUR_TARGET_SERVER_NAME/fhir"
 USERNAME = "YOUR_FHIR_USER_NAME"
 PASSWORD = "YOUR_FHIR_PASSWORD"
-BASE_FOLDER = folder = Path(__file__).resolve().parent.parent/"data_extraction"/"fhir_results"  #can be changed according to where you extracted data
+BASE_FOLDER = Path(__file__).resolve().parent.parent/"data_extraction"/"fhir_results"  #can be changed according to where you extracted data
 headers = {
     "Content-Type": "application/fhir+json",
     "Accept": "application/fhir+json",
