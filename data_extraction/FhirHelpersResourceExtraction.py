@@ -253,31 +253,24 @@ def procedures(patient, code_set, source, smart):
     protocol = PROTOCOL
     while True:
         try:
-            response = smart.server.post_as_form(
-                url=f"{smart.server.base_uri}/Procedure/_search",
-                formdata={'_count': '1000', 'subject': patient})
-            bundle = response.json()
+            procedure = smart.server.request_json(f"Procedure?patient={patient_id}")
             break
         except Exception as exc:
             logging.error(f"Generated an exception: {exc} but continue trying.\n")
             time.sleep(3)
             smart = connect_to_server(user=USER_NAME, pw=USER_PASSWORD, protocol=protocol)
 
-    count = 0
-    file = None
+    count, file = 0, None
     try:
-        for entries in fetch_bundle_for_code(smart, bundle, protocol):
-            for procedure in entries:
-                resource = procedure.get("resource", {})
-                codings = resource.get("code", {}).get("coding", [])
-                for coding in codings:
-                    if coding.get("system") == OPS_SYSTEM_NAME and coding.get("code") in code_set:
-                        if file is None:
-                            file = open(whole_path, "w")
-                        json.dump(resource, file, separators=(",", ":"))
-                        file.write("\n")
-                        count += 1
-                        break
+        for entry in (procedure or {}).get("entry", []):
+            resource = entry.get("resource", {})
+            codings = resource.get("code", {}).get("coding", [])
+            if any(c.get("system") == OPS_SYSTEM_NAME and c.get("code") in code_set for c in codings):
+                if file is None:
+                    file = open(whole_path, "w", encoding="utf-8")
+                json.dump(entry, file, separators=(",", ":"))
+                file.write("\n")
+                count += 1
     finally:
         if file is not None:
             file.close()
