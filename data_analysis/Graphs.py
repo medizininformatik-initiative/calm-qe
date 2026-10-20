@@ -15,7 +15,7 @@ PROJECT_ROOT_DIR = Path(__file__).resolve().parent.parent
 if str(PROJECT_ROOT_DIR) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT_DIR))
 
-METADATA_DIR = PROJECT_ROOT_DIR / "data_extraction" / "fhir_results" / "metadata.json"
+METADATA_DIR = PROJECT_ROOT_DIR / "fhir_results" / "metadata.json"
 
 def load_json(filepath):
     """Loads json file"""
