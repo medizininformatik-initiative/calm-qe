@@ -1,18 +1,14 @@
 import time
 import logging
-
 from fhirclient.models.medicationadministration import MedicationAdministration
 from fhirclient.models.medicationrequest import MedicationRequest
 from fhirclient.models.medicationstatement import MedicationStatement
 from urllib.parse import quote, urlsplit, urlunsplit
 from concurrent.futures import ThreadPoolExecutor, as_completed
-
-import pytz
 import urllib3
 from fhirclient import client
 from Constants import USER_NAME, USER_PASSWORD, SERVER_NAME, PROTOCOL, MAX_WORKERS, FHIR_SSL_VERIFY
 from datetime import datetime, timezone
-
 from Metadata import gather_metadata
 
 try:
@@ -23,7 +19,7 @@ except ImportError:
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
-def connect_to_server(user, pw, protocol="https"):
+def connect_to_server(user, pw, protocol):
     """
     Creates the FhirClient object for requests later.
     :param user: Username for connection to server
@@ -40,7 +36,7 @@ def connect_to_server(user, pw, protocol="https"):
     smart.server.session.verify = FHIR_SSL_VERIFY
     return smart
 
-def fetch_bundle_for_code(smart, bundle, protocol="https"):
+def fetch_bundle_for_code(smart, bundle, protocol):
     """
     Send query request to the Fhir server via Smart,
     return the result in a bundle. If the result bundle is too big (at most 1K entries),
