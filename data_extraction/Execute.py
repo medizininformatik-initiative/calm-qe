@@ -16,7 +16,7 @@ from FhirHelpersResourceExtraction import (observations, conditions, medications
                                            fetch_patients, encounters,
                                            observation_frequencies_and_distributions, build_statement_medication_map)
 
-logging.basicConfig(level=logging.INFO, format='%(levelname)s - %(message)s')
+logging.basicConfig(level=logging.INFO, format='%(levelname)s - %(message)s', force=True)
 
 """"
 This script is for creating the Cohort Study Data. Study protocol requires the analysis of the patients from with Asthma & COPD.
