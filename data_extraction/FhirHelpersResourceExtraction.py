@@ -251,26 +251,32 @@ def procedures(patient, code_set, source, smart):
     patient_id = patient.split("/")[-1]
     whole_path = f"fhir_results/Procedures/{patient_id}_patient_procedures.json"
     protocol = PROTOCOL
+    ops_system_name = OPS_SYSTEM_NAME
     while True:
         try:
-            procedure = smart.server.request_json(f"Procedure?patient={patient_id}")
+            response = smart.server.post_as_form(
+                url=f"{smart.server.base_uri}/Procedure/_search",
+                formdata={'_count': '1000', 'subject': patient})
+            bundle = response.json()
             break
         except Exception as exc:
             logging.error(f"Generated an exception: {exc} but continue trying.\n")
             time.sleep(3)
             smart = connect_to_server(user=USER_NAME, pw=USER_PASSWORD, protocol=protocol)
-
     count, file = 0, None
     try:
-        for entry in (procedure or {}).get("entry", []):
-            resource = entry.get("resource", {})
-            codings = resource.get("code", {}).get("coding", [])
-            if any(c.get("system") == OPS_SYSTEM_NAME and c.get("code") in code_set for c in codings):
-                if file is None:
-                    file = open(whole_path, "w", encoding="utf-8")
-                json.dump(entry, file, separators=(",", ":"))
-                file.write("\n")
-                count += 1
+        for entries in fetch_bundle_for_code(smart, bundle, protocol):
+            for procedure in entries:
+                resource = procedure.get("resource", {})
+                codings = resource.get("code", {}).get("coding", [])
+                for coding in codings:
+                    if coding.get("system") == ops_system_name and coding.get("code") in code_set:
+                        if file is None:
+                            file = open(whole_path, "w")
+                        json.dump(procedure, file, separators=(",", ":"))
+                        file.write("\n")
+                        count += 1
+                        break
     finally:
         if file is not None:
             file.close()
@@ -425,7 +431,8 @@ def procedure_frequencies(code_file):
             file_path = os.path.join(folder_path, filename)
             with open(file_path, 'r') as json_file:
                 for line in json_file:
-                    resource = json.loads(line)
+                    entry = json.loads(line)
+                    resource = entry.get("resource", {})
                     codings = resource.get("code", {}).get("coding", [])
                     performed_date = resource.get("performedDateTime", {})
                     if performed_date:
