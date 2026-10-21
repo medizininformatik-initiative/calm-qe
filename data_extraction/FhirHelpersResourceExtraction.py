@@ -288,6 +288,8 @@ def encounters(encounter_ids, smart):
     os.makedirs("fhir_results/Encounters", exist_ok=True)
     output_file = "fhir_results/Encounters/encounters.jsonl"
     total = len(encounter_ids)
+    missing_encounters = []
+
     with open(output_file, "w") as file:
         for count, encounter in enumerate(encounter_ids, start=1):
             logging.info(f"Processing Encounter {count}/{total}")
@@ -304,11 +306,16 @@ def encounters(encounter_ids, smart):
 
             entries = bundle.get("entry", [])
             if not entries or not entries[0].get("resource"):
+                logging.warning(f"Encounter {encounter} not found. Skipping.")
+                missing_encounters.append(encounter)
                 continue
 
             resource = entries[0]["resource"]
             file.write(json.dumps(resource, separators=(",", ":")) + "\n")
 
+    output_filepath = "additional_results/missing_encounters.json"
+    with open(output_filepath, "w", encoding="utf-8") as file:
+        json.dump(missing_encounters, file, indent=4, ensure_ascii=False)
 
 def fetch_patients(patients_list, smart):
     """

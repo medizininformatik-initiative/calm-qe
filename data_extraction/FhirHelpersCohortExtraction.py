@@ -1,24 +1,18 @@
-import os
-import logging
-from collections import defaultdict
 import json
+import logging
+import os
 import time
-from datetime import datetime
+from collections import defaultdict
 from pathlib import Path
 
-import numpy as np
 import pandas as pd
-from fhirclient.models import encounter
-
-from fhirclient.models.condition import Condition
 from fhirclient.models.encounter import Encounter
 from fhirclient.models.patient import Patient
-from fhirclient.server import FHIRNotFoundException
 
 from Constants import USER_NAME, USER_PASSWORD, ACT_ENCOUNTER_TYPE_URL
-from Utils import fetch_bundle_for_code, connect_to_server
-from Utils import parse_fhir_datetime, compute_los
 from Metadata import gather_metadata
+from Utils import connect_to_server
+from Utils import parse_fhir_datetime, compute_los
 
 basis_filename = "patients_diagnosed_asthma_copd"
 
@@ -328,7 +322,8 @@ def extract_last_three_encounter(input_filepath, enabled=True):
     with open(output_filepath, "w", encoding="utf-8") as file:
         json.dump(patients_last_3_encounters, file, indent=4, ensure_ascii=False)
 
-    logging.info(f"File successfully generated for extracting last three encounters and admission dates for {len(patients_last_3_encounters)} main diagnosed patients")
+    logging.info(
+        f"File successfully generated for extracting last three encounters and admission dates for {len(patients_last_3_encounters)} main diagnosed patients")
     return None
 
 
@@ -372,147 +367,112 @@ def get_demographics_patients(patient_jsonl_path, enabled=True):
     return output_path
 
 
-def extract_additional_attributes_from_encounters(smart, input_filepath):
-    # Extract interested attributes from encounters (period, fallart, service_department_code)
-    contact_system = "http://fhir.de/CodeSystem/kontaktart-de"
 
+def extract_additional_attributes_from_encounters(base_path):
+    """
+    Extract interested attributes from encounters: period, fallart, service_department_code
+    """
+    contact_system = "http://fhir.de/CodeSystem/kontaktart-de"
     logging.info("Starting additional encounters extraction...")
     encounter_results = defaultdict(list)
-    non_found_encounter_results = defaultdict(list)
-    base_path = Path(input_filepath)
 
-    with open(input_filepath, "r") as file:
+    # Load already extracted Encounters
+    encounter_cache = {}
+    with open("fhir_results/Encounters/encounters.jsonl", "r", encoding="utf-8") as file:
+        for line in file:
+            encounter = json.loads(line)
+            encounter_cache[encounter["id"]] = encounter
+
+    # Read Conditions
+    with open(base_path, "r", encoding="utf-8") as file:
         patients = json.load(file)
-        for patient in patients.keys():
-            attributes_conditions = patients[patient]
-            duplicated_encounter = set()
-            for attr_condition in attributes_conditions:
-                if 'encounter' not in attr_condition:
-                    logging.warning(f'Missing "encounter" in attr_condition for Condition/{attr_condition["id"]}. Skipping.')
-                    continue
-                encounter_id = attr_condition['encounter'] if isinstance(attr_condition, dict) else attr_condition
 
-                if encounter_id in duplicated_encounter:
-                    continue
-                duplicated_encounter.add(encounter_id)
+    for patient, attributes_conditions in patients.items():
+        for attr_condition in attributes_conditions:
+            encounter_id = attr_condition.get("encounter")
 
-                for _ in range(3):
-                    try:
-                        entry_encounter = Encounter.read(encounter_id, smart.server)
-                        enc = {"resource": entry_encounter.as_json()}
-                        break
-                    except FHIRNotFoundException:
-                        logging.warning(f"Encounter {encounter_id} not found. Skipping")
-                        non_found_encounter_results[patient].append(encounter_id)
-                        enc = None
-                        break
-                    except Exception as exc:
-                        status = getattr(getattr(exc, "response", None), "status_code", None)
-                        if status == 410:
-                            logging.warning(
-                                f"Exception {status}. Encounter {encounter_id} missing or deleted. Skipping")
-                            non_found_encounter_results[patient].append(encounter_id)
-                            enc = None
-                            break
+            if not encounter_id:
+                logging.warning(f'Missing "encounter" in Condition/{attr_condition.get("id")}. Skipping.')
+                continue
 
-                        logging.warning(f"Generated an exception: {exc} in but continue to trying. \n")
-                        smart = connect_to_server(user=USER_NAME, pw=USER_PASSWORD)
-                        time.sleep(1)
+            resource = encounter_cache.get(encounter_id)
 
-                if enc is not None:
-                    resource = enc.get("resource", {})
-                    period = resource.get("period", {})
-                    start = period.get("start") if period else None
-                    end = period.get("end") if period else None
-                    fall_art = resource.get("class", {}).get("code")
+            if resource is None:
+                logging.warning(f"Encounter {encounter_id} not found in local file. Skipping.")
+                continue
 
-                    service_type_code = None
-                    service_type_codings = resource.get("serviceType", {}).get("coding", [])
-                    if len(service_type_codings) > 0:
-                        service_type_code = service_type_codings[0].get("code")
+            period = resource.get("period") or {}
+            start = period.get("start")
+            end = period.get("end")
+            fall_art = (resource.get("class") or {}).get("code")
 
-                    type_contact_code = None
-                    for type_entry in resource.get("type", []):
-                        for coding in type_entry.get("coding", []):
-                            if contact_system in coding.get("system", ""):
-                                type_contact_code = coding.get("code")
+            service_type_codings = (resource.get("serviceType") or {}).get("coding") or []
+            service_type_code = (
+                service_type_codings[0].get("code")
+                if service_type_codings else None
+            )
 
-                    encounter_results[patient].append(
-                        {
-                            "condition": attr_condition,
-                            "start": start,
-                            "end": end,
-                            "case": fall_art,
-                            "serviceDepartment": service_type_code,
-                            "typeContact": type_contact_code,
-                        }
-                    )
+            type_contact_code = None
+            for type_entry in resource.get("type") or []:
+                for coding in type_entry.get("coding") or []:
+                    if coding.get("system") == contact_system:
+                        type_contact_code = coding.get("code")
 
+            encounter_results[patient].append({
+                "condition": attr_condition,
+                "start": start,
+                "end": end,
+                "case": fall_art,
+                "serviceDepartment": service_type_code,
+                "typeContact": type_contact_code,
+            })
     # Extended encounters
     encounters_filepath = base_path.with_name(f"{basis_filename}_extended_encounters.json")
     with open(encounters_filepath, 'w') as file:
         json.dump(encounter_results, file, indent=4)
 
-    # Missing encounters
-    output_filepath = base_path.parent / f"missing_encounters.json"
-    with open(output_filepath, "w", encoding="utf-8") as file:
-        json.dump(non_found_encounter_results, file, indent=4, ensure_ascii=False)
-
     # Export patients summary in csv
     simple_flattening(encounter_results, base_path)
-
     return encounters_filepath
 
 
 def simple_flattening(patients_attr_map, path):
-    # New: Flatten to export as CSV file
-    subdirectory = path.parent / 'csv'
+    """Flattening into csv format"""
+    subdirectory = path.parent / "csv"
     subdirectory.mkdir(parents=True, exist_ok=True)
+    rows = []
 
-    df_rows = []
     for patient_reference, patient_attributes in patients_attr_map.items():
+        patient_id = patient_reference.split("/")[-1]
         for attribute in patient_attributes:
-            condition_id = attribute.get("condition").get("id")
-            attrib_enc = attribute.get("condition")
-            code = attribute.get("condition").get("code")
-            patient_id = patient_reference.split("/")[1]
+            condition = attribute.get("condition") or {}
+            codings = (condition.get("code") or {}).get("coding", [])
 
-            # rename labels to more suitable description of an attribute
             row = {
-                'patient': patient_id,
-                'condition': condition_id,
-                'recordedDiagnosisDate': attrib_enc.get('recordedDate'),
-                'encounter': attrib_enc.get('encounter'),
-                'admissionDate': attribute.get("start"),
-                'dischargeDate': attribute.get("end"),
-                'case': attribute.get("case"),
-                'serviceDepartment': attribute.get("serviceDepartment"),
-                'typeContact': attribute.get("typeContact"),
+                "patient": patient_id,
+                "condition": condition.get("id"),
+                "recordedDiagnosisDate": condition.get("recordedDate"),
+                "encounter": condition.get("encounter"),
+                "admissionDate": attribute.get("start"),
+                "dischargeDate": attribute.get("end"),
+                "case": attribute.get("case"),
+                "serviceDepartment": attribute.get("serviceDepartment"),
+                "typeContact": attribute.get("typeContact"),
             }
 
-            # codes from conditions
-            if isinstance(code, dict):
-                coding_list = code.get('coding', [])
-                if coding_list:
-                    for code in coding_list:
-                        row.update({
-                            'code': code.get('code'),
-                            'system': code.get('system'),
-                            'version': code.get('version')
-                        })
-            df_rows.append(row)
+            for coding in codings or [{}]:
+                rows.append({
+                    **row,
+                    "code": coding.get("code"),
+                    "system": coding.get("system"),
+                    "version": coding.get("version"),
+                })
 
-    # New: reorder columns and export them :)
-    if df_rows:
-        df = pd.DataFrame(df_rows)
-        last_columns = 3
-        position_targeted = 2
-        cols = df.columns.tolist()
-        to_move = cols[-last_columns:]
-        new_order = cols[:position_targeted] + to_move + cols[position_targeted:-last_columns]
-        df = df[new_order]
+    if rows:
+        columns = ["patient", "condition", "code", "system", "version", "recordedDiagnosisDate", "encounter",
+                   "admissionDate", "dischargeDate", "case", "serviceDepartment", "typeContact"]
 
-        df.to_csv(f"{subdirectory}/main_cohort.csv", sep=";", index=False)
-        logging.info(f"Exported patients to main_cohort.csv")
+        pd.DataFrame(rows)[columns].to_csv(subdirectory / "main_cohort.csv", sep=";", index=False)
+        logging.info("Exported patients to main_cohort.csv")
     else:
-        logging.warning("No rows to export to CSV")
+        logging.warning("No rows to export...")
