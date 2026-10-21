@@ -13,7 +13,7 @@ Below variables needs to be filled:
 FHIR_SERVER: URL of the target FHIR server
 USERNAME: Username for authentication
 PASSWORD: Password for authentication
-BASE_FOLDER: Folder containing the extracted FHIR resource files
+BASE_FOLDER = Folder path containing the extracted FHIR resource files
 """
 FHIR_SERVER = "YOUR_TARGET_SERVER_NAME/fhir"
 USERNAME = "YOUR_FHIR_USER_NAME"
@@ -24,6 +24,7 @@ headers = {
     "Accept": "application/fhir+json",
 }
 
+BATCH_SIZE = 500  # Send files to server in smaller chunks to prevent some issues, i.e. memory etc.
 
 def load_bundles_from_file(file_path):
     entries = []
