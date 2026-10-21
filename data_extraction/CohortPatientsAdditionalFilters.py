@@ -28,7 +28,7 @@ def main():
 
     # Extract attributes from encounters
     diagnoses_filepath = Path(DIR_RESULTS, 'patients_diagnosed_asthma_copd.json')
-    encounters_filepath = extract_additional_attributes_from_encounters(smart, diagnoses_filepath)
+    encounters_filepath = extract_additional_attributes_from_encounters(diagnoses_filepath)
 
     # Filter by patients' age  min_age: minimal age in years, max_age: maximal age in years Example: [0-2], [3-5], etc.
     age_interval = {
