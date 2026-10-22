@@ -22,7 +22,7 @@ DISCHARGE_CODE_CONTEXT_URL = "http://ihe-d.de/CodeSystems/FallkontextBeiDokument
 ACT_ENCOUNTER_TYPE_URL = "http://fhir.de/CodeSystem/kontaktart-de"
 MAX_WORKERS = min(6, (os.cpu_count() or 1) * 5)
 
-raw_fhir_ssl_verify = os.getenv("FHIR_SSL_VERIFY", "false").strip().lower() #default false
+raw_fhir_ssl_verify = os.getenv("FHIR_SSL_VERIFY").strip().lower()
 if raw_fhir_ssl_verify in ["true", "1", "yes", ""]:
     FHIR_SSL_VERIFY = True
 elif raw_fhir_ssl_verify in ["false", "0", "no"]:
