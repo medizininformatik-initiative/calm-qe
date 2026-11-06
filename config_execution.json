@@ -1,0 +1,20 @@
+{
+    "extract": {
+        "patients": true,
+        "conditions": true,
+        "encounters": true,
+        "observations": true,
+        "procedures": true,
+        "medication": true
+    },
+    "additional_results": {
+        "age_interval": true,
+        "icu_admission": true,
+        "los_inpatients": true,
+        "last_three_encounters": true,
+        "demographics": true
+    },
+    "calmqe_server": {
+      "load": false
+    }
+}
