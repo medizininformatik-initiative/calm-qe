@@ -15,6 +15,7 @@ from FhirHelpersResourceExtraction import (observations, conditions, medications
                                            procedure_frequencies, read_input_code_file, patients_with_asthma_copd,
                                            fetch_patients, encounters,
                                            observation_frequencies_and_distributions, build_statement_medication_map)
+from Metadata import reset_values_metadata
 
 logging.basicConfig(level=logging.INFO, format='%(levelname)s - %(message)s', force=True)
 
@@ -75,7 +76,7 @@ def resources_to_fetch(patient_list, encounters_list, smart):
             medication_profiles = [
                 MedicationAdministration,
                 MedicationRequest,
-                MedicationStatement,  # Note: Needs to run before MedicationList
+                MedicationStatement,  # Note: This needs to run before MedicationList
                 MedicationList
             ]
 
@@ -97,6 +98,7 @@ def main():
 
     #Get the patients with "ANY TYPE OF DIAGNOSED" Asthma or COPD.
     diagnosis_path = patients_with_asthma_copd(smart, DIR_RESULTS)
+
     #Input is the patient list in a text file from Cohort Data Extraction part
     with open(diagnosis_path, "r") as file:
         input_file = json.load(file)
@@ -112,4 +114,5 @@ def main():
     procedure_frequencies(OPS_CODE_FILE)
     medication_frequencies(ATC_CODE_FILE)
 if __name__ == "__main__":
+    reset_values_metadata()
     main()
