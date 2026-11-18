@@ -36,6 +36,25 @@ FHIR_SSL_VERIFY=true
 ```
 An example environment file (`.env.example`) is included in the repository.
 
+### 2. Configure resources to extract 
+The `config_execution.json` file allows you to specify which FHIR resources should be extracted.
+By default, all resources are enabled, but you can customize the configuration to extract only the resources you need:
+
+```json
+    "extract": {
+        "patients": true,
+        "conditions": true,
+        "encounters": true,
+        "observations": true,
+        "procedures": true,
+        "medication": true
+    }
+```
+
+> [IMPORTANT]
+>  Do not disable resources required by `CohortPatientsAdditionalFilters.py`. Make sure to extract the resources that these dependencies require.
+For example, `encounters` and `patients` extraction must remain enabled to apply the **additional requirements** section.
+
 ## Creation of Cohort Patients List and Extraction of the Resources from Cohort Patients
 This script identifies patients diagnosed with "Asthma" or "COPD".
 
