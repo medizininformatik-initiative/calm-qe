@@ -36,7 +36,7 @@ FHIR_SSL_VERIFY=true
 ```
 An example environment file (`.env.example`) is included in the repository.
 
-### 2. Configure resources to extract 
+### 3. Configure resources to extract 
 The `config_execution.json` file allows you to specify which FHIR resources should be extracted.
 By default, all resources are enabled, but you can customize the configuration to extract only the resources you need:
 
@@ -47,7 +47,7 @@ By default, all resources are enabled, but you can customize the configuration t
         "encounters": true,
         "observations": true,
         "procedures": true,
-        "medication": true
+        "medication": true 
     }
 ```
 
