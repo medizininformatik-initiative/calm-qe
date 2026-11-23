@@ -56,6 +56,9 @@ def reset_values_metadata():
         extraction = config.get("extract", {})
         enabled_resources = [key for key, value in extraction.items() if value is True]
 
+        filters = config.get("filters", {})
+        enabled_filters = [key for key, value in filters.items() if value is True]
+
         reset_fields = {}
         unknown_resources = []
 
@@ -67,41 +70,50 @@ def reset_values_metadata():
                     continue
                 reset_fields.update(fields)
 
-            if not reset_fields:
-                if unknown_resources:
-                    logging.warning(
-                        "No metadata reset mapping found for enabled extraction(s): %s",
-                        ", ".join(unknown_resources),
-                    )
-                return
+        if enabled_filters:
+            for enabled_filter in enabled_filters:
+                matched_keys = [meta_key for meta_key in list(metadata.keys()) if enabled_filter in meta_key]
+                reset_fields.update({
+                    key: defaultdict(int) if isinstance(value, dict) else 0
+                    for key, value in metadata.items()
+                    if key in matched_keys
+                })
 
-            metadata.update(reset_fields)
-            metadata["execution_date"] = datetime.now().strftime("%Y-%m-%d")
-            metadata["execution_time"] = datetime.now().strftime("%H:%M:%S")
-
-            metadata_dir = os.path.dirname(metadata_file_path) or "."
-            os.makedirs(metadata_dir, exist_ok=True)
-
-            temp_path = None
-            try:
-                with tempfile.NamedTemporaryFile(
-                        mode="w",
-                        encoding="utf-8",
-                        dir=metadata_dir,
-                        delete=False,
-                ) as temp_file:
-                    json.dump(metadata, temp_file, indent=4)
-                    temp_file.write("\n")
-                    temp_path = temp_file.name
-
-                os.replace(temp_path, metadata_file_path)
-            finally:
-                if temp_path and os.path.exists(temp_path):
-                    os.remove(temp_path)
-
-            logging.info("Reset metadata fields for enabled extraction(s): %s",", ".join(enabled_resources),)
+        if not reset_fields:
             if unknown_resources:
-                logging.warning("No metadata reset mapping found for enabled extraction(s): %s",", ".join(unknown_resources),)
+                logging.warning(
+                    "No metadata reset mapping found for enabled extraction(s): %s",
+                    ", ".join(unknown_resources),
+                )
+            return
+
+        metadata.update(reset_fields)
+        metadata["execution_date"] = datetime.now().strftime("%Y-%m-%d")
+        metadata["execution_time"] = datetime.now().strftime("%H:%M:%S")
+
+        metadata_dir = os.path.dirname(metadata_file_path) or "."
+        os.makedirs(metadata_dir, exist_ok=True)
+
+        temp_path = None
+        try:
+            with tempfile.NamedTemporaryFile(
+                    mode="w",
+                    encoding="utf-8",
+                    dir=metadata_dir,
+                    delete=False,
+            ) as temp_file:
+                json.dump(metadata, temp_file, indent=4)
+                temp_file.write("\n")
+                temp_path = temp_file.name
+
+            os.replace(temp_path, metadata_file_path)
+        finally:
+            if temp_path and os.path.exists(temp_path):
+                os.remove(temp_path)
+
+        logging.info("Reset metadata fields for enabled extraction(s): %s",", ".join(enabled_resources),)
+        if unknown_resources:
+            logging.warning("No metadata reset mapping found for enabled extraction(s): %s",", ".join(unknown_resources),)
 
 
 def gather_metadata(source, count):

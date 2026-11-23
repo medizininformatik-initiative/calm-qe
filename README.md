@@ -48,6 +48,13 @@ By default, all resources are enabled, but you can customize the configuration t
         "observations": true,
         "procedures": true,
         "medication": true 
+    },
+    "filter": {
+        "age_interval": true,
+        "intensive_care": true,
+        "inpatient_duration": true,
+        "last_three_encounters": true,
+        "demographics": true
     }
 ```
 

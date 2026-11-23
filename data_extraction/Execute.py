@@ -37,7 +37,7 @@ def resources_to_fetch(patient_list, encounters_list, smart):
         config = json.load(json_file)
         extraction = config.get("extract", {})
 
-        resources = [key for key, value in extraction.items() if value is True]
+        resources = [key for key, value in extraction.items() if bool(value) is True]
         if not resources:
             logging.info("No additional resources were enabled for fetching in `config_execution.json`")
 
