@@ -55,6 +55,24 @@ By default, all resources are enabled, but you can customize the configuration t
 >  Do not disable resources required by `CohortPatientsAdditionalFilters.py`. Make sure to extract the resources that these dependencies require.
 For example, `encounters` and `patients` extraction must remain enabled to apply the **additional requirements** section.
 
+### Reset behavior after a second execution.
+When the script runs, it checks `config_execution.json` to determine whether `metadata.json` should be reset if the file already exist.
+By default, all extraction keys are set to `true`, meaning every resource will be re-extracted from scratch and all counts in `metadata.json` will be reset.
+
+You can also **cherry-pick** specific resources by setting only the ones you want to re-extract to true, while leaving the others as `false`. For example:
+```json
+"extract": {
+    "patients": false,
+    "conditions": false,
+    "encounters": false,
+    "observations": false,
+    "procedures": true,
+    "medication": false
+}
+```
+With this configuration, only the procedures will be re-extracted and the count of procedures will be reset in `metadata.json` while other counts remain unchanged.
+
+
 ## Creation of Cohort Patients List and Extraction of the Resources from Cohort Patients
 This script identifies patients diagnosed with "Asthma" or "COPD".
 
