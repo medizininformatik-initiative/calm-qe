@@ -56,7 +56,7 @@ def reset_values_metadata():
         extraction = config.get("extract", {})
         enabled_resources = [key for key, value in extraction.items() if value is True]
 
-        filters = config.get("filters", {})
+        filters = config.get("filter", {})
         enabled_filters = [key for key, value in filters.items() if value is True]
 
         reset_fields = {}
