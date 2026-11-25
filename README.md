@@ -78,7 +78,8 @@ You can also **cherry-pick** specific resources by setting only the ones you wan
 }
 ```
 With this configuration, only the procedures will be re-extracted and the count of procedures will be reset in `metadata.json` while other counts remain unchanged.
-
+> [IMPORTANT]
+> For each new re-run to extract resources, empty or delete de previous extracted bundles. 
 
 ## Creation of Cohort Patients List and Extraction of the Resources from Cohort Patients
 This script identifies patients diagnosed with "Asthma" or "COPD".
