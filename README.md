@@ -36,6 +36,51 @@ FHIR_SSL_VERIFY=true
 ```
 An example environment file (`.env.example`) is included in the repository.
 
+### 3. Configure resources to extract 
+The `config_execution.json` file allows you to specify which FHIR resources should be extracted.
+By default, all resources are enabled, but you can customize the configuration to extract only the resources you need:
+
+```json
+    "extract": {
+        "patients": true,
+        "conditions": true,
+        "encounters": true,
+        "observations": true,
+        "procedures": true,
+        "medication": true 
+    },
+    "filter": {
+        "age_interval": true,
+        "intensive_care": true,
+        "inpatient_duration": true,
+        "last_three_encounters": true,
+        "demographics": true
+    }
+```
+
+> [IMPORTANT]
+>  Do not disable resources required by `CohortPatientsAdditionalFilters.py`. Make sure to extract the resources that these dependencies require.
+For example, `encounters` and `patients` extraction must remain enabled to apply the **additional requirements** section.
+
+### Reset behavior after a second execution.
+When the script runs, it checks `config_execution.json` to determine whether `metadata.json` should be reset if the file already exist.
+By default, all extraction keys are set to `true`, meaning every resource will be re-extracted from scratch and all counts in `metadata.json` will be reset.
+
+You can also **cherry-pick** specific resources by setting only the ones you want to re-extract to true, while leaving the others as `false`. For example:
+```json
+"extract": {
+    "patients": false,
+    "conditions": false,
+    "encounters": false,
+    "observations": false,
+    "procedures": true,
+    "medication": false
+}
+```
+With this configuration, only the procedures will be re-extracted and the count of procedures will be reset in `metadata.json` while other counts remain unchanged.
+> [IMPORTANT]
+> For each new re-run to extract resources, empty or delete de previous extracted bundles. 
+
 ## Creation of Cohort Patients List and Extraction of the Resources from Cohort Patients
 This script identifies patients diagnosed with "Asthma" or "COPD".
 

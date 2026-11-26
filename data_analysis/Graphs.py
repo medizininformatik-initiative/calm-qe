@@ -138,6 +138,8 @@ def plot_condition_composition(conditions_groups_sums, output_file):
 
 
 meta_data = load_json(METADATA_DIR)
+if not meta_data:
+    logging.warning("Metadata file is missing or empty; no graphs will be created")
 
 # ---------------- # Data overview # ---------------------------------
 #Add other type of medication resources if you have other sources...
@@ -207,26 +209,41 @@ for year, observations in observations_counts.items():
     observations_groups_sums[year] = group_sums
 
 # ----------------- # Graphs # -----------------------------------------------
+if data_overview:
+    create_bar_graph('vertical', data_overview.keys(), data_overview.values(), 'Data Overview', '', '', True, "dataOverview.png")
+else:
+    logging.warning("No data overview values found; skipping data overview graph.")
 
-create_bar_graph('vertical', data_overview.keys(), data_overview.values(), 'Data Overview', '', '', True, "dataOverview.png")
-# Condition groups - one graph per year
-for year, group_sums in conditions_groups_sums.items():
-    create_bar_graph( "horizontal", group_sums.keys(), group_sums.values(), f"Condition Groups Counts - {year}", "Total Count", "Condition Groups", False, f"Conditions_{year}.png", )
+if conditions_groups_sums:
+    # Condition groups - one graph per year
+    for year, group_sums in conditions_groups_sums.items():
+        create_bar_graph( "horizontal", group_sums.keys(), group_sums.values(), f"Condition Groups Counts - {year}", "Total Count", "Condition Groups", False, f"Conditions_{year}.png", )
 
-# COPD vs Asthma - one graph per year
-for year, group_sums in diagnosis_group_sums.items(): create_bar_graph( "vertical", group_sums.keys(), group_sums.values(), f"Count of Diagnoses COPD vs Asthma - {year}", "Diagnosis Groups", "Total Count", False, f"DiagnosisGroups_{year}.png", )
+    # COPD vs Asthma - one graph per year
+    for year, group_sums in diagnosis_group_sums.items(): create_bar_graph( "vertical", group_sums.keys(), group_sums.values(), f"Count of Diagnoses COPD vs Asthma - {year}", "Diagnosis Groups", "Total Count", False, f"DiagnosisGroups_{year}.png", )
 
-# Distribution all conditions per year
-plot_condition_composition(conditions_groups_sums,"graphs/ConditionsComposition.png")
+    # Distribution all conditions per year
+    plot_condition_composition(conditions_groups_sums,"graphs/ConditionsComposition.png")
+else:
+    logging.warning("No condition data found; skipping condition graphs.")
 
+# Medication graph
 if medications_exist:
     create_bar_graph('vertical', medications_counts.keys(), medications_counts.values(), 'MedicationAdministrations', 'Medications', 'Total Count', False, "medicationAdministrations.png")
+else:
+    logging.warning("Medication data not found; skipping medication graphs.")
 
 # Observations per year
-for group in group_observation.keys():
-    years = list(observations_groups_sums.keys())
-    values = [observations_groups_sums[year].get(group, 0)for year in years]
-    create_bar_graph('vertical', years, values,f'{group} Observation Counts by Year','Year','Total Count',False,f'observationGroups_{group}.png')
+if observations_groups_sums and group_observation:
+    for group in group_observation.keys():
+        years = list(observations_groups_sums.keys())
+        values = [observations_groups_sums[year].get(group, 0)for year in years]
+        create_bar_graph('vertical', years, values,f'{group} Observation Counts by Year','Year','Total Count',False,f'observationGroups_{group}.png')
+else:
+    logging.warning("No observation data found; skipping observation graphs.")
 
 # Observation values histograms
-plot_observation_values_histograms(meta_data['observations_value_histograms'])
+if not meta_data['observations_value_histograms'].values():
+        logging.warning("No observation histogram data found; skipping histogram graphs")
+else:
+    plot_observation_values_histograms(meta_data['observations_value_histograms'])

@@ -9,7 +9,7 @@ import pandas as pd
 from fhirclient.models.encounter import Encounter
 from fhirclient.models.patient import Patient
 
-from Constants import USER_NAME, USER_PASSWORD, ACT_ENCOUNTER_TYPE_URL
+from Constants import USER_NAME, USER_PASSWORD, PROTOCOL, ACT_ENCOUNTER_TYPE_URL
 from Metadata import gather_metadata
 from Utils import connect_to_server
 from Utils import parse_fhir_datetime, compute_los
@@ -106,7 +106,7 @@ def filter_patients_by_age_interval(smart, input_filepath, min_age, max_age, ena
                     birth_date = None
                     break
                 logging.error(f"Error fetching patient {patient_id}, status {status}: {exc}, but continue to trying...")
-                smart = connect_to_server(user=USER_NAME, pw=USER_PASSWORD)
+                smart = connect_to_server(user=USER_NAME, pw=USER_PASSWORD, protocol=PROTOCOL)
                 time.sleep(1)
 
         if not birth_date:

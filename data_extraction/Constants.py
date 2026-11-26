@@ -4,6 +4,8 @@ from dotenv import load_dotenv
 
 logging.basicConfig(level=logging.INFO, format='%(levelname)s - %(message)s')
 
+CONFIG_EXECUTION = 'config_execution.json'
+
 load_dotenv()
 USER_NAME = os.getenv("USER_NAME")
 USER_PASSWORD = os.getenv("USER_PASSWORD")

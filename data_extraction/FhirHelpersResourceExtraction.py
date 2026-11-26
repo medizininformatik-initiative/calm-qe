@@ -65,6 +65,7 @@ def patients_with_asthma_copd(smart, results_path):
         diagnoses_codes = [item['code'] for item in diagnoses_file['codes']]
 
     patients_conditions_map = defaultdict(list)
+    unique_patient_ref = set()
     for code in diagnoses_codes:
         while True:
             try:
@@ -81,6 +82,7 @@ def patients_with_asthma_copd(smart, results_path):
                 condition = entry['resource']
                 if condition['subject']['reference']:
                     patient_reference = condition['subject']['reference']
+                    unique_patient_ref.add(patient_reference)
                     patient_attributes_map = {'id': condition['id'], 'code': condition['code']}
 
                     if 'encounter' in condition and "reference" in condition["encounter"]:
@@ -93,7 +95,7 @@ def patients_with_asthma_copd(smart, results_path):
                         patient_attributes_map["recordedDate"] = condition['recordedDate']
                     patients_conditions_map[patient_reference].append(patient_attributes_map)
 
-    gather_metadata("asthma_and_copd_patient_count", len(patients_conditions_map))
+    gather_metadata("asthma_and_copd_patient_count", len(unique_patient_ref))
 
     output_filepath = results_path / f"patients_diagnosed_asthma_copd.json"
     with open(output_filepath, 'w') as file:  # Intermediate results.
@@ -356,104 +358,114 @@ def fetch_patients(patients_list, smart):
 
 def observation_frequencies_and_distributions(code_file):
     folder_path = "fhir_results/Observations"
-    observations_counts = defaultdict(lambda: defaultdict(int))
-    code_set = set(read_input_code_file(code_file))
-    values_by_code = defaultdict(list)
-    counter = 0
-    for filename in os.listdir(folder_path):
-        if filename.endswith(".json"):
-            file_path = os.path.join(folder_path, filename)
-            with open(file_path, 'r') as json_file:
-                counter += 1
-                print("Processing " + str(counter) + "\n")
-                for line in json_file:
-                    observation = json.loads(line)
-                    resource = observation.get("resource", {})
-                    codings = resource.get("code", {}).get("coding", [])
 
-                    matched_codes = {c['code'] for c in codings if
-                                     c.get('system') == LOINC_SYSTEM_NAME and c['code'] in code_set}
-                    if not matched_codes:
-                        continue
-                    value_quantity = resource.get("valueQuantity")
-                    if value_quantity is not None:
-                        value = value_quantity.get("value")
-                        if value is not None:
-                            for code in matched_codes:
-                                values_by_code[code].append(value)
+    if os.path.isdir(folder_path) and os.listdir(folder_path):
 
-                    # Counts by year
-                    effective_datetime = resource.get("effectiveDateTime")
+        logging.info("Gathering Observation frequencies...")
+        observations_counts = defaultdict(lambda: defaultdict(int))
+        code_set = set(read_input_code_file(code_file))
+        values_by_code = defaultdict(list)
+        counter = 0
+        for filename in os.listdir(folder_path):
+            if filename.endswith(".json"):
+                file_path = os.path.join(folder_path, filename)
+                with open(file_path, 'r') as json_file:
+                    counter += 1
+                    print("Processing " + str(counter) + "\n")
+                    for line in json_file:
+                        observation = json.loads(line)
+                        resource = observation.get("resource", {})
+                        codings = resource.get("code", {}).get("coding", [])
 
-                    if effective_datetime:
-                        try:
-                            year = parse_fhir_datetime(effective_datetime).year
-                        except ValueError:
-                            logging.warning("Invalid effectiveDateTime format: %s", effective_datetime)
+                        matched_codes = {c['code'] for c in codings if
+                                         c.get('system') == LOINC_SYSTEM_NAME and c['code'] in code_set}
+                        if not matched_codes:
                             continue
+                        value_quantity = resource.get("valueQuantity")
+                        if value_quantity is not None:
+                            value = value_quantity.get("value")
+                            if value is not None:
+                                for code in matched_codes:
+                                    values_by_code[code].append(value)
 
-                        for code in matched_codes:
-                            observations_counts[year][code] += 1
+                        # Counts by year
+                        effective_datetime = resource.get("effectiveDateTime")
 
-    observations_value_histograms = build_histogram_entries_for_observations(values_by_code)
-    gather_metadata("observations_value_histograms", observations_value_histograms)
-    gather_metadata("observations_counts", dict(sorted(observations_counts.items())))
+                        if effective_datetime:
+                            try:
+                                year = parse_fhir_datetime(effective_datetime).year
+                            except ValueError:
+                                logging.warning("Invalid effectiveDateTime format: %s", effective_datetime)
+                                continue
+
+                            for code in matched_codes:
+                                observations_counts[year][code] += 1
+
+        observations_value_histograms = build_histogram_entries_for_observations(values_by_code)
+        gather_metadata("observations_value_histograms", observations_value_histograms)
+        gather_metadata("observations_counts", dict(sorted(observations_counts.items())))
 
 
 def conditions_frequencies(code_file):
     folder_path = "fhir_results/Conditions"
-    code_list = read_input_code_file(code_file)
-    conditions_counts = defaultdict(lambda: defaultdict(int))
+    if os.path.isdir(folder_path) and os.listdir(folder_path):
 
-    for filename in os.listdir(folder_path):
-        if filename.endswith(".json"):
-            file_path = os.path.join(folder_path, filename)
-            with open(file_path, 'r') as json_file:
-                for line in json_file:
-                    condition = json.loads(line)
-                    resource = condition.get("resource", {})
-                    codings = resource.get("code", {}).get("coding", [])
-                    recorded_date = resource.get("recordedDate", {})
-                    if recorded_date:
-                        try:
-                            year = parse_fhir_datetime(recorded_date).date().year
-                        except ValueError:
-                            logging.warning("Invalid year format, skipping...")
-                            continue
+        logging.info("Gathering conditions frequencies...")
+        code_list = read_input_code_file(code_file)
+        conditions_counts = defaultdict(lambda: defaultdict(int))
 
-                        for coding in codings:
-                            if ICD_SYSTEM_NAME == coding['system'] and coding['code'] in code_list:
-                                conditions_counts[year][coding['code']] += 1
-    # Gather metadata
-    gather_metadata("conditions_counts", dict(sorted(conditions_counts.items())))
+        for filename in os.listdir(folder_path):
+            if filename.endswith(".json"):
+                file_path = os.path.join(folder_path, filename)
+                with open(file_path, 'r') as json_file:
+                    for line in json_file:
+                        condition = json.loads(line)
+                        resource = condition.get("resource", {})
+                        codings = resource.get("code", {}).get("coding", [])
+                        recorded_date = resource.get("recordedDate", {})
+                        if recorded_date:
+                            try:
+                                year = parse_fhir_datetime(recorded_date).date().year
+                            except ValueError:
+                                logging.warning("Invalid year format, skipping...")
+                                continue
+
+                            for coding in codings:
+                                if ICD_SYSTEM_NAME == coding['system'] and coding['code'] in code_list:
+                                    conditions_counts[year][coding['code']] += 1
+        # Gather metadata
+        gather_metadata("conditions_counts", dict(sorted(conditions_counts.items())))
 
 
 def procedure_frequencies(code_file):
     folder_path = "fhir_results/Procedures"
-    code_list = read_input_code_file(code_file)
-    procedure_counts = defaultdict(lambda: defaultdict(int))
+    if os.path.isdir(folder_path) and os.listdir(folder_path):
 
-    for filename in os.listdir(folder_path):
-        if filename.endswith(".json"):
-            file_path = os.path.join(folder_path, filename)
-            with open(file_path, 'r') as json_file:
-                for line in json_file:
-                    entry = json.loads(line)
-                    resource = entry.get("resource", {})
-                    codings = resource.get("code", {}).get("coding", [])
-                    performed_date = resource.get("performedDateTime", {})
-                    if performed_date:
-                        try:
-                            date = parse_fhir_datetime(performed_date)
-                            year = date.date().year
-                        except ValueError:
-                            logging.warning("Invalid year format, skipping...")
-                            continue
-                        for coding in codings:
-                            if OPS_SYSTEM_NAME == coding.get("system") and coding.get("code") in code_list:
-                                procedure_counts[year][coding['code']] += 1
-    # Gather metadata
-    gather_metadata("procedures_counts", dict(sorted(procedure_counts.items())))
+        logging.info("Gathering procedures frequencies...")
+        code_list = read_input_code_file(code_file)
+        procedure_counts = defaultdict(lambda: defaultdict(int))
+
+        for filename in os.listdir(folder_path):
+            if filename.endswith(".json"):
+                file_path = os.path.join(folder_path, filename)
+                with open(file_path, 'r') as json_file:
+                    for line in json_file:
+                        entry = json.loads(line)
+                        resource = entry.get("resource", {})
+                        codings = resource.get("code", {}).get("coding", [])
+                        performed_date = resource.get("performedDateTime", {})
+                        if performed_date:
+                            try:
+                                date = parse_fhir_datetime(performed_date)
+                                year = date.date().year
+                            except ValueError:
+                                logging.warning("Invalid year format, skipping...")
+                                continue
+                            for coding in codings:
+                                if OPS_SYSTEM_NAME == coding.get("system") and coding.get("code") in code_list:
+                                    procedure_counts[year][coding['code']] += 1
+        # Gather metadata
+        gather_metadata("procedures_counts", dict(sorted(procedure_counts.items())))
 
 
 def fetch_atc_codes(resource_ref, code_list, smart):
@@ -478,115 +490,120 @@ def fetch_atc_codes(resource_ref, code_list, smart):
         return None
 
 def medication_frequencies(code_file):
-    smart = connect_to_server(user=USER_NAME, pw=USER_PASSWORD, protocol=PROTOCOL)
-    folder_paths = ["fhir_results/Medications/Administration",
-                    "fhir_results/Medications/Request",
-                    "fhir_results/Medications/Statement",
-                    "fhir_results/Medications/List"]
-    code_list = read_input_code_file(code_file)
-    protocol = PROTOCOL
-    atc_cache = {} # to keep track of Medication ID->ATC mapping to avoid redundant calls to "fetch_atc_code" function
-    #build MedicationStatement -> Medication reference map
-    statement_medication_map = build_statement_medication_map("fhir_results/Medications/Statement/")
-    for folder_path in folder_paths:
-        medication_type_and_med_reference = defaultdict(lambda: defaultdict(int))
-        resource_structure = defaultdict(lambda: {
-            "counting": {
-                "total_count": 0,
-                "details_count": [],
-            }})
+    folder_path = "fhir_results/Medications"
 
-        if 'List' in folder_path:
-            patient_refs = set()
+    if os.path.isdir(folder_path) and os.listdir(folder_path):
+        logging.info("Gathering medication frequencies...")
 
-            for file in os.listdir(folder_path):
-                if not file.endswith(".json") or "statementRef" not in file:
-                    continue
+        smart = connect_to_server(user=USER_NAME, pw=USER_PASSWORD, protocol=PROTOCOL)
+        folder_paths = ["fhir_results/Medications/Administration",
+                        "fhir_results/Medications/Request",
+                        "fhir_results/Medications/Statement",
+                        "fhir_results/Medications/List"]
+        code_list = read_input_code_file(code_file)
+        protocol = PROTOCOL
+        atc_cache = {} # to keep track of Medication ID->ATC mapping to avoid redundant calls to "fetch_atc_code" function
+        #build MedicationStatement -> Medication reference map
+        statement_medication_map = build_statement_medication_map("fhir_results/Medications/Statement/")
+        for folder_path in folder_paths:
+            medication_type_and_med_reference = defaultdict(lambda: defaultdict(int))
+            resource_structure = defaultdict(lambda: {
+                "counting": {
+                    "total_count": 0,
+                    "details_count": [],
+                }})
 
-                reference_id = file.split("_statementRef")[0]
-                try:
-                    with open(os.path.join(folder_path, file), encoding="utf-8") as f:
-                        for line in f:
-                            bundle = json.loads(line)
-                            #Check the List actually contains this MedicationStatement
-                            if not find_medication_statement_ref(bundle, reference_id):
-                                continue
-                            patient_ref = bundle.get("resource", {}).get("subject", {}).get("reference")
-                            if patient_ref:
-                                patient_refs.add(patient_ref)
+            if 'List' in folder_path:
+                patient_refs = set()
 
-                            statement_ref = f"MedicationStatement/{reference_id}"
-                            medication_ref = statement_medication_map.get(statement_ref)
-                            if not medication_ref:
-                                continue
-                            while True:
-                                try:
-                                    if medication_ref in atc_cache:
-                                        code_name = atc_cache[medication_ref]
-                                    else:
-                                        code_name = fetch_atc_codes(medication_ref, code_list, smart)
-                                        atc_cache[medication_ref] = code_name
-                                    break
-                                except Exception as exc:
-                                    logging.error(f"Generated an exception: {exc} but continue trying.\n")
-                                    smart = connect_to_server(user=USER_NAME, pw=USER_PASSWORD, protocol=protocol)
-                                    time.sleep(3)
-                            if code_name:
-                                medication_type_and_med_reference["List"][code_name] += 1
+                for file in os.listdir(folder_path):
+                    if not file.endswith(".json") or "statementRef" not in file:
+                        continue
 
-                except Exception as exc:
-                    logging.error(f"Error in file {file}: {exc}. Skipping...")
-                    continue
+                    reference_id = file.split("_statementRef")[0]
+                    try:
+                        with open(os.path.join(folder_path, file), encoding="utf-8") as f:
+                            for line in f:
+                                bundle = json.loads(line)
+                                #Check the List actually contains this MedicationStatement
+                                if not find_medication_statement_ref(bundle, reference_id):
+                                    continue
+                                patient_ref = bundle.get("resource", {}).get("subject", {}).get("reference")
+                                if patient_ref:
+                                    patient_refs.add(patient_ref)
 
-            # Get patients count from List
-            gather_metadata("patient_count_with_medicationList", len(patient_refs))
-        else:
-            # Gathering, counting and fetching ID-references for "Medication".
-            for filename in os.listdir(folder_path):
-                if filename.endswith(".json"):
-                    file_path = os.path.join(folder_path, filename)
-                    with (open(file_path, 'r') as json_file):
-                        for line in json_file:
-                            medication_profile = json.loads(line)
-                            resource = medication_profile.get("resource", {})
+                                statement_ref = f"MedicationStatement/{reference_id}"
+                                medication_ref = statement_medication_map.get(statement_ref)
+                                if not medication_ref:
+                                    continue
+                                while True:
+                                    try:
+                                        if medication_ref in atc_cache:
+                                            code_name = atc_cache[medication_ref]
+                                        else:
+                                            code_name = fetch_atc_codes(medication_ref, code_list, smart)
+                                            atc_cache[medication_ref] = code_name
+                                        break
+                                    except Exception as exc:
+                                        logging.error(f"Generated an exception: {exc} but continue trying.\n")
+                                        smart = connect_to_server(user=USER_NAME, pw=USER_PASSWORD, protocol=protocol)
+                                        time.sleep(3)
+                                if code_name:
+                                    medication_type_and_med_reference["List"][code_name] += 1
 
-                            if not resource:
-                                continue
-                            resource_type = resource.get("resourceType")
-                            resource_ref = resource.get("medicationReference", {}).get("reference")
+                    except Exception as exc:
+                        logging.error(f"Error in file {file}: {exc}. Skipping...")
+                        continue
 
-                            if not resource_ref:
-                                continue
-                            while True:
-                                try:
-                                    if resource_ref in atc_cache:
-                                        code_name = atc_cache[resource_ref]
-                                    else:
-                                        code_name = fetch_atc_codes(resource_ref,code_list,  smart )
-                                        atc_cache[resource_ref] = code_name
-                                    break
-                                except Exception as exc:
-                                    logging.error(f"Generated an exception: {exc} but continue trying." )
-                                    smart = connect_to_server(user=USER_NAME,   pw=USER_PASSWORD,  protocol=protocol)
-                                    time.sleep(3)
-                            if code_name:
-                                medication_type_and_med_reference[resource_type][code_name] += 1
-        # Estimates TOTAL counts per medication resource and structures data as outcomes
-        for resource_type, num_references in medication_type_and_med_reference.items():
-            total_count = sum(num_references.values())
-            details_count = [{ref: count} for ref, count in num_references.items()]
+                # Get patients count from List
+                gather_metadata("patient_count_with_medicationList", len(patient_refs))
+            else:
+                # Gathering, counting and fetching ID-references for "Medication".
+                for filename in os.listdir(folder_path):
+                    if filename.endswith(".json"):
+                        file_path = os.path.join(folder_path, filename)
+                        with (open(file_path, 'r') as json_file):
+                            for line in json_file:
+                                medication_profile = json.loads(line)
+                                resource = medication_profile.get("resource", {})
 
-            resource_structure[resource_type]["counting"]["total_count"] = total_count
-            resource_structure[resource_type]["counting"]["details_count"] = details_count
+                                if not resource:
+                                    continue
+                                resource_type = resource.get("resourceType")
+                                resource_ref = resource.get("medicationReference", {}).get("reference")
 
-        if "Administration" in folder_path:
-            gather_metadata("medicationAdministrations_counts", resource_structure)
-        elif "Request" in folder_path:
-            gather_metadata("medicationRequests_counts", resource_structure)
-        elif "Statement" in folder_path:
-            gather_metadata("medicationStatements_counts", resource_structure)
-        elif "List" in folder_path:
-            gather_metadata("medicationList_counts", resource_structure)
+                                if not resource_ref:
+                                    continue
+                                while True:
+                                    try:
+                                        if resource_ref in atc_cache:
+                                            code_name = atc_cache[resource_ref]
+                                        else:
+                                            code_name = fetch_atc_codes(resource_ref,code_list,  smart )
+                                            atc_cache[resource_ref] = code_name
+                                        break
+                                    except Exception as exc:
+                                        logging.error(f"Generated an exception: {exc} but continue trying." )
+                                        smart = connect_to_server(user=USER_NAME,   pw=USER_PASSWORD,  protocol=protocol)
+                                        time.sleep(3)
+                                if code_name:
+                                    medication_type_and_med_reference[resource_type][code_name] += 1
+            # Estimates TOTAL counts per medication resource and structures data as outcomes
+            for resource_type, num_references in medication_type_and_med_reference.items():
+                total_count = sum(num_references.values())
+                details_count = [{ref: count} for ref, count in num_references.items()]
+
+                resource_structure[resource_type]["counting"]["total_count"] = total_count
+                resource_structure[resource_type]["counting"]["details_count"] = details_count
+
+            if "Administration" in folder_path:
+                gather_metadata("medicationAdministrations_counts", resource_structure)
+            elif "Request" in folder_path:
+                gather_metadata("medicationRequests_counts", resource_structure)
+            elif "Statement" in folder_path:
+                gather_metadata("medicationStatements_counts", resource_structure)
+            elif "List" in folder_path:
+                gather_metadata("medicationList_counts", resource_structure)
 
 
 def find_medication_statement_ref(bundle, reference_id):
