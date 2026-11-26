@@ -51,12 +51,14 @@ def resources_to_fetch(patient_list, encounters_list, smart):
             logging.info("Fetching conditions ...")
             code_list = read_input_code_file(ICD_CODE_FILE)
             execute_thread_for_fetching(code_list, Condition, patient_list, "ICD", conditions)
+            conditions_frequencies(ICD_CODE_FILE)
 
         ####Observations####
         if extraction.get("observations"):
             logging.info("Fetching observations ...")
             code_list = read_input_code_file(LOINC_CODE_FILE)
             execute_thread_for_fetching(set(code_list), Observation, patient_list, "LOINC", observations)
+            observation_frequencies_and_distributions(LOINC_CODE_FILE)
 
         ####Encounters####
         if extraction.get("encounters"):
@@ -68,6 +70,7 @@ def resources_to_fetch(patient_list, encounters_list, smart):
             logging.info("Fetching procedures ...")
             code_list = read_input_code_file(OPS_CODE_FILE)
             execute_thread_for_fetching(set(code_list), Procedure, patient_list, "OPS", procedures)
+            procedure_frequencies(OPS_CODE_FILE)
 
         ##Medications####
         if extraction.get("medication"):
@@ -89,6 +92,7 @@ def resources_to_fetch(patient_list, encounters_list, smart):
                         execute_thread_for_fetching(code_list, profile, statements_ref, "ATC", medications)
                 else:
                     execute_thread_for_fetching(code_list, profile, patient_list, "ATC", medications)
+            medication_frequencies(ATC_CODE_FILE)
 
 
 def main():
@@ -108,11 +112,6 @@ def main():
     # Fetch only resources that are true in the config execution file
     resources_to_fetch(patients, enc_list, smart)
 
-    ###Post processing: Analysis###
-    conditions_frequencies(ICD_CODE_FILE)
-    observation_frequencies_and_distributions(LOINC_CODE_FILE)
-    procedure_frequencies(OPS_CODE_FILE)
-    medication_frequencies(ATC_CODE_FILE)
 if __name__ == "__main__":
     reset_values_metadata()
     main()
